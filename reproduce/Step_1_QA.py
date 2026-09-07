@@ -14,14 +14,16 @@ sys.path.append(os.path.dirname(_HERE))  # repo root, so `minirag` imports here 
 
 from tqdm import trange  # noqa: E402
 from minirag import QueryParam  # noqa: E402
-from gemini_common import build_rag, get_args  # noqa: E402
+from gemini_common import build_query_param, build_rag, get_args  # noqa: E402
 
 args = get_args("MiniRAG QA (Gemini)")
 rag = build_rag(args)
+QPARAM = build_query_param(args)
 
 QUESTION_LIST = []
 GA_LIST = []
-with open(args.querypath, mode="r", encoding="utf-8") as question_file:
+qpath = args.questions or args.querypath
+with open(qpath, mode="r", encoding="utf-8") as question_file:
     reader = csv.DictReader(question_file)
     for row in reader:
         QUESTION_LIST.append(row["Question"])
@@ -61,7 +63,7 @@ def run_experiment(output_path):
 
             try:
                 minirag_answer = (
-                    rag.query(QUESTION, param=QueryParam(mode="mini"))
+                    rag.query(QUESTION, param=QPARAM)
                     .replace("\n", "")
                     .replace("\r", "")
                 )

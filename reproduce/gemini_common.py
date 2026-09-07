@@ -10,7 +10,7 @@ from dotenv import load_dotenv  # noqa: E402
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
 
-from minirag import MiniRAG  # noqa: E402
+from minirag import MiniRAG, QueryParam  # noqa: E402
 from minirag.llm.gemini import (  # noqa: E402
     _resolve_api_keys,
     gemini_complete,
@@ -49,6 +49,21 @@ def get_args(description="MiniRAG + Gemini"):
         help="Only process the first N documents/questions (0 = all). "
         "Useful to stay inside Gemini free-tier rate limits.",
     )
+    # Retrieval / generation knobs, so a sweep needs no code edits.
+    parser.add_argument("--mode", type=str, default="mini",
+                        help="mini | light | naive -- the paper's MiniRAG / "
+                             "LightRAG / NaiveRAG columns.")
+    parser.add_argument("--topk", type=int, default=0,
+                        help="QueryParam.top_k (0 = library default, 60).")
+    parser.add_argument("--maxtokentextunit", type=int, default=0,
+                        help="QueryParam.max_token_for_text_unit (0 = default, 4000).")
+    parser.add_argument("--responsetype", type=str, default="",
+                        help='QueryParam.response_type. Default is "Multiple '
+                             'Paragraphs", which answers a one-word gold answer '
+                             "with an essay; try 'a single short phrase'.")
+    parser.add_argument("--questions", type=str, default="",
+                        help="CSV of questions to run instead of the full query "
+                             "set (e.g. the frozen dev set).")
     parser.add_argument(
         "--evidence",
         action="store_true",
@@ -106,3 +121,16 @@ def build_rag(args):
         embedding_func_max_async=4,
         embedding_func=embedding,
     )
+
+
+def build_query_param(args):
+    """QueryParam from the CLI knobs, leaving unset ones at library defaults."""
+    kw = {"mode": args.mode}
+    if getattr(args, "topk", 0):
+        kw["top_k"] = args.topk
+    if getattr(args, "maxtokentextunit", 0):
+        kw["max_token_for_text_unit"] = args.maxtokentextunit
+    if getattr(args, "responsetype", ""):
+        kw["response_type"] = args.responsetype
+    print("QUERY PARAM:", kw)
+    return QueryParam(**kw)

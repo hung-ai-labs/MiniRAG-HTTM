@@ -26,3 +26,8 @@ examples/output/
 *.ini
 build/
 minirag-venv/
+
+# Gemini benchmark artefacts (regenerate with reproduce/Step_0..4)
+LiHua-World-gemini/
+logs/*.csv
+logs/*.jsonl

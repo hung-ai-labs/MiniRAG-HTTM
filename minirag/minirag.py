@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -375,6 +376,24 @@ class MiniRAG:
             )
         }
 
+        # `inserting_chunks` above is rebuilt from EVERY document already in
+        # PROCESSED state, not just the ones this call added, so inserting N
+        # documents one at a time re-extracts the whole corpus N times -- O(N^2)
+        # LLM calls. Remember which chunks have been extracted and skip them.
+        extracted_path = os.path.join(self.working_dir, "extracted_chunks.json")
+        try:
+            with open(extracted_path, encoding="utf-8") as f:
+                extracted = set(json.load(f))
+        except (OSError, ValueError):
+            extracted = set()
+
+        skipped = len(set(inserting_chunks) & extracted)
+        inserting_chunks = {
+            k: v for k, v in inserting_chunks.items() if k not in extracted
+        }
+        if skipped:
+            logger.info("Skipping %d chunks already extracted", skipped)
+
         if inserting_chunks:
             logger.info("Performing entity extraction on newly processed chunks")
             await extract_entities(
@@ -385,7 +404,10 @@ class MiniRAG:
                 relationships_vdb=self.relationships_vdb,
                 global_config=asdict(self),
             )
- 
+            extracted |= set(inserting_chunks)
+            with open(extracted_path, "w", encoding="utf-8") as f:
+                json.dump(sorted(extracted), f)
+
         await self._insert_done()
 
     async def apipeline_enqueue_documents(

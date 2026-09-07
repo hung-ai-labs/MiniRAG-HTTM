@@ -1,0 +1,12 @@
+# Extra deps for the Gemini backend and the RAGAS evaluation steps.
+#   pip install -r requirements.txt -r requirements-gemini.txt
+
+openai                  # Gemini is reached through its OpenAI-compatible endpoint
+sentence-transformers   # local embeddings (all-MiniLM-L6-v2), keeps embeddings off the API quota
+
+# Step_4 (RAGAS). ragas 0.4.x still imports a module langchain-community
+# dropped in 0.4, so that pin is required, not cosmetic.
+ragas>=0.4,<0.5
+langchain-community<0.4
+datasets
+pandas

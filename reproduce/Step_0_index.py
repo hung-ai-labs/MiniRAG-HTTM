@@ -1,96 +1,54 @@
-# from huggingface_hub import login
-# your_token = "INPUT YOUR TOKEN HERE"
-# login(your_token)
+"""Step 0 - index the dataset into MiniRAG using the Gemini API.
 
-import sys
+    export GEMINI_API_KEY=your_key
+    python ./reproduce/Step_0_index.py --workingdir ./LiHua-World
+"""
+
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from gemini_common import build_rag, get_args  # noqa: E402
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+args = get_args("MiniRAG indexing (Gemini)")
+rag = build_rag(args)
 
 
-from minirag import MiniRAG
-from minirag.llm import (
-    gpt_4o_mini_complete,
-    hf_embed,
-)
-from minirag.utils import EmbeddingFunc
-from transformers import AutoModel, AutoTokenizer
-
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-
-import argparse
-
-
-def get_args():
-    parser = argparse.ArgumentParser(description="MiniRAG")
-    parser.add_argument("--model", type=str, default="PHI")
-    parser.add_argument("--outputpath", type=str, default="./logs/Default_output.csv")
-    parser.add_argument("--workingdir", type=str, default="./LiHua-World")
-    parser.add_argument("--datapath", type=str, default="./dataset/LiHua-World/data/")
-    parser.add_argument(
-        "--querypath", type=str, default="./dataset/LiHua-World/qa/query_set.csv"
-    )
-    args = parser.parse_args()
-    return args
-
-
-args = get_args()
-
-
-if args.model == "PHI":
-    LLM_MODEL = "microsoft/Phi-3.5-mini-instruct"
-elif args.model == "GLM":
-    LLM_MODEL = "THUDM/glm-edge-1.5b-chat"
-elif args.model == "MiniCPM":
-    LLM_MODEL = "openbmb/MiniCPM3-4B"
-elif args.model == "qwen":
-    LLM_MODEL = "Qwen/Qwen2.5-3B-Instruct"
-else:
-    print("Invalid model name")
-    exit(1)
-
-WORKING_DIR = args.workingdir
-DATA_PATH = args.datapath
-QUERY_PATH = args.querypath
-OUTPUT_PATH = args.outputpath
-print("USING LLM:", LLM_MODEL)
-print("USING WORKING DIR:", WORKING_DIR)
-
-
-if not os.path.exists(WORKING_DIR):
-    os.mkdir(WORKING_DIR)
-
-rag = MiniRAG(
-    working_dir=WORKING_DIR,
-    # llm_model_func=hf_model_complete,
-    llm_model_func=gpt_4o_mini_complete,
-    llm_model_max_token_size=200,
-    llm_model_name=LLM_MODEL,
-    embedding_func=EmbeddingFunc(
-        embedding_dim=384,
-        max_token_size=1000,
-        func=lambda texts: hf_embed(
-            texts,
-            tokenizer=AutoTokenizer.from_pretrained(EMBEDDING_MODEL),
-            embed_model=AutoModel.from_pretrained(EMBEDDING_MODEL),
-        ),
-    ),
-)
-
-
-# Now indexing
 def find_txt_files(root_path):
     txt_files = []
     for root, dirs, files in os.walk(root_path):
-        for file in files:
+        for file in sorted(files):
             if file.endswith(".txt"):
                 txt_files.append(os.path.join(root, file))
-    return txt_files
+    return sorted(txt_files)
 
 
-WEEK_LIST = find_txt_files(DATA_PATH)
-for WEEK in WEEK_LIST:
-    id = WEEK_LIST.index(WEEK)
-    print(f"{id}/{len(WEEK_LIST)}")
+WEEK_LIST = find_txt_files(args.datapath)
+
+if args.evidence:
+    import csv
+    import re
+
+    by_stem = {os.path.basename(p)[:-4]: p for p in WEEK_LIST}
+    with open(args.querypath, encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    if args.limit:
+        rows = rows[: args.limit]
+    wanted = []
+    for row in rows:
+        for d, h, m in re.findall(r"(\d{8})_(\d{2}):(\d{2})", row["Evidence"]):
+            path = by_stem.get(f"{d}_{h}{m}")
+            if path and path not in wanted:
+                wanted.append(path)
+    WEEK_LIST = wanted
+    print(f"evidence mode: {len(rows)} questions -> {len(WEEK_LIST)} documents")
+elif args.limit:
+    WEEK_LIST = WEEK_LIST[: args.limit]
+
+for id, WEEK in enumerate(WEEK_LIST):
+    print(f"{id}/{len(WEEK_LIST)} {WEEK}")
     with open(WEEK) as f:
         rag.insert(f.read())
+
+print("Indexing done ->", args.workingdir)

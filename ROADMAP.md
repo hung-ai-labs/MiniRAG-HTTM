@@ -108,8 +108,8 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | **`baseline.yaml` đóng băng** | ✅ | [`baseline.yaml`](baseline.yaml) — commit `dbfa0d1`, chốt 07/09/2026 |
 | Giao thức judge 3 lượt + sàn nhiễu | ✅ | sd acc **1,53** → chênh lệch **< 3 điểm** không kết luận được |
 | RAGAS chẩn đoán (n=100) | ✅ | faithfulness 0,703 · **context_precision 0,316** · context_recall 0,560 |
-| `H1` Retrieval Flow + Code Map | ✅ | [`docs/RETRIEVAL_FLOW.md`](docs/RETRIEVAL_FLOW.md) · [`docs/RETRIEVAL_CODE_MAP.md`](docs/RETRIEVAL_CODE_MAP.md) |
-| **Query Trace 3 query thật** | ✅ | [`docs/QUERY_TRACE.md`](docs/QUERY_TRACE.md) — sinh tự động bởi `reproduce/Step_5_trace.py` |
+| `H1` Retrieval Flow + Code Map | ✅ | [`docs/phase1/RETRIEVAL_FLOW.md`](docs/phase1/RETRIEVAL_FLOW.md) · [`docs/phase1/RETRIEVAL_CODE_MAP.md`](docs/phase1/RETRIEVAL_CODE_MAP.md) |
+| **Query Trace 3 query thật** | ✅ | [`docs/phase1/QUERY_TRACE.md`](docs/phase1/QUERY_TRACE.md) — sinh tự động bởi `reproduce/Step_5_trace.py` |
 | **🔴 Phát hiện bug: bước ④ luôn rỗng** | ✅ | So khớp hoa/thường `entity_type` → answer-type-aware **không chạy** |
 | Environment guide (`T1*`) | 🔄 | Chưa có hướng dẫn cài đặt chạy được trên máy cả 3 người |
 | Failed-query dataset, Failure Taxonomy | ⬜ | Chưa bắt đầu — **đây là nút thắt chặn Phase 2** |

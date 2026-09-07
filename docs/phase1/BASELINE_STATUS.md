@@ -1,6 +1,6 @@
 # Baseline Status — MiniRAG trên LiHua-World
 
-> Cập nhật 07/09/2026 · commit `dbfa0d1` · cấu hình đóng băng: [`baseline.yaml`](../baseline.yaml)
+> Cập nhật 07/09/2026 · commit `dbfa0d1` · cấu hình đóng băng: [`baseline.yaml`](../../baseline.yaml)
 
 Tài liệu này trả lời đúng một câu hỏi cho slide: **"Nhóm đã reproduce MiniRAG đến
 đâu, và kết quả hiện tại là gì?"**

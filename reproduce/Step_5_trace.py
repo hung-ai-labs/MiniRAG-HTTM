@@ -8,7 +8,7 @@ Queries worth tracing come from the baseline's own failures -- a Multi-hop the
 system got wrong tells you more than a Single-hop it got right.
 
     python reproduce/Step_5_trace.py --workingdir ./LiHua-World-gemini \
-        --tracefile ./logs/trace_queries.txt --out ./docs/QUERY_TRACE.md
+        --tracefile ./logs/trace_queries.txt --out ./docs/phase1/QUERY_TRACE.md
 """
 
 import argparse
@@ -202,7 +202,7 @@ async def main():
     ap = argparse.ArgumentParser(parents=[], add_help=False)
     args = _base_args("Trace một query qua retrieval")
     tracefile = os.environ.get("TRACE_FILE", "./logs/trace_queries.txt")
-    outpath = os.environ.get("TRACE_OUT", "./docs/QUERY_TRACE.md")
+    outpath = os.environ.get("TRACE_OUT", "./docs/phase1/QUERY_TRACE.md")
 
     with open(tracefile, encoding="utf-8") as f:
         specs = [json.loads(l) for l in f if l.strip()]

@@ -9,6 +9,7 @@ Năm đầu ra bắt buộc của Phase 1.
 | 3 | Retrieval Flow | [`RETRIEVAL_FLOW.md`](RETRIEVAL_FLOW.md) |
 | 4 | Retrieval Code Map | [`RETRIEVAL_CODE_MAP.md`](RETRIEVAL_CODE_MAP.md) |
 | 5 | Query Trace | [`QUERY_TRACE.md`](QUERY_TRACE.md) |
+| + | **Pipeline Audit & Improvement Plan** | [`MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md) |
 
 ## Đọc theo thứ tự nào
 

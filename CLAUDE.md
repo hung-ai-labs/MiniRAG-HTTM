@@ -22,20 +22,29 @@ cuối** mới chạy lại full trên OpenAI để có con số so sánh trực
 RAGAS — đều chạy Gemini. Con số Gemini dùng để **so sánh tương đối** (baseline vs
 cải tiến); con số OpenAI dùng để **so sánh tuyệt đối** với bài báo.
 
-### 2. Chưa cải tiến khi chưa có baseline trung thực.
+### 2. Baseline đã đóng băng — mọi so sánh phải dựa vào nó.
 
-Yêu cầu đứng của chủ dự án: *"chưa được cải tiến vội nhé, tôi cần benchmark giống
-bản gốc trước để lên plan làm cải tiến"*. Không sửa `operate.py`, không đổi tham số
-retrieval, không thử ý tưởng mới cho tới khi baseline corpus 442 tài liệu hoàn tất
-và `baseline.yaml` được đóng băng.
+Cấu hình chuẩn nằm trong **[`baseline.yaml`](baseline.yaml)** (chốt 07/09/2026,
+commit `dbfa0d1`). **Không sửa file đó.** Muốn thử cấu hình khác thì tạo file mới,
+giữ nguyên file này làm mốc.
 
-### 3. Quy tắc đọc kết quả (sàn nhiễu judge = sd 0,29 điểm)
+Baseline corpus 442 đã chạy xong, nên ràng buộc *"chưa được cải tiến vội"* trước đây
+đã được gỡ. Nhưng cải tiến vẫn phải đi theo trình tự trong ROADMAP: **failure
+taxonomy trước, giả thuyết sau** — không thử mò tham số.
+
+### 3. Quy tắc đọc kết quả (sàn nhiễu judge = **sd 1,53 điểm**)
+
+Đo trên chính baseline corpus 442: acc dao động **3,00 điểm** giữa 3 lượt judge.
 
 | Mức thay đổi | Kết luận |
 |---|---|
-| +4 đến +6 điểm | Gần như chắc chắn có cải thiện → tiếp tục |
-| ~+1 điểm | Phải đo generation noise trước khi kết luận |
-| < 0,6 điểm | **Không kết luận được** — nằm trong nhiễu của judge |
+| > +5 điểm | Gần như chắc chắn có cải thiện → tiếp tục |
+| +3 đến +5 điểm | Có triển vọng, nhưng phải rerun 3 lượt mới dám khẳng định |
+| **< 3 điểm** | **Không kết luận được** — nằm trong nhiễu của judge |
+
+⚠️ Con số cũ **sd 0,29** đo trên corpus 267 tài liệu, **đã lỗi thời**. Corpus đầy đủ
+khó hơn → nhiều câu trả lời mơ hồ hơn → judge đổi ý nhiều hơn. Ngưỡng "không kết
+luận được" vì thế nhảy từ 0,6 lên ~3 điểm.
 
 Khi làm benchmark cuối để viết báo cáo: **rerun nhiều lượt** để chứng minh cải tiến
 là thật, không phải may mắn.
@@ -118,13 +127,37 @@ Chat và embedding **dùng chung một pool** vì chung quota project. Client t�
 
 ## Kết quả đã có
 
+### ⭐ Baseline chính thức — corpus 442, dev set 200 câu, 3 lượt judge
+
+| Chỉ số | Giá trị |
+|---|---|
+| **Accuracy** | **57,33 ± 1,53** |
+| **Error** | **21,00 ± 2,00** |
+| Single (n=159) | acc 60,17 ± 1,31 · err 16,77 ± 2,21 |
+| Null (n=20) | acc 50,00 ± 5,00 · err 31,67 ± 2,89 |
+| **Multi (n=21)** | **acc 42,86 · err 42,86** ← điểm yếu rõ nhất |
+
+### Baseline cũ (corpus 267) — chỉ để đối chiếu, ĐỪNG dùng làm mốc
+
 | Chỉ số | Giá trị | Ghi chú |
 |---|---|---|
-| Baseline acc / err (637 câu, corpus 267) | **66,41% / 19,15%** | corpus thiếu 175 distractor → **lạc quan hơn thực tế** |
-| Baseline dev set 200 câu | **65,67 ± 0,29 / 16,83 ± 1,15** | 3 lượt judge |
-| Sàn nhiễu judge | sd acc **0,29 điểm** | |
-| RAGAS (n=100) | faithfulness 0,703 · **context_precision 0,316** · context_recall 0,560 | context_precision thấp = nhiều chunk rác |
-| Baseline corpus đầy đủ 442 | 🔄 đang chạy | index xong, đang QA |
+| 637 câu | 66,41% / 19,15% | thiếu 175 distractor |
+| dev set 200 | 65,67 ± 0,29 / 16,83 ± 1,15 | **lạc quan hơn thực tế 8,3 điểm** |
+
+### Chẩn đoán RAGAS (n=100, corpus 267)
+
+faithfulness 0,703 · **context_precision 0,316** · context_recall 0,560
+→ context_precision thấp = retrieval kéo về nhiều chunk rác.
+
+### Hai quan sát đáng chú ý từ baseline 442
+
+1. **Multi-hop hỏng nặng**: tỷ lệ sai bằng tỷ lệ đúng (42,86 / 42,86).
+2. **Null err 31,67%**: câu không có đáp án trong dữ liệu, hệ thống **bịa** thay vì
+   nói không biết. Thêm distractor vào thì err tăng 4 điểm — nó trả lời sai một
+   cách tự tin, chứ không im lặng.
+
+*(n của Multi và Null chỉ ~20 câu, sai số lớn — đừng kết luận mạnh, cần xác nhận
+trên tập đầy đủ.)*
 
 ---
 

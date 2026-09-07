@@ -28,7 +28,7 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 |---|---|---|---|---|
 | 1 | Đọc paper MiniRAG, thống nhất thuật ngữ, hiểu heterogeneous graph retrieval | **Cả nhóm** | — | ⬜ |
 | 2 | `T1*` Dựng môi trường chuẩn, hướng dẫn cài đặt chạy lại được trên máy 3 người | Tài | → 1 | 🔄 |
-| 3 | `T2*` Chạy baseline gốc và **đóng băng `baseline.yaml`** | Tài | → 2 | 🔄 |
+| 3 | `T2*` Chạy baseline gốc và **đóng băng `baseline.yaml`** | Tài | → 2 | ✅ |
 | 4 | `T3*` End-to-end architecture map (raw docs → graph → answer) | Tài | → 2 · `‖ A` | ⬜ |
 | 5 | `H1` **Retrieval Code Map** (Query Mapping / Path Discovery / Chunk Extraction) | **Hùng** | → 2 · `‖ A` | ✅ |
 | 6 | `HD1` Automated Experiment Runner (config → retrieve → generate → evaluate → results.json) | HuyDog | → 3 · `‖ B` | ⬜ |
@@ -100,26 +100,53 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | Việc | Trạng thái | Bằng chứng |
 |---|---|---|
 | `H1` Retrieval Code Map | ✅ | Bản đồ hàm 4 giai đoạn + bảng tham số đóng cứng + 6 điểm nghi vấn |
-| Backend Gemini + pipeline đo | ✅ | `minirag/llm/gemini.py`, `reproduce/Step_0..4`, branch `gemini-benchmark` |
-| Sửa bug O(N²) trong `ainsert` | ✅ | Index 267 tài liệu: ~68.000 → **653** lời gọi LLM |
-| Baseline acc/err (corpus 267) | ✅ | 637 câu: **66,41% acc / 19,15% err**; dev set 200: 65,67 ± 0,29 |
-| Giao thức judge 3 lượt + sàn nhiễu | ✅ | sd acc **0,29** → chênh lệch < 0,6 điểm không kết luận được |
+| Backend Gemini + pipeline đo | ✅ | `minirag/llm/gemini.py`, `reproduce/Step_0..4` |
+| Sửa bug O(N²) trong `ainsert` | ✅ | ~68.000 → **653** lời gọi LLM |
+| **Index corpus đầy đủ 442 tài liệu** | ✅ | 442/442 processed · 503 chunks · đồ thị 770 nodes / 1.779 edges |
+| **Baseline chính thức (corpus 442)** | ✅ | dev 200 câu: **acc 57,33 ± 1,53 · err 21,00 ± 2,00** |
+| **`baseline.yaml` đóng băng** | ✅ | [`baseline.yaml`](baseline.yaml) — commit `dbfa0d1`, chốt 07/09/2026 |
+| Giao thức judge 3 lượt + sàn nhiễu | ✅ | sd acc **1,53** → chênh lệch **< 3 điểm** không kết luận được |
 | RAGAS chẩn đoán (n=100) | ✅ | faithfulness 0,703 · **context_precision 0,316** · context_recall 0,560 |
-| Baseline corpus đầy đủ 442 tài liệu | 🔄 | Đang index — corpus 267 đã bỏ mất 175 distractor nên điểm hiện tại **lạc quan hơn thực tế** |
-| Environment guide, `baseline.yaml` | ⬜ | Chưa đóng băng thành file cấu hình |
+| Environment guide (`T1*`) | 🔄 | Chưa có hướng dẫn cài đặt chạy được trên máy cả 3 người |
 | Failed-query dataset, Failure Taxonomy | ⬜ | Chưa bắt đầu — **đây là nút thắt chặn Phase 2** |
+
+### Baseline 442 nói gì
+
+| Loại | acc % | err % | n |
+|---|---|---|---|
+| Single | 60,17 ± 1,31 | 16,77 ± 2,21 | 159 |
+| Null | 50,00 ± 5,00 | 31,67 ± 2,89 | 20 |
+| **Multi** | **42,86** | **42,86** | 21 |
+
+So với baseline corpus 267 cũ (**65,67 ± 0,29**), điểm **tụt 8,34 điểm** khi thêm
+175 tài liệu nhiễu vào. Con số cũ lạc quan giả tạo vì corpus chỉ chứa tài liệu có
+đáp án — retrieval gần như không thể lấy nhầm.
+
+Hai chỗ hỏng lộ ra, **đây chính là nguyên liệu cho failure taxonomy của Tài**:
+
+1. **Multi-hop: tỷ lệ sai bằng tỷ lệ đúng.** Nghi ngờ path discovery đứt ở bước 2 hop.
+2. **Null err 31,67%.** Câu không có đáp án trong dữ liệu thì hệ thống **bịa** thay
+   vì nói không biết. Thêm distractor thì err tăng 4 điểm — nó sai một cách tự tin.
+
+⚠️ n của Multi và Null chỉ ~20 câu, sai số lớn. Cần xác nhận trên tập đầy đủ 637 câu
+trước khi đưa vào báo cáo.
 
 ### Ba việc cần làm ngay
 
-1. **Đóng băng `baseline.yaml`** — hiện cấu hình baseline nằm rải trong tham số dòng lệnh, chưa thành file bất biến. Không có nó thì không ai replicate được.
-2. **Failure taxonomy (T4–T6)** — Hùng không thể sang `H2` nếu chưa có tập query lỗi đã gán nhãn. Đây là đường găng của cả dự án.
-3. **Thống nhất baseline nào là chuẩn** — hiện có baseline do Hùng dựng; nếu Tài dựng thêm một bản khác thì mọi so sánh về sau đều vô nghĩa.
+1. **Failure taxonomy (T4–T6)** — đường găng của cả dự án. Hùng không sang được `H2`
+   nếu chưa có tập query lỗi đã gán nhãn. Baseline 442 đã chỉ sẵn hai hướng đào:
+   Multi-hop và Null.
+2. **Environment guide (`T1*`)** — `baseline.yaml` đã có, nhưng chưa ai ngoài máy này
+   dựng lại được môi trường. Không có nó thì `baseline.yaml` chỉ là giấy.
+3. **Sàn nhiễu mới là 1,53, không phải 0,29** — cả nhóm phải dùng ngưỡng **3 điểm**.
+   Ai còn dùng ngưỡng 0,6 cũ sẽ kết luận nhầm rằng nhiễu là cải tiến.
 
 ### Sai lệch đã biết so với bài báo
 
 Ghi lại để đưa vào phần Limitations, không phải lỗi cần sửa gấp:
 
 - **Model**: Gemini Flash-Lite, bài báo dùng gpt-4o-mini → lần chạy cuối cần OpenAI (~$10 cho 2 lượt full)
+- **Cache LLM rỗng**: `kv_store_llm_response_cache.json` 0 entry dù `enable_llm_cache=True` — nghi bug upstream thứ hai, chưa điều tra
 - **Judge**: Gemini Flash-Lite 3 lượt, bài báo dùng GPT-4o 3 lượt
 - **Đồ thị thưa hơn upstream** do bản vá O(N²) (upstream trích xuất lặp nên gom thêm entity)
 - **Dataset có 2 dòng trùng**: 637 dòng nhưng chỉ **635 câu duy nhất**

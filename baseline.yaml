@@ -1,0 +1,116 @@
+# baseline.yaml — cấu hình baseline ĐÓNG BĂNG của nhóm
+#
+# Đây là điều kiện chuẩn để so sánh mọi cải tiến về sau. KHÔNG sửa file này.
+# Muốn thử cấu hình khác: tạo file mới (vd. configs/exp_topk40.yaml), giữ
+# nguyên file này làm mốc.
+#
+# Chốt ngày: 2026-09-07
+# Commit:    dbfa0d1
+# Kết quả:   acc 57.33 ± 1.53 | err 21.00 ± 2.00  (dev set 200 câu, 3 lượt judge)
+
+meta:
+  name: baseline-gemini-442
+  frozen_at: 2026-09-07
+  git_commit: dbfa0d1
+  note: >
+    Baseline chạy trên Gemini free tier. Lần chạy cuối của dự án sẽ lặp lại
+    cấu hình này trên OpenAI (xem mục openai_final_run) để có số so sánh
+    trực tiếp với bài báo.
+
+corpus:
+  path: ./dataset/LiHua-World/data/
+  documents: 442          # TOÀN BỘ corpus, không lọc theo Evidence
+  selection: all          # KHÔNG dùng --evidence (sẽ bỏ mất distractor)
+  indexed_chunks: 503
+
+index:
+  working_dir: ./LiHua-World-gemini
+  chunk_token_size: 1200            # mặc định thư viện
+  chunk_overlap_token_size: 100     # mặc định thư viện
+  entity_extract_max_gleaning: 1    # mặc định thư viện
+  enable_llm_cache: true            # BẬT nhưng thực tế 0 entry — nghi bug upstream
+  graph:
+    nodes: 770
+    edges: 1779
+
+models:
+  llm: gemini-flash-lite-latest
+  llm_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+  embedding:
+    provider: local
+    model: sentence-transformers/all-MiniLM-L6-v2
+    dim: 384                        # KHÔNG trộn được với Gemini embedding 3072d
+
+retrieval:
+  # Toàn bộ để mặc định thư viện — baseline phải là MiniRAG nguyên bản.
+  mode: mini                        # mini | light | naive
+  top_k: 60
+  max_token_for_text_unit: 4000
+  max_token_for_global_context: 4000
+  max_token_for_local_context: 4000
+  response_type: "Multiple Paragraphs"
+  cosine_better_than_threshold: 0.2
+
+concurrency:
+  llm_model_max_async: 8
+  embedding_func_max_async: 4
+
+rate_limit:
+  # Đã sweep trên pipeline thật; đừng chỉnh mò. Ràng buộc thật là token/phút.
+  keys: 12                          # GEMINI_API_KEY_1..12 trong .env
+  GEMINI_RPM: 13
+  GEMINI_TPM: 3000                  # 26 ok/phút @ 4% lỗi 429 — điểm tốt nhất
+  pool: shared                      # chat + embedding chung quota project
+  burst: 0.25
+  sdk_max_retries: 0                # để SDK không retry vòng trong, bỏ qua limiter
+
+evaluation:
+  devset: ./logs/devset.csv
+  devset_size: 200
+  devset_seed: 13
+  devset_sampling: stratified_by_type
+  judge_model: gemini-flash-lite-latest
+  judge_repeats: 3                  # giao thức bài báo
+  judge_seed: 13
+  order_randomization: true
+
+results:
+  # Chạy lại đúng cấu hình này phải ra xấp xỉ các số dưới đây.
+  overall:
+    accuracy: "57.33 ± 1.53"
+    error: "21.00 ± 2.00"
+  by_type:
+    Single: {n: 159, accuracy: "60.17 ± 1.31", error: "16.77 ± 2.21"}
+    Multi:  {n: 21,  accuracy: "42.86 ± 0.00", error: "42.86 ± 0.00"}
+    Null:   {n: 20,  accuracy: "50.00 ± 5.00", error: "31.67 ± 2.89"}
+  judge_noise_floor:
+    acc_stdev: 1.53
+    acc_spread: 3.00
+    rule: >
+      Chênh lệch dưới ~3 điểm giữa hai cấu hình KHÔNG kết luận được nếu chỉ
+      chạy một lượt. Muốn khẳng định phải rerun nhiều lượt.
+
+openai_final_run:
+  # CHƯA CHẠY. Chỉ thực hiện khi đã chốt Proposed Method, cuối dự án.
+  status: not_run
+  llm: gpt-4o-mini                  # như bài báo
+  judge: gpt-4o                     # như bài báo
+  embedding: giữ nguyên local 384d
+  estimated_cost_usd: 10            # cho 2 lượt full 637 câu
+
+reproduce:
+  index: python reproduce/Step_0_index.py --workingdir ./LiHua-World-gemini
+  qa: >
+    python reproduce/Step_1_QA.py --workingdir ./LiHua-World-gemini
+    --questions ./logs/devset.csv --outputpath ./logs/baseline442_devset.csv
+  judge: >
+    python reproduce/Step_2_evaluate.py
+    --inputpath ./logs/baseline442_devset.csv --repeats 3
+
+known_deviations:
+  - "Model Gemini Flash-Lite thay vì gpt-4o-mini của bài báo"
+  - "Judge Gemini Flash-Lite thay vì GPT-4o của bài báo"
+  - "Đồ thị thưa hơn upstream do bản vá bug O(N²) trong ainsert"
+  - "query_set.csv có 637 dòng nhưng chỉ 635 câu duy nhất (2 dòng trùng)"
+  - "68 câu có Evidence trỏ tới file không tồn tại — trần điểm cứng"
+  - "kv_store_llm_response_cache.json rỗng dù enable_llm_cache=true"

@@ -31,6 +31,7 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 3 | `T2*` Chạy baseline gốc và **đóng băng `baseline.yaml`** | Tài | → 2 | ✅ |
 | 4 | `T3*` End-to-end architecture map (raw docs → graph → answer) | Tài | → 2 · `‖ A` | ⬜ |
 | 5 | `H1` **Retrieval Code Map** (Query Mapping / Path Discovery / Chunk Extraction) | **Hùng** | → 2 · `‖ A` | ✅ |
+| 5b | `H1b` **Retrieval Flow** + **Query Trace** 3 query thật | **Hùng** | → 5 | ✅ |
 | 6 | `HD1` Automated Experiment Runner (config → retrieve → generate → evaluate → results.json) | HuyDog | → 3 · `‖ B` | ⬜ |
 | 7 | `HD-Schema` Chuẩn hoá schema log kết quả từng query | HuyDog | → 6 · `‖ B` | ⬜ |
 | 8 | `T4` Thu tập **failed-query dataset** (≥20–50 câu, kèm retrieved chunks) | Tài | → 3 | 🔄 |
@@ -107,6 +108,9 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | **`baseline.yaml` đóng băng** | ✅ | [`baseline.yaml`](baseline.yaml) — commit `dbfa0d1`, chốt 07/09/2026 |
 | Giao thức judge 3 lượt + sàn nhiễu | ✅ | sd acc **1,53** → chênh lệch **< 3 điểm** không kết luận được |
 | RAGAS chẩn đoán (n=100) | ✅ | faithfulness 0,703 · **context_precision 0,316** · context_recall 0,560 |
+| `H1` Retrieval Flow + Code Map | ✅ | [`docs/RETRIEVAL_FLOW.md`](docs/RETRIEVAL_FLOW.md) · [`docs/RETRIEVAL_CODE_MAP.md`](docs/RETRIEVAL_CODE_MAP.md) |
+| **Query Trace 3 query thật** | ✅ | [`docs/QUERY_TRACE.md`](docs/QUERY_TRACE.md) — sinh tự động bởi `reproduce/Step_5_trace.py` |
+| **🔴 Phát hiện bug: bước ④ luôn rỗng** | ✅ | So khớp hoa/thường `entity_type` → answer-type-aware **không chạy** |
 | Environment guide (`T1*`) | 🔄 | Chưa có hướng dẫn cài đặt chạy được trên máy cả 3 người |
 | Failed-query dataset, Failure Taxonomy | ⬜ | Chưa bắt đầu — **đây là nút thắt chặn Phase 2** |
 
@@ -133,6 +137,10 @@ trước khi đưa vào báo cáo.
 
 ### Ba việc cần làm ngay
 
+0. **Kiểm chứng bug bước ④** *(mới, ưu tiên cao nhất)* — Query Trace cho thấy
+   `get_node_from_types` không bao giờ khớp do lệch hoa/thường, khiến cơ chế
+   answer-type-aware của MiniRAG **không chạy**. Sửa một dòng, **không cần index
+   lại**. Cần đo trước/sau trên dev set 200 để biết ảnh hưởng thật.
 1. **Failure taxonomy (T4–T6)** — đường găng của cả dự án. Hùng không sang được `H2`
    nếu chưa có tập query lỗi đã gán nhãn. Baseline 442 đã chỉ sẵn hai hướng đào:
    Multi-hop và Null.

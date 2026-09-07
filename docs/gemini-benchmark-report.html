@@ -1,0 +1,349 @@
+<title>MiniRAG trên Gemini Flash-Lite</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --ground:#eef1f4;
+    --surface:#ffffff;
+    --surface-sunk:#e4e9ee;
+    --ink:#15202b;
+    --ink-soft:#41525f;
+    --ink-mute:#6f8190;
+    --rule:#c8d2da;
+    --rule-firm:#9fb0bd;
+    --slate:#33556f;
+    --acc:#2b7a6e;
+    --err:#a8452f;
+    --nei:#8b8574;
+    --shadow:0 1px 2px rgba(21,32,43,.07),0 8px 24px -16px rgba(21,32,43,.28);
+    --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+    --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#111820;
+      --surface:#19222c;
+      --surface-sunk:#0d141b;
+      --ink:#e3eaf1;
+      --ink-soft:#b3c2cf;
+      --ink-mute:#7f92a2;
+      --rule:#2b3945;
+      --rule-firm:#405161;
+      --slate:#8fb2cd;
+      --acc:#5cbfae;
+      --err:#e08065;
+      --nei:#b5ae9a;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#111820;
+    --surface:#19222c;
+    --surface-sunk:#0d141b;
+    --ink:#e3eaf1;
+    --ink-soft:#b3c2cf;
+    --ink-mute:#7f92a2;
+    --rule:#2b3945;
+    --rule-firm:#405161;
+    --slate:#8fb2cd;
+    --acc:#5cbfae;
+    --err:#e08065;
+    --nei:#b5ae9a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:44px}
+  .prose{max-width:66ch}
+
+  h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.14}
+  h1{font-size:clamp(32px,5vw,46px);font-weight:800;letter-spacing:-.02em}
+  h2{font-size:23px;font-weight:600;letter-spacing:-.01em}
+  h3{font-size:16px;font-weight:600}
+  p{margin:0}
+  a{color:var(--slate)}
+
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--ink-mute);
+  }
+
+  header{display:flex;flex-direction:column;gap:14px}
+  .lede{font-size:19px;color:var(--ink-soft);max-width:60ch}
+
+  .runmeta{
+    display:flex;flex-wrap:wrap;gap:0 28px;
+    font-family:var(--mono);font-size:12px;color:var(--ink-mute);
+    padding-top:14px;border-top:1px solid var(--rule);
+  }
+  .runmeta b{color:var(--ink-soft);font-weight:600}
+
+  section{display:flex;flex-direction:column;gap:18px}
+  .sechead{display:flex;flex-direction:column;gap:6px}
+
+  /* headline result */
+  .headline{
+    background:var(--surface);border:1px solid var(--rule);
+    box-shadow:var(--shadow);padding:30px 30px 26px;
+    display:flex;flex-direction:column;gap:24px;
+  }
+  .figrow{display:flex;flex-wrap:wrap;gap:38px;align-items:baseline}
+  .fig{display:flex;flex-direction:column;gap:2px}
+  .fig .num{
+    font-family:var(--display);font-weight:800;font-size:46px;line-height:1;
+    letter-spacing:-.03em;font-variant-numeric:tabular-nums;
+  }
+  .fig .cap{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute)}
+  .fig .cnt{font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+  .fig.a .num{color:var(--acc)}
+  .fig.e .num{color:var(--err)}
+  .fig.n .num{color:var(--nei)}
+
+  .bar{display:flex;height:34px;overflow:hidden;border:1px solid var(--rule-firm)}
+  .bar span{display:block;height:100%}
+  .bar .sa{background:var(--acc)}
+  .bar .se{background:var(--err)}
+  .bar .sn{background:var(--nei)}
+  .barkey{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:11.5px;color:var(--ink-mute)}
+  .barkey i{display:inline-block;width:9px;height:9px;margin-right:6px;font-style:normal}
+  .barkey .ka i{background:var(--acc)}
+  .barkey .ke i{background:var(--err)}
+  .barkey .kn i{background:var(--nei)}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:520px}
+  caption{text-align:left;padding:14px 16px 0;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute)}
+  th,td{padding:11px 16px;text-align:right;border-bottom:1px solid var(--rule);font-size:15px}
+  th:first-child,td:first-child{text-align:left}
+  thead th{
+    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--ink-mute);border-bottom:1px solid var(--rule-firm);
+  }
+  tbody td{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13.5px;color:var(--ink-soft)}
+  tbody td:first-child{font-family:var(--body);font-size:15.5px;color:var(--ink)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr.hi td{background:var(--surface-sunk)}
+  td.a{color:var(--acc);font-weight:600}
+  td.e{color:var(--err)}
+  .note{font-size:14px;color:var(--ink-mute);max-width:66ch}
+
+  /* caveat block — the one place that breaks the quiet */
+  .flag{
+    border-left:3px solid var(--err);
+    background:var(--surface);
+    padding:20px 24px;display:flex;flex-direction:column;gap:10px;
+  }
+  .flag .eyebrow{color:var(--err)}
+  .flag p{font-size:16px;color:var(--ink-soft);max-width:64ch}
+
+  ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:9px}
+  li{color:var(--ink-soft)}
+  li b{color:var(--ink);font-weight:600}
+  code{font-family:var(--mono);font-size:.86em;background:var(--surface-sunk);padding:.12em .38em;border-radius:2px}
+
+  pre{
+    margin:0;background:var(--surface-sunk);border:1px solid var(--rule);
+    padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:13px;
+    line-height:1.7;color:var(--ink-soft);
+  }
+
+  .changes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .change{background:var(--surface);padding:18px 20px;display:flex;flex-direction:column;gap:7px}
+  .change .eyebrow{color:var(--slate)}
+  .change p{font-size:14.5px;color:var(--ink-soft)}
+  .change .delta{font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:600}
+
+  footer{border-top:1px solid var(--rule);padding-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">LiHua-World · 637 truy vấn · mode mini</div>
+    <h1>MiniRAG trên Gemini Flash-Lite</h1>
+    <p class="lede">Chạy lại bộ benchmark LiHua-World với Gemini thay cho backend LLM gốc, chấm bằng LLM-judge. Kèm những gì phải sửa trong mã nguồn để nó chạy được, và những giới hạn khiến con số này chưa so trực tiếp được với bảng trong README.</p>
+    <div class="runmeta">
+      <span>LLM <b>gemini-flash-lite-latest</b></span>
+      <span>Embedding <b>all-MiniLM-L6-v2 · 384d · local</b></span>
+      <span>Corpus <b>267 tài liệu</b></span>
+      <span>Đồ thị <b>496 node · 1.193 cạnh</b></span>
+      <span>Ngày <b>2026-09-06</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="headline">
+      <div class="figrow">
+        <div class="fig a">
+          <span class="num">66,41%</span>
+          <span class="cap">Accuracy</span>
+          <span class="cnt">423 / 637</span>
+        </div>
+        <div class="fig e">
+          <span class="num">19,15%</span>
+          <span class="cap">Error</span>
+          <span class="cnt">122 / 637</span>
+        </div>
+        <div class="fig n">
+          <span class="num">14,44%</span>
+          <span class="cap">Không trả lời</span>
+          <span class="cnt">92 / 637</span>
+        </div>
+      </div>
+      <div>
+        <div class="bar" role="img" aria-label="66,41% đúng, 19,15% sai, 14,44% không trả lời">
+          <span class="sa" style="width:66.41%"></span>
+          <span class="se" style="width:19.15%"></span>
+          <span class="sn" style="width:14.44%"></span>
+        </div>
+      </div>
+      <div class="barkey">
+        <span class="ka"><i></i>Đúng — truyền đạt được gold answer</span>
+        <span class="ke"><i></i>Sai — mâu thuẫn với gold answer</span>
+        <span class="kn"><i></i>Không trả lời — từ chối hoặc lạc đề</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Phân rã</div>
+      <h2>Theo độ phủ chứng cứ</h2>
+    </div>
+    <p class="note">Mỗi câu hỏi trong LiHua-World khai báo tài liệu chứng cứ ở cột <code>Evidence</code>. Index được dựng đúng từ tập tài liệu đó, nhưng vẫn có phần không phủ hết — nên tách riêng để thấy đâu là giới hạn của hệ thống, đâu là giới hạn của dữ liệu.</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Accuracy theo tình trạng chứng cứ trong index</caption>
+        <thead>
+          <tr><th>Nhóm</th><th>n</th><th>Đúng</th><th>Sai</th><th>Không TL</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi"><td>Đủ chứng cứ trong index</td><td>546</td><td class="a">68,50%</td><td class="e">16,85%</td><td>14,65%</td></tr>
+          <tr><td>Evidence trỏ file không tồn tại</td><td>68</td><td class="a">69,12%</td><td class="e">26,47%</td><td>4,41%</td></tr>
+          <tr><td>Thiếu hoặc không có chứng cứ</td><td>23</td><td class="a">8,70%</td><td class="e">52,17%</td><td>39,13%</td></tr>
+          <tr><td><b>Toàn bộ</b></td><td>637</td><td class="a">66,41%</td><td class="e">19,15%</td><td>14,44%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Nhóm 23 câu thiếu chứng cứ tụt xuống <b>8,70%</b> — đúng như kỳ vọng và là một phép kiểm tra tính hợp lệ: khi tài liệu không có trong index thì hệ thống không trả lời đúng được, nên phần còn lại của bảng phản ánh truy hồi thật chứ không phải đoán mò.</p>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Phân rã</div>
+      <h2>Theo loại câu hỏi</h2>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Accuracy theo cột Type của bộ truy vấn</caption>
+        <thead>
+          <tr><th>Loại</th><th>n</th><th>Đúng</th><th>Sai</th><th>Không TL</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single — một nguồn chứng cứ</td><td>506</td><td class="a">68,38%</td><td class="e">15,81%</td><td>15,81%</td></tr>
+          <tr><td>Null — câu không có đáp án</td><td>65</td><td class="a">70,77%</td><td class="e">26,15%</td><td>3,08%</td></tr>
+          <tr class="hi"><td>Multi — nhiều nguồn chứng cứ</td><td>66</td><td class="a">46,97%</td><td class="e">37,88%</td><td>15,15%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Khoảng cách <b>21 điểm</b> giữa Single và Multi là phát hiện đáng chú ý nhất: hệ thống truy hồi tốt một mẩu bằng chứng, nhưng khi phải nối nhiều mẩu qua đồ thị thì tỉ lệ sai tăng hơn gấp đôi (15,81% → 37,88%). Đó chính là bài toán mà kiến trúc đồ thị dị thể của MiniRAG được thiết kế để giải, nên đây là chỗ đáng đào sâu nếu bạn muốn cải thiện.</p>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Đọc con số thế nào</div>
+      <h2>Ba giới hạn cần biết trước khi trích dẫn</h2>
+    </div>
+
+    <div class="flag">
+      <div class="eyebrow">Không so trực tiếp được với bảng README</div>
+      <p>Bảng trong README ghi MiniRAG + gpt-4o-mini đạt <b>54,08%</b> trên LiHua-World. Con số 66,41% ở đây <b>cao hơn, nhưng không có nghĩa là tốt hơn</b> — repo không kèm script chấm điểm, nên thang đo ở đây là LLM-judge do tôi tự viết, không phải thang đo của bài báo. Hai con số đến từ hai định nghĩa "đúng" khác nhau và không đặt cạnh nhau được.</p>
+    </div>
+
+    <ul>
+      <li><b>Judge có thiên lệch ở ranh giới sai / không trả lời.</b> Gold answer thường rất ngắn (<code>Yes</code>, <code>20260221</code>) trong khi MiniRAG trả lời cả đoạn văn dài trung vị 739 ký tự. Khi câu trả lời vòng vo mà không nêu đúng dữ kiện, judge có xu hướng chấm "sai" thay vì "không trả lời" — nên cột Error nhiều khả năng bị thổi lên và cột Không trả lời bị hạ xuống.</li>
+      <li><b>68 câu có chứng cứ trỏ tới file không tồn tại trong dataset.</b> Đây là khiếm khuyết sẵn có của bộ LiHua-World, không phải do cách chọn tài liệu. Không hệ thống nào trả lời đúng được những câu này, nên chúng kéo mẫu số xuống với mọi phương pháp.</li>
+      <li><b>Embedding không phải Gemini.</b> Chat dùng Gemini, nhưng embedding chạy <code>all-MiniLM-L6-v2</code> ở local — giống bài báo gốc, và cần thiết vì embedding qua API tranh quota với chat khiến index không chạy nổi. Nên đây là "MiniRAG + Gemini làm LLM", không phải "MiniRAG hoàn toàn trên Gemini".</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Mã nguồn</div>
+      <h2>Những gì phải sửa để chạy được</h2>
+    </div>
+    <div class="changes">
+      <div class="change">
+        <div class="eyebrow">minirag/minirag.py</div>
+        <h3>Bỏ qua chunk đã trích xuất</h3>
+        <p><code>ainsert</code> gom chunk từ mọi tài liệu ở trạng thái PROCESSED, không chỉ tài liệu vừa thêm — nạp N tài liệu lần lượt thì trích xuất lại toàn corpus N lần.</p>
+        <div class="delta">68.000 → 653 lời gọi</div>
+      </div>
+      <div class="change">
+        <div class="eyebrow">minirag/llm/gemini.py</div>
+        <h3>Adapter Gemini</h3>
+        <p>Dùng endpoint tương thích OpenAI nên tái sử dụng <code>AsyncOpenAI</code>, không cần SDK mới. Kèm pool nhiều key, token bucket theo token/phút, cooldown luỹ tiến khi gặp 429.</p>
+        <div class="delta">429: 43% → 4%</div>
+      </div>
+      <div class="change">
+        <div class="eyebrow">reproduce/Step_0_index.py</div>
+        <h3>Chọn tài liệu theo Evidence</h3>
+        <p>Lấy N file đầu theo alphabet chỉ phủ 7/637 câu hỏi, vì tài liệu và câu hỏi được chọn độc lập nhau.</p>
+        <div class="delta">7 → 637 câu có chứng cứ</div>
+      </div>
+      <div class="change">
+        <div class="eyebrow">reproduce/Step_2_evaluate.py</div>
+        <h3>Script chấm điểm</h3>
+        <p>Repo không có sẵn bước tính acc/err. Viết mới, dùng Gemini làm judge, ghi checkpoint theo từng batch để hết quota giữa chừng không mất việc đã làm.</p>
+        <div class="delta">mới</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Chi phí</div>
+      <h2>Tài nguyên đã dùng</h2>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Lời gọi LLM theo từng bước</caption>
+        <thead><tr><th>Bước</th><th>Lời gọi</th><th>Kết quả</th></tr></thead>
+        <tbody>
+          <tr><td>Index 267 tài liệu</td><td>653</td><td>311 chunk · 496 node · 1.193 cạnh · 8,9 MB</td></tr>
+          <tr><td>QA 637 câu</td><td>1.263</td><td>637 câu trả lời · 0 lỗi · 0 rỗng</td></tr>
+          <tr><td>Chấm điểm 637 câu</td><td>~640</td><td>423 đúng · 122 sai · 92 không trả lời</td></tr>
+          <tr class="hi"><td><b>Tổng</b></td><td><b>~2.556</b></td><td>vừa trong quota một ngày của bậc miễn phí</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Trước khi vá bug O(N²), riêng 7 tài liệu đầu đã tiêu 1.080 lời gọi — tương đương ~68.000 cho toàn bộ, tức nhiều ngày chạy và cạn quota liên tục. Sau khi vá, chi phí trung bình còn <b>2,2 lời gọi mỗi tài liệu</b>.</p>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Chạy lại</div>
+      <h2>Tái lập kết quả</h2>
+    </div>
+    <pre>export GEMINI_API_KEY=...        # hoặc GEMINI_API_KEY_1..N trong .env
+
+python reproduce/Step_0_index.py    --workingdir ./LiHua-World-gemini --evidence
+python reproduce/Step_1_QA.py       --workingdir ./LiHua-World-gemini \
+                                    --outputpath ./logs/gemini_output.csv
+python reproduce/Step_2_evaluate.py --inputpath  ./logs/gemini_output.csv</pre>
+    <p class="note">Cả ba bước đều resume được: index theo tài liệu, QA theo câu hỏi, chấm điểm theo batch. Tinh chỉnh giới hạn tốc độ qua <code>GEMINI_RPM</code> (mặc định 13/key) và <code>GEMINI_TPM</code> (3.000/key) — đo được rằng siết chặt hơn trần thật lại chạy nhanh hơn, vì thời gian mất vì backoff sau một lần 429 đắt hơn số request mà việc siết giữ lại.</p>
+  </section>
+
+  <footer>
+    MiniRAG-HTTM · LiHua-World · gemini-flash-lite-latest · 2026-09-06
+  </footer>
+
+</div>

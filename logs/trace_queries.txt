@@ -1,0 +1,3 @@
+{"question": "Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?", "gold": "Yes", "verdict": "error", "type": "Multi"}
+{"question": "What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?", "gold": "Insufficient information", "verdict": "error", "type": "Null"}
+{"question": "What does Bronwyn think about the idea of stealth missions?", "gold": "it will be all about timing and communication", "verdict": "accurate", "type": "Single"}

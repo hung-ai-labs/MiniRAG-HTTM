@@ -1,0 +1,369 @@
+<title>MiniRAG Retrieval Code Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#eef2f4;
+    --surface:#ffffff;
+    --sunk:#e2e8ec;
+    --ink:#111a21;
+    --ink-soft:#3d4c57;
+    --ink-mute:#6d7f8c;
+    --rule:#ccd6dd;
+    --rule-firm:#a3b3bf;
+    --sA:#2a6b8c;   /* query mapping */
+    --sB:#6b5296;   /* path discovery */
+    --sC:#a4632a;   /* chunk extraction */
+    --sD:#5c6b74;   /* generation */
+    --flag:#a83a2c;
+    --shadow:0 1px 2px rgba(17,26,33,.06),0 10px 26px -18px rgba(17,26,33,.32);
+    --display:"Archivo",ui-sans-serif,system-ui,sans-serif;
+    --body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#0e161c;--surface:#161f27;--sunk:#0a1116;
+      --ink:#dfe8ee;--ink-soft:#adbdc8;--ink-mute:#7b8d99;
+      --rule:#27333c;--rule-firm:#3b4b56;
+      --sA:#6ab4d8;--sB:#a992d8;--sC:#dda061;--sD:#93a3ad;--flag:#e0836f;
+      --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px -20px rgba(0,0,0,.9);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0e161c;--surface:#161f27;--sunk:#0a1116;
+    --ink:#dfe8ee;--ink-soft:#adbdc8;--ink-mute:#7b8d99;
+    --rule:#27333c;--rule-firm:#3b4b56;
+    --sA:#6ab4d8;--sB:#a992d8;--sC:#dda061;--sD:#93a3ad;--flag:#e0836f;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px -20px rgba(0,0,0,.9);
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px;
+        display:flex;flex-direction:column;gap:40px}
+  h1,h2,h3{font-family:var(--display);margin:0;line-height:1.15;text-wrap:balance}
+  h1{font-size:clamp(30px,4.6vw,42px);font-weight:700;letter-spacing:-.02em}
+  h2{font-size:21px;font-weight:600}
+  h3{font-size:15px;font-weight:600}
+  p{margin:0}
+  code{font-family:var(--mono);font-size:.87em;background:var(--sunk);
+       padding:.1em .36em;border-radius:2px}
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:600;
+           letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+
+  header{display:flex;flex-direction:column;gap:12px}
+  .lede{font-size:18px;color:var(--ink-soft);max-width:62ch}
+  .meta{display:flex;flex-wrap:wrap;gap:0 26px;padding-top:12px;
+        border-top:1px solid var(--rule);font-family:var(--mono);
+        font-size:12px;color:var(--ink-mute)}
+  .meta b{color:var(--ink-soft);font-weight:600}
+
+  /* pipeline spine */
+  .pipe{display:flex;flex-direction:column;gap:0}
+  .stage{display:grid;grid-template-columns:132px 1fr;gap:0;
+         border-left:3px solid var(--c);background:var(--surface);
+         border-top:1px solid var(--rule);border-right:1px solid var(--rule)}
+  .stage:last-of-type{border-bottom:1px solid var(--rule)}
+  .stage .tag{padding:20px 16px;background:var(--sunk);
+              display:flex;flex-direction:column;gap:4px}
+  .stage .tag .n{font-family:var(--display);font-size:26px;font-weight:700;
+                 color:var(--c);line-height:1}
+  .stage .tag .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;
+                 text-transform:uppercase;color:var(--ink-mute)}
+  .stage .body{padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+  .stage h2{color:var(--c)}
+
+  .fn{display:flex;flex-direction:column;gap:5px;padding:12px 0;
+      border-top:1px dashed var(--rule)}
+  .fn:first-of-type{border-top:none;padding-top:2px}
+  .fn .sig{font-family:var(--mono);font-size:13.5px;font-weight:600;
+           color:var(--ink);word-break:break-word}
+  .fn .loc{font-family:var(--mono);font-size:11.5px;color:var(--ink-mute)}
+  .fn p{font-size:14.5px;color:var(--ink-soft)}
+  .io{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .io span{font-family:var(--mono);font-size:11px;padding:2px 7px;
+           border:1px solid var(--rule-firm);color:var(--ink-soft);border-radius:2px}
+  .io span.out{border-style:solid;background:var(--sunk)}
+
+  .llm{display:inline-block;font-family:var(--mono);font-size:10.5px;
+       font-weight:600;letter-spacing:.06em;padding:2px 7px;
+       background:var(--c);color:var(--surface);border-radius:2px}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:620px}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--rule);
+        font-size:14.5px;vertical-align:top}
+  thead th{font-family:var(--mono);font-size:11px;font-weight:600;
+           letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mute);
+           border-bottom:1px solid var(--rule-firm)}
+  tbody td{color:var(--ink-soft)}
+  tbody td:first-child{color:var(--ink);font-weight:500}
+  tbody tr:last-child td{border-bottom:none}
+  td .where{font-family:var(--mono);font-size:11.5px;color:var(--ink-mute);
+            display:block;margin-top:3px}
+
+  .leads{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule)}
+  .lead{display:grid;grid-template-columns:44px 1fr;background:var(--surface);
+        border-bottom:1px solid var(--rule)}
+  .lead:last-child{border-bottom:none}
+  .lead .num{background:var(--sunk);display:flex;align-items:flex-start;
+             justify-content:center;padding-top:17px;font-family:var(--mono);
+             font-size:12px;font-weight:600;color:var(--flag)}
+  .lead .txt{padding:15px 18px;display:flex;flex-direction:column;gap:5px}
+  .lead h3{color:var(--ink)}
+  .lead p{font-size:14.5px;color:var(--ink-soft)}
+  .lead .where{font-family:var(--mono);font-size:11.5px;color:var(--ink-mute)}
+
+  .note{font-size:14.5px;color:var(--ink-mute);max-width:70ch}
+  section{display:flex;flex-direction:column;gap:16px}
+  .sechead{display:flex;flex-direction:column;gap:5px}
+  footer{border-top:1px solid var(--rule);padding-top:16px;
+         font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+
+  @media (max-width:640px){
+    .stage{grid-template-columns:1fr}
+    .stage .tag{flex-direction:row;align-items:baseline;gap:10px;padding:12px 16px}
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Deliverable H1 · Stage 01 Understand · Hùng</div>
+    <h1>MiniRAG Retrieval Code Map</h1>
+    <p class="lede">Bản đồ hàm end-to-end của đường truy vấn <code>mode="mini"</code>: từ câu hỏi thô tới khối ngữ cảnh đưa vào LLM sinh câu trả lời. Mỗi hàm ghi rõ file, dòng, đầu vào/ra và vai trò giải thuật.</p>
+    <div class="meta">
+      <span>Nguồn <b>minirag/operate.py · utils.py · kg/networkx_impl.py</b></span>
+      <span>Đường <b>mode=mini</b></span>
+      <span>Lời gọi LLM mỗi truy vấn <b>2</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Đường đi</div>
+      <h2>Query → Retrieved Evidence</h2>
+    </div>
+    <p class="note"><code>MiniRAG.query()</code> → <code>aquery()</code> <span class="where">minirag/minirag.py:555, 559</span> phân nhánh theo <code>QueryParam.mode</code>; <code>mini</code> đi vào <code>minirag_query()</code>. Bốn giai đoạn dưới đây theo đúng phân loại Query Mapping / Path Discovery / Chunk Extraction.</p>
+
+    <div class="pipe">
+
+      <div class="stage" style="--c:var(--sA)">
+        <div class="tag">
+          <span class="n">A</span>
+          <span class="k">Query<br>Mapping</span>
+        </div>
+        <div class="body">
+          <h2>Ánh xạ ngữ nghĩa câu hỏi</h2>
+
+          <div class="fn">
+            <span class="sig">get_types()</span>
+            <span class="loc">kg/networkx_impl.py:149</span>
+            <p>Quét toàn bộ node, gom tập <code>entity_type</code> đang có trong đồ thị làm Answer Type Pool.</p>
+            <div class="io"><span>graph</span><span class="out">→ TYPE_POOL: list[str]</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">minirag_query() — prompt <code>minirag_query2kwd</code> <span class="llm">LLM #1</span></span>
+            <span class="loc">operate.py:1409–1447</span>
+            <p>Bắt LLM trả JSON gồm <b>answer_type_keywords</b> (loại của đáp án, phải chọn trong TYPE_POOL) và <b>entities_from_query</b> (thực thể trong câu hỏi). Parse bằng <code>json_repair</code>, có nhánh cứu khi hỏng; hỏng hẳn thì trả <code>fail_response</code>.</p>
+            <div class="io"><span>query: str</span><span>TYPE_POOL</span><span class="out">→ type_keywords: list[str]</span><span class="out">→ entities_from_query: list[str] (cắt còn 5)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" style="--c:var(--sB)">
+        <div class="tag">
+          <span class="n">B</span>
+          <span class="k">Path<br>Discovery</span>
+        </div>
+        <div class="body">
+          <h2>Seed node và khám phá đường suy luận</h2>
+
+          <div class="fn">
+            <span class="sig">entity_name_vdb.query(ent, top_k)</span>
+            <span class="loc">operate.py:1271 — lặp cho từng entity trong câu hỏi</span>
+            <p>Khớp <b>dense</b> tên thực thể câu hỏi với tên thực thể trong đồ thị. Đây là toàn bộ cơ chế tìm seed node — không có thành phần lexical nào.</p>
+            <div class="io"><span>ent: str</span><span class="out">→ candidate_reasoning_path{name: {Score: distance, Path: []}}</span><span class="out">→ ent_from_query_dict{ent: [names]}</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">get_neighbors_within_k_hops(node, k=2)</span>
+            <span class="loc">kg/networkx_impl.py:177 · gọi tại operate.py:1288</span>
+            <p>Duyệt đồ thị 2 hop từ mỗi seed, sinh danh sách path dạng tuple node.</p>
+            <div class="io"><span>node_id</span><span>k = 2 (cứng)</span><span class="out">→ Path: list[tuple]</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">lọc short-path — giữ top 20%</span>
+            <span class="loc">operate.py:1294–1310</span>
+            <p>Seed không sinh được path nào bị loại, chỉ giữ lại <code>max(1, 20%)</code> tốt nhất theo Score. Seed có path thì giữ toàn bộ.</p>
+            <div class="io"><span>candidate_reasoning_path</span><span class="out">→ đã lọc</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">get_node_from_types(type_keywords)</span>
+            <span class="loc">kg/networkx_impl.py:160 · gọi tại operate.py:1313</span>
+            <p>Quét mọi node, lấy những node có <code>entity_type</code> trùng loại đáp án dự đoán → <b>maybe_answer_list</b>, tức tập ứng viên đáp án.</p>
+            <div class="io"><span>type_keywords</span><span class="out">→ maybe_answer_list: list[str]</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">cal_path_score_list(paths, maybe_answer_list)</span>
+            <span class="loc">utils.py:404</span>
+            <p>Chấm mỗi path bằng <b>số node thuộc maybe_answer_list nằm trên path</b>. Thuần đếm, không dùng độ tương đồng ngữ nghĩa với câu hỏi.</p>
+            <div class="io"><span>paths</span><span class="out">→ Path{tuple: [answer_type_count]}</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">relationships_vdb.query(query, top_k = len(ents) × top_k)</span>
+            <span class="loc">operate.py:1320–1329</span>
+            <p>Lấy cạnh liên quan, chia <b>goodedge</b> / <b>badedge</b> theo việc hai đầu cạnh có nằm trong tập thực thể quan trọng không. Hệ số nhân khiến <code>top_k=60</code> với 5 thực thể thành <b>300 cạnh</b>.</p>
+            <div class="io"><span>originalquery</span><span class="out">→ goodedge / badedge</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">edge_vote_path(scored_path, goodedge)</span>
+            <span class="loc">utils.py:416</span>
+            <p>Với mỗi path, đếm số goodedge là <b>dãy con liên tiếp</b> của path đó, cộng thành điểm thứ hai. Trả kèm <code>pairs_append</code> để giai đoạn C lấy chunk từ cạnh.</p>
+            <div class="io"><span>scored_reasoning_path</span><span class="out">→ Path{tuple: [answer_type_count, edge_vote_count]}</span><span class="out">→ pairs_append</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" style="--c:var(--sC)">
+        <div class="tag">
+          <span class="n">C</span>
+          <span class="k">Chunk<br>Extraction</span>
+        </div>
+        <div class="body">
+          <h2>Từ đường suy luận về chunk văn bản</h2>
+
+          <div class="fn">
+            <span class="sig">path2chunk(..., max_chunks=3)</span>
+            <span class="loc">operate.py:1124 · gọi tại 1334</span>
+            <p>Với mỗi path: gom <code>source_id</code> (chunk id) từ các cạnh và node trên path, nhân trọng số <code>answer_type_count + edge_vote_count + 1</code>, rồi giữ <code>most_common(3)</code>. Node có hơn 5 chunk thì <code>calculate_similarity(descriptions, query)</code> cắt bớt — đây là <b>chỗ duy nhất</b> trong giai đoạn này dùng độ tương đồng với câu hỏi.</p>
+            <div class="io"><span>scored_edged_reasoning_path</span><span>pairs_append</span><span class="out">→ Path: list[chunk_id] (≤3)</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">scorednode2chunk(ent_from_query_dict, scored_path)</span>
+            <span class="loc">operate.py:1212</span>
+            <p>Thay tên thực thể trong <code>ent_from_query_dict</code> bằng chính object path đã chấm điểm, để bước sau truy ngược từ thực thể câu hỏi ra chunk.</p>
+            <div class="io"><span>ent_from_query_dict</span><span class="out">→ {ent: [path objects]}</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">chunks_vdb.query(query, top_k = top_k / 2)</span>
+            <span class="loc">operate.py:1375</span>
+            <p>Truy hồi chunk <b>dense trực tiếp</b>, song song với nhánh đồ thị. Chỉ dùng làm tín hiệu cộng hưởng ở bước fusion.</p>
+            <div class="io"><span>originalquery</span><span class="out">→ chunks_ids</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums = top_k / 2)</span>
+            <span class="loc">operate.py:1220</span>
+            <p>Hợp nhất hai nhánh. Node khớp <b>đầu tiên</b> của mỗi thực thể được nhân <b>×2</b>; chunk vừa đứng <b>đầu path</b> vừa có mặt trong kết quả dense được nhân <b>×10</b>. Cộng dồn vào Counter rồi lấy <code>most_common</code>.</p>
+            <div class="io"><span>path objects</span><span>chunks_ids</span><span class="out">→ final_chunk_id: list[str]</span></div>
+          </div>
+
+          <div class="fn">
+            <span class="sig">text_chunks_db.get_by_id() → CSV</span>
+            <span class="loc">operate.py:1385–1400</span>
+            <p>Lấy nội dung chunk, ghép thành khối <code>-----Entities-----</code> và <code>-----Sources-----</code> dạng CSV. Bảng entity bị cắt theo <code>max_token_for_node_context</code>; <b>bảng Sources không bị cắt theo token</b>.</p>
+            <div class="io"><span class="out">→ context: str</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" style="--c:var(--sD)">
+        <div class="tag">
+          <span class="n">D</span>
+          <span class="k">Generation</span>
+        </div>
+        <div class="body">
+          <h2>Sinh câu trả lời</h2>
+          <div class="fn">
+            <span class="sig">minirag_query() — prompt <code>rag_response</code> <span class="llm">LLM #2</span></span>
+            <span class="loc">operate.py:1469+</span>
+            <p>Nhét <code>context_data</code> và <code>response_type</code> vào prompt. <code>only_need_context=True</code> thì dừng ngay trước bước này và trả về chuỗi ngữ cảnh.</p>
+            <div class="io"><span>context</span><span>response_type</span><span class="out">→ answer: str</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Tham số</div>
+      <h2>Chỗ nào điều khiển được, chỗ nào bị đóng cứng</h2>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Hằng số</th><th>Giá trị</th><th>Ảnh hưởng</th><th>Chỉnh qua</th></tr></thead>
+        <tbody>
+          <tr><td>top_k<span class="where">operate.py:1271, 1322, 1375, 1378</span></td><td>60</td><td>Số seed node, số cạnh (×số thực thể), số chunk dense</td><td>QueryParam</td></tr>
+          <tr><td>entities_from_query<span class="where">operate.py:1431</span></td><td>cắt còn 5</td><td>Trần số thực thể một câu hỏi dùng được</td><td><b>đóng cứng</b></td></tr>
+          <tr><td>k-hop<span class="where">operate.py:1288</span></td><td>2</td><td>Bán kính duyệt đồ thị</td><td><b>đóng cứng</b></td></tr>
+          <tr><td>tỉ lệ giữ short-path<span class="where">operate.py:1301</span></td><td>20%</td><td>Seed không có path bị loại bao nhiêu</td><td><b>đóng cứng</b></td></tr>
+          <tr><td>max_chunks<span class="where">operate.py:1334</span></td><td>3</td><td>Chunk lấy được từ mỗi path</td><td><b>đóng cứng</b></td></tr>
+          <tr><td>hệ số ×2 / ×10<span class="where">operate.py:1228, 1240</span></td><td>2, 10</td><td>Trọng số fusion giữa nhánh đồ thị và nhánh dense</td><td><b>đóng cứng</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Quan sát từ code — chưa kiểm chứng bằng thực nghiệm</div>
+      <h2>Sáu điểm đáng nghi cho Stage 02</h2>
+    </div>
+    <p class="note">Đây là giả thuyết rút từ đọc code, <b>chưa có bằng chứng failure</b>. Stage 02 phải trace query lỗi thật để xác nhận hoặc bác bỏ từng điểm.</p>
+
+    <div class="leads">
+      <div class="lead"><div class="num">01</div><div class="txt">
+        <h3>Không có lexical ở bất kỳ đâu</h3>
+        <p>Seed node chỉ tìm bằng dense (<code>entity_name_vdb.query</code>). Thực thể hiếm — tên riêng, mã số, ngày tháng — vốn embed kém, mất ở bước này thì <b>không có đường cứu</b> ở các bước sau. Đây đúng là khoảng trống mà Stage 03 (BM25 → hybrid) nhắm vào.</p>
+        <span class="where">operate.py:1271</span>
+      </div></div>
+
+      <div class="lead"><div class="num">02</div><div class="txt">
+        <h3>Trần 5 thực thể mỗi câu hỏi</h3>
+        <p>Câu multi-hop cần nối nhiều mẩu bằng chứng bị chặn ngay từ đầu. Khớp với quan sát thực nghiệm: nhóm Multi chỉ đạt <b>42,86%</b> acc so với 68,13% của Single.</p>
+        <span class="where">operate.py:1431 — <code>[:5]</code></span>
+      </div></div>
+
+      <div class="lead"><div class="num">03</div><div class="txt">
+        <h3>Chấm điểm path là đếm, không phải đo tương đồng</h3>
+        <p><code>cal_path_score_list</code> đếm node đúng loại đáp án; <code>edge_vote_path</code> đếm cạnh liên tiếp. Cả hai <b>không hề so path với ngữ nghĩa câu hỏi</b>. Một path đi qua nhiều node đúng loại nhưng lạc đề vẫn được điểm cao.</p>
+        <span class="where">utils.py:404, 416</span>
+      </div></div>
+
+      <div class="lead"><div class="num">04</div><div class="txt">
+        <h3>Hệ số fusion ×10 đóng cứng</h3>
+        <p>Chunk vừa đứng đầu path vừa có trong dense top-k được nhân 10 — một hằng số không giải thích, chi phối thứ hạng cuối. Ứng viên rõ ràng cho ablation.</p>
+        <span class="where">operate.py:1240</span>
+      </div></div>
+
+      <div class="lead"><div class="num">05</div><div class="txt">
+        <h3>Bảng Sources không bị cắt theo token</h3>
+        <p>Chỉ bảng entity dùng <code>truncate_list_by_token_size</code>. Số chunk khống chế gián tiếp qua <code>top_k/2</code>, nên ngữ cảnh phình theo độ dài chunk — đo được <b>88 KB cho một truy vấn</b>. Ăn khớp với context_precision <b>0,316</b>.</p>
+        <span class="where">operate.py:1385–1400</span>
+      </div></div>
+
+      <div class="lead"><div class="num">06</div><div class="txt">
+        <h3>Answer type pool phụ thuộc chất lượng index</h3>
+        <p><code>get_types()</code> lấy loại từ chính đồ thị, và <code>get_node_from_types</code> quét <b>toàn bộ node</b> mỗi truy vấn. Nếu trích xuất entity gán sai <code>entity_type</code>, <code>maybe_answer_list</code> sai theo và mọi điểm path lệch — lỗi ở index lan sang retrieval.</p>
+        <span class="where">kg/networkx_impl.py:149, 160</span>
+      </div></div>
+    </div>
+  </section>
+
+  <footer>
+    H1 · MiniRAG Research Project · Hùng — Core Retrieval &amp; Proposed Method
+  </footer>
+
+</div>

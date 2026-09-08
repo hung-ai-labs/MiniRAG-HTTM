@@ -1,7 +1,7 @@
 # MiniRAG Research Project — Roadmap 3 Phase
 
 > Reproduce → Analyze → Improve → Prove
-> 3 thành viên: **Hùng** (Retrieval & Proposed Method) · **Tài** (Baseline & Failure Analysis) · **HuyDog** (Experiment & Evaluation)
+> 3 thành viên: **Hùng** (Retrieval & Proposed Method) · **Tài** (Baseline & Failure Analysis) · **Huy Đức** (Experiment & Evaluation)
 
 Tài liệu này gộp 8 week-milestone trên trang kế hoạch thành **3 phase**, xếp theo thứ tự bắt buộc phải làm trước — làm sau.
 
@@ -32,14 +32,14 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 4 | `T3*` End-to-end architecture map (raw docs → graph → answer) | Tài | → 2 · `‖ A` | ⬜ |
 | 5 | `H1` **Retrieval Code Map** (Query Mapping / Path Discovery / Chunk Extraction) | **Hùng** | → 2 · `‖ A` | ✅ |
 | 5b | `H1b` **Retrieval Flow** + **Query Trace** 3 query thật | **Hùng** | → 5 | ✅ |
-| 6 | `HD1` Automated Experiment Runner (config → retrieve → generate → evaluate → results.json) | HuyDog | → 3 · `‖ B` | ⬜ |
-| 7 | `HD-Schema` Chuẩn hoá schema log kết quả từng query | HuyDog | → 6 · `‖ B` | ⬜ |
+| 6 | `HD1` Automated Experiment Runner (config → retrieve → generate → evaluate → results.json) | Huy Đức | → 3 · `‖ B` | ✅ |
+| 7 | `HD-Schema` Chuẩn hoá schema log kết quả từng query | Huy Đức | → 6 · `‖ B` | ✅ |
 | 8 | `T4` Thu tập **failed-query dataset** (≥20–50 câu, kèm retrieved chunks) | Tài | → 3 | 🔄 |
 | 9 | `T5` **6-Stage Failure Taxonomy** — phân loại từng câu lỗi | Tài | → 8 | ⬜ |
 | 10 | `T6` Failure Distribution Statistics (tỷ lệ % mỗi nhóm lỗi + ví dụ thật) | Tài | → 9 | ⬜ |
 | 11 | `T7*` Research Problem Statement — chốt bài toán cần giải | Tài | → 10 | ⬜ |
 
-**Song song:** nhóm `A` (task 4, 5) chạy cùng lúc — đọc code không cần chờ baseline chạy xong. Nhóm `B` (task 6, 7) chạy cùng lúc với 8–10 — HuyDog xây runner trong khi Tài phân tích lỗi.
+**Song song:** nhóm `A` (task 4, 5) chạy cùng lúc — đọc code không cần chờ baseline chạy xong. Nhóm `B` (task 6, 7) chạy cùng lúc với 8–10 — Huy Đức xây runner trong khi Tài phân tích lỗi.
 
 **Cổng ra Phase 1:** có `baseline.yaml` đóng băng + bảng phân phối 6 nhóm lỗi. **Không có bảng này thì Phase 2 chỉ là đoán mò.**
 
@@ -54,8 +54,8 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 |---|---|---|---|---|
 | 12 | `H2` Trace retrieval của các query lỗi (entity sót? path cụt? chunk xếp hạng thấp?) | **Hùng** | → 5, 10 | ⬜ |
 | 13 | `H3*` Retrieval baseline analysis — báo cáo nhận xét retrieval gốc | **Hùng** | → 12 | ⬜ |
-| 14 | `HD2*` Top-K sensitivity study (K = 1, 3, 5, 7, 10) theo từng loại query | HuyDog | → 6 · `‖ C` | ⬜ |
-| 15 | `HD3*` Context efficiency — tỷ lệ chunk rác, chunk trùng lặp | HuyDog | → 6 · `‖ C` | ⬜ |
+| 14 | `HD2*` Top-K sensitivity study (K = 1, 3, 5, 7, 10) theo từng loại query | Huy Đức | → 6 · `‖ C` | ⬜ |
+| 15 | `HD3*` Context efficiency — tỷ lệ chunk rác, chunk trùng lặp | Huy Đức | → 6 · `‖ C` | ⬜ |
 | 16 | `H4` **Lexical prototype (BM25)** — cứu thực thể hiếm | **Hùng** | → 13 | ⬜ |
 | 17 | `H5` **Fixed hybrid fusion** (dense + lexical) | **Hùng** | → 16 | ⬜ |
 | 18 | `H6` **Adaptive / router** — phân loại query rồi chọn chiến lược | **Hùng** | → 17 | ⬜ |
@@ -63,7 +63,7 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 20 | `H8` Tài liệu thuật toán & tham số | **Hùng** | → 19 · `‖ D` | ⬜ |
 | 21 | `T8*` Integration branch — merge Proposed Method, không làm gãy pipeline | Tài | → 19 · `‖ D` | ⬜ |
 
-**Song song:** nhóm `C` (14, 15) là việc của HuyDog, chạy độc lập trong khi Hùng làm 12–13. Nhóm `D` (20, 21) chạy cùng lúc sau khi có code.
+**Song song:** nhóm `C` (14, 15) là việc của Huy Đức, chạy độc lập trong khi Hùng làm 12–13. Nhóm `D` (20, 21) chạy cùng lúc sau khi có code.
 
 **Ràng buộc:** task 16 → 17 → 18 **phải tuần tự** — mỗi bước là một giả thuyết đơn biến, gộp lại thì không biết cái nào tạo ra hiệu quả.
 
@@ -78,10 +78,10 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 
 | # | Task | Người | Phụ thuộc / Song song | ✓ |
 |---|---|---|---|---|
-| 22 | `HD-Final` Full benchmark **Baseline vs Proposed** trên cùng 100% điều kiện | HuyDog | → 19, 21 | ⬜ |
-| 23 | `HD-Ablation` Ablation study — tách riêng Lexical / Graph / Adaptive | HuyDog | → 22 | ⬜ |
-| 24 | `H9` Hỗ trợ HuyDog chạy ablation (bật/tắt từng thành phần) | **Hùng** | → 23 (đồng thời) | ⬜ |
-| 25 | Bảng đối chiếu 4 chỉ số: **Accuracy · Recall@K · Latency · Tokens** | HuyDog | → 23 | ⬜ |
+| 22 | `HD-Final` Full benchmark **Baseline vs Proposed** trên cùng 100% điều kiện | Huy Đức | → 19, 21 | ⬜ |
+| 23 | `HD-Ablation` Ablation study — tách riêng Lexical / Graph / Adaptive | Huy Đức | → 22 | ⬜ |
+| 24 | `H9` Hỗ trợ Huy Đức chạy ablation (bật/tắt từng thành phần) | **Hùng** | → 23 (đồng thời) | ⬜ |
+| 25 | Bảng đối chiếu 4 chỉ số: **Accuracy · Recall@K · Latency · Tokens** | Huy Đức | → 23 | ⬜ |
 | 26 | **Họp Keep / Reject** — quyết định dựa trên số liệu | **Cả nhóm** | → 25 | ⬜ |
 | 27 | `T10*` Error Analysis section | Tài | → 26 · `‖ E` | ⬜ |
 | 28 | `H10` Proposed Method section | **Hùng** | → 26 · `‖ E` | ⬜ |

@@ -48,7 +48,7 @@ elif args.limit:
 
 for id, WEEK in enumerate(WEEK_LIST):
     print(f"{id}/{len(WEEK_LIST)} {WEEK}")
-    with open(WEEK) as f:
+    with open(WEEK, encoding="utf-8", errors="ignore") as f:
         rag.insert(f.read())
 
 print("Indexing done ->", args.workingdir)

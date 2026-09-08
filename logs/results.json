@@ -1,0 +1,220 @@
+{
+  "experiment_id": "EXP_GEMINI-FLASH-LITE-LATEST_MINI_TOPK60_20260908_035408",
+  "timestamp": "2026-09-08T03:58:24.069271",
+  "config": {
+    "corpus": "LiHua-World",
+    "working_dir": "./LiHua-World",
+    "llm_model": "gemini-flash-lite-latest",
+    "embedding_model": "local",
+    "retrieval_mode": "mini",
+    "top_k": 60,
+    "judge_model": "gemini-flash-lite-latest",
+    "judge_repeats": 3
+  },
+  "summary_metrics": {
+    "total_queries": 3,
+    "accuracy": 33.33,
+    "error_rate": 66.67,
+    "neither_rate": 0.0,
+    "avg_exact_match": 0.0,
+    "avg_token_f1": 0.0,
+    "avg_latency_seconds": 30.197
+  },
+  "results": [
+    {
+      "query_id": "q_0",
+      "query": "Did Adam Smith send a message to Li Hua about the upcoming building maintenance schedule before the administrators announced a temporary change in the construction schedule due to weather conditions?",
+      "query_type": "Multi",
+      "ground_truth": "Yes",
+      "generated_answer": "Based on the provided data records, Adam Smith did communicate with Li Hua regarding building maintenance, but this occurred *after* the initial announcement regarding weather-related construction delays. \n\nAccording to the message logs, the administrators and group members—including Tirion Fordring and Adam Smith—first discussed the storm, heavy rain, and the resulting postponement of the community construction schedule on July 1, 2026 (Time: 20260701_10:00). During this conversation, Adam Smith acknowledged the weather delays and the impact on the construction timeline.\n\nIn contrast, the conversation between Adam Smith and Li Hua regarding the upcoming building maintenance work in their building took place earlier in the year, specifically on January 21, 2026 (Time: 20260121_10:00). In that exchange, Adam Smith informed Li Hua about the impending maintenance work and asked for her preferred times to avoid, to which Li Hua replied that mornings worked best for her. \n\nTherefore, Adam Smith's message to Li Hua about building maintenance actually happened several months prior to the weather-induced construction delay announcements in July, rather than before them.",
+      "is_correct": false,
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "chunk_id": "chunk_1",
+          "doc_name": "",
+          "content": "Time: 20260701_10:00\nTirion Fordring: As everyone can see, the storm and the rain have been going on for days! As a result, our construction has to be postponed, and hopefully, it will resume soon once the weather gets better!\nAdamSmith: Thanks for the update on the construction schedule. Guess we j...",
+          "score": 1.0
+        },
+        {
+          "rank": 2,
+          "chunk_id": "chunk_2",
+          "doc_name": "",
+          "content": "Time: 20260701_10:00\nTirion Fordring: As everyone can see, the storm and the rain have been going on for days! As a result, our construction has to be postponed, and hopefully, it will resume soon once the weather gets better!\nAdamSmith: Thanks for the update on the construction schedule. Guess we j...",
+          "score": 0.5
+        },
+        {
+          "rank": 3,
+          "chunk_id": "chunk_3",
+          "doc_name": "",
+          "content": "Time: 20260225_15:00\nYurikoYamamoto: Hey Li Hua! 😊 Just wanted to let you know I booked a seat at \"Central Perk\" café for tomorrow at 3pm. Looking forward to our chat about my studio's homepage! See you then! \nLiHua: Sounds great! Central Perk is such a cozy place. Can't wait to meet up and brainsto...",
+          "score": 0.3333333333333333
+        },
+        {
+          "rank": 4,
+          "chunk_id": "chunk_4",
+          "doc_name": "",
+          "content": "Time: 20260223_15:00\nYurikoYamamoto: Hey Li Hua! 😊 It was great meeting you at the freelancer gathering today! I was wondering if you could help me with improving the homepage of my speech therapy studio. I’d really appreciate your expertise!\nLiHua: Hey! It was nice meeting you too! I’d love to help...",
+          "score": 0.25
+        },
+        {
+          "rank": 5,
+          "chunk_id": "chunk_5",
+          "doc_name": "",
+          "content": "for the garden. ðŸŒ» Keep those ideas coming!\nChaeSong-hwa: Can't wait to see what we create together! It's going to be amazing! ðŸŒ¼ðŸŽ¨\nRexxarRemar: I'm excited, too! This garden renovation is really going to bring us all together. Let's keep the good vibes going! ðŸŒ¼ðŸŒ¿\nTirionFordring: For sure...",
+          "score": 0.2
+        }
+      ],
+      "evaluation": {
+        "exact_match": 0,
+        "token_f1": 0.0,
+        "judge_passes": [
+          "error",
+          "error",
+          "error"
+        ],
+        "final_verdict": "error"
+      },
+      "performance": {
+        "latency_seconds": 29.586,
+        "input_tokens": 30,
+        "output_tokens": 169
+      },
+      "failure_analysis": {
+        "stage": null,
+        "error_type": null,
+        "note": ""
+      }
+    },
+    {
+      "query_id": "q_1",
+      "query": "Did Wolfgang ask Li Hua about watching \"Star Wars: A New Hope\" after he asked Li Hua about going to see \"Overwatch 3\"?",
+      "query_type": "Multi",
+      "ground_truth": "Yes",
+      "generated_answer": "To answer your question regarding the timeline of events, we can look at the interactions between Wolfgang Schulz and Li Hua. Wolfgang actually did not ask Li Hua about watching \"Star Wars: A New Hope\" after asking about \"Overwatch 3\"; in fact, the sequence of events happened in the reverse order. \n\nAccording to the data records, Wolfgang first reached out about \"Overwatch 3\" on January 21, 2026, suggesting they catch the 7 PM show along with checking out a new burger place near the cinema. Later on, specifically on October 9, 2026, it was actually Li Hua who took the initiative to invite Wolfgang over to watch the classic movie \"Star Wars: A New Hope\" at his place after work.\n\nTherefore, Wolfgang was the one proposing the \"Overwatch 3\" outing earlier in the year, whereas the \"Star Wars\" movie night was proposed by Li Hua months later in October.",
+      "is_correct": false,
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "chunk_id": "chunk_1",
+          "doc_name": "",
+          "content": "Time: 20260930_16:00\nLiHua: Hey man! Wanna go have hot pot for dinner tonight? Let me know!\nWolfgangSchulz: Hot pot sounds perfect! Sichuan is my fave. What time are we thinking?\nLiHua: How about 7 pm? That should give us enough time to get ready!\nWolfgangSchulz: 7 pm works for me! Can’t wait for al...",
+          "score": 1.0
+        },
+        {
+          "rank": 2,
+          "chunk_id": "chunk_2",
+          "doc_name": "",
+          "content": "Time: 20261009_17:00\nLiHua: Hey man! Just wondering if you want to watch the classic movie Star Wars: A New Hope at my place after work today?\nWolfgangSchulz: Hey! 😄 Sounds great! Want to grab some snacks too for the movie? 🍿✨\nLiHua: For sure! I can bring some chips! What drinks do you want? 🥤\nWolfg...",
+          "score": 0.5
+        },
+        {
+          "rank": 3,
+          "chunk_id": "chunk_3",
+          "doc_name": "",
+          "content": "Time: 20260225_15:00\nYurikoYamamoto: Hey Li Hua! 😊 Just wanted to let you know I booked a seat at \"Central Perk\" café for tomorrow at 3pm. Looking forward to our chat about my studio's homepage! See you then! \nLiHua: Sounds great! Central Perk is such a cozy place. Can't wait to meet up and brainsto...",
+          "score": 0.3333333333333333
+        },
+        {
+          "rank": 4,
+          "chunk_id": "chunk_4",
+          "doc_name": "",
+          "content": "Time: 20260121_13:00\nWolfgangSchulz: Hey! Want to check out \"Overwatch 3\" tomorrow? Should be fun! 🎬\nLiHua: Sounds awesome! I'm totally in! What time are we thinking? 😊\nWolfgangSchulz: Great! How about we catch the 7 PM show? Gives us time to grab some food before. 🍕\nLiHua: 7 PM works for me! Food f...",
+          "score": 0.25
+        },
+        {
+          "rank": 5,
+          "chunk_id": "chunk_5",
+          "doc_name": "",
+          "content": "Time: 20260123_17:00\nWolfgangSchulz: Hey! How about grabbing some dinner tonight? I know a nice place we could check out!\nLiHua: Hey! Thanks for the invite, but I've been super busy lately. Let's plan for another day?\nWolfgangSchulz: No problem, I totally understand. Just let me know when you're fre...",
+          "score": 0.2
+        }
+      ],
+      "evaluation": {
+        "exact_match": 0,
+        "token_f1": 0.0,
+        "judge_passes": [
+          "error",
+          "error",
+          "error"
+        ],
+        "final_verdict": "error"
+      },
+      "performance": {
+        "latency_seconds": 30.567,
+        "input_tokens": 23,
+        "output_tokens": 149
+      },
+      "failure_analysis": {
+        "stage": null,
+        "error_type": null,
+        "note": ""
+      }
+    },
+    {
+      "query_id": "q_2",
+      "query": "Did Li Hua agree to go out for dinner after Wolfgang first asked him if he wanted to go out for dinner?",
+      "query_type": "Multi",
+      "ground_truth": "Yes",
+      "generated_answer": "Based on the provided data, yes, Li Hua readily agreed to Wolfgang Schulz's dinner invitation when he was first asked. \n\n### The Invitation\nWhen Wolfgang Schulz reached out to Li Hua with the proposal to grab hot pot for dinner, Li Hua did not hesitate. Showing immediate enthusiasm, Li Hua responded affirmatively to the suggestion right away, setting the plans in motion for a 7 pm dinner.\n\n### Finalizing the Evening\nFollowing Li Hua's prompt agreement, the two friends quickly coordinated the details for their outing. Wolfgang expressed his fondness for Sichuan-style hot pot, and they even decided to pick up some cold beer on the way to complement the spicy meal, making for a well-rounded and successful dinner plan.",
+      "is_correct": true,
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "chunk_id": "chunk_1",
+          "doc_name": "",
+          "content": "Time: 20260318_15:10\nLiHua: Hey Yuriko! 😊 I was wondering if you'd like to join Wolfgang and me for some music jam sessions every Sunday night? We have a lot of fun playing together, and I think you'd fit right in with your bass skills! Let me know what you think! 🎶\nYurikoYamamoto: That sounds amazi...",
+          "score": 1.0
+        },
+        {
+          "rank": 2,
+          "chunk_id": "chunk_2",
+          "doc_name": "",
+          "content": "Time: 20260225_15:00\nYurikoYamamoto: Hey Li Hua! 😊 Just wanted to let you know I booked a seat at \"Central Perk\" café for tomorrow at 3pm. Looking forward to our chat about my studio's homepage! See you then! \nLiHua: Sounds great! Central Perk is such a cozy place. Can't wait to meet up and brainsto...",
+          "score": 0.5
+        },
+        {
+          "rank": 3,
+          "chunk_id": "chunk_3",
+          "doc_name": "",
+          "content": "It’s a mix of hip hop, EDM, and some rock for that extra punch! Music really helps keep my energy up during those tough sets. Let’s get this playlist party started! 🎉\nLiHua: I'm ready to share my favorite tracks too! I have a mix of indie and classic rock that really gets me in the zone. Let's creat...",
+          "score": 0.3333333333333333
+        },
+        {
+          "rank": 4,
+          "chunk_id": "chunk_4",
+          "doc_name": "",
+          "content": "Time: 20260930_16:00\nLiHua: Hey man! Wanna go have hot pot for dinner tonight? Let me know!\nWolfgangSchulz: Hot pot sounds perfect! Sichuan is my fave. What time are we thinking?\nLiHua: How about 7 pm? That should give us enough time to get ready!\nWolfgangSchulz: 7 pm works for me! Can’t wait for al...",
+          "score": 0.25
+        },
+        {
+          "rank": 5,
+          "chunk_id": "chunk_5",
+          "doc_name": "",
+          "content": "Time: 20261009_17:00\nLiHua: Hey man! Just wondering if you want to watch the classic movie Star Wars: A New Hope at my place after work today?\nWolfgangSchulz: Hey! 😄 Sounds great! Want to grab some snacks too for the movie? 🍿✨\nLiHua: For sure! I can bring some chips! What drinks do you want? 🥤\nWolfg...",
+          "score": 0.2
+        }
+      ],
+      "evaluation": {
+        "exact_match": 0,
+        "token_f1": 0.0,
+        "judge_passes": [
+          "accurate",
+          "accurate",
+          "accurate"
+        ],
+        "final_verdict": "accurate"
+      },
+      "performance": {
+        "latency_seconds": 30.438,
+        "input_tokens": 22,
+        "output_tokens": 120
+      },
+      "failure_analysis": {
+        "stage": null,
+        "error_type": null,
+        "note": ""
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Environment Guide — MiniRAG + Gemini
 
 > T1 environment guide. Verified on **Windows 10 x64 / PowerShell 5.1** at
-> commit `5fc3fd98c2b8581aadd2c9c7e71621c7268f74c9` on `dev`, checked
+> commit `21dc08e` on `tai/phase1-environment`, checked
 > 2026-09-09. This document records package/import checks only; it does not
 > claim that the baseline index or Gemini pipeline has been run on this
 > checkout.
@@ -25,8 +25,8 @@ not run during T1.
 |---|---|
 | OS | Windows 10, build `10.0.26200.0`, 64-bit |
 | Shell | Windows PowerShell `5.1.26100.9168` |
-| `py -0p` | CPython 3.14 and CPython 3.11 available |
-| Selected Python | CPython 3.11.9, 64-bit |
+| `py -0p` | CPython 3.14, 3.13 and 3.11 available |
+| Selected Python | CPython 3.13.5, 64-bit |
 | Repository interpreter | `./.venv/Scripts/python.exe` |
 | pip | 26.2.1 |
 | Project package | `minirag-hku 0.0.2` editable |
@@ -35,7 +35,9 @@ The bare `python` command on the verified machine resolves to MinGW Python
 3.9.13. Do not use it for this project, and do not use global `pip`; always use
 the repository interpreter explicitly.
 
-The existing `.venv` was retained. The old broken environment remains in
+The `.venv` was recreated with CPython 3.13.5 to match the reported baseline
+runtime. The previous Python 3.11 environment was moved outside this checkout
+as a local backup. The old broken environment remains in
 `.venv_broken_backup/`; `venv/` was not modified.
 
 ## Windows PowerShell setup
@@ -53,7 +55,7 @@ an execution-policy change.
 ```powershell
 # Only create .venv when it does not already exist; do not delete/overwrite it.
 if (!(Test-Path .\.venv\Scripts\python.exe)) {
-    py -3.11 -m venv .venv
+    py -3.13 -m venv .venv
 }
 
 $Py = ".\.venv\Scripts\python.exe"
@@ -69,9 +71,9 @@ $Py = ".\.venv\Scripts\python.exe"
 & $Py -m pip check
 ```
 
-`pyproject.toml` declares Python `>=3.9`, while the checked environment uses
-3.11.9 because it is the available standard Windows CPython selected for the
-binary/ML packages. `setup.py` reads `requirements.txt`, but the PEP 517 project
+`pyproject.toml` declares Python `>=3.9`; the checked environment uses
+CPython 3.13.5 to match the reported baseline runtime. `setup.py` reads
+`requirements.txt`, but the PEP 517 project
 metadata does not expose a `[project].dependencies` list; therefore the direct
 runtime packages above are installed explicitly rather than assuming that
 `pip install -e .` alone covers them.
@@ -98,7 +100,7 @@ checkout or on a macOS/Linux machine.
 
 ```bash
 # Run from the repository root; do not overwrite an existing .venv.
-test -x .venv/bin/python || python3.11 -m venv .venv
+test -x .venv/bin/python || python3.13 -m venv .venv
 PY=.venv/bin/python
 "$PY" --version
 "$PY" -m pip --version
@@ -115,7 +117,7 @@ PY=.venv/bin/python
 | Package | Version | Why it is in scope |
 |---|---:|---|
 | `minirag-hku` | 0.0.2 | Editable checkout package |
-| `numpy` | 2.4.6 | Core arrays, graph/vector storage, Gemini backend |
+| `numpy` | 2.5.3 | Core arrays, graph/vector storage, Gemini backend |
 | `networkx` | 3.6.1 | Default graph storage |
 | `nano-vectordb` | 0.0.4.3 | Default `NanoVectorDBStorage` |
 | `pydantic` | 2.13.5 | Core/API data structures |
@@ -127,7 +129,7 @@ PY=.venv/bin/python
 | `nltk` | 3.10.3 | Similarity/metrics utilities |
 | `rouge` | 1.0.1 | Utility metrics |
 | `scikit-learn` | 1.9.0 | Utility text similarity |
-| `openai` | 3.9.0 | Gemini OpenAI-compatible endpoint |
+| `openai` | 3.10.0 | Gemini OpenAI-compatible endpoint |
 | `torch` | 2.14.0+cpu | Local embedding runtime |
 | `transformers` | 5.16.1 | Local tokenizer/model classes |
 | `sentence-transformers` | 6.0.1 | Local embedding package |
@@ -184,7 +186,7 @@ installation failure.
 | Check | Result | Limit |
 |---|---|---|
 | `py -0p` and interpreter selection | PASS | Windows machine only |
-| `.venv/Scripts/python.exe --version` and pip metadata | PASS | CPython 3.11.9 / pip 26.2.1 |
+| `.venv/Scripts/python.exe --version` and pip metadata | PASS | CPython 3.13.5 / pip 26.2.1 |
 | `pip check` | PASS: no broken requirements | Does not prove pipeline behavior |
 | `import minirag` | PASS; loaded from `minirag/__init__.py` in this checkout | Import only |
 | Gemini backend import | PASS; loaded from `minirag/llm/gemini.py` | No key resolution/request |

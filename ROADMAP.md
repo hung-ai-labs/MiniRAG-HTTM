@@ -28,6 +28,7 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 |---|---|---|---|---|
 | 1 | Đọc paper MiniRAG, thống nhất thuật ngữ, hiểu heterogeneous graph retrieval | **Cả nhóm** | — | ⬜ |
 | 2 | `T1*` Dựng môi trường chuẩn, hướng dẫn cài đặt chạy lại được trên máy 3 người | Tài | → 1 | 🔄 |
+| 2b | Đóng băng version + commit dev set + chia sẻ index | **Hùng** | → 2 | 🔄 |
 | 3 | `T2*` Chạy baseline gốc và **đóng băng `baseline.yaml`** | Tài | → 2 | ✅ |
 | 4 | `T3*` End-to-end architecture map (raw docs → graph → answer) | Tài | → 2 · `‖ A` | ⬜ |
 | 5 | `H1` **Retrieval Code Map** (Query Mapping / Path Discovery / Chunk Extraction) | **Hùng** | → 2 · `‖ A` | ✅ |
@@ -38,6 +39,7 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 9 | `T5` **6-Stage Failure Taxonomy** — phân loại từng câu lỗi | Tài | → 8 | ⬜ |
 | 10 | `T6` Failure Distribution Statistics (tỷ lệ % mỗi nhóm lỗi + ví dụ thật) | Tài | → 9 | ⬜ |
 | 11 | `T7*` Research Problem Statement — chốt bài toán cần giải | Tài | → 10 | ⬜ |
+| 11b | 🔧 `G1` **Sửa bug answer-type** rồi đo lại → `baseline_v2.yaml` | **Hùng** | → 5b | ⬜ |
 
 **Song song:** nhóm `A` (task 4, 5) chạy cùng lúc — đọc code không cần chờ baseline chạy xong. Nhóm `B` (task 6, 7) chạy cùng lúc với 8–10 — Huy Đức xây runner trong khi Tài phân tích lỗi.
 
@@ -56,6 +58,9 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 13 | `H3*` Retrieval baseline analysis — báo cáo nhận xét retrieval gốc | **Hùng** | → 12 | ⬜ |
 | 14 | `HD2*` Top-K sensitivity study (K = 1, 3, 5, 7, 10) theo từng loại query | Huy Đức | → 6 · `‖ C` | ⬜ |
 | 15 | `HD3*` Context efficiency — tỷ lệ chunk rác, chunk trùng lặp | Huy Đức | → 6 · `‖ C` | ⬜ |
+| 15b | 📊 `G3` Sensitivity study top_k + giới hạn token bảng Sources | Huy Đức | → 6 · `‖ C` | ⬜ |
+| 15c | ✅ `G2` **Entity resolution** lúc merge *(+`G6` dọn node rác, chung 1 lần index)* | **Hùng** | → 13 | ⬜ |
+| 15d | ✅ **Path re-weighting / pruning** — 96% đường đi hiện vô ích | **Hùng** | → 13 | ⬜ |
 | 16 | `H4` **Lexical prototype (BM25)** — cứu thực thể hiếm | **Hùng** | → 13 | ⬜ |
 | 17 | `H5` **Fixed hybrid fusion** (dense + lexical) | **Hùng** | → 16 | ⬜ |
 | 18 | `H6` **Adaptive / router** — phân loại query rồi chọn chiến lược | **Hùng** | → 17 | ⬜ |
@@ -81,7 +86,8 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 22 | `HD-Final` Full benchmark **Baseline vs Proposed** trên cùng 100% điều kiện | Huy Đức | → 19, 21 | ⬜ |
 | 23 | `HD-Ablation` Ablation study — tách riêng Lexical / Graph / Adaptive | Huy Đức | → 22 | ⬜ |
 | 24 | `H9` Hỗ trợ Huy Đức chạy ablation (bật/tắt từng thành phần) | **Hùng** | → 23 (đồng thời) | ⬜ |
-| 25 | Bảng đối chiếu 4 chỉ số: **Accuracy · Recall@K · Latency · Tokens** | Huy Đức | → 23 | ⬜ |
+| 24b | **Chạy lại toàn bộ trên SLM** (index + QA) qua vLLM trên GPU thuê | Huy Đức | → 22 | ⬜ |
+| 25 | Bảng đối chiếu 4 chỉ số: **Accuracy · Recall@K · Latency · Tokens** | Huy Đức | → 23, 24b | ⬜ |
 | 26 | **Họp Keep / Reject** — quyết định dựa trên số liệu | **Cả nhóm** | → 25 | ⬜ |
 | 27 | `T10*` Error Analysis section | Tài | → 26 · `‖ E` | ⬜ |
 | 28 | `H10` Proposed Method section | **Hùng** | → 26 · `‖ E` | ⬜ |
@@ -94,7 +100,35 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 
 ---
 
-## Trạng thái thật tính đến 07/09/2026
+## ⛔ Quy tắc đóng góp khoa học — đọc trước khi đề xuất cải tiến
+
+Chốt 09/09/2026. Chi tiết đầy đủ ở [`CLAUDE.md`](CLAUDE.md) §1b.
+
+Một đóng góp hợp lệ phải đủ 5 bước: **Observed Problem → Hypothesis → Designed
+Mechanism → Controlled Experiment → Measurable Effect**.
+
+**Sáu hành vi KHÔNG được gọi là Proposed Method:** đổi Top-K đơn thuần · đổi LLM
+temperature · đổi sang API/LLM to hơn · đổi embedding model · sửa system prompt ·
+bọc thêm framework hay tool UI.
+
+**Hệ quả:** hai việc đang xếp ưu tiên cao **không phải** Proposed Method —
+
+| Việc | Vai trò đúng |
+|---|---|
+| `G1` sửa bug hoa/thường answer-type | 🔧 **Sửa baseline**, báo cáo như một *finding* |
+| `G3` chỉnh `top_k` / giới hạn Sources | 📊 **Sensitivity study** làm bằng chứng cho Observed Problem |
+
+Ứng viên Proposed Method thật sự: `G2` entity resolution · **path re-weighting** ·
+`H4→H5→H6` BM25 → hybrid fusion → adaptive router.
+
+> ⚠️ **Lưu ý mã hiệu:** `H1`–`H10` là **mã task của Hùng** theo trang kế hoạch.
+> `G1`–`G6` là **mã giả thuyết cải tiến** trong
+> [`docs/phase1/MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](docs/phase1/MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md).
+> Hai hệ mã khác nhau, đừng lẫn.
+
+---
+
+## Trạng thái thật tính đến 09/09/2026
 
 Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, không tính việc đang dở.
 
@@ -111,7 +145,9 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | `H1` Retrieval Flow + Code Map | ✅ | [`docs/phase1/RETRIEVAL_FLOW.md`](docs/phase1/RETRIEVAL_FLOW.md) · [`docs/phase1/RETRIEVAL_CODE_MAP.md`](docs/phase1/RETRIEVAL_CODE_MAP.md) |
 | **Query Trace 3 query thật** | ✅ | [`docs/phase1/QUERY_TRACE.md`](docs/phase1/QUERY_TRACE.md) — sinh tự động bởi `reproduce/Step_5_trace.py` |
 | **🔴 Phát hiện bug: bước ④ luôn rỗng** | ✅ | So khớp hoa/thường `entity_type` → answer-type-aware **không chạy** |
-| Environment guide (`T1*`) | 🔄 | Chưa có hướng dẫn cài đặt chạy được trên máy cả 3 người |
+| Environment guide (`T1*`) | 🔄 | [`docs/phase1/ENVIRONMENT.md`](docs/phase1/ENVIRONMENT.md) — đã PASS trên **1/3 máy** (Windows, CPython 3.13.5) |
+| Pin version + commit dev set | ✅ | `requirements.lock.txt` (119 gói) · `logs/devset.csv` + bằng chứng baseline đã track |
+| Chia sẻ index 442 (15 MB) | ⬜ | **Chưa** — ai index lại sẽ ra graph khác, baseline mất tính so sánh |
 | Failed-query dataset, Failure Taxonomy | ⬜ | Chưa bắt đầu — **đây là nút thắt chặn Phase 2** |
 
 ### Baseline 442 nói gì
@@ -135,26 +171,30 @@ Hai chỗ hỏng lộ ra, **đây chính là nguyên liệu cho failure taxonomy
 ⚠️ n của Multi và Null chỉ ~20 câu, sai số lớn. Cần xác nhận trên tập đầy đủ 637 câu
 trước khi đưa vào báo cáo.
 
-### Ba việc cần làm ngay
+### Bốn việc cần làm ngay
 
-0. **Kiểm chứng bug bước ④** *(mới, ưu tiên cao nhất)* — Query Trace cho thấy
-   `get_node_from_types` không bao giờ khớp do lệch hoa/thường, khiến cơ chế
-   answer-type-aware của MiniRAG **không chạy**. Sửa một dòng, **không cần index
-   lại**. Cần đo trước/sau trên dev set 200 để biết ảnh hưởng thật.
-1. **Failure taxonomy (T4–T6)** — đường găng của cả dự án. Hùng không sang được `H2`
-   nếu chưa có tập query lỗi đã gán nhãn. Baseline 442 đã chỉ sẵn hai hướng đào:
-   Multi-hop và Null.
-2. **Environment guide (`T1*`)** — `baseline.yaml` đã có, nhưng chưa ai ngoài máy này
-   dựng lại được môi trường. Không có nó thì `baseline.yaml` chỉ là giấy.
-3. **Sàn nhiễu mới là 1,53, không phải 0,29** — cả nhóm phải dùng ngưỡng **3 điểm**.
-   Ai còn dùng ngưỡng 0,6 cũ sẽ kết luận nhầm rằng nhiễu là cải tiến.
+1. **Failure taxonomy (T4–T6)** — vẫn là đường găng của cả dự án, và giờ còn quan
+   trọng hơn: quy tắc đóng góp yêu cầu **Observed Problem có dữ liệu thực nghiệm**
+   làm bước 1. Không có bảng phân phối lỗi thì mọi Proposed Method đều thiếu chân đế.
+   Baseline 442 đã chỉ sẵn hai hướng đào: Multi-hop (42,86%) và Null (err 31,67%).
+2. **Chia sẻ index 442** — 15 MB, nén còn 7,2 MB. Git không giải quyết được, cần
+   GitHub Release. Phải xong **trước khi** Tài bắt đầu T4, vì task đó chạy retrieval
+   thật trên đúng index này. Ai index lại sẽ ra graph khác → baseline mất tính so sánh.
+3. **Hai máy còn lại chạy `ENVIRONMENT.md`** — mới PASS 1/3 máy. Và cài
+   `requirements.lock.txt`: `openai` đang lệch **hai major version** giữa các máy
+   (1.109.1 vs 3.10.0), `tenacity` lệch một — cả hai là phụ thuộc trực tiếp của
+   `minirag/llm/gemini.py`.
+4. **Sàn nhiễu là 1,53, không phải 0,29** — cả nhóm dùng ngưỡng **3 điểm**. Ai còn
+   dùng ngưỡng 0,6 cũ sẽ kết luận nhầm rằng nhiễu là cải tiến.
 
 ### Sai lệch đã biết so với bài báo
 
 Ghi lại để đưa vào phần Limitations, không phải lỗi cần sửa gấp:
 
-- **Model**: Gemini Flash-Lite, bài báo dùng gpt-4o-mini → lần chạy cuối cần OpenAI (~$10 cho 2 lượt full)
-- **Cache LLM rỗng**: `kv_store_llm_response_cache.json` 0 entry dù `enable_llm_cache=True` — nghi bug upstream thứ hai, chưa điều tra
+- **Model**: `gemini-flash-lite` làm **cả 4 việc** — trích xuất entity lúc index (`operate.py:271`), gleaning (`:275`), phân tích câu hỏi (`:1425`), sinh câu trả lời (`:1474`). MiniRAG chỉ có một `llm_model_func`, không tách được. **Đồ thị 770 node là do Gemini dựng, không phải SLM.**
+- **Lần chạy cuối đã đổi sang SLM** (`Qwen2.5-3B` hoặc `Phi-3.5-mini`) qua vLLM trên GPU thuê, ~2 USD — vì luận điểm của bài báo là SLM. Phải **index lại bằng chính SLM đó**. Xem `CLAUDE.md` §1.
+- **Baseline 57,33% cao hơn MỌI dòng trong bảng bài báo**, kể cả `gpt-4o-mini` (54,08%). Nguyên nhân: model mạnh hơn dựng đồ thị sạch hơn **và** viết câu trả lời tốt hơn từ context nhiễu.
+- **Cache LLM rỗng**: đã điều tra xong — `gemini.py:270` và `openai.py:109` cùng `kwargs.pop("hashing_kv", None)` rồi bỏ qua. **Hành vi upstream**, không phải lỗi fork.
 - **Judge**: Gemini Flash-Lite 3 lượt, bài báo dùng GPT-4o 3 lượt
 - **Đồ thị thưa hơn upstream** do bản vá O(N²) (upstream trích xuất lặp nên gom thêm entity)
 - **Dataset có 2 dòng trùng**: 637 dòng nhưng chỉ **635 câu duy nhất**

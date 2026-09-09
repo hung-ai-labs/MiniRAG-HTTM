@@ -439,7 +439,7 @@ sách lệch nhau, khiến nhánh lọc bị bỏ qua hoàn toàn.
 
 ## 11. Improvement Hypotheses
 
-### H1 — Kích hoạt lại answer-type matching
+### G1 — Kích hoạt lại answer-type matching
 
 **Problem:** `get_node_from_types` không bao giờ khớp, làm chết nửa cơ chế chấm điểm
 đường đi của MiniRAG.
@@ -467,7 +467,7 @@ số — đây chính là thứ cần đo.
 
 ---
 
-### H2 — Chuẩn hoá thực thể lúc merge (entity resolution)
+### G2 — Chuẩn hoá thực thể lúc merge (entity resolution)
 
 **Problem:** Cùng một người bị chẻ thành 2–3 node, mỗi node giữ một phần chunk. Đường
 đi multi-hop đứt ngay tại chỗ chẻ.
@@ -495,7 +495,7 @@ hiện tại.
 
 ---
 
-### H3 — Giới hạn token cho bảng Sources + hạ `top_k`
+### G3 — Giới hạn token cho bảng Sources + hạ `top_k`
 
 **Problem:** RAGAS đo `context_precision = 0,316` — 2/3 chunk đưa vào prompt là rác.
 
@@ -521,7 +521,7 @@ nhận cả trường hợp acc giảm — đó là negative finding hợp lệ.
 
 ---
 
-### H4 — Lexical retrieval (BM25) song song dense
+### G4 — Lexical retrieval (BM25) song song dense
 
 **Problem:** Không có lexical matching ở bất kỳ đâu. Thực thể hiếm, mã ngày tháng bị
 trượt.
@@ -546,7 +546,7 @@ thời gian.
 
 ---
 
-### H5 — Bật lại tóm tắt description
+### G5 — Bật lại tóm tắt description
 
 **Problem:** Description 89.170 ký tự / 748 mảnh làm `path2chunk` chạy Levenshtein trên
 748 chuỗi mỗi node mỗi query.
@@ -569,7 +569,7 @@ làm **mất thông tin**, có thể giảm recall.
 
 ---
 
-### H6 — Dọn node rác lúc extraction
+### G6 — Dọn node rác lúc extraction
 
 **Problem:** 5 node dính delimiter, 8 node là cả câu, 16 node `UNKNOWN` ngoài VDB.
 
@@ -603,18 +603,24 @@ cơ sở — và phải là **thêm vào MiniRAG**, không phải thay thế.
 
 ## 12. Recommended Experiment Order
 
-| Thứ tự | Giả thuyết | Re-index | Chi phí | Lý do xếp trước |
+> ⚠️ **Phân loại lại theo quy tắc đóng góp khoa học** (`CLAUDE.md` §1b).
+> `G1` là **sửa bug**, `G3` rơi đúng ô cấm *"đổi Top-K đơn thuần"* — cả hai **không
+> phải Proposed Method**. Vẫn phải làm, nhưng với vai trò khác.
+
+| Thứ tự | Việc | Vai trò khoa học | Re-index | Chi phí |
 |---|---|---|---|---|
-| 1 | **H1** answer-type matching | ❌ | Low | Sửa nhỏ nhất, ảnh hưởng lớn nhất, không phá baseline |
-| 2 | **H3** top_k + giới hạn Sources | ❌ | Low | Chung index với H1, quét được ngay |
-| 3 | *(chốt)* Đóng băng `baseline_v2.yaml` | — | — | H1+H3 đổi hành vi query → cần mốc mới |
-| 4 | **H2** entity resolution *(+H6 chung một lần index)* | ✅ | Medium | Chỉ index lại **một lần** cho cả hai |
-| 5 | **H4** BM25 | ❌ | Medium | Cần biết trần của graph đã sạch trước |
-| 6 | **H5** tóm tắt description | ✅ | High | Chỉ khi latency thành vấn đề |
+| 1 | **G1** sửa answer-type matching | 🔧 **Sửa baseline** — baseline hiện đang đo một cơ chế hỏng | ❌ | Low |
+| 2 | *(chốt)* Đóng băng `baseline_v2.yaml` | Mốc so sánh mới sau khi G1 đổi hành vi | — | — |
+| 3 | **G3** quét top_k + giới hạn Sources | 📊 **Sensitivity study** — bằng chứng cho Observed Problem | ❌ | Low |
+| 4 | **G2** entity resolution *(+G6 chung một lần index)* | ✅ **Designed Mechanism** | ✅ | Medium |
+| 5 | **Path re-weighting / pruning** | ✅ **Designed Mechanism** — ứng viên mạnh nhất | ❌ | Medium |
+| 6 | **G4** hybrid BM25 + dense | ✅ **Designed Mechanism** | ❌ | Medium |
+| 7 | **G5** tóm tắt description | ⚠️ Chỉ tính nếu trình bày như đóng góp Efficiency | ✅ | High |
+| 8 | *(cuối dự án)* Chạy lại toàn bộ trên **SLM** qua vLLM | Con số so sánh được với bảng bài báo | ✅ | ~2 USD |
 
 **Ba nguyên tắc bắt buộc:**
 
-1. **Mỗi lần một biến.** H1 và H3 tuy cùng không cần index lại nhưng phải đo **tách
+1. **Mỗi lần một biến.** G1 và G3 tuy cùng không cần index lại nhưng phải đo **tách
    riêng** — gộp lại thì không biết cái nào tạo ra hiệu quả.
 2. **Ngưỡng kết luận 3 điểm.** Sàn nhiễu judge sd = 1,53. Chênh lệch dưới ~3 điểm phải
    rerun nhiều lượt mới dám khẳng định.

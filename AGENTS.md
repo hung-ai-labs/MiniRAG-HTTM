@@ -77,13 +77,13 @@ Một đóng góp hợp lệ phải đủ **5 bước**:
 
 | Giả thuyết | Có phải Proposed Method không? | Vai trò đúng |
 |---|---|---|
-| **H1** sửa lỗi hoa/thường `get_node_from_types` | ❌ **Không** — sửa bug | **Sửa baseline.** Baseline hiện đang đo một cơ chế hỏng. Phải sửa, đo lại, và báo cáo như một *finding*, không phải đóng góp |
-| **H3** chỉnh `top_k` / giới hạn token Sources | ❌ **Không** — đúng ô cấm số 1 | Hạ xuống thành **sensitivity study** làm bằng chứng cho Observed Problem (`context_precision 0,316`) |
-| **H2** chuẩn hoá thực thể lúc merge | ✅ **Có** | Designed Mechanism — đổi cách dựng đồ thị |
-| **H4** hybrid BM25 + dense | ✅ **Có** | Designed Mechanism — "hybrid fusion" nằm đúng trong ví dụ hợp lệ |
+| **G1** sửa lỗi hoa/thường `get_node_from_types` | ❌ **Không** — sửa bug | **Sửa baseline.** Baseline hiện đang đo một cơ chế hỏng. Phải sửa, đo lại, và báo cáo như một *finding*, không phải đóng góp |
+| **G3** chỉnh `top_k` / giới hạn token Sources | ❌ **Không** — đúng ô cấm số 1 | Hạ xuống thành **sensitivity study** làm bằng chứng cho Observed Problem (`context_precision 0,316`) |
+| **G2** chuẩn hoá thực thể lúc merge | ✅ **Có** | Designed Mechanism — đổi cách dựng đồ thị |
+| **G4** hybrid BM25 + dense | ✅ **Có** | Designed Mechanism — "hybrid fusion" nằm đúng trong ví dụ hợp lệ |
 | **Path pruning / re-weighting** *(từ phát hiện 22.879 đường, 96% vô ích)* | ✅ **Có** | Designed Mechanism — "path re-weighting" nằm đúng trong ví dụ hợp lệ |
-| **H5** bật lại tóm tắt description | ⚠️ Ranh giới | Khôi phục hành vi upstream đã tắt. Chỉ tính nếu trình bày như đóng góp **Efficiency** kèm số đo |
-| **H6** dọn node rác lúc extraction | ⚠️ Ranh giới | Làm sạch dữ liệu. Gộp vào H2 như một thành phần, đừng đứng riêng |
+| **G5** bật lại tóm tắt description | ⚠️ Ranh giới | Khôi phục hành vi upstream đã tắt. Chỉ tính nếu trình bày như đóng góp **Efficiency** kèm số đo |
+| **G6** dọn node rác lúc extraction | ⚠️ Ranh giới | Làm sạch dữ liệu. Gộp vào H2 như một thành phần, đừng đứng riêng |
 
 **Lưu ý về ô cấm "đổi LLM to hơn":** dùng Gemini **không** vi phạm, với điều kiện
 nó là **hằng số** giữa baseline và proposed — đó là Controlled Experiment. Vi phạm

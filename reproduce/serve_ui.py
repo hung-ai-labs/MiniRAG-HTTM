@@ -132,12 +132,19 @@ async def graph_data(limit: int = 400, min_degree: int = 0):
     }
 
 
+# Everything this server rewrites must be uncacheable. A browser that already
+# holds upstream's api.js will keep serving it from cache -- the patched route
+# returns 200 and looks fine from curl, while the page silently runs the old
+# file and both panels stay empty.
+NO_CACHE = {"Cache-Control": "no-store, no-cache, must-revalidate", "Pragma": "no-cache"}
+
+
 @app.get("/graph-view")
 async def graph_view():
     from fastapi.responses import HTMLResponse
 
     with open(os.path.join(_HERE, "graph_view.html"), encoding="utf-8") as f:
-        return HTMLResponse(f.read())
+        return HTMLResponse(f.read(), headers=NO_CACHE)
 
 
 @app.get("/documents")
@@ -214,7 +221,7 @@ async def patched_api_js():
   }, 1200);
 })();
 """
-    return Response(js, media_type="application/javascript")
+    return Response(js, media_type="application/javascript", headers=NO_CACHE)
 
 
 @app.post("/query")
@@ -281,6 +288,15 @@ async def scan():
 @app.get("/documents/scan-progress")
 async def _scan_progress():
     return {"is_scanning": False, "current_file": "", "indexed_count": 0, "total_files": 0, "progress": 0}
+
+
+@app.get("/")
+@app.get("/index.html")
+async def index():
+    from fastapi.responses import HTMLResponse
+
+    with open(os.path.join(STATIC_DIR, "index.html"), encoding="utf-8") as f:
+        return HTMLResponse(f.read(), headers=NO_CACHE)
 
 
 if os.path.isdir(STATIC_DIR):

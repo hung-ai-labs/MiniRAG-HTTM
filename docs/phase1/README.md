@@ -10,6 +10,7 @@ Năm đầu ra bắt buộc của Phase 1.
 | 4 | Retrieval Code Map | [`RETRIEVAL_CODE_MAP.md`](RETRIEVAL_CODE_MAP.md) |
 | 5 | Query Trace | [`QUERY_TRACE.md`](QUERY_TRACE.md) |
 | + | **Pipeline Audit & Improvement Plan** | [`MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md) |
+| T1 | **Environment Guide** | [`ENVIRONMENT.md`](ENVIRONMENT.md) |
 
 ## Đọc theo thứ tự nào
 
@@ -17,6 +18,9 @@ Năm đầu ra bắt buộc của Phase 1.
 `RETRIEVAL_FLOW` giải thích MiniRAG hoạt động thế nào →
 `RETRIEVAL_CODE_MAP` ánh xạ từng bước sang file/hàm cụ thể →
 `QUERY_TRACE` cho thấy ba câu hỏi thật đi qua hệ thống.
+
+`ENVIRONMENT` ghi setup và verification đã thực sự chạy trên từng nền tảng;
+hiện mới có Windows PowerShell được xác minh.
 
 ## Số liệu chính
 

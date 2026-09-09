@@ -233,18 +233,21 @@ the numbers**. Four gaps remain open.
 Comparing this Windows machine against the machine that produced the frozen
 baseline (`accuracy 57.33 ± 1.53`):
 
-| Package | Baseline machine | This machine |
-|---|---:|---:|
-| Python | 3.13.5 | 3.11.9 |
-| **`openai`** | **1.109.1** | **3.9.0** |
-| **`tenacity`** | **8.5.0** | **9.1.4** |
-| `numpy` | 2.5.2 | 2.4.6 |
+| Package | Baseline machine | This machine | |
+|---|---:|---:|---|
+| Python | 3.13.5 | 3.13.5 | ✅ aligned |
+| **`openai`** | **1.109.1** | **3.10.0** | ❌ two major versions apart |
+| **`tenacity`** | **8.5.0** | **9.1.4** | ❌ one major version apart |
+| `numpy` | 2.5.2 | 2.5.3 | patch only |
 
-`openai` differs by two major versions and `tenacity` by one. Both are direct
-dependencies of `minirag/llm/gemini.py` — `AsyncOpenAI` and the retry
-decorators. Two machines running the same command can therefore behave
-differently, and the difference would be indistinguishable from a change in the
-system under test.
+The interpreter now matches. `openai` and `tenacity` still do not, and both are
+direct dependencies of `minirag/llm/gemini.py` — the `AsyncOpenAI` client and
+the retry decorators that drive the whole key-pool rate limiter. Two machines
+running the same command can therefore behave differently, and that difference
+would be indistinguishable from a change in the system under test.
+
+Installing `requirements.lock.txt` closes this gap. Do that before running any
+benchmark whose result is meant to be compared with another machine's.
 
 ### Closed
 

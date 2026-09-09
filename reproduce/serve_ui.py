@@ -140,6 +140,83 @@ async def graph_view():
         return HTMLResponse(f.read())
 
 
+@app.get("/documents")
+async def documents():
+    """List what is actually in the index.
+
+    The bundled UI has an "Indexed Files" panel but nothing ever fills it --
+    `api.js` calls no listing endpoint, so the panel is empty on every reload
+    and uploaded files look lost even though they were indexed.
+    """
+    store = RAG.doc_status._data if hasattr(RAG.doc_status, "_data") else {}
+    docs = []
+    for doc_id, v in store.items():
+        docs.append({
+            "id": doc_id,
+            "summary": (v.get("content_summary") or "")[:120],
+            "length": v.get("content_length", 0),
+            "chunks": v.get("chunks_count", 0),
+            "status": str(v.get("status", "")),
+            "updated_at": v.get("updated_at", ""),
+        })
+    docs.sort(key=lambda d: d["updated_at"], reverse=True)
+    g = RAG.chunk_entity_relation_graph._graph
+    return {"documents": docs, "count": len(docs),
+            "graph": {"nodes": g.number_of_nodes(), "edges": g.number_of_edges()}}
+
+
+# Served before the StaticFiles mount so this patched copy wins over the file
+# on disk. Upstream's own api.js is left untouched.
+@app.get("/js/api.js")
+async def patched_api_js():
+    from fastapi.responses import Response
+
+    with open(os.path.join(STATIC_DIR, "js", "api.js"), encoding="utf-8") as f:
+        js = f.read()
+
+    # 1. The Knowledge Graph tab is an "Under Construction" placeholder
+    #    upstream. Point it at the viewer instead.
+    start = js.find("'knowledge-graph': () => `")
+    if start != -1:
+        end = js.find("`,", js.find("`", start + 25))
+        js = (js[:start]
+              + "'knowledge-graph': () => `\n"
+                '<iframe src="/graph-view" style="width:100%;height:calc(100vh - 120px);'
+                'border:0;border-radius:8px"></iframe>\n`'
+              + js[end + 1:])
+
+    # 2. Fill the empty "Indexed Files" panel. The UI has no router hook to
+    #    attach to, so watch for the panel appearing instead.
+    js += """
+
+// --- added by reproduce/serve_ui.py ---
+(function pollIndexedFiles(){
+  let last = "";
+  setInterval(async () => {
+    const box = document.querySelector("#indexedFiles div.space-y-2");
+    if (!box) return;
+    let d;
+    try { d = await (await fetch("/documents")).json(); } catch (e) { return; }
+    const sig = JSON.stringify(d.documents.map(x => x.id));
+    if (sig === last && box.children.length) return;
+    last = sig;
+    box.innerHTML = d.documents.length
+      ? `<p class="text-sm text-gray-500 mb-2">${d.count} tài liệu · đồ thị
+           ${d.graph.nodes} node / ${d.graph.edges} cạnh</p>` +
+        d.documents.map(x => `
+          <div class="bg-white p-3 rounded-lg border border-gray-200">
+            <div class="text-sm text-gray-800">${x.summary}…</div>
+            <div class="text-xs text-gray-500 mt-1">
+              ${x.length.toLocaleString()} ký tự · ${x.chunks} chunk · ${x.status}
+            </div>
+          </div>`).join("")
+      : `<p class="text-sm text-gray-500">Chưa có tài liệu nào trong index.</p>`;
+  }, 1200);
+})();
+"""
+    return Response(js, media_type="application/javascript")
+
+
 @app.post("/query")
 async def query(req: QueryRequest):
     kw = {"mode": req.mode, "only_need_context": req.only_need_context}

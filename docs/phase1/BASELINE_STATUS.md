@@ -111,8 +111,11 @@ nhiễu, hệ thống không im lặng mà **trả lời sai một cách tự ti
 ## 6. Đặc điểm dữ liệu ảnh hưởng tới trần điểm
 
 - `query_set.csv` có **637 dòng nhưng chỉ 635 câu duy nhất** — 2 dòng trùng hệt nhau.
-- **68 câu có cột `Evidence` trỏ tới file không tồn tại** trong dataset. Không hệ
-  thống nào trả lời đúng được → đây là **trần điểm cứng**, không phải lỗi của MiniRAG.
+- **Không có câu nào bị thiếu file evidence.** Kiểm lại 09/09/2026: cả 637 câu đều
+  trỏ tới file có thật trong 442 tài liệu. Con số "68 câu thiếu file" ghi trước đây
+  là **sai** — nó đếm số câu trỏ tới tài liệu *chưa được index* hồi corpus mới có
+  267 file, không phải tài liệu không tồn tại. Index đủ 442 thì vấn đề đó biến mất.
+  **Không có trần điểm cứng do dữ liệu.**
 - MiniRAG `.strip()` nội dung trước khi lưu, nên tính coverage phải hash nội dung
   **đã strip** (nhầm chỗ này từng làm tôi báo sai 50/442 thay vì 267/442).
 

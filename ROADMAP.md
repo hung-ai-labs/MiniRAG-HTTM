@@ -198,4 +198,4 @@ Ghi lại để đưa vào phần Limitations, không phải lỗi cần sửa g
 - **Judge**: Gemini Flash-Lite 3 lượt, bài báo dùng GPT-4o 3 lượt
 - **Đồ thị thưa hơn upstream** do bản vá O(N²) (upstream trích xuất lặp nên gom thêm entity)
 - **Dataset có 2 dòng trùng**: 637 dòng nhưng chỉ **635 câu duy nhất**
-- **68 câu có `Evidence` trỏ tới file không tồn tại** trong dataset — không hệ thống nào trả lời đúng được
+- **Không có câu nào thiếu file evidence** — kiểm lại 09/09/2026, cả 637 câu đều trỏ tới file có thật. Con số "68 câu" ghi trước đây là **sai**: nó đếm câu trỏ tới tài liệu *chưa index* hồi corpus 267, không phải file không tồn tại. **Không có trần điểm cứng do dữ liệu.**

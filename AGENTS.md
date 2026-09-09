@@ -231,7 +231,7 @@ trên tập đầy đủ.)*
 ## Quirks của dataset — biết trước để khỏi debug nhầm
 
 - `query_set.csv` có **637 dòng nhưng chỉ 635 câu duy nhất** (2 dòng trùng hệt nhau, lỗi upstream)
-- **68 câu có cột `Evidence` trỏ tới file không tồn tại** → không hệ thống nào trả lời đúng được, đây là trần điểm cứng
+- **Không có câu nào thiếu file evidence.** Kiểm lại 09/09/2026: cả 637 câu đều trỏ tới file có thật trong 442 tài liệu. Ghi chú cũ "68 câu thiếu file → trần điểm cứng" là **sai** — đó là số câu trỏ tới tài liệu *chưa được index* hồi corpus mới có 267 file.
 - MiniRAG `.strip()` nội dung trước khi lưu → tính coverage phải hash nội dung **đã strip**
 
 ---

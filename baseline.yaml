@@ -121,5 +121,5 @@ known_deviations:
   - "Judge Gemini Flash-Lite thay vì GPT-4o của bài báo"
   - "Đồ thị thưa hơn upstream do bản vá bug O(N²) trong ainsert"
   - "query_set.csv có 637 dòng nhưng chỉ 635 câu duy nhất (2 dòng trùng)"
-  - "68 câu có Evidence trỏ tới file không tồn tại — trần điểm cứng"
+  - "KHÔNG có câu nào thiếu file evidence (kiểm lại 09/09/2026). Ghi chú cũ về 68 câu là sai — đó là số câu trỏ tới tài liệu chưa index hồi corpus 267."
   - "kv_store_llm_response_cache.json rỗng dù enable_llm_cache=true"

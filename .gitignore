@@ -10,6 +10,7 @@ local_neo4jWorkDir/
 neo4jWorkDir/
 ignore_this.txt
 .venv/
+.venv_broken_backup/
 *.ignore.*
 .ruff_cache/
 gui/

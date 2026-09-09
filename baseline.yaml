@@ -90,13 +90,22 @@ results:
       Chênh lệch dưới ~3 điểm giữa hai cấu hình KHÔNG kết luận được nếu chỉ
       chạy một lượt. Muốn khẳng định phải rerun nhiều lượt.
 
-openai_final_run:
+final_run:
   # CHƯA CHẠY. Chỉ thực hiện khi đã chốt Proposed Method, cuối dự án.
+  # Đổi từ gpt-4o-mini sang SLM ngày 09/09/2026: luận điểm của bài báo là SLM,
+  # nên dòng so sánh được là Phi-3.5-mini 53,29% / Qwen2.5-3B 48,75%.
   status: not_run
-  llm: gpt-4o-mini                  # như bài báo
-  judge: gpt-4o                     # như bài báo
-  embedding: giữ nguyên local 384d
-  estimated_cost_usd: 10            # cho 2 lượt full 637 câu
+  llm: Qwen/Qwen2.5-3B-Instruct     # hoặc microsoft/Phi-3.5-mini-instruct
+  used_for: [index, query, generation]   # MiniRAG chỉ có một llm_model_func
+  judge: gemini-flash-lite-latest   # giữ nguyên để so sánh được với baseline
+  embedding: giữ nguyên local 384d  # giống bài báo
+  serving: vLLM (OpenAI-compatible) # KHÔNG dùng minirag/llm/hf.py -- batch=1, quá chậm
+  infra: Modal A10G / Kaggle GPU
+  llm_calls: 1406                   # 503 chunk x 2 + 200 cau x 2
+  estimated_time: 30-60 phút trên A10G với vLLM
+  estimated_cost_usd: 2
+  must_reindex: true                # index phải do chính SLM đó dựng
+  optional: gpt-4o-mini (~$10) nếu muốn thêm dòng so sánh thứ hai
 
 reproduce:
   index: python reproduce/Step_0_index.py --workingdir ./LiHua-World-gemini

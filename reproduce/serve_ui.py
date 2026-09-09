@@ -290,13 +290,22 @@ async def _scan_progress():
     return {"is_scanning": False, "current_file": "", "indexed_count": 0, "total_files": 0, "progress": 0}
 
 
+# Changes whenever this file does, so a browser holding an older api.js is
+# asked for a URL it has never seen. no-store alone is not enough: it governs
+# the response being sent now, while the stale entry the browser already has
+# was stored without it and keeps being reused.
+BUILD_ID = str(int(os.path.getmtime(__file__)))
+
+
 @app.get("/")
 @app.get("/index.html")
 async def index():
     from fastapi.responses import HTMLResponse
 
     with open(os.path.join(STATIC_DIR, "index.html"), encoding="utf-8") as f:
-        return HTMLResponse(f.read(), headers=NO_CACHE)
+        html = f.read()
+    html = html.replace('src="/js/api.js"', f'src="/js/api.js?v={BUILD_ID}"')
+    return HTMLResponse(html, headers=NO_CACHE)
 
 
 if os.path.isdir(STATIC_DIR):

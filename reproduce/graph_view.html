@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>MiniRAG — Knowledge Graph</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --panel:#fff; --line:#dfe3ea; --ink:#1f2430; --muted:#6b7280;
+    --accent:#2563eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       color:var(--ink);background:var(--bg);overflow:hidden}
+  #bar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--panel);
+       border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;
+       padding:0 16px;z-index:10}
+  #bar h1{font-size:15px;margin:0;font-weight:650}
+  #bar .stat{color:var(--muted);font-size:12.5px}
+  label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  input[type=range]{width:110px}
+  input[type=search]{padding:5px 9px;border:1px solid var(--line);border-radius:6px;
+                     font-size:13px;width:190px;outline:none}
+  input[type=search]:focus{border-color:var(--accent)}
+  button{padding:5px 11px;border:1px solid var(--line);background:#fff;border-radius:6px;
+         cursor:pointer;font-size:12.5px}
+  button:hover{border-color:var(--accent);color:var(--accent)}
+  canvas{position:fixed;top:56px;left:0;cursor:grab}
+  canvas.drag{cursor:grabbing}
+  #legend{position:fixed;left:16px;bottom:16px;background:var(--panel);border:1px solid var(--line);
+          border-radius:8px;padding:10px 12px;font-size:12.5px;z-index:10}
+  #legend div{display:flex;align-items:center;gap:7px;margin:3px 0}
+  .dot{width:10px;height:10px;border-radius:50%}
+  #tip{position:fixed;background:#1f2430;color:#fff;padding:7px 10px;border-radius:6px;
+       font-size:12.5px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:20;max-width:280px}
+  #hint{position:fixed;right:16px;bottom:16px;color:var(--muted);font-size:12px;z-index:10}
+</style>
+</head>
+<body>
+<div id="bar">
+  <h1>Knowledge Graph</h1>
+  <span class="stat" id="stat">đang tải…</span>
+  <label>Bậc tối thiểu <input type="range" id="deg" min="0" max="10" value="0"><b id="degv">0</b></label>
+  <label>Số node <input type="range" id="lim" min="50" max="800" step="50" value="200"><b id="limv">200</b></label>
+  <input type="search" id="q" placeholder="Tìm thực thể…">
+  <button id="reload">Tải lại</button>
+</div>
+<canvas id="cv"></canvas>
+<div id="legend"></div>
+<div id="tip"></div>
+<div id="hint">Kéo để di chuyển · Cuộn để phóng to · Rê chuột lên node để xem</div>
+
+<script>
+const COLORS = {
+  PERSON:"#2563eb", ORGANIZATION:"#059669", EVENT:"#d97706", LOCATION:"#dc2626",
+  TECHNOLOGY:"#7c3aed", CONCEPT:"#0891b2", UNKNOWN:"#9ca3af"
+};
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+let nodes = [], edges = [], view = {x:0, y:0, k:1}, hover = null, query = "";
+
+function resize(){ cv.width = innerWidth; cv.height = innerHeight - 56; }
+addEventListener("resize", () => { resize(); draw(); });
+resize();
+
+async function load(){
+  const lim = document.getElementById("lim").value;
+  const deg = document.getElementById("deg").value;
+  document.getElementById("stat").textContent = "đang tải…";
+  const r = await fetch(`/graph?limit=${lim}&min_degree=${deg}`);
+  const d = await r.json();
+  document.getElementById("stat").textContent =
+    `hiện ${d.shown_nodes}/${d.total_nodes} node · ${d.shown_edges}/${d.total_edges} cạnh`;
+
+  const byId = {};
+  const R = Math.min(cv.width, cv.height) * 0.42;
+  nodes = d.nodes.map((n, i) => {
+    const a = (i / d.nodes.length) * Math.PI * 2;
+    const o = byId[n.id] = { ...n,
+      x: cv.width/2 + Math.cos(a)*R*(0.35 + 0.65*Math.random()),
+      y: cv.height/2 + Math.sin(a)*R*(0.35 + 0.65*Math.random()),
+      vx:0, vy:0 };
+    return o;
+  });
+  edges = d.edges.map(e => ({ s: byId[e.source], t: byId[e.target] }))
+                 .filter(e => e.s && e.t);
+  buildLegend();
+  for (let i = 0; i < 380; i++) step();   // giãn đồ thị trước khi vẽ
+  draw();
+}
+
+// Lực đẩy–hút đơn giản: đủ để thấy cụm, không cần thư viện ngoài.
+// Mọi lực đều bị chặn trần. Không chặn thì hai node trùng nhau sẽ tạo lực
+// vô hạn, toạ độ thành NaN và canvas trắng trơn.
+const MAXF = 6, MAXV = 22, MIND2 = 144;   // 12px là khoảng cách tối thiểu
+
+function step(){
+  const k = 34;
+  for (let i = 0; i < nodes.length; i++){
+    const a = nodes[i];
+    for (let j = i+1; j < nodes.length; j++){
+      const b = nodes[j];
+      let dx = b.x-a.x, dy = b.y-a.y, d2 = dx*dx + dy*dy;
+      if (d2 > 90000) continue;                       // bỏ qua cặp ở xa
+      if (d2 < MIND2){                                // tách hai node chồng nhau
+        dx = dx || (Math.random()-0.5); dy = dy || (Math.random()-0.5);
+        d2 = MIND2;
+      }
+      const d = Math.sqrt(dx*dx + dy*dy) || 1;
+      const f = Math.min(MAXF, (k*k) / d2);
+      const ux = dx/d, uy = dy/d;
+      a.vx -= ux*f; a.vy -= uy*f; b.vx += ux*f; b.vy += uy*f;
+    }
+  }
+  for (const e of edges){
+    const dx = e.t.x-e.s.x, dy = e.t.y-e.s.y;
+    const d = Math.sqrt(dx*dx + dy*dy) || 1;
+    const f = Math.max(-MAXF, Math.min(MAXF, (d - k*2.6) * 0.055));
+    const ux = dx/d, uy = dy/d, fx = ux*f, fy = uy*f;
+    e.s.vx += fx; e.s.vy += fy; e.t.vx -= fx; e.t.vy -= fy;
+  }
+  const cx = cv.width/2, cy = cv.height/2;
+  for (const n of nodes){
+    n.vx += (cx - n.x) * 0.0016; n.vy += (cy - n.y) * 0.0016;
+    n.vx = Math.max(-MAXV, Math.min(MAXV, n.vx * 0.82));
+    n.vy = Math.max(-MAXV, Math.min(MAXV, n.vy * 0.82));
+    n.x += n.vx; n.y += n.vy;
+    if (!isFinite(n.x)) { n.x = cx; n.vx = 0; }       // lưới an toàn cuối cùng
+    if (!isFinite(n.y)) { n.y = cy; n.vy = 0; }
+  }
+}
+
+const rad = n => 3 + Math.min(11, Math.sqrt(n.degree) * 2.1);
+
+function draw(){
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.translate(view.x, view.y); ctx.scale(view.k, view.k);
+
+  ctx.strokeStyle = "rgba(120,130,150,.28)"; ctx.lineWidth = 1/view.k;
+  ctx.beginPath();
+  for (const e of edges){ ctx.moveTo(e.s.x, e.s.y); ctx.lineTo(e.t.x, e.t.y); }
+  ctx.stroke();
+
+  const q = query.toLowerCase();
+  for (const n of nodes){
+    const match = q && n.id.toLowerCase().includes(q);
+    ctx.globalAlpha = (!q || match) ? 1 : 0.14;
+    ctx.fillStyle = COLORS[n.type] || COLORS.UNKNOWN;
+    ctx.beginPath(); ctx.arc(n.x, n.y, rad(n), 0, 6.283); ctx.fill();
+    if (match){ ctx.strokeStyle = "#111"; ctx.lineWidth = 2/view.k; ctx.stroke(); }
+  }
+  ctx.globalAlpha = 1;
+
+  // Nhãn: chỉ node lớn, hoặc node khớp tìm kiếm
+  ctx.fillStyle = "#1f2430"; ctx.font = `${12/view.k}px -apple-system,sans-serif`;
+  for (const n of nodes){
+    const match = q && n.id.toLowerCase().includes(q);
+    if (!match && (n.degree < 8 || view.k < 0.75)) continue;
+    ctx.globalAlpha = (!q || match) ? 1 : 0.14;
+    ctx.fillText(n.id.slice(0,26), n.x + rad(n) + 3/view.k, n.y + 4/view.k);
+  }
+  ctx.globalAlpha = 1;
+}
+
+// ---- tương tác ----
+let drag = null;
+cv.addEventListener("mousedown", e => { drag = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y}; cv.classList.add("drag"); });
+addEventListener("mouseup", () => { drag = null; cv.classList.remove("drag"); });
+cv.addEventListener("mousemove", e => {
+  if (drag){ view.x = drag.vx + e.clientX - drag.x; view.y = drag.vy + e.clientY - drag.y; draw(); return; }
+  const mx = (e.clientX - view.x) / view.k, my = (e.clientY - 56 - view.y) / view.k;
+  hover = null;
+  for (const n of nodes){
+    const dx = n.x-mx, dy = n.y-my, r = rad(n) + 4;
+    if (dx*dx + dy*dy < r*r){ hover = n; break; }
+  }
+  const tip = document.getElementById("tip");
+  if (hover){
+    tip.style.opacity = 1;
+    tip.style.left = (e.clientX + 14) + "px"; tip.style.top = (e.clientY + 14) + "px";
+    tip.innerHTML = `<b>${hover.id}</b><br>${hover.type} · bậc ${hover.degree}`;
+  } else tip.style.opacity = 0;
+});
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  const f = e.deltaY < 0 ? 1.12 : 1/1.12;
+  const mx = e.clientX, my = e.clientY - 56;
+  view.x = mx - (mx - view.x) * f; view.y = my - (my - view.y) * f;
+  view.k *= f; draw();
+}, {passive:false});
+
+function buildLegend(){
+  const used = [...new Set(nodes.map(n => n.type))];
+  document.getElementById("legend").innerHTML = used.map(t =>
+    `<div><span class="dot" style="background:${COLORS[t]||COLORS.UNKNOWN}"></span>${t}
+     <span style="color:var(--muted)">(${nodes.filter(n=>n.type===t).length})</span></div>`).join("");
+}
+
+document.getElementById("q").addEventListener("input", e => { query = e.target.value.trim(); draw(); });
+for (const id of ["deg","lim"]) document.getElementById(id).addEventListener("input", e => {
+  document.getElementById(id+"v").textContent = e.target.value;
+});
+document.getElementById("reload").addEventListener("click", load);
+load();
+</script>
+</body>
+</html>

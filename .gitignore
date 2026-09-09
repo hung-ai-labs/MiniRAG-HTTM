@@ -39,3 +39,6 @@ logs/*.jsonl
 !logs/devset.csv
 !logs/baseline442_devset.csv
 !logs/baseline442_devset_judged.csv
+
+uploads/
+playground-index/

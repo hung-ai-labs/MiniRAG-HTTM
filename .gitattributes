@@ -1,0 +1,8 @@
+# The frozen evaluation files are keyed by exact question text: Step_1_QA and
+# Step_2_evaluate resume by matching the question string, and the judge output
+# joins back on it. Let git normalise line endings and a Windows checkout would
+# round-trip CRLF/LF differently from macOS, silently breaking those matches.
+# Keep these byte-identical on every machine.
+logs/devset.csv               -text
+logs/baseline442_devset.csv   -text
+logs/baseline442_devset_judged.csv -text

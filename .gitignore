@@ -32,3 +32,10 @@ minirag-venv/
 LiHua-World-gemini/
 logs/*.csv
 logs/*.jsonl
+
+# ...except the frozen evaluation inputs and the baseline evidence. Everyone
+# must score on the SAME 200 questions, and everyone must be able to re-judge
+# the baseline run without re-spending quota on QA.
+!logs/devset.csv
+!logs/baseline442_devset.csv
+!logs/baseline442_devset_judged.csv

@@ -43,6 +43,13 @@ The existing `.venv` was retained. The old broken environment remains in
 Run these commands from the repository root. They do not require activation or
 an execution-policy change.
 
+> **The working directory is not a convenience here, it is a requirement.**
+> `reproduce/` has no `__init__.py`, so Python resolves it as an implicit
+> namespace package from the current directory. Running the third import check
+> from anywhere else fails with
+> `ModuleNotFoundError: No module named 'reproduce'`, which looks like a broken
+> install but is not one.
+
 ```powershell
 # Only create .venv when it does not already exist; do not delete/overwrite it.
 if (!(Test-Path .\.venv\Scripts\python.exe)) {
@@ -68,6 +75,21 @@ binary/ML packages. `setup.py` reads `requirements.txt`, but the PEP 517 project
 metadata does not expose a `[project].dependencies` list; therefore the direct
 runtime packages above are installed explicitly rather than assuming that
 `pip install -e .` alone covers them.
+
+### Confirming the editable install took effect
+
+`import minirag` must print a path inside **this checkout**, not inside
+`site-packages`:
+
+```
+.../MiniRAG-HTTM/minirag/__init__.py     <- correct
+.../site-packages/minirag/__init__.py    <- wrong
+```
+
+A `site-packages` path means a released `minirag-hku` wheel is shadowing the
+checkout, so local edits to `minirag/` have no effect — a failure that stays
+silent until someone spends an afternoon wondering why a change does nothing.
+Fix it with `pip uninstall minirag-hku` followed by `pip install -e .`.
 
 ## macOS/Linux (not verified in T1)
 
@@ -187,6 +209,70 @@ $Py = ".\.venv\Scripts\python.exe"
 These commands are import/metadata checks only. Do not call `build_rag()`,
 instantiate `MiniRAG`, run `Step_0`–`Step_5`, `run_eval_demo.py`, a shell
 wrapper, server, or benchmark as part of T1.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `ModuleNotFoundError: No module named 'reproduce'` | Not in the repository root | `cd` to the repository root and rerun |
+| `import minirag` resolves to `site-packages` | A released wheel shadows the checkout | `pip uninstall minirag-hku`, then `pip install -e .` |
+| `py: command not found` (Windows) | Python Launcher missing | Install CPython from python.org with "Add python.exe to PATH" |
+| `python3.13: command not found` (macOS) | Interpreter not installed | `brew install python@3.13` |
+| `pip check` reports a conflict | Package versions diverged | Post the full output to the team; do not uninstall packages alone |
+| `torch` download is very large | Default wheel bundles GPU runtime | Expected. For a CPU-only wheel: `pip install torch --index-url https://download.pytorch.org/whl/cpu` |
+
+## Beyond T1: what reproducibility still needs
+
+T1 proves the code **imports**. It does not yet prove the team can **reproduce
+the numbers**. Four gaps remain open.
+
+### Environments have already diverged
+
+Comparing this Windows machine against the machine that produced the frozen
+baseline (`accuracy 57.33 ± 1.53`):
+
+| Package | Baseline machine | This machine |
+|---|---:|---:|
+| Python | 3.13.5 | 3.11.9 |
+| **`openai`** | **1.109.1** | **3.9.0** |
+| **`tenacity`** | **8.5.0** | **9.1.4** |
+| `numpy` | 2.5.2 | 2.4.6 |
+
+`openai` differs by two major versions and `tenacity` by one. Both are direct
+dependencies of `minirag/llm/gemini.py` — `AsyncOpenAI` and the retry
+decorators. Two machines running the same command can therefore behave
+differently, and the difference would be indistinguishable from a change in the
+system under test.
+
+### Closed
+
+1. ✅ **Versions are pinned.** `requirements.lock.txt` records the exact 119
+   packages of the machine that produced the baseline, on Python 3.13.5.
+   Install it with `pip install -r requirements.lock.txt` when the goal is to
+   reproduce the baseline rather than to develop.
+2. ✅ **The frozen evaluation files are committed.** `logs/devset.csv` (the 200
+   questions), `logs/baseline442_devset.csv` (the baseline answers) and
+   `logs/baseline442_devset_judged.csv` (the 600 verdicts) are now tracked, with
+   line endings pinned in `.gitattributes` — the resume and join logic in
+   `Step_1_QA` / `Step_2_evaluate` matches on the exact question string, so a
+   CRLF round-trip on a Windows checkout would silently break it.
+
+   This makes the baseline independently checkable **without spending any
+   quota on QA**: re-judging the committed answers costs 600 judge calls and
+   must land within the noise floor of `57.33 ± 1.53`.
+
+   ```bash
+   python reproduce/Step_2_evaluate.py --inputpath ./logs/baseline442_devset.csv --repeats 3
+   ```
+
+### Still open
+
+3. **The baseline index is not shared.** `./LiHua-World-gemini/` (15 MB) is
+   ignored. Re-indexing produces a *different* graph because the extraction LLM
+   is not deterministic, so the frozen baseline would no longer be comparable.
+   Distributing the directory is preferable to each member rebuilding it.
+4. **`baseline.yaml` does not record a Python version.** Once the team settles
+   on one interpreter, it belongs in the frozen config.
 
 ## T1 status
 

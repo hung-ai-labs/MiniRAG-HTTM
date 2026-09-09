@@ -122,9 +122,19 @@ async def graph_data(limit: int = 400, min_degree: int = 0):
         "id": n.strip('"'),
         "type": str(g.nodes[n].get("entity_type", "")).strip('"').upper() or "UNKNOWN",
         "degree": g.degree(n),
+        "description": str(g.nodes[n].get("description", "")).strip('"')
+                         .replace("<SEP>", " · ")[:400],
     } for n in keep]
-    edges = [{"source": u.strip('"'), "target": v.strip('"')}
-             for u, v in g.edges() if u in kept and v in kept]
+    def _clean(x, n=400):
+        x = str(x or "").strip('"').replace("<SEP>", " · ")
+        return x if len(x) <= n else x[: n - 1] + "…"
+
+    edges = [{
+        "source": u.strip('"'), "target": v.strip('"'),
+        "keywords": _clean(d.get("keywords"), 120),
+        "description": _clean(d.get("description")),
+        "weight": d.get("weight", 1),
+    } for u, v, d in g.edges(data=True) if u in kept and v in kept]
     return {
         "nodes": nodes, "edges": edges,
         "total_nodes": g.number_of_nodes(), "total_edges": g.number_of_edges(),

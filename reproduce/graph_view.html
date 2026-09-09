@@ -33,6 +33,20 @@
   #tip{position:fixed;background:#1f2430;color:#fff;padding:7px 10px;border-radius:6px;
        font-size:12.5px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:20;max-width:280px}
   #hint{position:fixed;right:16px;bottom:16px;color:var(--muted);font-size:12px;z-index:10}
+  #panel{position:fixed;top:56px;right:0;bottom:0;width:340px;background:var(--panel);
+         border-left:1px solid var(--line);padding:16px 18px;overflow-y:auto;z-index:15}
+  #panel h2{font-size:15px;margin:0 0 4px;word-break:break-word}
+  #panel h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+            margin:18px 0 8px;font-weight:600}
+  #pmeta{font-size:12px;color:var(--muted);margin-bottom:10px}
+  #pdesc{font-size:12.5px;color:#374151;margin:0;line-height:1.55}
+  #closep{position:absolute;top:10px;right:12px;border:0;background:none;font-size:20px;
+          line-height:1;color:var(--muted);cursor:pointer;padding:2px 6px}
+  .rel{border:1px solid var(--line);border-radius:7px;padding:9px 10px;margin-bottom:8px}
+  .rel .to{font-weight:600;font-size:12.5px;word-break:break-word}
+  .rel .kw{font-size:11.5px;color:var(--accent);margin:3px 0}
+  .rel .ds{font-size:12px;color:#4b5563;line-height:1.5}
+  #panel .empty{font-size:12.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -47,7 +61,15 @@
 <canvas id="cv"></canvas>
 <div id="legend"></div>
 <div id="tip"></div>
-<div id="hint">Kéo để di chuyển · Cuộn để phóng to · Rê chuột lên node để xem</div>
+<aside id="panel" hidden>
+  <button id="closep" title="Đóng">×</button>
+  <h2 id="pname"></h2>
+  <div id="pmeta"></div>
+  <p id="pdesc"></p>
+  <h3>Quan hệ <span id="pcount"></span></h3>
+  <div id="prels"></div>
+</aside>
+<div id="hint">Kéo để di chuyển · Cuộn để phóng to · <b>Bấm vào node để xem quan hệ</b></div>
 
 <script>
 const COLORS = {
@@ -55,7 +77,7 @@ const COLORS = {
   TECHNOLOGY:"#7c3aed", CONCEPT:"#0891b2", UNKNOWN:"#9ca3af"
 };
 const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
-let nodes = [], edges = [], view = {x:0, y:0, k:1}, hover = null, query = "";
+let nodes = [], edges = [], view = {x:0, y:0, k:1}, hover = null, query = "", selected = null;
 
 function resize(){ cv.width = innerWidth; cv.height = innerHeight - 56; }
 addEventListener("resize", () => { resize(); draw(); });
@@ -80,7 +102,9 @@ async function load(){
       vx:0, vy:0 };
     return o;
   });
-  edges = d.edges.map(e => ({ s: byId[e.source], t: byId[e.target] }))
+  edges = d.edges.map(e => ({ s: byId[e.source], t: byId[e.target],
+                              keywords: e.keywords, description: e.description,
+                              weight: e.weight }))
                  .filter(e => e.s && e.t);
   buildLegend();
   for (let i = 0; i < 380; i++) step();   // giãn đồ thị trước khi vẽ
@@ -135,10 +159,21 @@ function draw(){
   ctx.clearRect(0,0,cv.width,cv.height);
   ctx.translate(view.x, view.y); ctx.scale(view.k, view.k);
 
-  ctx.strokeStyle = "rgba(120,130,150,.28)"; ctx.lineWidth = 1/view.k;
+  ctx.strokeStyle = selected ? "rgba(120,130,150,.12)" : "rgba(120,130,150,.28)";
+  ctx.lineWidth = 1/view.k;
   ctx.beginPath();
   for (const e of edges){ ctx.moveTo(e.s.x, e.s.y); ctx.lineTo(e.t.x, e.t.y); }
   ctx.stroke();
+
+  if (selected){                                  // làm nổi cạnh của node đang chọn
+    ctx.strokeStyle = "#2563eb"; ctx.lineWidth = 1.8/view.k;
+    ctx.beginPath();
+    for (const e of edges){
+      if (e.s !== selected && e.t !== selected) continue;
+      ctx.moveTo(e.s.x, e.s.y); ctx.lineTo(e.t.x, e.t.y);
+    }
+    ctx.stroke();
+  }
 
   const q = query.toLowerCase();
   for (const n of nodes){
@@ -163,10 +198,39 @@ function draw(){
 
 // ---- tương tác ----
 let drag = null;
-cv.addEventListener("mousedown", e => { drag = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y}; cv.classList.add("drag"); });
+cv.addEventListener("mousedown", e => { drag = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y, moved:false}; cv.classList.add("drag"); });
+cv.addEventListener("click", e => {
+  if (drag && drag.moved) return;              // kéo chứ không phải bấm
+  if (hover) showPanel(hover); else hidePanel();
+});
+document.getElementById("closep").addEventListener("click", hidePanel);
+
+function hidePanel(){ document.getElementById("panel").hidden = true; selected = null; draw(); }
+
+function showPanel(n){
+  selected = n;
+  const rels = edges.filter(e => e.s === n || e.t === n).map(e => ({
+    other: (e.s === n ? e.t : e.s).id, kw: e.keywords, ds: e.description, w: e.weight
+  })).sort((a,b) => b.w - a.w);
+
+  document.getElementById("pname").textContent = n.id;
+  document.getElementById("pmeta").textContent = `${n.type} · bậc ${n.degree}`;
+  document.getElementById("pdesc").textContent = n.description || "";
+  document.getElementById("pcount").textContent = `(${rels.length})`;
+  document.getElementById("prels").innerHTML = rels.length
+    ? rels.map(r => `<div class="rel">
+         <div class="to">→ ${r.other}</div>
+         ${r.kw ? `<div class="kw">${r.kw}</div>` : ""}
+         ${r.ds ? `<div class="ds">${r.ds}</div>` : ""}
+       </div>`).join("")
+    : `<p class="empty">Node này không có cạnh nào trong phần đang hiển thị.</p>`;
+  document.getElementById("panel").hidden = false;
+  draw();
+}
 addEventListener("mouseup", () => { drag = null; cv.classList.remove("drag"); });
 cv.addEventListener("mousemove", e => {
-  if (drag){ view.x = drag.vx + e.clientX - drag.x; view.y = drag.vy + e.clientY - drag.y; draw(); return; }
+  if (drag){ if (Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y) > 3) drag.moved = true;
+    view.x = drag.vx + e.clientX - drag.x; view.y = drag.vy + e.clientY - drag.y; draw(); return; }
   const mx = (e.clientX - view.x) / view.k, my = (e.clientY - 56 - view.y) / view.k;
   hover = null;
   for (const n of nodes){

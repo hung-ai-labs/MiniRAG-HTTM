@@ -145,10 +145,57 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | `H1` Retrieval Flow + Code Map | ✅ | [`docs/phase1/RETRIEVAL_FLOW.md`](docs/phase1/RETRIEVAL_FLOW.md) · [`docs/phase1/RETRIEVAL_CODE_MAP.md`](docs/phase1/RETRIEVAL_CODE_MAP.md) |
 | **Query Trace 3 query thật** | ✅ | [`docs/phase1/QUERY_TRACE.md`](docs/phase1/QUERY_TRACE.md) — sinh tự động bởi `reproduce/Step_5_trace.py` |
 | **🔴 Phát hiện bug: bước ④ luôn rỗng** | ✅ | So khớp hoa/thường `entity_type` → answer-type-aware **không chạy** |
+| `G1` Sửa bug answer-type + đo lại | ✅ | 57,33 → 59,50 · **p = 0,267, chưa kết luận được** |
+| Chạy SLM Qwen2.5-3B (Modal A10G) | ✅ | acc 59,50 · err 28,00 · `neither` 12,50 · ~$1, dưới 1 giờ |
+| Công tắc local / Modal / Gemini | ✅ | `reproduce/slm_env.sh` + `reproduce/modal_slm.py` |
 | Environment guide (`T1*`) | 🔄 | [`docs/phase1/ENVIRONMENT.md`](docs/phase1/ENVIRONMENT.md) — đã PASS trên **1/3 máy** (Windows, CPython 3.13.5) |
 | Pin version + commit dev set | ✅ | `requirements.lock.txt` (119 gói) · `logs/devset.csv` + bằng chứng baseline đã track |
 | Chia sẻ index 442 (15 MB) | ⬜ | **Chưa** — ai index lại sẽ ra graph khác, baseline mất tính so sánh |
 | Failed-query dataset, Failure Taxonomy | ⬜ | Chưa bắt đầu — **đây là nút thắt chặn Phase 2** |
+
+### Bốn cấu hình đã đo (dev set 200 câu, 3 lượt judge)
+
+| Cấu hình | acc | err | **neither** | Single | Multi | Null |
+|---|---:|---:|---:|---:|---:|---:|
+| Gemini baseline | 57,33 ± 1,53 | 21,00 ± 2,00 | 21,67 | 60,17 | 42,86 | 50,00 |
+| Gemini + sửa answer-type | 59,50 ± 0,50 | 21,50 ± 0,87 | 19,00 | 62,89 | 36,51 | 56,67 |
+| **Qwen2.5-3B bf16** (Modal A10G) | 59,50 ± 0,50 | 28,00 ± 0,87 | **12,50** | 60,38 | 47,62 | 65,00 |
+| *Bài báo — Qwen2.5-3B* | *48,75* | *26,02* | *25,23* | — | — | — |
+
+**Cột `neither` giải thích gần như toàn bộ khác biệt.** Nó là tỷ lệ hệ thống nói
+không biết / từ chối / lạc đề. Tỷ lệ **dám trả lời** (acc + err): Qwen **87,5%**,
+Gemini đã vá 81,0%, bài báo 74,8%.
+
+Qwen không sai nhiều hơn vì kém hơn — nó sai nhiều hơn vì **ít chịu im lặng hơn**.
+So với bài báo, cấu hình của nhóm đổi **11 điểm accuracy lấy 2 điểm error**. Đây là
+một đánh đổi, không phải cải thiện thuần.
+
+Đáng chú ý: +6,5 điểm err của Qwen so với Gemini đến gần như toàn bộ từ **Single-hop**
+(err +8,18, `neither` 18,87 → 13,21) — nhóm câu dễ nhất. Ở Null thì Qwen lại sai
+**ít hơn** 3,33 điểm.
+
+*Giả thuyết đã loại trừ:* độ dài câu trả lời gần như bằng nhau ở cả ba cấu hình
+(trung vị 706 / 732 / 714 ký tự), nên không phải nguyên nhân.
+
+> ⚠️ **Không được trình bày 59,50 như "nhóm tái tạo được dòng Qwen2.5-3B của bài báo".**
+> Bốn khác biệt cùng lúc: code đã vá lỗi answer-type (bài báo chạy bản hỏng), chấm
+> bằng Gemini thay vì GPT-4o, 200 câu thay vì 637, và bản vá O(N²) làm đồ thị khác
+> upstream. Ranh giới `error` / `neither` phụ thuộc judge nên riêng việc đổi judge
+> đã đủ dịch chuyển hai cột đó.
+
+### Đồ thị: SLM dựng khác hẳn Gemini
+
+| | Qwen2.5-3B | Gemini Flash-Lite |
+|---|---:|---:|
+| Node | **1.556** | 770 |
+| Cạnh | 1.509 | **1.779** |
+| Số loại `entity_type` | **47** | 7 |
+
+`prompt.py:5` chỉ cho phép 4 loại. Qwen sinh ra 47, gồm `EMOJI`, `FLAVOR`,
+`QUESTION`, `STRETCH`, `TECHNOLOGY/PRODUCT`. Model nhỏ tuân thủ ràng buộc prompt kém
+hơn nhiều, và **không có bước kiểm tra nào chặn lại** — bằng chứng độc lập cho
+nhược điểm 8. Đồ thị gấp đôi node nhưng ít cạnh hơn, tức vụn hơn; điều này lại giải
+thích vì sao Multi-hop của Qwen (47,62) **cao hơn** Gemini đã vá (36,51).
 
 ### Baseline 442 nói gì
 

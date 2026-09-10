@@ -39,9 +39,14 @@ logs/*.jsonl
 !logs/devset.csv
 !logs/baseline442_devset.csv
 !logs/baseline442_devset_judged.csv
+!logs/fix1_devset.csv
+!logs/fix1_devset_judged.csv
+!logs/qwen_modal_devset.csv
+!logs/qwen_modal_devset_judged.csv
 
 uploads/
 playground-index/
 qwen-speedtest/
 gemini-speedtest/
 LiHua-World-qwen/
+LiHua-World-qwen-modal/

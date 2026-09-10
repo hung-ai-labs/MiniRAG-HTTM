@@ -153,14 +153,36 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | Chia sẻ index 442 (15 MB) | ⬜ | **Chưa** — ai index lại sẽ ra graph khác, baseline mất tính so sánh |
 | Failed-query dataset, Failure Taxonomy | ⬜ | Chưa bắt đầu — **đây là nút thắt chặn Phase 2** |
 
-### Bốn cấu hình đã đo (dev set 200 câu, 3 lượt judge)
+### Năm cấu hình đã đo (dev set 200 câu, 3 lượt judge)
 
 | Cấu hình | acc | err | **neither** | Single | Multi | Null |
 |---|---:|---:|---:|---:|---:|---:|
 | Gemini baseline | 57,33 ± 1,53 | 21,00 ± 2,00 | 21,67 | 60,17 | 42,86 | 50,00 |
 | Gemini + sửa answer-type | 59,50 ± 0,50 | 21,50 ± 0,87 | 19,00 | 62,89 | 36,51 | 56,67 |
-| **Qwen2.5-3B bf16** (Modal A10G) | 59,50 ± 0,50 | 28,00 ± 0,87 | **12,50** | 60,38 | 47,62 | 65,00 |
+| Qwen2.5-3B bf16 — code **chưa vá** | 56,00 ± 1,00 | 30,33 ± 0,29 | 13,67 | 57,86 | 42,86 | 55,00 |
+| **Qwen2.5-3B bf16** — đã vá answer-type | 59,50 ± 0,50 | 28,00 ± 0,87 | **12,50** | 60,38 | 47,62 | 65,00 |
 | *Bài báo — Qwen2.5-3B* | *48,75* | *26,02* | *25,23* | — | — | — |
+
+**Bản vá answer-type đo được trên hai model, cùng một hướng.** Lượt "chưa vá"
+bật `MINIRAG_ANSWER_TYPE_FIX=0` (`minirag/kg/networkx_impl.py:179`) — khôi phục
+đúng phép so sánh chuỗi của upstream. Dùng lại y nguyên đồ thị `LiHua-World-qwen-modal`,
+**không index lại**: bản vá chỉ chạm đường truy vấn (`operate.py:1311`), nên chênh
+lệch quy hết về một biến duy nhất.
+
+| | acc | err | neither | McNemar |
+|---|---:|---:|---:|---|
+| Gemini: vá − chưa vá | **+2,17** | +0,50 | −2,67 | 9 lên / 4 xuống · **p = 0,267** |
+| Qwen: vá − chưa vá | **+3,50** | −2,33 | −1,17 | 22 lên / 17 xuống · **p = 0,522** |
+
+Bằng chứng lỗi là trực tiếp, không suy đoán: lấy 5 kiểu thực thể đầu tiên do chính
+`get_types()` trả về rồi hỏi ngược lại đồ thị — chưa vá khớp **0 node**, đã vá khớp
+**49**. Đồ thị lưu `"ITEM"` (hoa, kèm ngoặc kép), `get_types()` trả `"item"` (thường,
+vẫn còn ngoặc kép), nên tín hiệu answer-type của MiniRAG **bằng 0 trên mọi câu hỏi**.
+
+> ⚠️ **Cả hai lượt đều KHÔNG đạt ý nghĩa thống kê.** p = 0,267 và p = 0,522, dưới
+> sàn nhiễu judge. Được phép viết: *"lỗi so khớp làm tín hiệu answer-type bằng 0;
+> sửa xong điểm nhích lên ở cả hai model nhưng chưa vượt nhiễu"*. **Không** được
+> viết "bản vá cải thiện accuracy". Muốn khẳng định thì phải chạy trên đủ 637 câu.
 
 **Cột `neither` giải thích gần như toàn bộ khác biệt.** Nó là tỷ lệ hệ thống nói
 không biết / từ chối / lạc đề. Tỷ lệ **dám trả lời** (acc + err): Qwen **87,5%**,

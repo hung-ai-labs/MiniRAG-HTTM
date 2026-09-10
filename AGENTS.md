@@ -194,21 +194,31 @@ Chat và embedding **dùng chung một pool** vì chung quota project. Client t�
 
 ## Kết quả đã có
 
-### Bốn cấu hình đã đo (dev 200 câu, 3 lượt judge)
+### Năm cấu hình đã đo (dev 200 câu, 3 lượt judge)
 
 | Cấu hình | acc | err | **neither** |
 |---|---:|---:|---:|
 | Gemini baseline *(mốc so sánh)* | **57,33 ± 1,53** | 21,00 ± 2,00 | 21,67 |
 | Gemini + sửa answer-type | 59,50 ± 0,50 | 21,50 ± 0,87 | 19,00 |
-| Qwen2.5-3B bf16 (Modal) | 59,50 ± 0,50 | 28,00 ± 0,87 | 12,50 |
+| Qwen2.5-3B bf16 — chưa vá | 56,00 ± 1,00 | 30,33 ± 0,29 | 13,67 |
+| Qwen2.5-3B bf16 — đã vá | 59,50 ± 0,50 | 28,00 ± 0,87 | 12,50 |
 | *Bài báo — Qwen2.5-3B* | *48,75* | *26,02* | *25,23* |
 
 **Luôn báo cáo đủ ba cột.** Hai cấu hình giữa có cùng acc 59,50 nhưng hành vi khác
 hẳn: Qwen ít chịu nói "không biết" hơn (`neither` 12,50 so với 19,00) nên vừa đúng
 nhiều hơn vừa sai nhiều hơn. Chỉ nhìn accuracy sẽ tưởng chúng tương đương.
 
-Sửa answer-type: +2,17 điểm, **p = 0,267 — chưa kết luận được** (9 câu sai→đúng,
-4 câu đúng→sai trên 200 câu).
+**Bản vá answer-type — đo trên cả hai model, cùng hướng, cùng chưa đủ mạnh:**
+
+| | Δacc | McNemar | p |
+|---|---:|---|---:|
+| Gemini | +2,17 | 9 lên / 4 xuống | 0,267 |
+| Qwen | +3,50 | 22 lên / 17 xuống | 0,522 |
+
+**Cả hai đều chưa đạt ý nghĩa thống kê.** Được viết: *"tín hiệu answer-type bằng 0
+do lỗi so khớp; sửa xong điểm nhích lên ở cả hai model nhưng chưa vượt sàn nhiễu"*.
+**Không** được viết "bản vá cải thiện accuracy". Bằng chứng lỗi thì chắc chắn: 5 kiểu
+lấy từ chính `get_types()` khớp **0 node** khi chưa vá, **49 node** khi đã vá.
 
 ### ⭐ Baseline chính thức — corpus 442, dev set 200 câu, 3 lượt judge
 

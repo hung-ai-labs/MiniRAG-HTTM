@@ -27,7 +27,7 @@ SCALEDOWN = 300                       # idle seconds before the GPU is released
 # Context has to clear the real prompt sizes: measured on this project's index,
 # the retrieved context is 3,908 tokens at the median and 8,291 at the maximum,
 # before the Entities table and the prompt template are added.
-MAX_MODEL_LEN = 16384
+MAX_MODEL_LEN = 32768   # Qwen2.5-3B hỗ trợ 32k; để dư sau sự cố tràn 16.413 token
 
 app = modal.App("minirag-slm")
 

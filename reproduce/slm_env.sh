@@ -15,6 +15,7 @@ case "$_target" in
     export GEMINI_API_BASE=http://localhost:11434/v1
     export GEMINI_API_KEY_ONLY=ollama   # chặn 12 khoá Gemini trong .env lọt vào pool
     export MINIRAG_SLM_MODEL=minirag-qwen3b
+    export MINIRAG_MAX_TOKENS=1024
     # Giới hạn nhịp mặc định (13 req/phút, 3000 token/phút) là hình dạng của
     # hạn mức Gemini; áp lên máy cục bộ sẽ chậm gấp mấy chục lần.
     export GEMINI_RPM=100000
@@ -36,6 +37,7 @@ case "$_target" in
     export GEMINI_API_BASE="${MINIRAG_SLM_URL%/}/v1"
     export GEMINI_API_KEY_ONLY="$MINIRAG_SLM_KEY"   # chỉ khoá này hợp lệ với Modal
     export MINIRAG_SLM_MODEL=minirag-slm
+    export MINIRAG_MAX_TOKENS=1024   # SLM không tự dừng, sẽ sinh đầy context
     export GEMINI_RPM=100000
     export GEMINI_TPM=100000000
     echo "SLM → Modal A10G · model Qwen2.5-3B-Instruct (bf16, không lượng tử hoá)"
@@ -44,7 +46,7 @@ case "$_target" in
     ;;
 
   gemini)
-    unset GEMINI_API_BASE MINIRAG_SLM_MODEL GEMINI_API_KEY_ONLY
+    unset GEMINI_API_BASE MINIRAG_SLM_MODEL GEMINI_API_KEY_ONLY MINIRAG_MAX_TOKENS
     export GEMINI_RPM=13
     export GEMINI_TPM=3000
     echo "SLM → Gemini free tier · gemini-flash-lite-latest (mặc định dự án)"

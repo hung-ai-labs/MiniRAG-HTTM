@@ -287,6 +287,18 @@ async def gemini_complete_if_cache(
     messages.extend(history_messages)
     messages.append({"role": "user", "content": prompt})
 
+    # Gemini stops on its own, but a local SLM served through vLLM will happily
+    # generate until it fills the context window. The gleaning loop then feeds
+    # that whole reply back as history, and the second call is rejected for
+    # exceeding the model's context -- 16,413 tokens against a 16,384 limit,
+    # from a prompt whose parts add up to under 5,000. Upstream's own local
+    # backend caps generation at 512 (hf.py:151), so a cap is the intended
+    # behaviour rather than a workaround.
+    if "max_tokens" not in kwargs:
+        cap = os.environ.get("MINIRAG_MAX_TOKENS", "").strip()
+        if cap:
+            kwargs["max_tokens"] = int(cap)
+
     pool = _get_pool("chat", api_key)
     cost = _estimate_tokens("".join(m["content"] for m in messages)) + 1000
     key = await pool.acquire(cost)

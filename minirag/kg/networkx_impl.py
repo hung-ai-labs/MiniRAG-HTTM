@@ -157,12 +157,37 @@ class NetworkXStorage(BaseGraphStorage):
         return list(types), list(types_with_case)
 
 
+    @staticmethod
+    def _normalize_type(value) -> str:
+        """Entity types reach this comparison in three different shapes.
+
+        The graph stores them upper-cased and quoted ('"EVENT"', from
+        operate.py:80). get_types() lower-cases them for the prompt but keeps
+        the quotes, so the LLM is shown '"event"' and answers with whatever it
+        feels like -- '"event"', 'event', or 'Event' have all been observed.
+        Comparing the raw strings therefore never matched, and the answer-type
+        signal was silently zero on every query.
+        """
+        return str(value or "").strip().strip('"').strip("'").casefold()
+
     async def get_node_from_types(self,type_list)  -> Union[dict, None]:
-        node_list = []
-        for name, arrt in self._graph.nodes(data = True):
-            node_type = arrt.get('entity_type').strip('\"')
-            if node_type in type_list:
-                node_list.append(name)
+        # MINIRAG_ANSWER_TYPE_FIX=0 restores upstream's exact comparison, so
+        # the patched and unpatched configurations can both be measured from
+        # one checkout instead of by editing this file between runs. Only the
+        # query path reads this (operate.py:1311); indexing never calls it, so
+        # both variants can share an index.
+        if os.environ.get("MINIRAG_ANSWER_TYPE_FIX", "1") == "0":
+            node_list = []
+            for name, arrt in self._graph.nodes(data=True):
+                node_type = str(arrt.get("entity_type") or "").strip('"')
+                if node_type in type_list:
+                    node_list.append(name)
+        else:
+            wanted = {self._normalize_type(t) for t in type_list}
+            node_list = []
+            for name, arrt in self._graph.nodes(data = True):
+                if self._normalize_type(arrt.get('entity_type')) in wanted:
+                    node_list.append(name)
         node_datas = await asyncio.gather(
             *[self.get_node(name) for name in node_list]
         )

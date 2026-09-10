@@ -8,7 +8,13 @@
 cd /Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM
 export PYTHONUNBUFFERED=1
 PY=.venv/bin/python
-M="${MINIRAG_SLM_MODEL:?Chưa chọn nơi chạy. source reproduce/slm_env.sh {local|modal}}"
+if [ -z "$MINIRAG_SLM_MODEL" ]; then
+  # Không dùng ${VAR:?msg} ở đây: dấu } trong thông báo kết thúc phép khai triển
+  # sớm và phần thừa bị nối vào giá trị, cho ra tên model "minirag-slm}".
+  echo "Chưa chọn nơi chạy. Chạy trước: source reproduce/slm_env.sh local|modal"
+  exit 1
+fi
+M="$MINIRAG_SLM_MODEL"
 WD="${MINIRAG_SLM_WORKDIR:-./LiHua-World-qwen}"
 OUT="${MINIRAG_SLM_OUTPUT:-./logs/qwen_devset.csv}"
 

@@ -9,7 +9,7 @@ export PYTHONUNBUFFERED=1
 # Ollama bỏ qua khoá; hai giới hạn nhịp phải nới ra, mặc định của gemini.py
 # (13 req/phút, 3000 token/phút) là cho hạn mức Gemini và sẽ bóp nghẹt máy cục bộ.
 export GEMINI_API_BASE=http://localhost:11434/v1
-export GEMINI_API_KEY=ollama
+export GEMINI_API_KEY_ONLY=ollama
 export GEMINI_RPM=100000
 export GEMINI_TPM=100000000
 PY=.venv/bin/python
@@ -25,6 +25,6 @@ run INDEX $PY reproduce/Step_0_index.py --model $M --workingdir $WD
 run QA    $PY reproduce/Step_1_QA.py    --model $M --workingdir $WD \
              --questions ./logs/devset.csv --outputpath ./logs/qwen_devset.csv
 # Judge vẫn dùng Gemini để so sánh được với baseline.
-run JUDGE env -u GEMINI_API_BASE -u GEMINI_API_KEY GEMINI_RPM=13 GEMINI_TPM=3000 \
+run JUDGE env -u GEMINI_API_BASE -u GEMINI_API_KEY_ONLY GEMINI_RPM=13 GEMINI_TPM=3000 \
              $PY reproduce/Step_2_evaluate.py --inputpath ./logs/qwen_devset.csv --repeats 3
 echo "=== STAGE: ALL_DONE ==="

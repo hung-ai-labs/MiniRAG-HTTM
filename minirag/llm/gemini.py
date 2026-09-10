@@ -178,6 +178,15 @@ def _resolve_api_keys(api_key: str = None):
     if api_key:
         return [api_key]
 
+    # When the client is pointed at something that is not Gemini -- a local
+    # Ollama, or vLLM on a rented GPU -- exactly one key is valid and the rest
+    # of the pool is worse than useless: every rotation onto a Gemini key comes
+    # back as an auth failure and evicts it, so throughput collapses while the
+    # real cause looks like a permissions problem.
+    only = os.environ.get("GEMINI_API_KEY_ONLY", "").strip()
+    if only:
+        return [only]
+
     keys = []
     raw = os.environ.get("GEMINI_API_KEYS", "")
     keys += [k.strip() for k in raw.replace("\n", ",").split(",") if k.strip()]

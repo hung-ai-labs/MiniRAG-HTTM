@@ -10,3 +10,5 @@ logs/qwen_modal_devset.csv        -text
 logs/qwen_modal_devset_judged.csv -text
 logs/fix1_devset.csv              -text
 logs/fix1_devset_judged.csv       -text
+logs/qwen_nofix_devset.csv        -text
+logs/qwen_nofix_devset_judged.csv -text

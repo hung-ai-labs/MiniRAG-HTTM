@@ -42,3 +42,6 @@ logs/*.jsonl
 
 uploads/
 playground-index/
+qwen-speedtest/
+gemini-speedtest/
+LiHua-World-qwen/

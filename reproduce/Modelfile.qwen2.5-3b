@@ -1,0 +1,6 @@
+FROM qwen2.5:3b
+# Ollama mặc định num_ctx=2048. Context thật của MiniRAG đo được:
+# trung vị 3.908 token, p90 6.830, tối đa 8.291 -> để mặc định là bị cắt âm thầm.
+PARAMETER num_ctx 16384
+PARAMETER temperature 0
+PARAMETER num_predict 1024

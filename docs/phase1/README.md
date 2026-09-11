@@ -10,6 +10,8 @@ Năm đầu ra bắt buộc của Phase 1.
 | 4 | Retrieval Code Map | [`RETRIEVAL_CODE_MAP.md`](RETRIEVAL_CODE_MAP.md) |
 | 5 | Query Trace | [`QUERY_TRACE.md`](QUERY_TRACE.md) |
 | + | **Pipeline Audit & Improvement Plan** | [`MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md) |
+| + | **Nhược điểm & giải pháp** | [`NHUOC_DIEM_VA_GIAI_PHAP.docx`](NHUOC_DIEM_VA_GIAI_PHAP.docx) |
+| + | **Kế hoạch triển khai** (để quyết định làm/không) | [`KE_HOACH_TRIEN_KHAI.md`](KE_HOACH_TRIEN_KHAI.md) |
 | T1 | **Environment Guide** | [`ENVIRONMENT.md`](ENVIRONMENT.md) |
 
 ## Đọc theo thứ tự nào

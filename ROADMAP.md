@@ -163,26 +163,56 @@ Chỉ liệt kê những gì **có sản phẩm kiểm chứng được**, khôn
 | **Qwen2.5-3B bf16** — đã vá answer-type | 59,50 ± 0,50 | 28,00 ± 0,87 | **12,50** | 60,38 | 47,62 | 65,00 |
 | *Bài báo — Qwen2.5-3B* | *48,75* | *26,02* | *25,23* | — | — | — |
 
-**Bản vá answer-type đo được trên hai model, cùng một hướng.** Lượt "chưa vá"
-bật `MINIRAG_ANSWER_TYPE_FIX=0` (`minirag/kg/networkx_impl.py:179`) — khôi phục
-đúng phép so sánh chuỗi của upstream. Dùng lại y nguyên đồ thị `LiHua-World-qwen-modal`,
-**không index lại**: bản vá chỉ chạm đường truy vấn (`operate.py:1311`), nên chênh
-lệch quy hết về một biến duy nhất.
+### ⭐ Baseline 637 câu, corpus 442 — mốc chính thức mới (12/09/2026)
 
-| | acc | err | neither | McNemar |
-|---|---:|---:|---:|---|
-| Gemini: vá − chưa vá | **+2,17** | +0,50 | −2,67 | 9 lên / 4 xuống · **p = 0,267** |
-| Qwen: vá − chưa vá | **+3,50** | −2,33 | −1,17 | 22 lên / 17 xuống · **p = 0,522** |
+| Cấu hình | acc | err | neither | Single (506) | Multi (66) | Null (65) |
+|---|---:|---:|---:|---:|---:|---:|
+| **Chưa vá** *(nối dài baseline 57,33)* | **61,70 ± 0,31** | 19,57 ± 0,24 | 18,73 | 63,64 | 43,43 | 65,13 |
+| Đã vá answer-type | 61,38 ± 0,27 | 19,78 ± 0,47 | 18,84 | 62,78 | **46,97** | 65,13 |
 
-Bằng chứng lỗi là trực tiếp, không suy đoán: lấy 5 kiểu thực thể đầu tiên do chính
-`get_types()` trả về rồi hỏi ngược lại đồ thị — chưa vá khớp **0 node**, đã vá khớp
-**49**. Đồ thị lưu `"ITEM"` (hoa, kèm ngoặc kép), `get_types()` trả `"item"` (thường,
-vẫn còn ngoặc kép), nên tín hiệu answer-type của MiniRAG **bằng 0 trên mọi câu hỏi**.
+**Sàn nhiễu sụp từ 1,53 xuống 0,31.** Ngưỡng "dưới 3 điểm không kết luận được" trong
+`CLAUDE.md` hoá ra là thuộc tính của **dev set 200 câu**, không phải của judge. Ở n=637
+ngưỡng còn khoảng **0,6 điểm**.
 
-> ⚠️ **Cả hai lượt đều KHÔNG đạt ý nghĩa thống kê.** p = 0,267 và p = 0,522, dưới
-> sàn nhiễu judge. Được phép viết: *"lỗi so khớp làm tín hiệu answer-type bằng 0;
-> sửa xong điểm nhích lên ở cả hai model nhưng chưa vượt nhiễu"*. **Không** được
-> viết "bản vá cải thiện accuracy". Muốn khẳng định thì phải chạy trên đủ 637 câu.
+**Dev set 200 câu bi quan 4,37 điểm** (57,33 so với 61,70) và **thổi phồng lỗi nhóm
+Null 8,59 điểm** (err 31,67 trên 20 câu, thực tế 23,08 trên 65 câu). Phát hiện "hệ
+thống bịa khi thiếu bằng chứng" phải hạ mức độ nghiêm trọng tương ứng.
+
+**Multi-hop là phát hiện duy nhất đứng vững:** 43,43 / 42,42 trên n=66, gần trùng khít
+dev set (42,86 / 42,86). Tỷ lệ sai xấp xỉ tỷ lệ đúng.
+
+### ⛔ Bản vá answer-type KHÔNG cải thiện độ chính xác
+
+Đây là kết quả quan trọng nhất của lượt 637 câu, và nó **ngược** với dev set.
+
+| Tập | Δacc | McNemar | p |
+|---|---:|---|---:|
+| Dev 200, Gemini | +2,17 | 9 lên / 4 xuống | 0,267 |
+| Dev 200, Qwen | +3,50 | 22 lên / 17 xuống | 0,522 |
+| **637 câu, Gemini** | **−0,32** | **24 lên / 29 xuống** | **0,583** |
+
+Tách theo loại (n=635, hai câu trùng bị gộp):
+
+| Nhóm | n | sai→đúng | đúng→sai | net | p |
+|---|---:|---:|---:|---:|---:|
+| Single | 506 | 11 | 19 | −8 | 0,201 |
+| Multi | 64 | 6 | 3 | **+3** | 0,508 |
+| Null | 65 | 7 | 7 | 0 | 1,000 |
+
+Bản vá **đổi kết quả 53 câu** — cơ chế có chạy thật, không phải không có tác dụng gì.
+Nhưng số câu hỏng đi nhiều hơn số câu tốt lên. Hai tín hiệu dương trên dev set là nhiễu.
+
+**Cách trình bày đúng:** cơ chế answer-type-aware — một trong những đóng góp trung tâm
+của bài báo — **đã chết trên mọi truy vấn** do lỗi so khớp hoa/thường (`"ITEM"` so với
+`"item"`, khớp 0 node thay vì 49). Hồi sinh nó xong, điểm **không tăng**. Đây là một
+**kết quả phủ định có giá trị**: cơ chế chạy đúng như thiết kế nhưng thiết kế không giúp
+gì trên bộ dữ liệu này.
+
+Nhóm Multi là chỗ duy nhất có dấu hiệu dương (+3,54 điểm, đúng nhóm mà answer-type lẽ
+ra hữu ích nhất), nhưng p = 0,508 trên n = 64 — chưa nói được gì.
+
+**Giữ bản vá làm mặc định** vì nó sửa một lỗi có thật, nhưng phải ghi rõ nó không đổi
+điểm. Không được trình bày như đóng góp.
 
 **Cột `neither` giải thích gần như toàn bộ khác biệt.** Nó là tỷ lệ hệ thống nói
 không biết / từ chối / lạc đề. Tỷ lệ **dám trả lời** (acc + err): Qwen **87,5%**,

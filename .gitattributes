@@ -17,3 +17,4 @@ logs/full637_nofix_judged.csv     -text
 logs/full637_fix.csv              -text
 logs/full637_fix_judged.csv       -text
 logs/entity_cap.csv               -text
+logs/full637_fix_judged.csv       -text

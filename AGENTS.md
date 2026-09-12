@@ -99,9 +99,16 @@ Baseline corpus 442 đã chạy xong, nên ràng buộc *"chưa được cải t
 đã được gỡ. Nhưng cải tiến vẫn phải đi theo trình tự trong ROADMAP: **failure
 taxonomy trước, giả thuyết sau** — không thử mò tham số.
 
-### 3. Quy tắc đọc kết quả (sàn nhiễu judge = **sd 1,53 điểm**)
+### 3. Quy tắc đọc kết quả — sàn nhiễu phụ thuộc CỠ MẪU, không phải judge
 
-Đo trên chính baseline corpus 442: acc dao động **3,00 điểm** giữa 3 lượt judge.
+| Tập | sd giữa 3 lượt | Ngưỡng "không kết luận được" |
+|---|---:|---:|
+| Dev set 200 câu | **1,53** | ~3 điểm |
+| **637 câu** | **0,31** | **~0,6 điểm** |
+
+Đo 12/09/2026 trên corpus 442. Sàn nhiễu **sụp 5 lần** khi tăng cỡ mẫu — nó là thuộc
+tính của *dev set*, không phải của judge. Dùng ngưỡng 3 điểm cho kết quả 637 câu là
+quá khắt khe; dùng ngưỡng 0,6 cho dev 200 là quá lỏng.
 
 | Mức thay đổi | Kết luận |
 |---|---|
@@ -194,7 +201,22 @@ Chat và embedding **dùng chung một pool** vì chung quota project. Client t�
 
 ## Kết quả đã có
 
-### Năm cấu hình đã đo (dev 200 câu, 3 lượt judge)
+### ⭐ Baseline chính thức — 637 câu, corpus 442, 3 lượt judge (12/09/2026)
+
+| Cấu hình | acc | err | neither | Single (506) | Multi (66) | Null (65) |
+|---|---:|---:|---:|---:|---:|---:|
+| **Chưa vá** *(mốc so sánh)* | **61,70 ± 0,31** | 19,57 | 18,73 | 63,64 | 43,43 | 65,13 |
+| Đã vá answer-type | 61,38 ± 0,27 | 19,78 | 18,84 | 62,78 | 46,97 | 65,13 |
+
+**⛔ Bản vá answer-type KHÔNG cải thiện điểm.** McNemar n=635: 24 sai→đúng, 29 đúng→sai,
+net **−5**, p = 0,583. Hai tín hiệu dương trên dev 200 (+2,17 Gemini, +3,50 Qwen) là
+**nhiễu**. Cơ chế answer-type-aware đã chết trên mọi truy vấn do lỗi hoa/thường; hồi
+sinh xong điểm không tăng. Trình bày như **kết quả phủ định**, không phải đóng góp.
+Giữ bản vá làm mặc định vì nó sửa lỗi thật.
+
+### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
+
+
 
 | Cấu hình | acc | err | **neither** |
 |---|---:|---:|---:|
@@ -220,83 +242,3 @@ do lỗi so khớp; sửa xong điểm nhích lên ở cả hai model nhưng ch�
 **Không** được viết "bản vá cải thiện accuracy". Bằng chứng lỗi thì chắc chắn: 5 kiểu
 lấy từ chính `get_types()` khớp **0 node** khi chưa vá, **49 node** khi đã vá.
 
-### ⭐ Baseline chính thức — corpus 442, dev set 200 câu, 3 lượt judge
-
-| Chỉ số | Giá trị |
-|---|---|
-| **Accuracy** | **57,33 ± 1,53** |
-| **Error** | **21,00 ± 2,00** |
-| Single (n=159) | acc 60,17 ± 1,31 · err 16,77 ± 2,21 |
-| Null (n=20) | acc 50,00 ± 5,00 · err 31,67 ± 2,89 |
-| **Multi (n=21)** | **acc 42,86 · err 42,86** ← điểm yếu rõ nhất |
-
-### Baseline cũ (corpus 267) — chỉ để đối chiếu, ĐỪNG dùng làm mốc
-
-| Chỉ số | Giá trị | Ghi chú |
-|---|---|---|
-| 637 câu | 66,41% / 19,15% | thiếu 175 distractor |
-| dev set 200 | 65,67 ± 0,29 / 16,83 ± 1,15 | **lạc quan hơn thực tế 8,3 điểm** |
-
-### Chẩn đoán RAGAS (n=100, corpus 267)
-
-faithfulness 0,703 · **context_precision 0,316** · context_recall 0,560
-→ context_precision thấp = retrieval kéo về nhiều chunk rác.
-
-### Hai quan sát đáng chú ý từ baseline 442
-
-1. **Multi-hop hỏng nặng**: tỷ lệ sai bằng tỷ lệ đúng (42,86 / 42,86).
-2. **Null err 31,67%**: câu không có đáp án trong dữ liệu, hệ thống **bịa** thay vì
-   nói không biết. Thêm distractor vào thì err tăng 4 điểm — nó trả lời sai một
-   cách tự tin, chứ không im lặng.
-
-*(n của Multi và Null chỉ ~20 câu, sai số lớn — đừng kết luận mạnh, cần xác nhận
-trên tập đầy đủ.)*
-
----
-
-## Quirks của dataset — biết trước để khỏi debug nhầm
-
-- `query_set.csv` có **637 dòng nhưng chỉ 635 câu duy nhất** (2 dòng trùng hệt nhau, lỗi upstream)
-- **Không có câu nào thiếu file evidence.** Kiểm lại 09/09/2026: cả 637 câu đều trỏ tới file có thật trong 442 tài liệu. Ghi chú cũ "68 câu thiếu file → trần điểm cứng" là **sai** — đó là số câu trỏ tới tài liệu *chưa được index* hồi corpus mới có 267 file.
-- MiniRAG `.strip()` nội dung trước khi lưu → tính coverage phải hash nội dung **đã strip**
-
----
-
-## Nhánh git
-
-| Nhánh | Nội dung |
-|---|---|
-| `MiniRag-Base` | **Code gốc của MiniRAG, không sửa gì** (`e204d23`). Đừng commit vào đây. |
-| `gemini-benchmark` | Backend Gemini + pipeline đo |
-| `dev` | Nhánh làm việc hiện tại |
-
-`main.py` có sửa đổi **không phải của Claude** (chỉ thụt lề comment) — **đừng đưa vào commit**.
-
----
-
-## Lệnh hay dùng
-
-```bash
-# Index theo evidence (chỉ tài liệu thật sự cần)
-python reproduce/Step_0_index.py --evidence --workingdir ./LiHua-World-gemini
-
-# Sinh câu trả lời trên dev set
-python reproduce/Step_1_QA.py --questions ./logs/devset.csv \
-    --outputpath ./logs/run.csv --workingdir ./LiHua-World-gemini
-
-# Chấm theo giao thức bài báo (3 lượt)
-python reproduce/Step_2_evaluate.py --inputpath ./logs/run.csv --repeats 3
-```
-
-Cả 3 script đều **resume được** — quota hết thì hôm sau chạy lại đúng lệnh cũ, nó
-bỏ qua phần đã làm.
-
----
-
-## Nhóm
-
-**Hùng** (Retrieval & Proposed Method) · **Tài** (Baseline & Failure Analysis) ·
-**HuyDog** (Experiment & Evaluation). Không cần quá khắt khe về biên công việc.
-
-Đường găng hiện tại: **Failure Taxonomy T4–T6 của Tài** — Hùng không sang được `H2`
-nếu chưa có tập query lỗi đã gán nhãn.

@@ -99,29 +99,25 @@ Baseline corpus 442 đã chạy xong, nên ràng buộc *"chưa được cải t
 đã được gỡ. Nhưng cải tiến vẫn phải đi theo trình tự trong ROADMAP: **failure
 taxonomy trước, giả thuyết sau** — không thử mò tham số.
 
-### 3. Quy tắc đọc kết quả — sàn nhiễu phụ thuộc CỠ MẪU, không phải judge
+### 3. Quy tắc đọc kết quả — dùng McNemar, ĐỪNG dùng ngưỡng theo điểm
 
-| Tập | sd giữa 3 lượt | Ngưỡng "không kết luận được" |
-|---|---:|---:|
-| Dev set 200 câu | **1,53** | ~3 điểm |
-| **637 câu** | **0,31** | **~0,6 điểm** |
+⛔ **Quy tắc "dưới 3 điểm không kết luận được" đã bị bãi bỏ 12/09/2026.** Nó sai ở cả
+hai đầu, vì ngưỡng thật phụ thuộc số **cặp lệch** (câu đổi kết quả giữa hai cấu hình),
+mà số đó thay đổi theo từng can thiệp:
 
-Đo 12/09/2026 trên corpus 442. Sàn nhiễu **sụp 5 lần** khi tăng cỡ mẫu — nó là thuộc
-tính của *dev set*, không phải của judge. Dùng ngưỡng 3 điểm cho kết quả 637 câu là
-quá khắt khe; dùng ngưỡng 0,6 cho dev 200 là quá lỏng.
+| Tập | Cặp lệch quan sát | Cần net | = điểm |
+|---|---:|---:|---:|
+| Dev 200 | 13 | ≥ 9 câu | **4,50** ← quy tắc 3 điểm quá *dễ dãi* |
+| 637 câu | 53 | ≥ 17 câu | **2,67** ← quy tắc 3 điểm hơi quá khắt khe |
 
-| Mức thay đổi | Kết luận |
-|---|---|
-| > +5 điểm | Gần như chắc chắn có cải thiện → tiếp tục |
-| +3 đến +5 điểm | Có triển vọng, nhưng phải rerun 3 lượt mới dám khẳng định |
-| **< 3 điểm** | **Không kết luận được** — nằm trong nhiễu của judge |
+**Cách làm đúng:** ghép từng câu giữa hai cấu hình, đếm b (sai→đúng) và c (đúng→sai),
+chạy McNemar chính xác. Báo `b lên / c xuống, p = ...`, không báo mỗi hiệu số.
 
-⚠️ Con số cũ **sd 0,29** đo trên corpus 267 tài liệu, **đã lỗi thời**. Corpus đầy đủ
-khó hơn → nhiều câu trả lời mơ hồ hơn → judge đổi ý nhiều hơn. Ngưỡng "không kết
-luận được" vì thế nhảy từ 0,6 lên ~3 điểm.
+**Sàn nhiễu judge là chuyện khác.** sd giữa 3 lượt chấm cùng một file: **1,53** ở
+n=200, **0,31** ở n=637. Nó chỉ nói ta công bố *một con số đơn lẻ* chính xác tới đâu —
+không phải ngưỡng để so hai cấu hình. Đừng trộn hai thứ này.
 
-Khi làm benchmark cuối để viết báo cáo: **rerun nhiều lượt** để chứng minh cải tiến
-là thật, không phải may mắn.
+Khi làm benchmark cuối: **rerun nhiều lượt** để chứng minh cải tiến là thật.
 
 ### 4. Không xoá index khi chưa hỏi.
 

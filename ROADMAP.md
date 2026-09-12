@@ -202,6 +202,30 @@ Tách theo loại (n=635, hai câu trùng bị gộp):
 Bản vá **đổi kết quả 53 câu** — cơ chế có chạy thật, không phải không có tác dụng gì.
 Nhưng số câu hỏng đi nhiều hơn số câu tốt lên. Hai tín hiệu dương trên dev set là nhiễu.
 
+**Vì sao vá xong acc lại giảm — đo được, không phải suy đoán.** Đồ thị Gemini chỉ có
+**7 kiểu thực thể**, và ba kiểu đầu phủ **86,6%** số node:
+
+| Kiểu | Node | % đồ thị |
+|---|---:|---:|
+| event | 256 | 33,2% |
+| person | 245 | 31,8% |
+| organization | 166 | 21,6% |
+| location | 80 | 10,4% |
+| *3 kiểu còn lại + unknown* | 23 | 3,0% |
+
+Khi LLM trả lời *"kiểu đáp án là PERSON"*, `maybe_answer_list` nhận **245/770 node —
+gần một phần ba đồ thị**. `cal_path_score_list` (`utils.py:404`) đếm số node đó trên
+mỗi đường đi, nên **gần như đường nào cũng ghi điểm**, và đường qua nhiều node ghi
+nhiều hơn — tức thiên vị đường đi qua hub. Mà hub là nguồn nhiễu chính: `LIHUA` bậc 300.
+
+Bản vá không hỏng. Nó bật một tín hiệu **quá thô để phân biệt**. Điều đó khớp đúng
+hướng của số liệu: Single **−8** (cần đường ngắn chính xác, bị đường hub lấn), Multi
+**+3** (vốn cần đường dài).
+
+**Giả thuyết kiểm được:** giá trị của cơ chế answer-type tỷ lệ với **độ mịn của hệ
+thống kiểu**. Đồ thị Gemini 7 kiểu → −0,32. Đồ thị Qwen **47 kiểu / 1.556 node** →
++3,50 trên dev set. Cùng một cơ chế giải thích được cả hai kết quả. Đáng theo.
+
 **Cách trình bày đúng:** cơ chế answer-type-aware — một trong những đóng góp trung tâm
 của bài báo — **đã chết trên mọi truy vấn** do lỗi so khớp hoa/thường (`"ITEM"` so với
 `"item"`, khớp 0 node thay vì 49). Hồi sinh nó xong, điểm **không tăng**. Đây là một

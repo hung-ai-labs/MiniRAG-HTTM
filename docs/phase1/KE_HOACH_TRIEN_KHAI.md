@@ -240,17 +240,19 @@ Hai dòng đầu mâu thuẫn nhau — cùng một cặp khái niệm, câu gi�
 vì `[:5]` cắt theo thứ tự LLM viết ra. `'Sichuan hot pot'` và `'Chae'` là thực thể có
 thật trong đồ thị, bị vứt để giữ `'work'` và `'warm shower'`.
 
-**Khuyến nghị: KHÔNG nâng trần. Đổi *cái nào* được giữ, không đổi *bao nhiêu*.**
-Vẫn giữ 5, nhưng chọn 5 cái khớp đồ thị tốt nhất theo cosine thay vì 5 cái viết ra
-đầu tiên. Phạm vi tác động rộng gấp ba:
+**Khuyến nghị cuối: ĐÓNG HẠNG MỤC A4.**
 
-| | Số câu chịu tác động |
-|---|---:|
-| Nâng trần | 12,2% (16/131) |
-| **Chọn lại theo chất lượng** | **35,9%** (47/131 — mọi câu có ≥5 thực thể) |
+Bản trước của mục này đề xuất *giữ 5 nhưng chọn 5 cái khớp đồ thị tốt nhất*, và ghi
+phạm vi tác động là 35,9%. **Con số đó sai.** Câu có *đúng* 5 thực thể thì `[:5]` giữ
+cả 5 — đổi thứ tự không thay đổi gì, và thứ tự cũng không ảnh hưởng gì phía sau (mỗi
+thực thể truy vấn độc lập ở `operate.py:1271`, điểm cộng dồn vào `Counter`). Chọn lại
+chỉ có tác dụng khi có **hơn** 5, tức đúng **12,2%** — y hệt phạm vi của việc nâng trần.
 
-Và tránh ô cấm sạch hơn: đổi hằng số 5→10 là tinh chỉnh tham số; thay tiêu chí chọn từ
-*thứ tự xuất hiện* sang *độ khớp đồ thị* là cơ chế.
+Trần trên tuyệt đối: **16 câu / 131**, mỗi câu mất ~1 thực thể, phần lớn là từ mơ hồ
+(`'weather conditions'`, `'match'`, `'time interval'`). Không đủ để dựng một Designed
+Mechanism quanh nó.
+
+Giữ ý tưởng lọc cosine thì nhét vào **A2** như một thành phần, đừng đứng riêng.
 
 > ⚠️ **Sai số ±5 điểm.** Log hôm 11/09 đếm 45,5% câu Multi chạm trần; lượt đo 12/09 ra
 > 39,4%. Cùng model, cùng prompt, chênh do LLM không tất định. Đừng xây cả một cơ chế

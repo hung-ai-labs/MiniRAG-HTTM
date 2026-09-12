@@ -73,20 +73,34 @@ def get_args():
     return p.parse_args()
 
 
+# A failed API call used to return "neither", which silently turned quota
+# exhaustion into a verdict: the run looked complete while every failure was
+# scored as an abstention. On the 637-question run that fabricated 25 verdicts
+# before it was caught. Retry instead, and if the judge truly cannot be reached,
+# emit a distinct label so summarize() can refuse to report the pass.
+JUDGE_FAILED = "judge_failed"
+
+
 async def judge(sem, model, row, column):
-    async with sem:
-        try:
-            verdict = await gemini_complete_if_cache(
-                model,
-                JUDGE_PROMPT.format(
-                    question=row["Question"],
-                    gold=row["Gold Answer"],
-                    pred=row[column],
-                ),
-            )
-        except Exception as e:
-            print("judge error:", e)
-            return "neither"
+    for attempt in range(6):
+        async with sem:
+            try:
+                verdict = await gemini_complete_if_cache(
+                    model,
+                    JUDGE_PROMPT.format(
+                        question=row["Question"],
+                        gold=row["Gold Answer"],
+                        pred=row[column],
+                    ),
+                )
+                break
+            except Exception as e:
+                if attempt == 5:
+                    print("judge error (bỏ cuộc sau 6 lần):", e)
+                    return JUDGE_FAILED
+                wait = 60 * (attempt + 1)   # hạn mức ngày chỉ hồi sau nhiều phút
+                print(f"judge error: {e} — thử lại sau {wait}s ({attempt + 1}/5)")
+        await asyncio.sleep(wait)
     verdict = (verdict or "").strip().lower()
     for label in ("accurate", "error", "neither"):
         if label in verdict:
@@ -106,6 +120,12 @@ def summarize(records, label_of_type):
             return None, None
         c = collections.Counter(x["verdict"] for x in rows)
         return c["accurate"] / n * 100, c["error"] / n * 100
+
+    failed = sum(1 for r in records if r["verdict"] == JUDGE_FAILED)
+    if failed:
+        print(f"\n⛔ {failed} lượt chấm THẤT BẠI (không gọi được judge).")
+        print("   Số dưới đây KHÔNG dùng được: mẫu thiếu, và phần thiếu không ngẫu nhiên")
+        print("   (hạn mức cạn dần nên lỗi dồn về cuối danh sách). Chạy lại khi có quota.")
 
     print(f"\n{'':<10}{'acc %':>18}{'err %':>18}")
     accs, errs = [], []

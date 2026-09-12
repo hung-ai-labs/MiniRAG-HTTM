@@ -12,3 +12,7 @@ logs/fix1_devset.csv              -text
 logs/fix1_devset_judged.csv       -text
 logs/qwen_nofix_devset.csv        -text
 logs/qwen_nofix_devset_judged.csv -text
+logs/full637_nofix.csv            -text
+logs/full637_nofix_judged.csv     -text
+logs/full637_fix.csv              -text
+logs/full637_fix_judged.csv       -text

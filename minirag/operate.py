@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 import re
 from typing import Union
 from collections import Counter, defaultdict
@@ -1387,11 +1388,36 @@ async def _build_mini_query_context(
     use_text_units = await asyncio.gather(
         *[text_chunks_db.get_by_id(id) for id in final_chunk_id]
     )
-    text_units_section_list = [["id", "content"]]
+    text_units_section_list = []
 
     for i, t in enumerate(use_text_units):
         if t is not None:
             text_units_section_list.append([i, t["content"]])
+
+    # A1: the Entities table above is capped at max_token_for_node_context (500,
+    # line 1364) but Sources never passed through truncate_list_by_token_size at
+    # all, so the half of the context that carries the raw text -- by far the
+    # larger half -- was unbounded. max_token_for_text_unit (base.py:29, default
+    # 4000) was declared for exactly this and went unused in mini mode.
+    #
+    # Measured consequence: context runs to 3,908 tokens at the median and 8,291
+    # at the maximum, RAGAS context_precision is 0.316, and the Qwen run
+    # overflowed its window at document 91/442 with 16,413 tokens.
+    #
+    # Chunks arrive ranked (kwd2chunk ends in most_common, line 1247), so cutting
+    # the tail drops the lowest-scoring chunks. MINIRAG_TRUNCATE_SOURCES=0
+    # restores upstream's behaviour for measurement; MINIRAG_MAX_TOKEN_TEXT_UNIT
+    # overrides the budget so the sweep needs no code edit.
+    if os.environ.get("MINIRAG_TRUNCATE_SOURCES", "1") != "0":
+        budget = os.environ.get("MINIRAG_MAX_TOKEN_TEXT_UNIT", "").strip()
+        text_units_section_list = truncate_list_by_token_size(
+            text_units_section_list,
+            key=lambda x: x[1],
+            max_token_size=int(budget) if budget
+            else query_param.max_token_for_text_unit,
+        )
+
+    text_units_section_list.insert(0, ["id", "content"])
     text_units_context = list_of_list_to_csv(text_units_section_list)
 
     return f"""

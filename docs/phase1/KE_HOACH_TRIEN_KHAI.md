@@ -191,8 +191,34 @@ không tốn thêm lời gọi nào.
   dồn sức sang A2.
 - Nếu **trên 25%**, và tập trung ở nhóm Multi → đáng làm, đưa trần thành tham số.
 
-**Khuyến nghị: LÀM BƯỚC ĐẾM TRƯỚC.** Tốn 15 phút, quyết định luôn được nên bỏ hay làm.
-Đây là hạng mục duy nhất có thể loại bỏ bằng dữ liệu sẵn có.
+### ✅ Bước đếm đã chạy 12/09 — kết quả lật ngược khuyến nghị
+
+Bóc từ log QA 637 câu, không tốn lời gọi nào. `top_k` của truy vấn tổng bằng
+60 × số thực thể, nên đếm được chính xác:
+
+| Loại | 1 | 2 | 3 | 4 | **5 (trần)** | Tổng | Chạm trần |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Single | 5 | 142 | 247 | 101 | 11 | 506 | **2,2%** |
+| **Multi** | 0 | 6 | 11 | 19 | **30** | 66 | **45,5%** |
+| Null | 0 | 3 | 15 | 30 | 17 | 65 | **26,2%** |
+| Tổng | 5 | 151 | 273 | 150 | 58 | 637 | 9,1% |
+
+Tổng thể 9,1% — dưới ngưỡng 10% mà chính tài liệu này đặt ra để **loại bỏ** hạng mục.
+Nhưng con số trung bình che mất tất cả: **45,5% câu Multi-hop bị cắt cụt ngay bước đầu**,
+so với 2,2% ở Single. Multi-hop lại đúng là nhóm vừa xác nhận yếu thật trên n = 66
+(acc 43,43 / err 42,42).
+
+**Giới hạn của phép đo:** log chỉ cho biết câu nào *chạm* trần, không cho biết LLM định
+trả về bao nhiêu trước khi `[:5]` cắt. 45,5% là **cận dưới**. Muốn biết con số thật thì
+log danh sách trước khi cắt rồi chạy lại riêng bước trích xuất từ khoá — 637 lời gọi,
+không cần judge.
+
+**Khuyến nghị mới: NÊN LÀM, và nâng lên ngay sau A1.** Đưa trần thành tham số, cho nó
+co giãn theo số thực thể LLM thật sự trả về. Đo **riêng nhóm Multi** — đo trên toàn bộ
+637 câu sẽ bị pha loãng vì Single chiếm 506 câu và gần như không chạm trần.
+
+> Ghi lại như một bài học phương pháp: tài liệu này suýt loại bỏ hạng mục bằng một con
+> số trung bình. Quy tắc "đo riêng theo loại" tồn tại đúng để chặn chuyện đó.
 
 ---
 

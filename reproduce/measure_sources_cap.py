@@ -15,6 +15,7 @@ thức đóng góp của nhóm đòi cả Quality lẫn Efficiency.
 """
 import asyncio
 import csv
+import io
 import json
 import os
 import statistics
@@ -42,10 +43,27 @@ def ntok(s):
 
 
 def split_context(ctx):
-    """Context là 3 khối ```csv```: Entities, Relations, Sources."""
-    blocks = ctx.split("```")
-    parts = [b for b in blocks if b.strip().startswith("csv")]
-    return [p[3:] for p in parts]
+    """Tách context thành các khối ```csv``` rồi nhận diện khối theo dòng tiêu đề.
+
+    Không được lấy khối cuối làm Sources: nội dung chunk có xuống dòng và dấu
+    phẩy bên trong, nên cắt theo ký tự sẽ ra số bậy. Đọc bằng csv.reader và tìm
+    đúng khối có tiêu đề ["id", "content"] (operate.py, bảng Sources).
+    """
+    out = {}
+    for b in ctx.split("```"):
+        b = b.strip()
+        if not b.startswith("csv"):
+            continue
+        body = b[3:].strip()
+        try:
+            rows_ = list(csv.reader(io.StringIO(body)))
+        except Exception:
+            continue
+        if not rows_:
+            continue
+        head = [c.strip().lower() for c in rows_[0]]
+        out["sources" if head == ["id", "content"] else ",".join(head)] = (body, rows_)
+    return out
 
 
 async def main():
@@ -84,11 +102,10 @@ async def main():
                     continue          # không ghi -> lượt sau resume sẽ đo lại
                 if not isinstance(ctx, str):
                     continue
-                parts = split_context(ctx)
-                src = parts[-1] if parts else ""
+                blocks = split_context(ctx)
+                src, src_rows = blocks.get("sources", ("", []))
                 w.writerow([b, r["Question"], r.get("Type", "?"),
-                            ntok(ctx), ntok(src),
-                            max(0, src.strip().count("\n"))])
+                            ntok(ctx), ntok(src), max(0, len(src_rows) - 1)])
                 fh.flush()
                 if i % 25 == 0:
                     print(f"  {i}/{len(todo)}")

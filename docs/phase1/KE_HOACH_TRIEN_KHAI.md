@@ -213,14 +213,53 @@ trả về bao nhiêu trước khi `[:5]` cắt. 45,5% là **cận dưới**. Mu
 log danh sách trước khi cắt rồi chạy lại riêng bước trích xuất từ khoá — 637 lời gọi,
 không cần judge.
 
-**Khuyến nghị mới: NÊN LÀM, và nâng lên ngay sau A1.** Đưa trần thành tham số, cho nó
-co giãn theo số thực thể LLM thật sự trả về. Đo **riêng nhóm Multi** — đo trên toàn bộ
-637 câu sẽ bị pha loãng vì Single chiếm 506 câu và gần như không chạm trần.
+### ✅ Đo xong 12/09 — trần gần như vô tội, nhưng lộ ra vấn đề khác
 
-> Ghi lại như một bài học phương pháp: tài liệu này suýt loại bỏ hạng mục bằng một con
-> số trung bình. Quy tắc "đo riêng theo loại" tồn tại đúng để chặn chuyện đó.
+`measure_entity_cap.py` chạy lại đúng bước trích xuất từ khoá, **không cắt**, trên
+131 câu Multi + Null (Single đã ngã ngũ ở 2,2%, đo thêm là phí quota).
 
----
+| Loại | n | Chạm trần | **BỊ CẮT thật** | TB mất | Max đề xuất |
+|---|---:|---:|---:|---:|---:|
+| Multi | 66 | 39,4% | **16,7%** | 1,09 | 7 |
+| Null | 65 | 32,3% | **7,7%** | 1,20 | 7 |
+| Tổng | 131 | 35,9% | **12,2%** | 1,12 | 7 |
+
+**LLM chưa bao giờ đề xuất quá 7.** 4 ví dụ mẫu trong prompt `minirag_query2kwd` có
+3–5 thực thể; LLM bắt chước. Nên gỡ trần hoàn toàn cũng chỉ nhận thêm tối đa 2 thực
+thể. Trần 10 hay 20 đều vô nghĩa — **giới hạn thật nằm ở prompt, không ở code**.
+
+**Nhưng cái bị vứt thì cắt theo thứ tự, không theo chất lượng:**
+
+```
+giữ ['LiHua','Adam','curtain','basement window','time interval']   VỨT ['3 days']
+giữ ['Adam','LiHua','window size','curtain','7 days']              VỨT ['time interval']
+giữ ['Wolfgang','Li Hua','pizza','dinner','work']                  VỨT ['Sichuan hot pot']
+```
+
+Hai dòng đầu mâu thuẫn nhau — cùng một cặp khái niệm, câu giữ cái này câu giữ cái kia,
+vì `[:5]` cắt theo thứ tự LLM viết ra. `'Sichuan hot pot'` và `'Chae'` là thực thể có
+thật trong đồ thị, bị vứt để giữ `'work'` và `'warm shower'`.
+
+**Khuyến nghị: KHÔNG nâng trần. Đổi *cái nào* được giữ, không đổi *bao nhiêu*.**
+Vẫn giữ 5, nhưng chọn 5 cái khớp đồ thị tốt nhất theo cosine thay vì 5 cái viết ra
+đầu tiên. Phạm vi tác động rộng gấp ba:
+
+| | Số câu chịu tác động |
+|---|---:|
+| Nâng trần | 12,2% (16/131) |
+| **Chọn lại theo chất lượng** | **35,9%** (47/131 — mọi câu có ≥5 thực thể) |
+
+Và tránh ô cấm sạch hơn: đổi hằng số 5→10 là tinh chỉnh tham số; thay tiêu chí chọn từ
+*thứ tự xuất hiện* sang *độ khớp đồ thị* là cơ chế.
+
+> ⚠️ **Sai số ±5 điểm.** Log hôm 11/09 đếm 45,5% câu Multi chạm trần; lượt đo 12/09 ra
+> 39,4%. Cùng model, cùng prompt, chênh do LLM không tất định. Đừng xây cả một cơ chế
+> quanh con số 16,7%.
+
+> Bài học phương pháp, ghi lại cả hai chiều: con số trung bình 9,1% suýt làm ta bỏ
+> hạng mục; rồi con số 45,5% của riêng nhóm Multi suýt làm ta nâng trần. Cả hai đều
+> chỉ là "chạm trần". Chỉ phép đo tách được *chạm* khỏi *bị cắt* mới nói được sự thật,
+> và nó tốn đúng 131 lời gọi.
 
 ### A5 · Quét ngưỡng và top_k *(nhược điểm 3)*
 

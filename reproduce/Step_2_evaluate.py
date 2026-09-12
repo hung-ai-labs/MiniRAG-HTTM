@@ -216,8 +216,12 @@ async def main():
                     *[judge(sem, args.judgemodel, r, args.column) for r in chunk]
                 )
                 for r, v in zip(chunk, got):
-                    w.writerow([r["Question"],
-                                label_of_type.get(r["Question"], "?"), run, v])
+                    # Không ghi hàng thất bại ra file: resume ở dòng 208 bỏ qua
+                    # mọi (câu, lượt) đã có trong file, nên ghi vào là lần chạy
+                    # sau sẽ vĩnh viễn không chấm lại chúng.
+                    if v != JUDGE_FAILED:
+                        w.writerow([r["Question"],
+                                    label_of_type.get(r["Question"], "?"), run, v])
                     records.append({"question": r["Question"], "run": run,
                                     "verdict": v})
                 fh.flush()
@@ -225,6 +229,10 @@ async def main():
 
     summarize(records, label_of_type)
     print(f"\nchi tiết từng lượt: {out}")
+    # Thoát khác 0 khi có lượt chấm hỏng, để `until ...` ở script gọi ngoài chờ
+    # rồi chạy lại. Thoát 0 ở đây là lặng lẽ công bố một bảng số thiếu mẫu.
+    if any(r["verdict"] == JUDGE_FAILED for r in records):
+        sys.exit(1)
 
 
 asyncio.run(main())

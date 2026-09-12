@@ -9,6 +9,6 @@ unset GEMINI_API_BASE GEMINI_API_KEY_ONLY MINIRAG_MAX_TOKENS MINIRAG_ANSWER_TYPE
 echo "=== STAGE: JUDGE_FIX === $(date '+%d/%m %H:%M')"
 until .venv/bin/python reproduce/Step_2_evaluate.py \
         --inputpath ./logs/full637_fix.csv --repeats 3; do
-  echo "=== thất bại, chờ 30 phút cho hạn mức hồi ==="; sleep 1800
+  echo "=== chưa đủ quota, chờ 30 phút === $(date +%H:%M)"; sleep 1800
 done
 echo "=== STAGE: ALL_DONE === $(date '+%d/%m %H:%M')"

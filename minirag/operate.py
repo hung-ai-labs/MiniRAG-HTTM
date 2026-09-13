@@ -1444,9 +1444,13 @@ async def _build_mini_query_context(
     # larger half -- was unbounded. max_token_for_text_unit (base.py:29, default
     # 4000) was declared for exactly this and went unused in mini mode.
     #
-    # Measured consequence: context runs to 3,908 tokens at the median and 8,291
-    # at the maximum, RAGAS context_precision is 0.316, and the Qwen run
-    # overflowed its window at document 91/442 with 16,413 tokens.
+    # Measured consequence (measure_sources_cap.py, dev 200, 12/09): uncapped,
+    # the context is 22,839 tokens at the median and 33,412 at the maximum --
+    # past Qwen2.5-3B's 32,768 window for ~5-8% of questions -- and Sources is
+    # 99.9% of it. At 4,000 it is 3,743 median. (An earlier "3,908 median" came
+    # from Step_3_collect_context, which keeps only 8 chunks, so it was never the
+    # full context. The 16,413-token overflow at document 91/442 was at INDEX
+    # time, from uncapped generation, fixed by MINIRAG_MAX_TOKENS -- unrelated.)
     #
     # Chunks arrive ranked (kwd2chunk ends in most_common, line 1247), so cutting
     # the tail drops the lowest-scoring chunks. MINIRAG_TRUNCATE_SOURCES=0

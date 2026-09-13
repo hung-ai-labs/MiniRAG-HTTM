@@ -226,6 +226,12 @@ hướng của số liệu: Single **−8** (cần đường ngắn chính xác,
 thống kiểu**. Đồ thị Gemini 7 kiểu → −0,32. Đồ thị Qwen **47 kiểu / 1.556 node** →
 +3,50 trên dev set. Cùng một cơ chế giải thích được cả hai kết quả. Đáng theo.
 
+> ⚠️ **Cập nhật 13/09 — phép sàng lọc trên Qwen 637 không ủng hộ giả thuyết này.** Qwen,
+> 637 câu: 44 lên / 40 xuống, net **+4, p = 0,744** (Gemini: net −5, p = 0,583). Cả hai là
+> số không; +3,50 trên dev 200 là nhiễu. Giả thuyết **chưa bị bác bỏ** — phép sàng lọc quá
+> yếu vì hai đồ thị khác nhau nhiều thứ — nhưng **không còn bằng chứng ủng hộ**. Muốn kết
+> luận phải gộp 47 kiểu của Qwen xuống 7 nhóm và chạy lại trên **cùng** đồ thị.
+
 **Cách trình bày đúng:** cơ chế answer-type-aware — một trong những đóng góp trung tâm
 của bài báo — **đã chết trên mọi truy vấn** do lỗi so khớp hoa/thường (`"ITEM"` so với
 `"item"`, khớp 0 node thay vì 49). Hồi sinh nó xong, điểm **không tăng**. Đây là một
@@ -258,6 +264,66 @@ một đánh đổi, không phải cải thiện thuần.
 > bằng Gemini thay vì GPT-4o, 200 câu thay vì 637, và bản vá O(N²) làm đồ thị khác
 > upstream. Ranh giới `error` / `neither` phụ thuộc judge nên riêng việc đổi judge
 > đã đủ dịch chuyển hai cột đó.
+
+### 🔍 Chẩn đoán truy hồi bằng Evidence — dev 200, index Qwen (13/09/2026)
+
+Cột `Evidence` ghi đúng thời điểm tin nhắn chứa đáp án; mỗi chunk bắt đầu bằng
+`Time: YYYYMMDD_HH:MM`. Nên với mỗi câu ta biết **chính xác chunk nào chứa đáp án** — đo
+được truy hồi mà không cần sinh hay chấm. 180 câu, 207 chunk đáp án (20 câu Null có
+evidence `N/A` bị loại). Script: `reproduce/diagnose_path2chunk.py` · báo cáo:
+`logs/diag_path2chunk_report.txt`. Evidence **chỉ** dùng để chẩn đoán, không bao giờ
+dùng lúc chạy (rò nhãn).
+
+**Chunk đáp án rơi rụng ở đâu:**
+
+| Giai đoạn | Chunk đáp án còn lại |
+|---|---:|
+| Top-30 vector thuần trên câu hỏi (`chunks_vdb`) | **87,0%** |
+| Xếp hạng đồ thị, 30 chunk (`kwd2chunk`) | 61,8% |
+| Sau A1@4000 — thứ thật sự vào prompt | **47,3%** |
+
+**Phát hiện 1 — lỗi `path2chunk` có thật nhưng vô hại.** `operate.py:1207` chọn chunk theo
+điểm của **đường đi cuối cùng** thay vì điểm cộng dồn mọi đường (bản đúng nằm trong
+comment từ commit đầu tiên của upstream). Sửa xong: 47,3% → 45,4%, McNemar 13 lên / 17
+xuống, p = 0,585. → Sửa lỗi baseline, **không phải đóng góp**.
+
+**Phát hiện 2 — cắt theo vách điểm làm mất đáp án.** Quy tắc không tham số (cắt tại chỗ
+`s[i]/s[i+1]` lớn nhất): giữ trung vị 4 chunk, 2.424 token, nhưng chỉ còn **37,2%** chunk
+đáp án. Dự báo hại độ chính xác.
+
+**Phát hiện 3 — Observed Problem mạnh nhất: khâu đồ thị bỏ rơi 25 điểm recall mà vector đã
+tìm được.** `kwd2chunk` chỉ xếp hạng chunk **nằm trên đường đi**; `chunks_ids` từ vector
+chỉ được thưởng ×10 nếu tình cờ đứng đầu một đường. Chunk vector tìm được mà không đường
+nào chạm tới thì **không bao giờ vào context**.
+
+Mô phỏng offline trên chính xếp hạng đã lưu (`reproduce/simulate_fusion.py`; vector tính
+lại khớp bản ghi 180/180), cùng A1@4000:
+
+| Cách xếp hạng | Chunk đáp án | Câu đủ đáp án | Token tv | Multi: chunk / câu đủ |
+|---|---:|---:|---:|---:|
+| Đồ thị (hiện tại) | 47,3% | 43,3% | 3.678 | 54,2% / 28,6% |
+| **RRF(đồ thị, vector)**, k=60 | **66,7%** | **62,8%** | 3.704 | **81,2% / 66,7%** |
+| Vector thuần | 71,5% | 67,8% | 3.726 | 79,2% / 57,1% |
+
+RRF so với hiện tại: **40 câu lên / 7 xuống, p < 0,0001**; riêng Multi 8 / 0, p = 0,008.
+
+> ⚠️ **Điều phải nói thẳng khi viết bài.** Ở Single, vector thuần (69,2%) **hơn** RRF
+> (62,3%) — tức trên câu một bước, xếp hạng đồ thị đang **kéo recall xuống**. Đồ thị chỉ
+> thắng ở Multi. Nếu QA xác nhận điều này, đóng góp đúng là *"trộn giữ được lợi thế
+> multi-hop của đồ thị mà không mất recall của vector"*, không phải *"đồ thị tốt hơn"*.
+> Recall chunk cũng chưa phải độ chính xác — phải chờ judge.
+
+**Đang chạy trên Qwen 637** (`reproduce/run_fusion637_{qa,judge}.sh`), mỗi biến thể so với
+baseline `qwen637_fix`, đổi đúng một biến:
+
+| Biến thể | Công tắc | Chẩn đoán dự báo |
+|---|---|---|
+| V2 | `PATH2CHUNK_FIX=1` + `CHUNK_CUT=knee` | giữ 37,2% đáp án → hại |
+| V3 | `CHUNK_FUSION=rrf` | giữ 66,7% đáp án → có lợi |
+| V1 | `PATH2CHUNK_FIX=1` | 45,4% → ≈ không đổi |
+
+Dev 200 là tập con của 637 và quy tắc được nhìn trên dev → **phép thử sạch là 437 câu
+ngoài dev**; `compare_variants.py` báo tách riêng.
 
 ### Đồ thị: SLM dựng khác hẳn Gemini
 

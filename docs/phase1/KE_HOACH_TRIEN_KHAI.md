@@ -75,8 +75,15 @@ context — **không đi qua bước cắt nào**. Tham số `max_token_for_text
 
 **Vì sao đáng làm.** Đây là bất đối xứng gần như chắc chắn ngoài ý muốn, chỉ ra được
 bằng code chứ không phải suy đoán. RAGAS đo `context_precision 0,316` — hai phần ba
-chunk nhét vào prompt là rác. Với SLM cửa sổ 8k thì p90 context đã 6.830 token, tức
-đã chạm trần; lượt Qwen từng **tràn context ở tài liệu 91/442** chính vì chuyện này.
+chunk nhét vào prompt là rác. Đo đầy đủ bằng `measure_sources_cap.py` (dev 200, 12/09):
+không cắt thì context trung vị **22.839** token, max **33.412** — vượt cửa sổ 32.768 của
+Qwen2.5-3B ở khoảng 5–8% câu hỏi; bảng Sources chiếm 99,9%.
+
+> ⚠️ **Đính chính 13/09.** Bản trước ghi "p90 6.830 token" và "lượt Qwen tràn context ở
+> tài liệu 91/442 chính vì chuyện này". Cả hai sai: con số 6.830 lấy từ
+> `Step_3_collect_context.py`, script chỉ giữ 8 chunk mỗi câu nên không phải context
+> đầy đủ; còn lần tràn 16.413 token xảy ra **lúc index** do sinh chữ không giới hạn
+> (commit `33bd0ef`, sửa bằng `MINIRAG_MAX_TOKENS`), không liên quan bảng Sources.
 
 **Sửa gì.** Sau `operate.py:1390` (chỗ dựng `text_units_section_list`), áp
 `truncate_list_by_token_size` lên danh sách chunk trước khi `list_of_list_to_csv`,

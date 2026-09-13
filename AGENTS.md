@@ -39,8 +39,10 @@ trên index Gemini chỉ là ablation phần sinh, không phải tái tạo.
 - Dùng **vLLM**, nó phục vụ API tương thích OpenAI nên tái dùng được cấu trúc của
   `gemini.py` (đổi base URL, bỏ key pool). **30–60 phút** trên A10G.
 - Khối lượng: 503 chunk × 2 + 200 câu × 2 = **1.406 lời gọi**.
-- **Không chọn `GLM-Edge-1.5B`** — context thật đo được có trung vị 3.908 token,
-  p90 6.830, max 8.291; cửa sổ 8k của nó sẽ tràn.
+- **Không chọn `GLM-Edge-1.5B`** — cửa sổ 8k của nó sẽ tràn. Context đầy đủ đo 12/09
+  (`measure_sources_cap.py`, dev 200): không cắt trung vị 22.839 token, max 33.412; ở
+  A1@4000 trung vị 3.743, max 4.757. *(Con số cũ "3.908 / 6.830 / 8.291" lấy từ
+  `Step_3_collect_context.py` vốn chỉ giữ 8 chunk — không phải context đầy đủ.)*
 - Cảnh báo: `main.py:61` đặt `llm_model_max_token_size=200` và `hf.py:151` giới hạn
   `max_new_tokens=512`. Đầu ra trích xuất dễ bị cắt giữa chừng → node rác. Kiểm chỗ
   này trước khi kết luận đồ thị thưa là do SLM yếu.
@@ -209,6 +211,26 @@ net **−5**, p = 0,583. Hai tín hiệu dương trên dev 200 (+2,17 Gemini, +3
 **nhiễu**. Cơ chế answer-type-aware đã chết trên mọi truy vấn do lỗi hoa/thường; hồi
 sinh xong điểm không tăng. Trình bày như **kết quả phủ định**, không phải đóng góp.
 Giữ bản vá làm mặc định vì nó sửa lỗi thật.
+
+### ⭐ Qwen2.5-3B — 637 câu, 3 lượt judge (13/09/2026) — mốc cho mọi cải tiến truy hồi
+
+| Cấu hình | acc | err | neither | acc/(acc+err) | Single (506) | Multi (64) | Null (65) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Chưa vá answer-type | 50,60 ± 0,09 | 27,72 | 21,68 | 64,61 | 50,33 | 35,42 | 67,69 |
+| **Đã vá** — `logs/qwen637_fix_judged.csv` *(baseline)* | **51,02 ± 0,42** | 27,66 | 21,31 | 64,84 | 51,19 | 30,21 | 70,26 |
+| *Bài báo — Qwen2.5-3B (GPT chấm)* | *48,75* | *26,02* | *25,23* | *65,20* | | | |
+
+McNemar vá / chưa vá: **44 lên / 40 xuống, net +4, p = 0,744** — lần xác nhận thứ hai, độc
+lập với Gemini (net −5, p = 0,583). Hai đồ thị, hai model, cùng một số không.
+
+**Điều kiện đi kèm, bắt buộc ghi khi trích dẫn:**
+- Cả hai lượt mang **A1@4000** (commit `eb303f9`, 12/09 14:00) → **không** so trực tiếp với
+  bốn dòng dev 200 đo ngày 10/09 (chưa có A1).
+- So với bài báo là **tham chiếu, không phải đối chứng**: khác giám khảo (Gemini thay GPT),
+  khác đồ thị (Qwen dựng 1.556 node, đã vá O(N²)), thêm A1 và bản vá answer-type.
+  acc cao hơn 2,27 nhưng acc/(acc+err) bằng nhau (64,84 ± 0,37 so với 65,20): toàn bộ chênh
+  lệch là 3,92 điểm `neither` chuyển sang trả lời, trong đó chỉ 58% đúng.
+- Có 635 câu phân biệt trong 637 dòng (2 câu hỏi trùng).
 
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 

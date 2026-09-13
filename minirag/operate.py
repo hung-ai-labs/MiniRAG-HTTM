@@ -1238,6 +1238,16 @@ def _knee_keep(scores):
     return max(range(len(s) - 1), key=lambda i: s[i] / s[i + 1]) + 1
 
 
+def _rrf_fuse(*rankings, k=60):
+    """Reciprocal rank fusion (Cormack et al., 2009). k=60 là hằng số mặc định của
+    bài gốc, không tinh chỉnh. Hoà điểm giữ thứ tự xuất hiện: bảng đầu tiên trước."""
+    sc = defaultdict(float)
+    for rk in rankings:
+        for i, cid in enumerate(rk):
+            sc[cid] += 1 / (k + i + 1)
+    return [c for c, _ in sorted(sc.items(), key=lambda x: -x[1])]
+
+
 def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
     final_chunk = Counter()
     final_chunk_id = []
@@ -1403,6 +1413,15 @@ async def _build_mini_query_context(
     final_chunk_id = kwd2chunk(
         ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2)
     )
+    # MINIRAG_CHUNK_FUSION=rrf: kwd2chunk chỉ xếp hạng chunk NẰM TRÊN đường đi đồ thị;
+    # chunks_ids (vector thuần trên câu hỏi gốc) chỉ được cộng điểm thưởng x10 nếu
+    # trùng đầu một đường, nên chunk vector tìm được mà không nằm trên đường nào thì
+    # không bao giờ vào context. Chẩn đoán dev 200 (Evidence làm nhãn): top-30 vector
+    # chứa 87,0% chunk đáp án, xếp hạng đồ thị sau A1@4000 chỉ giữ 47,3%. Trộn hai bảng
+    # bằng RRF giữ 66,7% (40 câu lên / 7 xuống, p<0,0001) với cùng ngân sách token.
+    # A1 vẫn cắt phía sau như cũ.
+    if os.environ.get("MINIRAG_CHUNK_FUSION", "") == "rrf":
+        final_chunk_id = _rrf_fuse(final_chunk_id, chunks_ids)
 
     if not len(results_node):
         return None

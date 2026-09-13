@@ -318,12 +318,28 @@ baseline `qwen637_fix`, đổi đúng một biến:
 
 | Biến thể | Công tắc | Chẩn đoán dự báo |
 |---|---|---|
-| V2 | `PATH2CHUNK_FIX=1` + `CHUNK_CUT=knee` | giữ 37,2% đáp án → hại |
+| V2 | `PATH2CHUNK_FIX=1` + `CHUNK_CUT=knee` | giữ 37,2% đáp án → hại · **đo 14/09: hại thật** ↓ |
 | V3 | `CHUNK_FUSION=rrf` | giữ 66,7% đáp án → có lợi |
 | V1 | `PATH2CHUNK_FIX=1` | 45,4% → ≈ không đổi |
 
 Dev 200 là tập con của 637 và quy tắc được nhìn trên dev → **phép thử sạch là 437 câu
 ngoài dev**; `compare_variants.py` báo tách riêng.
+
+**⛔ V2 — cắt theo vách: kết quả phủ định, có ý nghĩa thống kê (14/09, `logs/compare_v2.txt`)**
+
+| Nhóm | n | baseline acc / err / neither | V2 acc / err / neither | McNemar |
+|---|---:|---|---|---|
+| **Tổng** | 635 | 51,02 / 27,66 / 21,31 | **45,41** / 23,52 / **31,08** | 64 lên / 100 xuống, **p = 0,006** |
+| Single | 506 | 51,19 / 25,03 / 23,78 | 43,94 / 22,00 / 34,06 | 51 / 87, p = 0,003 |
+| Multi | 64 | 30,21 / 58,85 / 10,94 | 23,96 / 47,92 / 28,12 | 6 / 9, p = 0,607 |
+| Null | 65 | 70,26 / 17,44 / 12,31 | 77,95 / 11,28 / 10,77 | 7 / 4, p = 0,549 |
+| Ngoài dev | 435 | 49,43 / 28,43 / 22,15 | 45,82 / 23,83 / 30,34 | 46 / 63, p = 0,125 |
+
+Context trung vị **2.438 token** (giảm ~40%), nhưng mất 5,6 điểm acc. Cơ chế hỏng đúng như
+chẩn đoán dự báo: bớt chunk thì bớt bằng chứng, và Qwen **chuyển sang từ chối** (`neither`
++9,77) chứ không bịa thêm (`err` −4,14; acc/(acc+err) còn nhích 64,84 → 65,88). Hệ an toàn
+hơn nhưng trả lời được ít hơn hẳn. **Loại cắt vách.** Giá trị phụ: chẩn đoán bằng Evidence
+đã dự báo đúng chiều trước khi tốn một lượt chấm nào.
 
 ### Đồ thị: SLM dựng khác hẳn Gemini
 

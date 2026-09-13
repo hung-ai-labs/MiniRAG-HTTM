@@ -242,10 +242,11 @@ bằng reciprocal rank fusion (k=60, không tinh chỉnh), trước bước cắ
 | Baseline `qwen637_fix` | 51,02 ± 0,42 | 27,66 | 21,31 | 64,84 | — |
 | **+ trộn RRF (V3)** | **61,94 ± 0,45** | **23,78** | 14,28 | **72,26** | **117 lên / 49 xuống, p = 1,4·10⁻⁷** |
 | + cắt vách (V2) | 45,41 ± 0,18 | 23,52 | 31,08 | 65,88 | 64 / 100, p = 0,006 ⛔ |
+| + chỉ sửa lỗi `path2chunk` (V1) | 50,81 ± 0,64 | 26,35 | 22,83 | 65,85 | 76 / 78, p = 0,936 — không đổi |
 
 Phép thử sạch (435 câu ngoài dev): +13,56 acc, p = 7,3·10⁻⁸. Cùng ngân sách token.
-**Mặc định vẫn tắt** — chờ ablation V4 (RRF @2000) và V1 (chỉ sửa lỗi `path2chunk`), rồi nhóm
-quyết. Chi tiết, kiểm độ sạch và cảnh báo nhóm Null (−9,23, p = 0,092): ROADMAP.
+**Mặc định vẫn tắt** — chờ ablation V4 (RRF @2000), rồi nhóm quyết. V2 so với V1
+(khác đúng cắt vách): 39 / 73, p = 0,002 → phần hại của V2 hoàn toàn do cắt vách. Chi tiết, kiểm độ sạch và cảnh báo nhóm Null (−9,23, p = 0,092): ROADMAP.
 
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 

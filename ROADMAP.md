@@ -320,7 +320,7 @@ baseline `qwen637_fix`, đổi đúng một biến:
 |---|---|---|
 | V2 | `PATH2CHUNK_FIX=1` + `CHUNK_CUT=knee` | giữ 37,2% đáp án → hại · **đo 14/09: hại thật** ↓ |
 | V3 | `CHUNK_FUSION=rrf` | giữ 66,7% đáp án → có lợi · **đo 14/09: +10,92 acc, p = 1,4·10⁻⁷** ↓ |
-| V1 | `PATH2CHUNK_FIX=1` | 45,4% → ≈ không đổi |
+| V1 | `PATH2CHUNK_FIX=1` | 45,4% → ≈ không đổi · **đo 14/09: net −2, p = 0,936** ✓ |
 
 Dev 200 là tập con của 637 và quy tắc được nhìn trên dev → **phép thử sạch là 437 câu
 ngoài dev**; `compare_variants.py` báo tách riêng.
@@ -376,6 +376,26 @@ Controlled Experiment (một công tắc; cùng index, model, judge, 637 câu) �
 
 *So với bài báo (chỉ tham chiếu — khác giám khảo):* acc 61,94 so với 48,75, err 23,78 so với
 26,02 — lần đầu **vừa cao acc hơn vừa thấp err hơn**.
+
+**V1 — chỉ sửa lỗi `path2chunk`: không đổi điểm (14/09, `logs/compare_v1.txt`)**
+
+| Nhóm | n | baseline acc / err / neither | V1 acc / err / neither | McNemar |
+|---|---:|---|---|---|
+| **Tổng** | 635 | 51,02 / 27,66 / 21,31 | 50,81 ± 0,64 / 26,35 / 22,83 | 76 lên / 78 xuống, **p = 0,936** |
+| Single | 506 | 51,19 / 25,03 / 23,78 | 51,19 / 23,06 / 25,76 | 64 / 64, p = 1,000 |
+| Multi | 64 | 30,21 / 58,85 / 10,94 | 31,77 / 55,73 / 12,50 | 9 / 8, p = 1,000 |
+| Null | 65 | 70,26 / 17,44 / 12,31 | 66,67 / 23,08 / 10,26 | 3 / 6, p = 0,508 |
+| Ngoài dev | 435 | 49,43 / 28,43 / 22,15 | 51,34 / 23,98 / 24,67 | 54 / 47, p = 0,551 |
+
+Lỗi có thật trong code nhưng không đổi điểm — đúng dự báo chẩn đoán (47,3% → 45,4% chunk đáp
+án, p = 0,585). Trình bày như **sửa lỗi baseline**, không phải đóng góp.
+
+**Tách biến cho V2.** V2 so với V1 — khác nhau đúng một thứ là cắt vách: **39 lên / 73 xuống,
+net −34, p = 0,002** (ngoài dev 27 / 51, p = 0,009). → Toàn bộ phần hại của V2 là do cắt vách.
+
+**Chẩn đoán bằng Evidence dự báo đúng chiều cả ba biến thể trước khi tốn lượt chấm nào:**
+V1 ≈ 0 ✓ · V2 hại ✓ · V3 lợi ✓. Đây là lập luận phương pháp đáng đưa vào bài: nhãn Evidence
+có sẵn cho phép sàng lọc cơ chế truy hồi gần như miễn phí.
 
 ### Đồ thị: SLM dựng khác hẳn Gemini
 

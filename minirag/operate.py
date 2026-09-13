@@ -1204,7 +1204,14 @@ async def path2chunk(
                 v["Path"].append(id[0])
             # v['Path'] = count_dict.most_common(max_chunks)#[]
         else:
-            for id in count_dict.most_common(max_chunks):
+            # path2chunk-fix: node_chunk_id cộng dồn điểm của MỌI đường đi (dòng trên),
+            # nhưng upstream lại chọn theo count_dict -- chỉ là điểm của đường CUỐI
+            # trong vòng lặp, thứ tự do đồ thị trả về. Bản đúng nằm sẵn trong comment
+            # bên dưới. MINIRAG_PATH2CHUNK_FIX=1 bật bản sửa; mặc định giữ upstream.
+            picked = (node_chunk_id
+                      if os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") == "1"
+                      else count_dict)
+            for id in picked.most_common(max_chunks):
                 v["Path"].append(id[0])
             # v['Path'] = node_chunk_id.most_common(max_chunks)
     return scored_edged_reasoning_path
@@ -1216,6 +1223,19 @@ def scorednode2chunk(input_dict, values_dict):
             values_dict.get(val, None) for val in value_list if val in values_dict
         ]
         input_dict[key] = [val for val in input_dict[key] if val is not None]
+
+
+def _knee_keep(scores):
+    """Số chunk giữ lại: cắt tại chỗ điểm tụt mạnh nhất (tỷ lệ s[i]/s[i+1] lớn nhất).
+
+    Không có tham số tự do -- ranh giới do chính phân bố điểm của từng câu quyết định,
+    nên số chunk co giãn theo câu hỏi thay vì một con số cố định. Chốt 13/09/2026
+    trước khi đo trên 637 câu.
+    """
+    s = [x for x in scores if x > 0]
+    if len(s) < 2:
+        return len(s)
+    return max(range(len(s) - 1), key=lambda i: s[i] / s[i + 1]) + 1
 
 
 def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
@@ -1245,7 +1265,12 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
             total_id_scores.update(scores)
         final_chunk = final_chunk + total_id_scores  # .most_common(3)
 
-    for i in final_chunk.most_common(chunk_nums):
+    ranked = final_chunk.most_common(chunk_nums)
+    # MINIRAG_CHUNK_CUT=knee: giữ tới vách điểm thay vì cả chunk_nums chunk. A1 (cắt
+    # theo token) vẫn áp phía sau như trần an toàn cho cửa sổ model.
+    if os.environ.get("MINIRAG_CHUNK_CUT", "") == "knee":
+        ranked = ranked[: _knee_keep([sc for _, sc in ranked])]
+    for i in ranked:
         final_chunk_id.append(i[0])
     return final_chunk_id
 
@@ -1416,6 +1441,17 @@ async def _build_mini_query_context(
             max_token_size=int(budget) if budget
             else query_param.max_token_for_text_unit,
         )
+
+    _ctx_log = os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()
+    if _ctx_log:
+        with open(_ctx_log, "a", encoding="utf-8") as _fh:
+            _fh.write(json.dumps({
+                "query": originalquery,
+                "n_chunks": len(text_units_section_list),
+                "sources_tok": sum(len(encode_string_by_tiktoken(x[1]))
+                                   for x in text_units_section_list),
+                "entities_tok": len(encode_string_by_tiktoken(entities_context)),
+            }, ensure_ascii=False) + "\n")
 
     text_units_section_list.insert(0, ["id", "content"])
     text_units_context = list_of_list_to_csv(text_units_section_list)

@@ -1,4 +1,9 @@
 #!/bin/zsh
+# ⛔ ĐÃ NGHỈ HƯU 12/09/2026 — script này chạy hai biến thể NỐI TIẾP.
+# Dùng reproduce/run_qwen637_one.sh 1 và ... 0 chạy SONG SONG (nhanh gấp đôi).
+# ĐỪNG chạy file này song song với file kia: cả hai cùng ghi nối vào
+# logs/qwen637_nofix.csv sẽ làm hỏng dữ liệu.
+echo "Script này đã nghỉ hưu. Dùng: ./reproduce/run_qwen637_one.sh 0|1"; exit 1
 # Chỉ phần QA của Qwen 637 — chạy trên Modal nên KHÔNG tốn lời gọi Gemini nào,
 # vì vậy chạy song song được với lượt quét A1 đang dùng hạn mức Gemini.
 # Phần chấm tách sang run_qwen637_judge.sh, xếp hàng sau A1.

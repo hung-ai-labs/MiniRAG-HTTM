@@ -1,11 +1,16 @@
 #!/bin/zsh
 # Chấm hai lượt Qwen 637. Chờ CẢ HAI điều kiện: A1 quét xong (nhả hạn mức Gemini)
 # và QA trên Modal đã sinh đủ câu trả lời.
+#
+# Cổng A1 dùng cờ ALL_DONE trong log, KHÔNG đếm dòng CSV. Bản cũ chờ
+# sources_cap.csv đủ 800 dòng và đã treo vĩnh viễn ở 793: measure_sources_cap.py
+# bỏ qua câu nào aquery trả về không phải chuỗi (dòng 103) nên tổng hợp lệ có thể
+# nhỏ hơn 4 x 200. Cờ ALL_DONE mới là tín hiệu hoàn tất thật.
 cd /Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM
 export PYTHONUNBUFFERED=1 GEMINI_RPM=13 GEMINI_TPM=3000
 unset GEMINI_API_BASE GEMINI_API_KEY_ONLY MINIRAG_MAX_TOKENS MINIRAG_ANSWER_TYPE_FIX
 lines () { echo $(( $(wc -l < "$1" 2>/dev/null || echo 1) - 1 )); }
-while [ "$(lines ./logs/sources_cap.csv)" -lt 800 ]; do sleep 180; done
+while ! grep -q "STAGE: ALL_DONE" logs/sources_sweep.log 2>/dev/null; do sleep 180; done
 echo "=== A1 xong === $(date '+%d/%m %H:%M')"
 for f in ./logs/qwen637_fix.csv ./logs/qwen637_nofix.csv; do
   while [ "$(lines $f)" -lt 637 ]; do sleep 180; done

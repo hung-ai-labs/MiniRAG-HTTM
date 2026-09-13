@@ -232,6 +232,21 @@ lập với Gemini (net −5, p = 0,583). Hai đồ thị, hai model, cùng mộ
   lệch là 3,92 điểm `neither` chuyển sang trả lời, trong đó chỉ 58% đúng.
 - Có 635 câu phân biệt trong 637 dòng (2 câu hỏi trùng).
 
+### ✅ Cải tiến truy hồi đầu tiên có ý nghĩa thống kê — trộn RRF (14/09/2026)
+
+`MINIRAG_CHUNK_FUSION=rrf` trộn xếp hạng chunk của đồ thị (`kwd2chunk`) với vector thuần
+bằng reciprocal rank fusion (k=60, không tinh chỉnh), trước bước cắt A1@4000.
+
+| Qwen2.5-3B, 637 câu | acc | err | neither | acc/(acc+err) | McNemar vs baseline |
+|---|---:|---:|---:|---:|---|
+| Baseline `qwen637_fix` | 51,02 ± 0,42 | 27,66 | 21,31 | 64,84 | — |
+| **+ trộn RRF (V3)** | **61,94 ± 0,45** | **23,78** | 14,28 | **72,26** | **117 lên / 49 xuống, p = 1,4·10⁻⁷** |
+| + cắt vách (V2) | 45,41 ± 0,18 | 23,52 | 31,08 | 65,88 | 64 / 100, p = 0,006 ⛔ |
+
+Phép thử sạch (435 câu ngoài dev): +13,56 acc, p = 7,3·10⁻⁸. Cùng ngân sách token.
+**Mặc định vẫn tắt** — chờ ablation V4 (RRF @2000) và V1 (chỉ sửa lỗi `path2chunk`), rồi nhóm
+quyết. Chi tiết, kiểm độ sạch và cảnh báo nhóm Null (−9,23, p = 0,092): ROADMAP.
+
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 
 

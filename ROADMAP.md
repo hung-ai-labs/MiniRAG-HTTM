@@ -319,7 +319,7 @@ baseline `qwen637_fix`, đổi đúng một biến:
 | Biến thể | Công tắc | Chẩn đoán dự báo |
 |---|---|---|
 | V2 | `PATH2CHUNK_FIX=1` + `CHUNK_CUT=knee` | giữ 37,2% đáp án → hại · **đo 14/09: hại thật** ↓ |
-| V3 | `CHUNK_FUSION=rrf` | giữ 66,7% đáp án → có lợi |
+| V3 | `CHUNK_FUSION=rrf` | giữ 66,7% đáp án → có lợi · **đo 14/09: +10,92 acc, p = 1,4·10⁻⁷** ↓ |
 | V1 | `PATH2CHUNK_FIX=1` | 45,4% → ≈ không đổi |
 
 Dev 200 là tập con của 637 và quy tắc được nhìn trên dev → **phép thử sạch là 437 câu
@@ -340,6 +340,42 @@ chẩn đoán dự báo: bớt chunk thì bớt bằng chứng, và Qwen **chuy�
 +9,77) chứ không bịa thêm (`err` −4,14; acc/(acc+err) còn nhích 64,84 → 65,88). Hệ an toàn
 hơn nhưng trả lời được ít hơn hẳn. **Loại cắt vách.** Giá trị phụ: chẩn đoán bằng Evidence
 đã dự báo đúng chiều trước khi tốn một lượt chấm nào.
+
+**✅ V3 — trộn RRF xếp hạng đồ thị + vector: cải thiện lớn, có ý nghĩa thống kê (14/09, `logs/compare_v3.txt`)**
+
+| Nhóm | n | baseline acc / err / neither | V3 acc / err / neither | McNemar chính xác |
+|---|---:|---|---|---|
+| **Tổng** | 635 | 51,02 / 27,66 / 21,31 | **61,94 ± 0,45** / 23,78 / 14,28 | **117 lên / 49 xuống, p = 1,4·10⁻⁷** |
+| Single | 506 | 51,19 / 25,03 / 23,78 | 64,36 / 20,88 / 14,76 | 99 / 33, p = 7,5·10⁻⁹ |
+| Multi | 64 | 30,21 / 58,85 / 10,94 | 43,75 / 42,71 / 13,54 | 15 / 6, p = 0,078 |
+| Null | 65 | 70,26 / 17,44 / 12,31 | 61,03 / 27,69 / 11,28 | 3 / 10, p = 0,092 ⚠️ |
+| **Ngoài dev (phép thử sạch)** | 435 | 49,43 / 28,43 / 22,15 | **62,99** / 22,38 / 14,64 | **85 / 28, p = 7,3·10⁻⁸** |
+| Dev 200 | 200 | 54,50 / 26,00 / 19,50 | 59,67 / 26,83 / 13,50 | 32 / 21, p = 0,169 |
+
+acc/(acc+err) 64,84 → **72,26**. Context trung vị 3.870 token, 9 chunk — **cùng trần A1@4000**
+với baseline, nên điểm tăng không đến từ việc nhét thêm token.
+
+**Kiểm độ sạch trước khi tin:**
+- Độ dài câu trả lời không đổi (trung vị 524 → 526 ký tự); riêng 117 câu lên còn **ngắn đi**
+  (541 → 491) → không phải giám khảo ưu ái câu dài.
+- 46/117 câu lên là `neither` → `accurate`: có bằng chứng trong context thì Qwen thôi từ chối
+  — đúng cơ chế giả thuyết.
+- Hiệu ứng **lớn hơn** ở 435 câu ngoài dev (+13,56) so với dev (+5,17) → không có dấu hiệu
+  quá khớp theo tập đã nhìn khi thiết kế.
+- 0 dòng `Error`, 0 `judge_failed`, sd giữa 3 lượt chấm 0,45.
+
+**⚠️ Nhóm Null đi ngược (−9,23 acc, p = 0,092, chưa ý nghĩa).** Chuyển dịch: 6 `accurate` →
+`neither`, 4 `neither` → `error`, 4 `accurate` → `error`. Thêm chunk vector nghĩa là luôn có
+văn bản "trông liên quan", nên với câu không có đáp án Qwen dễ trả lời thay vì nói không biết.
+Phải ghi vào Limitations; là ứng viên kết hợp với A3 (cơ chế từ chối).
+
+**Đủ 5 bước §1b:** Observed Problem (chẩn đoán Evidence: 87,0% → 47,3%) · Hypothesis
+(`kwd2chunk` loại chunk không nằm trên đường đi) · Mechanism (RRF, k=60 không tinh chỉnh) ·
+Controlled Experiment (một công tắc; cùng index, model, judge, 637 câu) · Measurable Effect
+(Quality +10,92 acc; Efficiency cùng ngân sách; ablation V4 @2000 và V1 đang chạy).
+
+*So với bài báo (chỉ tham chiếu — khác giám khảo):* acc 61,94 so với 48,75, err 23,78 so với
+26,02 — lần đầu **vừa cao acc hơn vừa thấp err hơn**.
 
 ### Đồ thị: SLM dựng khác hẳn Gemini
 

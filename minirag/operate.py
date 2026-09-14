@@ -1,11 +1,15 @@
 import asyncio
+import hashlib
 import json
 import os
 import re
+import time
 from typing import Union
 from collections import Counter, defaultdict
 import warnings
 import json_repair
+
+from .bm25 import BM25Index
 
 from .utils import (
     list_of_list_to_csv,
@@ -1248,6 +1252,53 @@ def _rrf_fuse(*rankings, k=60):
     return [c for c, _ in sorted(sc.items(), key=lambda x: -x[1])]
 
 
+_BM25_INDEX = {}
+
+
+def _bm25_index(text_chunks_db):
+    """Chỉ mục BM25 dựng một lần trong bộ nhớ từ kho chunk; không ghi gì vào index."""
+    data = getattr(text_chunks_db, "_data", None)
+    if data is None:
+        raise RuntimeError("BM25 cần kho chunk dạng JsonKVStorage (thuộc tính _data)")
+    key = getattr(text_chunks_db, "_file_name", id(text_chunks_db))
+    idx = _BM25_INDEX.get(key)
+    if idx is None or len(idx.ids) != len(data):
+        idx = _BM25_INDEX[key] = BM25Index({cid: v["content"] for cid, v in data.items()})
+    return idx
+
+
+_KW_CACHE = {}
+
+
+async def _keyword_llm(use_model_func, kw_prompt):
+    """MINIRAG_KW_CACHE=<jsonl>: CHỈ cho chế độ sàng lọc tất định (ROADMAP, tầng A-C). Đầu ra parser từ khoá
+    được cache theo sha256 của prompt để mọi biến thể dùng chung một lần rút; MINIRAG_KW_CACHE_ONLY=1 cấm gọi
+    LLM khi thiếu (tầng offline chạy CPU thuần). Không đặt biến thì hành vi như upstream."""
+    path = os.environ.get("MINIRAG_KW_CACHE", "").strip()
+    if not path:
+        return await use_model_func(kw_prompt)
+    cache = _KW_CACHE.get(path)
+    if cache is None:
+        cache = {}
+        if os.path.exists(path):
+            with open(path, encoding="utf-8") as fh:
+                for line in fh:
+                    if line.strip():
+                        r = json.loads(line)
+                        cache[r["prompt_sha256"]] = r["result"]
+        _KW_CACHE[path] = cache
+    key = hashlib.sha256(kw_prompt.encode("utf-8")).hexdigest()
+    if key not in cache:
+        if os.environ.get("MINIRAG_KW_CACHE_ONLY", "") == "1":
+            raise RuntimeError(f"thiếu đầu ra parser trong cache {path} (MINIRAG_KW_CACHE_ONLY=1)")
+        result = await use_model_func(kw_prompt)
+        cache[key] = result
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps({"prompt_sha256": key, "result": result}, ensure_ascii=False) + "\n")
+    return cache[key]
+
+
 def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
     final_chunk = Counter()
     final_chunk_id = []
@@ -1298,6 +1349,7 @@ async def _build_mini_query_context(
     embedder,
     query_param: QueryParam,
 ):
+    _t0 = time.perf_counter()
     imp_ents = []
     nodes_from_query_list = []
     ent_from_query_dict = {}
@@ -1344,6 +1396,8 @@ async def _build_mini_query_context(
         if len(entry["Path"]) >= 1
     }
     candidate_reasoning_path = {**long_path_entries, **top_short_path_dict}
+    _n_seeds = len(candidate_reasoning_path)
+    _n_paths = sum(len(e["Path"]) for e in candidate_reasoning_path.values())
     node_datas_from_type = await knowledge_graph_inst.get_node_from_types(
         type_keywords
     )  # entity_type, description,...
@@ -1426,11 +1480,28 @@ async def _build_mini_query_context(
     # 71,5% chunk đáp án, NHIỀU HƠN RRF (66,7%), nên phải đo xem lợi ích của V3 là do trộn
     # hay chỉ do thêm vector. Còn lại giữ nguyên như V3: bảng Entities vẫn từ đồ thị,
     # kwd2chunk vẫn chạy, và câu đồ thị không ra node/cạnh vẫn trả None ở dưới.
+    #
+    # MINIRAG_CHUNK_FUSION=rrf_bm25 (B1) / vector_bm25 (B2): thêm bảng xếp hạng BM25 trên NGUYÊN câu hỏi
+    # (minirag/bm25.py, đặc tả chốt trong ROADMAP trước khi có code). B1 = RRF(đồ thị, vector, BM25) khác V3
+    # đúng một bảng; B2 = RRF(vector, BM25) khác vector thuần đúng BM25 và khác B1 đúng đồ thị. Probe dev 200:
+    # chunk đáp án giữ sau A1 66,7% -> 75,8% (B1) / 86,0% (B2), cùng ngân sách token.
     fusion = os.environ.get("MINIRAG_CHUNK_FUSION", "")
+    graph_chunk_ids = list(final_chunk_id)
+    bm25_ids, bm25_ms = None, None
+    if fusion in ("rrf_bm25", "vector_bm25"):
+        _tb = time.perf_counter()
+        bm25_ids = _bm25_index(text_chunks_db).rank(originalquery, int(query_param.top_k / 2))
+        bm25_ms = 1000 * (time.perf_counter() - _tb)
     if fusion == "rrf":
         final_chunk_id = _rrf_fuse(final_chunk_id, chunks_ids)
     elif fusion == "vector":
         final_chunk_id = list(chunks_ids)
+    elif fusion == "rrf_bm25":
+        final_chunk_id = _rrf_fuse(final_chunk_id, chunks_ids, bm25_ids)
+    elif fusion == "vector_bm25":
+        final_chunk_id = _rrf_fuse(chunks_ids, bm25_ids)
+    elif fusion:
+        raise ValueError(f"MINIRAG_CHUNK_FUSION không hợp lệ: {fusion!r}")
 
     if not len(results_node):
         return None
@@ -1442,10 +1513,12 @@ async def _build_mini_query_context(
         *[text_chunks_db.get_by_id(id) for id in final_chunk_id]
     )
     text_units_section_list = []
+    kept_ids = []
 
     for i, t in enumerate(use_text_units):
         if t is not None:
             text_units_section_list.append([i, t["content"]])
+            kept_ids.append(final_chunk_id[i])
 
     # A1: the Entities table above is capped at max_token_for_node_context (500,
     # line 1364) but Sources never passed through truncate_list_by_token_size at
@@ -1476,19 +1549,19 @@ async def _build_mini_query_context(
 
     _ctx_log = os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()
     if _ctx_log:
-        with open(_ctx_log, "a", encoding="utf-8") as _fh:
-            _fh.write(json.dumps({
-                "query": originalquery,
-                "n_chunks": len(text_units_section_list),
-                "sources_tok": sum(len(encode_string_by_tiktoken(x[1]))
-                                   for x in text_units_section_list),
-                "entities_tok": len(encode_string_by_tiktoken(entities_context)),
-            }, ensure_ascii=False) + "\n")
+        kept_ids = kept_ids[: len(text_units_section_list)]
+        _rec = {
+            "query": originalquery,
+            "n_chunks": len(text_units_section_list),
+            "sources_tok": sum(len(encode_string_by_tiktoken(x[1]))
+                               for x in text_units_section_list),
+            "entities_tok": len(encode_string_by_tiktoken(entities_context)),
+        }
 
     text_units_section_list.insert(0, ["id", "content"])
     text_units_context = list_of_list_to_csv(text_units_section_list)
 
-    return f"""
+    context = f"""
 -----Entities-----
 ```csv
 {entities_context}
@@ -1498,6 +1571,26 @@ async def _build_mini_query_context(
 {text_units_context}
 ```
 """
+    if _ctx_log:
+        # Trường bổ sung cho kiểm toàn vẹn và sàng lọc (ROADMAP): tính lại A1(RRF(...)) offline từ graph_ids /
+        # vector_ids / bm25_ids, và so sha256 context để tái dùng câu trả lời khi đầu vào generator không đổi.
+        _rec.update({
+            "fusion": fusion,
+            "chunk_ids": kept_ids,
+            "ranked_ids": list(final_chunk_id),
+            "graph_ids": graph_chunk_ids,
+            "vector_ids": chunks_ids,
+            "context_sha256": hashlib.sha256(context.encode("utf-8")).hexdigest(),
+            "graph_seeds": _n_seeds,
+            "graph_paths": _n_paths,
+            "retrieval_ms": round(1000 * (time.perf_counter() - _t0), 2),
+        })
+        if bm25_ids is not None:
+            _rec["bm25_ids"] = bm25_ids
+            _rec["bm25_ms"] = round(bm25_ms, 3)
+        with open(_ctx_log, "a", encoding="utf-8") as _fh:
+            _fh.write(json.dumps(_rec, ensure_ascii=False) + "\n")
+    return context
 
 
 async def minirag_query(  # MiniRAG
@@ -1516,7 +1609,7 @@ async def minirag_query(  # MiniRAG
     kw_prompt_temp = PROMPTS["minirag_query2kwd"]
     TYPE_POOL, TYPE_POOL_w_CASE = await knowledge_graph_inst.get_types()
     kw_prompt = kw_prompt_temp.format(query=query, TYPE_POOL=TYPE_POOL)
-    result = await use_model_func(kw_prompt)
+    result = await _keyword_llm(use_model_func, kw_prompt)
 
     try:
         keywords_data = json_repair.loads(result)

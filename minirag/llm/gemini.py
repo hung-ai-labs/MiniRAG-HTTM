@@ -298,6 +298,12 @@ async def gemini_complete_if_cache(
         cap = os.environ.get("MINIRAG_MAX_TOKENS", "").strip()
         if cap:
             kwargs["max_tokens"] = int(cap)
+    # MINIRAG_SLM_SEED: chỉ cho chế độ sàng lọc tất định và tầng D (ROADMAP). vLLM nhận `seed` theo từng
+    # request, nên cùng prompt cho cùng câu trả lời mà vẫn giữ sampling mặc định của server. Không đặt thì như cũ.
+    if "seed" not in kwargs:
+        seed = os.environ.get("MINIRAG_SLM_SEED", "").strip()
+        if seed:
+            kwargs["seed"] = int(seed)
 
     pool = _get_pool("chat", api_key)
     cost = _estimate_tokens("".join(m["content"] for m in messages)) + 1000

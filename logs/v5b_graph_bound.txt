@@ -1,0 +1,26 @@
+V5b upper bound: correct non-Null answers whose q-entity -> a-entity link is backed by a GOLD-provenance edge
+  1hop                       114/347 = 32.9%
+  <=2hop                     126/347 = 36.3%
+  q_node_touches_gold_edge   254/347 = 73.2%
+  1hop among non-yes/no      103/318;  yes/no questions 29 (answer 'Yes/No' has no answer entity)
+
+Label-noise probe (chunks containing all probe terms)
+- Q: What specific measurements did Li Hua take for the window size before the installation of the curtain?
+  terms ['150', '120', 'window']: 1 chunk(s)
+    Time: 20260928_10:00 A … send you the dimensions shortly. Just give me a moment! | AdamSmith: Great! Appreciate it. Looking forward to the details! | LiHua: Just measured it! The window is 150 cm wide and 120 cm high. Let me know if you need anything else! | AdamSmith: Thanks for measuring! That’s super helpful. I’ll take care of the curtains now. L
+- Q: What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe "Cent
+  terms ['central perk']: 5 chunk(s)
+    Time: 20260309_09:00 Y … Time: 20260309_09:00 | YurikoYamamoto: Hi Li Hua! Just wanted to remind you about our chat and brainstorming session on Thursday at 9am at Central Perk. Looking forward to it! 😊 | LiHua: Sounds great! I'm excited to discuss your studio homepage. See you at Central Perk! ☕✨ | YurikoYamamoto: Glad to hear! Can’t wait to see wh
+    Time: 20260309_10:00 L … Time: 20260309_10:00 | LiHua: Hey! Just wanted to let you know I’ll have a demo website ready for your studio by our meeting on Thursday morning at 9am at Central Perk. Looking forward to it! 😊 | YurikoYamamoto: That sounds great, Li Hua! I'm excited to see what you've come up with. This is such an important step for my st
+- Q: What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?
+  terms ['star wars', 'new year']: 0 chunk(s)
+- Q: What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?
+  terms ['sourdough', 'anniversary']: 1 chunk(s)
+    Time: 20260413_21:00 H … xcited to see you there! 🥳 I'll have some special treats ready just for the occasion. Do you have a favorite bread that you’re hoping to see? | LiHua: Oh, I love sourdough! Hope you have that! And maybe some sweet pastries too? 😋 | HaileyJohnson: I’ll make sure to bake a fresh batch of sourdough and some delicious pastries
+- Q: What type of protein supplements did Li Hua use after the workout on September 19, 2026?
+  terms ['whey', 'protein']: 1 chunk(s)
+    Time: 20260214_16:00 L …  on the best type of protein supplement that could help me with my fitness goals? Thanks! | JenniferMoore: Hey Li Hua! For your goals, I’d recommend looking into whey protein. It’s great for muscle recovery and building lean mass. If you’re looking for something plant-based, pea or rice protein can also be good options. 
+- Q: What is Li Hua's favorite type of exercise outside of pull-ups?
+  terms ['pull-up', 'favorite']: 2 chunk(s)
+    Time: 20260504_16:00 R … Time: 20260504_16:00 | Raze: Hey everyone! I've been struggling a bit with pull-ups lately, and I noticed my body shakes a lot while doing them. It's kinda frustrating! Has anyone else dealt with this? Any tips to help prevent the shaking? 🤔💪 | Raze: I've noticed that I tend to shake more when I'm really pushing myself. Ma
+    Time: 20260609_16:20 J … hey feel amazing! There's something satisfying about pushing your limits. How about you? Any favorites in your routine? | Raze: I'm all about the bench press and pull-ups lately! They really give you that upper body pump. What kind of challenges do you face with your workout inspirations? | Breach: I’ve been struggling wit

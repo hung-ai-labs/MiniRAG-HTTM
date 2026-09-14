@@ -1,0 +1,22 @@
+Null-accurate        n= 40  cites a date   5  flagged   3
+Null-error           n= 18  cites a date   4  flagged   0
+Null-neither         n=  7  cites a date   1  flagged   1
+nonNull-accurate     n=354  cites a date  60  flagged  23
+nonNull-error        n=135  cites a date  30  flagged  15
+nonNull-neither      n= 81  cites a date  26  flagged  17
+
+flagged examples (Null or nonNull-accurate):
+  ('nonNull-accurate', ['20260814'], 'When is the garage sale being discussed?')
+  ('Null-accurate', ['20260415'], 'What payment method did Li Hua use to purchase groceries from the store on April')
+  ('Null-accurate', ['20260429'], 'What is the name of the song that Li Hua will sing at the karaoke on 20260425?')
+  ('nonNull-accurate', ['20260514'], 'What is Li Hua looking forward to trying from the summer promotion?')
+  ('nonNull-accurate', ['20260805'], 'When is Wolfgang and LiHua going to the photography exhibition on 20260805?')
+  ('nonNull-accurate', ['20260301'], 'Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li')
+  ('nonNull-accurate', ['20260923'], 'What time does WolfgangSchulz propose for going to the grocery store on 20260923')
+  ('Null-accurate', ['20260121'], 'What specific suggestions did Li Hua have regarding the construction schedule du')
+  ('nonNull-accurate', ['20260312'], 'Who invites Li Hua to join the community bake sale?')
+  ('Null-neither', ['20260120'], 'What did Li Hua eat for dinner on January 20, 2026?')
+  ('nonNull-accurate', ['20260311'], 'What suggestions does Li Hua give for promoting the new scheduling feature?')
+  ('nonNull-accurate', ['20260619', '20260831'], 'Did Li Hua ask Jennifer Moore for book recommendations on fitness nutrition befo')
+  ('nonNull-accurate', ['20260106'], 'When does Adam confirm the plumber will arrive?')
+  ('nonNull-accurate', ['20260605', '20260805'], 'What time do they plan to meet for soccer practice?')

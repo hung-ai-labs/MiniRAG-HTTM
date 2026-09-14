@@ -1,0 +1,54 @@
+classes: Null-error 18, Null-error+neither 25, nonNull-accurate 354, nonNull-error 135
+
+signal (higher = more suspicious)    AUC NullErr/NNacc        95% CI  AUC NNerr/NNacc  oracle net  FAR@best
+a_units_absent_corpus                            0.530   [0.41,0.65]            0.534          +0      0.0%
+a_units_absent_vecproxy                          0.580   [0.45,0.71]            0.608          +0      0.0%
+a_words_absent_corpus                            0.453   [0.34,0.57]            0.500          +0      0.0%
+hedge_absence_T1                                 0.535   [0.48,0.62]            0.543          +0      0.0%
+hedge_speculative_T2                             0.528   [0.43,0.62]            0.534          +0      0.0%
+g_no_question_node                               0.486   [0.48,0.49]            0.493          +0      0.0%
+g_no_direct_edge_q_to_a                          0.344   [0.28,0.43]            0.484          +0      0.0%
+g_no_shared_chunk_q_a                            0.415   [0.39,0.44]            0.482          +0      0.0%
+m_neg_answer_to_best_chunk                       0.524   [0.41,0.64]            0.580          +0      0.0%
+m_neg_answer_to_vecproxy                         0.520   [0.41,0.63]            0.599          +0      0.0%
+m_neg_query_to_best_chunk                        0.514   [0.40,0.65]            0.526          +0      0.0%
+m_answer_query_cos                               0.571   [0.44,0.70]            0.461          +0      0.0%
+
+Spearman |rho| >= 0.3 pairs:
+  a_units_absent_corpus ~ a_units_absent_vecproxy: +0.54
+  hedge_absence_T1 ~ m_neg_answer_to_best_chunk: +0.38
+  hedge_absence_T1 ~ m_neg_answer_to_vecproxy: +0.36
+  g_no_question_node ~ g_no_shared_chunk_q_a: +0.38
+  g_no_direct_edge_q_to_a ~ g_no_shared_chunk_q_a: +0.53
+  m_neg_answer_to_best_chunk ~ m_neg_answer_to_vecproxy: +0.96
+  m_neg_answer_to_best_chunk ~ m_neg_query_to_best_chunk: +0.52
+  m_neg_answer_to_vecproxy ~ m_neg_query_to_best_chunk: +0.53
+
+DIAGNOSTIC (gold Evidence, evaluation only)
+  gold_in_qnode_chunks                 nonNull-accurate   303/347   nonNull-error   116/134
+  gold_in_vecproxy                     nonNull-accurate   279/347   nonNull-error    83/134
+  direct_edge_with_gold_provenance     nonNull-accurate   114/347   nonNull-error    25/134
+  n_units      median NullErr 6 / NNacc 4;  zero: NullErr 0/18, NNacc 4/354
+  n_qnodes     median NullErr 4 / NNacc 3;  zero: NullErr 0/18, NNacc 10/354
+  n_anodes     median NullErr 7 / NNacc 4;  zero: NullErr 0/18, NNacc 23/354
+  yes/no questions among nonNull-accurate: 29 | among Null: 0
+
+Null-error answers: units absent from corpus
+  0/4 []  T1=1 | What type of feedback did Li Hua provide to Chae regarding the communi
+  0/1 []  T1=0 | What is Li Hua's favorite type of exercise outside of pull-ups?
+  1/14 ['Lastly']  T1=0 | What were the specific requirements that the customers modified and ho
+  1/5 ['love[s] sourdough']  T1=0 | What flavor of new bread products did Li Hua really enjoy at the baker
+  0/4 []  T1=0 | What specific feedback did Yuriko give to Li Hua about the demo websit
+  0/6 []  T1=1 | What toppings did Hailey put on the bread for Li Hua's next delivery, 
+  1/8 ['Warm Shower Bed']  T1=0 | What specific sleep techniques did Li Hua use to improve her study hab
+  0/6 []  T1=0 | What are the reasons behind Jennifer and Li Hua's decision to change t
+  1/1 ['Furthermore']  T1=0 | What new species of flowers will be featured in the community garden r
+  0/3 []  T1=0 | What specific measurements did Li Hua take for the window size before 
+  0/4 []  T1=0 | What specific design features did Li Hua suggest for Yuriko's studio h
+  0/11 []  T1=0 | What specific construction projects were discussed at the meeting betw
+  1/9 ["New Year's Eve"]  T1=0 | What movie did Li Hua and Wolfgang decide to watch together on New Yea
+  0/6 []  T1=0 | What type of flowers were planted in the garden based on the residents
+  0/1 []  T1=0 | What type of diet is Li Hua following to support his training regimen 
+  2/12 ['Initially', 'Furthermore']  T1=0 | What were Li Hua's specific fitness goals and how did Jennifer's advic
+  1/6 ['September']  T1=0 | What type of protein supplements did Li Hua use after the workout on S
+  0/9 []  T1=0 | What is the favorite type of music that Li Hua and Yuriko plan to play

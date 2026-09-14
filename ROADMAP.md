@@ -426,6 +426,60 @@ nào** nhắc ngày vắng mặt khỏi 313 ngày có tin nhắn. Câu Null ở 
 một cổng hoàn hảo cũng chỉ thêm tối đa 18/635 = 2,8 điểm, còn mỗi câu có đáp án bị từ chối
 nhầm mất trung bình ~0,62 điểm đúng. Ưu tiên thấp.
 
+**⛔ V5a / V5b / V5c — verifier không sinh (không gọi model) cũng không tách được Null (14/09 — offline, 0 API)**
+
+Câu hỏi: sau khi V3 sinh câu trả lời, có kiểm được "câu trả lời có được hỗ trợ không" mà
+không thêm model nào? Đo trên **câu trả lời thật của V3** (`logs/qwen637_v3.csv`), nhãn chỉ
+dùng để chấm tín hiệu. Lớp dương = 18 câu Null bị chấm `error`; lớp âm = 354 câu có đáp án
+V3 trả lời đúng (chặn nhầm chúng là mất điểm). "Net oracle" = số Null được cứu − số câu
+đúng bị chặn, **ngưỡng chọn bằng chính nhãn** (cận trên lạc quan).
+`reproduce/v5_signal_feasibility.py` → `logs/v5_signal_feasibility.txt`.
+
+| Tín hiệu (cao = đáng ngờ) | Họ | AUC [95% CI] | Net oracle |
+|---|---|---:|---:|
+| Tỷ lệ thực thể/số/trích dẫn trong câu trả lời vắng khỏi corpus | V5a | 0,53 [0,41–0,65] | +0 |
+| … vắng khỏi Sources xấp xỉ (nửa vector, ngân sách 4000) | V5a | 0,58 [0,45–0,71] | +0 |
+| Từ nội dung vắng khỏi từ vựng corpus | V5a | 0,45 | +0 |
+| Câu trả lời tự nói "không được nhắc tới" / suy đoán ("likely") | V5a | 0,54 / 0,53 | +0 |
+| Không có cạnh trực tiếp thực-thể-câu-hỏi → thực-thể-câu-trả-lời | V5b | 0,34 *(ngược chiều)* | +0 |
+| Không có chunk chung giữa hai nhóm thực thể | V5b | 0,42 | +0 |
+| MiniLM: câu trả lời ↔ chunk gần nhất (corpus / Sources xấp xỉ) | V5c | 0,52 / 0,52 | +0 |
+| MiniLM: câu hỏi ↔ chunk gần nhất; câu trả lời ↔ câu hỏi | V5c | 0,51 / 0,57 | +0 |
+
+**Không tín hiệu nào có net dương ở bất kỳ ngưỡng nào**, kể cả khi ngưỡng được chọn bằng
+nhãn. Các tín hiệu tương quan với nhau (ρ 0,36–0,96) nên gộp điểm không thêm thông tin độc
+lập — không lập điểm tổng hợp (V5c dừng ở đây).
+
+Vì sao, nhìn từ 18 câu sai:
+- **Câu trả lời sai được dựng từ nội dung có thật.** 18/18 câu có thực thể; phần "vắng khỏi
+  corpus" chỉ là rác regex (`Lastly`, `Furthermore`). Lỗi nằm ở **tiền đề của câu hỏi**
+  ("yêu thích", "tại sự kiện kỷ niệm", "đêm Giao thừa 2026", "đã dùng sau buổi tập 19/09")
+  mà câu trả lời lặp lại rồi gắn với sự thật lân cận. Kiểm dấu vết (provenance) không bắt được
+  vì dấu vết có thật.
+- **Luật hẹp nhất còn lại — ngày câu trả lời trích phải là ngày của một chunk chứa nội dung
+  câu trả lời** (`reproduce/v5a_date_provenance.py`): bắt **0/18** câu Null sai, chặn nhầm
+  **23/354 = 6,5%** câu đúng. Loại.
+- **Một phần trần là nhiễu nhãn.** Câu "Li Hua đo cửa sổ bao nhiêu trước khi lắp rèm" gán Null,
+  nhưng chunk `20260928_10:00` ghi đúng "150 cm wide and 120 cm high" như V3 trả lời. Trần 18
+  câu (2,8 điểm) còn thấp hơn thật.
+
+**V5b (xác minh quan hệ bằng đồ thị) không khả thi với biểu diễn hiện tại** — không phải do
+ngưỡng mà do cấu trúc (`reproduce/v5b_graph_bound.py`):
+- Đồ thị Qwen **vô hướng** (`edgedefault="undirected"`): mất chiều quan hệ.
+- **717/1.556 node cô lập** (46%), 746 thành phần liên thông.
+- Không có loại quan hệ: `keywords` có **1.536 nhãn khác nhau**, phổ biến nhất là số điểm độ
+  mạnh (`8`, `7`) và cảm xúc (`encouragement`, `support`). Không có `attended`/`bought`.
+- **Cận trên độ phủ:** trong 347 câu có đáp án V3 trả lời đúng (có Evidence), chỉ **114 (32,9%)**
+  có cạnh trực tiếp thực-thể-câu-hỏi → thực-thể-câu-trả-lời mà `source_id` trỏ đúng chunk gold;
+  cho phép 2 bước: 126 (36,3%). 29 câu Yes/No không có thực thể trả lời. Một cổng "phải có quan
+  hệ được đồ thị hỗ trợ" vì vậy chặn nhầm **≥ 63%** câu đúng, trước cả khi kiểm loại quan hệ.
+  Chỉ còn đồng xuất hiện (73,2% chạm cạnh gold) — đúng thứ không được coi là bằng chứng.
+
+**Cảnh báo phương pháp.** Sources của V3 không được lưu (chỉ đếm token), nên V5a/V5c dùng
+corpus và Sources xấp xỉ. Kết luận "dấu vết có thật" không phụ thuộc xấp xỉ: Sources ⊂ corpus,
+và Qwen chỉ thấy Sources. Hướng còn lại (NLI nhỏ V5d, Qwen verifier V5e) cần Sources thật →
+phải chạy lại V3 có ghi context trước.
+
 ### Đồ thị: SLM dựng khác hẳn Gemini
 
 | | Qwen2.5-3B | Gemini Flash-Lite |

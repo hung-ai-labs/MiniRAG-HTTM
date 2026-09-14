@@ -570,6 +570,10 @@ danh sách chunk, sha256 context và prompt, câu trả lời, phán quyết, to
 Ký hiệu: m = số câu đổi context trong phần đã chạy; net = lên − xuống so với V3 đông lạnh; σ(m) = √(0,209 · m)
 (σ(40) = 2,89 · σ(80) = 4,09 · σ(100) = 4,58 · σ(200) = 6,47).
 - m = 0 trên cả canary → **STOP** (biến thể không đổi đầu vào generator). m tính được trước khi sinh, chỉ tốn CPU.
+- *Làm rõ trước khi chạy (14/09, trước mọi đầu ra sàng lọc):* luật dừng theo σ(m) ở lô 1 và lô 2 chỉ áp khi
+  m > 0 trong phần đã chạy; m = 0 thì chạy tiếp lô sau (không có thông tin để dừng). Trước mỗi lượt sàng lọc,
+  context V3 được dựng lại từ cache parser và phải trùng hash đông lạnh ở **mọi** câu; câu trả lời sinh ra phải
+  khớp hash context đã tính. Lệch ở bất kỳ câu nào → dừng, không quyết.
 - Sau lô 1 (40 câu): net ≤ −1,0 · σ(m) → **STOP**; còn lại → lô 2.
 - Sau lô 2 (80 câu): net ≤ −0,5 · σ(m) → **STOP**; net ≥ +2,0 · σ(m) **và** net lô 1 > 0 **và** cổng an toàn đạt →
   **PROMOTE** sớm; còn lại → lô 3.

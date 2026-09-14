@@ -504,35 +504,138 @@ chỗ duy nhất đồ thị có thể còn giúp. Token Sources trung vị 3.60
 báo được** ở mức truy hồi (không có evidence); chiều rủi ro là **xấu đi**: khớp từ vựng với tên thật trong câu hỏi về
 chuyện không có sẽ kéo thêm văn bản "trông liên quan" — đúng cơ chế đã làm Null của V3 tụt.
 
-**Ba giả thuyết chính** — phép so trên **435 câu ngoài dev**, McNemar chính xác hai phía trên phán quyết đa số,
-Holm–Bonferroni cho cả ba (α họ = 0,05):
-- **H1** BM25 cộng thêm được vào V3: B1 vs `qwen637_v3`.
-- **H2** BM25 cộng thêm được vào vector: B2 vs `qwen637_vec`.
-- **H3** Khi đã có BM25, đồ thị còn cần không: B2 vs B1.
+**Sửa đổi đăng ký trước (14/09 tối — sau khi có 3 lượt lặp V3, TRƯỚC mọi code và mọi đầu ra BM25).** Lượt lặp V3
+cho thấy nhiễu giữa các lượt sinh (sd 1,26; ngoài dev 2,09) lớn gấp ~4 lần nhiễu giám khảo, và hai lượt **cùng cấu hình**
+đã "có ý nghĩa" trên 435 câu (p = 0,033). Bản cũ của phần dưới — chấm H1–H3 trên một lượt sinh, cổng E1–E6, luật
+"H1 không đạt → dừng BM25" — bị **thay toàn bộ**. Đặc tả B1/B2 và BM25 ở trên giữ nguyên. Lượt vector thuần đang chạy giữ
+đăng ký trước riêng của nó.
 
-**Cổng trước khi đề xuất một biến thể làm cấu hình mới** (so với V3, trên 637 câu trừ khi ghi khác):
-- **E1** giả thuyết chính của nó đạt theo chiều biến thể (H1 cho B1, H2 cho B2).
-- **E2** Δacc ≥ +2,67 điểm (net ≥ 17 câu, §3) **và** ≥ 2 × sd giữa các lượt sinh của V3 (`logs/v3_replicates_summary.txt`).
-- **E3** Δerr ≤ +1,0 điểm (≈ 2 × sd giám khảo 0,45).
-- **E4** không nhóm nào (Single / Multi / Null) giảm có ý nghĩa (p < 0,05); riêng Null net giảm ≤ 3 câu.
-- **E5** token context trung vị trong ±5% của V3 (3.870); A1 giữ 4.000.
-- **E6** chiều so với `v3_r2` và `v3_r3` giống chiều so với V3.
-- **Toàn vẹn:** selftest trước khi tốn GPU (LLM giả, bản sao index, 40 câu): danh sách BM25 khớp bản offline 40/40 và
-  thứ tự sau trộn khớp `_rrf_fuse` 40/40. Sau khi chạy: context-log ghi thêm `chunk_ids` và `graph_ids` để tính lại
-  A1(RRF(...)) offline cho **mọi** câu; lệch câu nào thì kết quả không tính.
+**Giả thuyết (giữ nguyên):** H1 = B1 vs V3 · H2 = B2 vs vector thuần · H3 = B2 vs B1.
 
-**Luật đọc:**
-- H1 đạt và B1 qua E1–E6 → *"thêm xếp hạng từ vựng vào trộn đồ thị–vector cải thiện MiniRAG"*; bật hay không là quyết
-  định của nhóm.
-- H2 đạt và H3 nghiêng về B2 → báo thẳng: trên LiHua-World, khi đã có vector + BM25 thì xếp hạng chunk bằng đồ thị
-  không cần / kéo xuống. Đây là **kết quả phủ định về đồ thị**, không trình bày như đóng góp của đồ thị.
-- H3 không đạt → không được nói đồ thị giúp hay hại; báo cả hai con số.
-- H1 không đạt → chẩn đoán offline đã đánh giá quá cao tác dụng lên accuracy; dừng hướng BM25, không làm phần ngày.
+**Tập lặp V3 cố định** — `qwen637_v3`, `qwen637_v3_r2`, `qwen637_v3_r3` (commit `0951995`); không thêm, không bớt sau khi có
+kết quả BM25. Hằng số khoá từ tập này:
+- sd acc giữa các lượt sinh: 1,26 điểm (635 câu) · **2,09 điểm (435 câu ngoài dev)**.
+- tỉ lệ đổi kết quả giữa hai lượt cùng cấu hình: d = 1 − đồng thuận trung bình (495, 508, 503 / 635) = **0,209**.
+- **ngưỡng bền với nhiễu sinh** T = max(2,67 điểm; 2 × sd): **4,18 điểm trên 435 câu** (≈ 18,2 câu), 2,67 điểm trên 635
+  câu. Công thức là quy tắc; con số là hệ quả của tập cố định, không tính lại.
+
+**Xử lý phán quyết và mẫu số** (khoá; áp cho B1/B2 và mọi biến thể sau; số lịch sử không tính lại):
+- Đơn vị = câu hỏi phân biệt theo văn bản (635 / 435 / 200 / 100). Hai câu lặp văn bản (dòng 27 & 74, 28 & 75 của
+  `query_set.csv`) tính là một câu: phiếu của các dòng trùng gộp lại, mỗi phiếu nặng 1 / (số dòng trùng).
+- Nhãn mỗi lượt chấm ∈ {accurate, error, neither}. Đầu ra judge không đọc được → `neither` (hành vi hiện có của
+  `Step_2_evaluate.py`). `judge_failed` phải chấm lại trước khi tính bất kỳ số nào.
+- Vẫn thiếu phiếu sau khi chấm lại → câu đó bị loại khỏi tỉ lệ của nhánh đó và khỏi mọi phép so ghép cặp có nhánh đó; số
+  câu bị loại báo riêng theo nhánh. Thiếu > 1% tập đánh giá ở bất kỳ nhánh nào → kết quả tầng đó **KHÔNG HỢP LỆ**, chấm
+  lại, chưa quyết.
+- acc / err / neither = tổng trọng số phiếu mỗi nhãn / số câu có phiếu hợp lệ (cộng lại 100%). Nhiều lượt chấm → tỉ lệ
+  từng lượt rồi lấy trung bình.
+- Nhị phân "đúng" dùng cho mọi phép so ghép cặp = **đa số tuyệt đối** phiếu hợp lệ là `accurate` (> 1/2). Chia đều
+  (1–1, 1–1–1, 3–3) → không đúng. Tập lặp V3 có 0 câu chia ba, nên quy tắc không đổi số của tập cố định.
+- Một câu vào phép so ghép cặp khi cả hai nhánh có ≥ 1 phiếu hợp lệ.
+
+**Quy trình sàng lọc theo tầng** — áp cho mọi ý tưởng truy hồi từ nay. Tầng A–C chỉ dùng dev; 435 câu ngoài dev chỉ dùng ở
+tầng D. `reproduce/screen_variant.py` từ chối mọi câu ngoài `logs/devset.csv` và không có lệnh chạy tầng D.
+
+| Tầng | Tập | Chi phí | Vai trò |
+|---|---|---|---|
+| A — offline | dev, 180 câu có evidence | 0 sinh, 0 judge, CPU | loại ý tưởng không đổi được bằng chứng |
+| B — canary | 100 câu cố định | 1 lượt sinh × 1 lượt chấm, chỉ câu đổi context | sàng chiều |
+| C — dev 200 | 200 câu dev | 1 × 1, tái dùng canary | quyết có vào chung kết không |
+| D — chung kết | 435 câu ngoài dev | 3 seed sinh × 1 lượt chấm | kết luận H1–H3 |
+
+**Chế độ sàng lọc tất định (chỉ tầng A–C).** Đầu ra parser từ khoá được cache theo sha256 của prompt `minirag_query2kwd`
+(điền một lần, dùng chung mọi biến thể). Mọi lời gọi sinh gửi `seed = 20260914`, sampling mặc định của server như lượt chính
+thức. **Tái dùng câu trả lời:** nếu một câu có danh sách chunk, thứ tự, và sha256 của context tuần tự hoá (Entities + Sources)
+cùng sha256 prompt sinh **giống hệt** V3 đông lạnh, thì dùng lại câu trả lời và phán quyết V3; chỉ câu đổi context mới được
+sinh và chấm lại. So bằng hash, có assertion, không xấp xỉ. Trước khi đông lạnh V3: gửi lại 20 câu canary cùng seed và báo tỉ lệ
+câu trả lời trùng khớp (tái dùng vẫn hợp lệ nếu không trùng, vì đó là một lần rút chung, nhưng phải báo). Tầng D không dùng
+cache, seed sàng lọc hay câu trả lời tái dùng.
+
+**Tầng A — cổng offline** (dev 180, tất định, so với V3):
+- R1 net "câu đủ đáp án" ≥ +9 **và** McNemar p < 0,01.
+- R2 chunk đáp án giữ sau cắt 4.000 token ≥ +3 điểm.
+- R3 token Sources trung vị trong ±5%.
+- R4 Single: số câu xuống ≤ số câu lên; Multi net ≥ −1.
+- R5 truy hồi thêm ≤ 50 ms trung vị, không thêm lời gọi LLM.
+
+B1 (21 / 3, +9,1 điểm, 3.698 token, Multi 2 / 0, 0,8 ms) và B2 (46 / 8, +19,3 điểm, 3.602 token, Multi 2 / 1) đã qua. Đây là
+**dự báo chẩn đoán**, không phải accuracy.
+
+**Tầng B — canary.** `reproduce/screening/canary100.csv`, seed 20260914, chốt trước khi sinh bất kỳ câu trả lời canary nào:
+toàn bộ 21 Multi + 20 Null + 59 Single rút ngẫu nhiên từ dev, xếp thành ba lô phân tầng 40 / 40 / 20 (Single 24 / 24 / 11,
+Multi 8 / 8 / 5, Null 8 / 8 / 4). Multi và Null gấp đôi tỉ lệ dev, nên báo cả số thô lẫn số điều chỉnh theo tỉ lệ dev (Single
+159, Multi 21, Null 20 trên 200). V3 canary được sinh và chấm **một lần** ở chế độ sàng lọc rồi đông lạnh: qid, câu hỏi, context,
+danh sách chunk, sha256 context và prompt, câu trả lời, phán quyết, token, độ trễ.
+
+Ký hiệu: m = số câu đổi context trong phần đã chạy; net = lên − xuống so với V3 đông lạnh; σ(m) = √(0,209 · m)
+(σ(40) = 2,89 · σ(80) = 4,09 · σ(100) = 4,58 · σ(200) = 6,47).
+- m = 0 trên cả canary → **STOP** (biến thể không đổi đầu vào generator). m tính được trước khi sinh, chỉ tốn CPU.
+- Sau lô 1 (40 câu): net ≤ −1,0 · σ(m) → **STOP**; còn lại → lô 2.
+- Sau lô 2 (80 câu): net ≤ −0,5 · σ(m) → **STOP**; net ≥ +2,0 · σ(m) **và** net lô 1 > 0 **và** cổng an toàn đạt →
+  **PROMOTE** sớm; còn lại → lô 3.
+- Sau lô 3 (100 câu): net ≥ +1 **và** cổng an toàn đạt → **PROMOTE**; còn lại → **STOP**.
+- Cổng an toàn canary: Null net ≥ −3 · Multi net ≥ −3 · số phiếu `error` tăng ≤ +3 · token context trung vị trong ±5% ·
+  truy hồi thêm ≤ 50 ms.
+
+**Tầng C — dev 200.** Tái dùng mọi câu trả lời canary; V3 đông lạnh được mở rộng **một lần** cho 100 câu dev còn lại.
+PROMOTE khi net ≥ +1,0 · σ(m) (m trên 200 câu; nếu mọi context đổi thì net ≥ +7) **và** Δ số phiếu `error` ≤ +4 · Null net
+≥ −3 · Multi net ≥ −3 · Single net ≥ 0 · token trung vị ±5% · ≤ 50 ms. Còn lại → **STOP**, ghi là kết quả phủ định hoặc biên.
+
+Đặc tính vận hành (mô phỏng 20.000 lần với d = 0,209, mọi context đổi, bỏ qua cổng an toàn):
+
+| Hiệu ứng thật | Qua canary | Qua canary **và** dev 200 | Số câu canary trung bình |
+|---:|---:|---:|---:|
+| −4,18 điểm | 14% | 1% | 72 |
+| 0 | 43% | 14% | 86 |
+| +2,67 | 66% | 38% | 91 |
+| **+4,18 (= T)** | 77% | 56% | 93 |
+| +7 | 91% | 84% | 93 |
+| +10 | 98% | 97% | 91 |
+
+Canary chỉ loại chắc được ý tưởng rõ ràng xấu hoặc bằng không. Một hiệu ứng đúng cỡ T vẫn có 44% khả năng bị dừng trước
+tầng D — chấp nhận để dành tầng D đắt cho ứng viên mạnh. **Không nới cổng khi một biến thể được kỳ vọng bị trượt.**
+
+**Chọn ứng viên B1/B2 sau tầng C:**
+- Cả hai STOP → dừng hướng BM25, ghi kết quả phủ định.
+- B1 STOP, B2 PROMOTE → chỉ B2 vào D. **Không dừng BM25 chỉ vì B1 yếu.**
+- B1 PROMOTE, B2 STOP → B1 vào D (đồ thị có vẻ vẫn có ích).
+- Cả hai PROMOTE: B2 − B1 ghép cặp trên dev 200 ≥ +1,0 · σ(m) → B2 vào D, B1 chỉ vào D nếu cần cho H3; ≤ −1,0 · σ(m) → B1
+  vào D; ở giữa (quá sát để tách rẻ) → cả hai vào D.
+- Mọi số tầng A–C là **bằng chứng sàng lọc**, không tuyên bố ý nghĩa cho H1–H3.
+
+**Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
+- Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
+  trả lời, **không chọn seed tốt nhất**.
+- Mốc H1: tập lặp V3 cố định, chỉ dùng lượt chấm `run = 1` (đối xứng một lượt chấm với biến thể).
+- Mốc H2: `qwen637_vec` (`run = 1`) + 2 lượt sinh vector thuần mới, seed {202, 303} × 1 lượt chấm — chỉ chạy nếu B2 vào D.
+- H3 chỉ được kiểm ở D khi cả B1 và B2 vào D; nếu không, H3 báo bằng số tầng C và **không** tuyên bố gì.
+- Kiểm định chiều: hoán vị đổi dấu ghép cặp trên hiệu accuracy trung bình theo câu (trung bình qua các lượt của mỗi nhánh),
+  100.000 hoán vị, seed 20260914, hai phía; Holm–Bonferroni trên những giả thuyết thực sự được kiểm ở D (α họ = 0,05).
+  McNemar từng cặp lượt (lượt i của biến thể vs lượt i của mốc, theo thứ tự liệt kê) báo kèm, không thay kiểm định chính.
+- Báo: acc từng lượt, trung bình ± sd, err từng lượt, lên / xuống từng lượt, số cặp lượt cùng chiều, hiệu trung bình, và
+  hiệu so với T.
+- Phân loại:
+  - **ROBUST POSITIVE**: hiệu trung bình ≥ T (4,18 điểm) · cả 3 cặp lượt cùng chiều dương · p Holm < 0,05 · **E3** Δerr
+    trung bình ≤ +1,0 điểm · **E4** không nhóm Single / Multi / Null ngoài dev giảm có ý nghĩa (hoán vị p < 0,05) và Null
+    net giảm trung bình ≤ 3 câu · **E5** token context trung vị trong ±5% của 3.870.
+  - **BORDERLINE**: hiệu trung bình > 0 nhưng trượt ít nhất một điều kiện ROBUST POSITIVE.
+  - **NEGATIVE**: hiệu trung bình ≤ 0.
+  - Một giả thuyết "đạt" ⇔ ROBUST POSITIVE.
+
+**Luật đọc** (khoá, không đổi sau khi thấy kết quả):
+- H1 trượt + H2 trượt → bác hướng BM25.
+- H1 trượt + H2 đạt → BM25 có ích nhưng có thể xung đột với xếp hạng đồ thị; đọc tiếp H3.
+- H1 đạt + H2 đạt → BM25 có ích; H3 quyết định đồ thị còn thêm giá trị hay không.
+- H1 đạt + H2 trượt → BM25 chỉ có ích khi đi cùng xếp hạng đồ thị; báo đúng như vậy.
+- B2 thắng B1 (H3 ROBUST POSITIVE theo chiều B2) → báo thẳng: *khi đã có trộn từ vựng + vector, xếp hạng suy từ đồ thị hiện
+  tại làm hại.*
+- Kết quả một lượt sinh — kể cả p < 0,05 — chỉ được gọi là "bằng chứng sàng lọc", trừ khi hiệu ứng vượt xa T.
 - Null trượt E4 → ghi Limitations; **không** mở lại hướng verifier / từ chối.
-- Không đổi k1, b, 30, k = 60, ngân sách 4.000 hay danh sách stopword sau khi thấy kết quả.
+- Không đổi k1, b, top-30, k = 60, ngân sách 4.000, stopword, thành phần canary, seed, hằng số d và T, hay bất kỳ cổng nào
+  sau khi thấy kết quả. Biến thể trượt được ghi là kết quả phủ định.
 
-**Thứ tự:** code + selftest (commit riêng) → B1 → B2, nối tiếp sau lượt vector thuần, không chạy song song QA. Mỗi lượt
-~2–3,5 giờ GPU (~2–4 USD) + chấm free tier. Ngày trong câu chỉ đăng ký sau khi có bên thắng giữa B1 và B2.
+**Thứ tự:** commit đăng ký này → code BM25 + cache parser + seed + ghi context + selftest + `screen_variant.py` (commit riêng)
+→ selftest → đông lạnh V3 canary → canary B1, B2 → báo và **xin duyệt** trước dev 200. Không chạy 637 × 3.
 
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 

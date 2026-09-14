@@ -1,0 +1,39 @@
+question,type,run,verdict
+Question: Did Jennifer remind Li Hua to consume enough protein after the workout before she shared tips with the group members on common mistakes to avoid after an intense workout?,Multi,1,error
+What percentage discount is Hailey Johnson offering for Mother's Day pastries?,Single,1,accurate
+What was the content of the first-ever delivery from Hailey to LiHua and what was LiHua's opinion about it?,Multi,1,error
+What food did Emily order for the group's discussion about Game of Thrones characters?,Null,1,accurate
+Who does EmilyBurnett think is a standout character in the Game of Thrones series?,Single,1,accurate
+What funny glitch did Fionnuala experience in the game Red Dead Redemption 2?,Single,1,accurate
+What did Li Hua enjoy the most about the restaurant that he and Wolfgang visited for dinner on 20260514?,Single,1,error
+What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?,Null,1,accurate
+Did Li Hua ask Jennifer for advice on how to prevent muscle soreness after an intense workout session before he told her that he feels soreness in his arm muscles after the workout this week?,Multi,1,error
+When did Li Hua inform Adam Smith that the rent was transferred?,Single,1,error
+What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?,Null,1,error
+What new song does the Jolly band decide to work on for the jam session according to their discussion on 20260410?,Single,1,accurate
+What is the name of the song that Li Hua will sing at the karaoke on 20260425?,Null,1,accurate
+What does Lachlan find haunting about Cersei's end?,Single,1,accurate
+What does Briar think about Real Madrid's chances for the rest of the season?,Single,1,accurate
+What specific measurements did Li Hua take for the window size before the installation of the curtain?,Null,1,error
+Did Li Hua send a message to Jennifer asking if he can turn the Thursday class to Friday after he requested a change in his training schedule for Thursday?,Multi,1,error
+What is the name of the café where Li Hua and YurikoYamamoto first meeting to talk about Yuriko's website?,Single,1,accurate
+Why does LiHua bring up Adam Smith in the band's conversation on 20260616?,Single,1,accurate
+Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?,Multi,1,accurate
+Who offers to help with setting up for the garage sale?,Single,1,accurate
+"What time does Li Hua watch the movie ""Overwatch 3""?",Multi,1,error
+Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?,Multi,1,accurate
+Did Hailey announce the new line of high-protein breads before inviting Li Hua to the special bakery event?,Multi,1,error
+"What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?",Null,1,error
+What are LiHua's favorite snacks for the game?,Single,1,neither
+"What type of protein supplements did Li Hua use after the workout on September 19, 2026?",Null,1,neither
+What new components are being added to the garden project as Turalyon announces it on 20260806?,Single,1,accurate
+What are some of the upcoming PS5 exclusives discussed?,Single,1,error
+What is the common interest between Li Hua and Jake Watson?,Single,1,accurate
+What type of gameplay does Jareth enjoy after a big challenge?,Single,1,accurate
+What is IllidanStormrage's suggestion to the ongoing garden construction according to the discussion on 20260522?,Single,1,error
+What does Li Hua think about the rosemary focaccia?,Single,1,accurate
+What drink does JakeWatson recommend for hydration after a match?,Single,1,error
+What color did Li Hua decide to paint the walls of the basement after completing the renovation?,Null,1,accurate
+Who offers to help with the installation of the curtains?,Single,1,accurate
+What type of instrument does Li Hua play in the basement?,Single,1,neither
+What is Jake's first tip for avoiding soccer injuries?,Single,1,accurate

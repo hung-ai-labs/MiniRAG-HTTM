@@ -1,0 +1,28 @@
+Variant: b1 (rrf_bm25)
+Stage: canary (100/100 câu; một lượt sinh seed 20260914 × một lượt chấm; bằng chứng sàng lọc, không phải kết luận H1–H3)
+Retrieval:
+- chunk đáp án giữ: 72,9% → 80,4% · câu đủ đáp án: 66,2% → 75,0% (80 câu có evidence)
+- token context trung vị: 3886 → 3904
+- truy hồi trung vị: 5267,0 → 5314,0 ms
+- context đổi so với V3: 97/100 câu (câu không đổi dùng lại câu trả lời + phán quyết V3)
+QA:
+- câu đánh giá: 100 (loại 0)
+- sinh mới: 97 (cộng dồn biến thể: 97) · lời gọi judge: 97 (cộng dồn: 97)
+- acc: 62,00 → 66,00 (Δ 4,00); điều chỉnh theo tỉ lệ dev: 65,75 → 72,83
+- err: 31,00 → 29,00 (Δ số phiếu -2); neither 7,00 → 5,00
+- Single: 8 lên / 2 xuống (acc 69,5 → 79,7, n = 59)
+- Multi: 2 lên / 2 xuống (acc 38,1 → 38,1, n = 21)
+- Null: 0 lên / 2 xuống (acc 65,0 → 55,0, n = 20)
+- ghép cặp: 10 lên / 6 xuống, net +4 (McNemar p = 0,454 — chỉ tham khảo)
+Sequential gates:
+- sau 40 câu: m = 39, net +3, σ(m) = 2,85, loại 0 → chạy tiếp
+- sau 80 câu: m = 77, net +5, σ(m) = 4,01, loại 0 → chạy tiếp
+- sau 100 câu: m = 97, net +4, σ(m) = 4,50, loại 0 → PROMOTE
+Safety:
+- ĐẠT: Null net ≥ −3
+- ĐẠT: Multi net ≥ −3
+- ĐẠT: số phiếu error tăng ≤ +3
+- ĐẠT: token context trung vị ±5%
+- ĐẠT: truy hồi thêm ≤ 50 ms
+Decision: CONTINUE TO DEV200
+Tiết kiệm so với 637 × 3 cho biến thể này: sinh 97/637 (84,8% ít hơn), judge 97/1.911 (94,9% ít hơn).

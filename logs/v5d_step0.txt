@@ -1,0 +1,90 @@
+V5d STEP 0 -- HHEM-2.1-Open offline floor test (pre-registered)
+model   vectara/hallucination_evaluation_model @ 8e4a2e6e96c708cc76c2344f7e4757df2515292c
+        weights sha256 634de18a38cf1e991c1acd0f7a9e0d30f7ea187fba42bb4798f862d3edd31e72 (verified)
+        tokenizer/config google/flan-t5-base @ 7bcac572ce56db69c1ea7c8af255c5d7c9672fc2
+runtime transformers 5.16.1, torch 2.14.0, device cpu, float32
+        state dict: missing ['transformer.encoder.embed_tokens.weight'] (tied embeddings), unexpected []
+card    model-card scores reproduced, max |diff| = 2.72e-07
+pairs   3415 unique (premise chunk, answer sentence); tokens median 312, max 1480; scoring 7.9 min; total 8.1 min
+rule    split answer into sentences; sentence score = max over premise chunks; answer score = min over sentences; flagged iff < 0.5
+
+GATE 1  false abstention on correct non-Null answers (gold Evidence chunks as premise)
+        flagged 165/347 = 47.6%   kill if > 10%   -> FAIL
+          Single 141/319 = 44.2%
+          Multi  24/28 = 85.7%
+        not evaluable (Evidence maps to no chunk): 7 of 354; worst case counting them flagged: 48.6%
+GATE 2  detection on wrong Null answers (proxy Sources: MiniLM ranking to 4000 tokens)
+        flagged 15/18   kill if < 6   -> pass
+        (informational) Null answers judged neither: flagged 7/7
+
+VERDICT STOP V5d -- a pre-registered kill criterion is met. No threshold tuning.
+
+(informational) answer-score quantiles p10 p25 p50 p75 p90
+  correct non-Null  0.037 0.145 0.546 0.869 0.943
+  wrong Null        0.015 0.048 0.154 0.425 0.521
+
+wrong Null answers: score, flagged, weakest sentence
+  0.511      | What type of feedback did Li Hua provide to Chae regarding the communi
+         -> Regarding Wolfgang's role in the band rehearsal, the information is not explicitly detailed.
+  0.026 FLAG | What is Li Hua's favorite type of exercise outside of pull-ups?
+         -> Additionally, in a separate discussion about her workout challenges, she expresses interest in adding more outdoor exercises.
+  0.434 FLAG | What were the specific requirements that the customers modified and ho
+         -> Li Hua acknowledged the reminder and expressed her intention to handle the payment promptly.These interactions demonstrate Li Hua's responsiveness and
+  0.311 FLAG | What flavor of new bread products did Li Hua really enjoy at the baker
+         -> No other specific flavor of new bread products is mentioned as being a particular favorite of hers.
+  0.194 FLAG | What specific feedback did Yuriko give to Li Hua about the demo websit
+         -> During their meeting at "Central Perk" café on Thursday morning, Yuriko provided feedback on the demo website for her speech therapy studio.
+  0.014 FLAG | What toppings did Hailey put on the bread for Li Hua's next delivery, 
+         -> Thus, for Li Hua's next delivery from Hailey's Bakery, the toppings Hailey suggested include olive oil, sea salt, cherry tomatoes, or olives for the r
+  0.015 FLAG | What specific sleep techniques did Li Hua use to improve her study hab
+         -> This means ensuring that she has a comfortable sleep environment, avoids stimulating activities before bedtime, and maintains a consistent sleep sched
+  0.545      | What are the reasons behind Jennifer and Li Hua's decision to change t
+         -> This change reflects Jennifer's effort to adapt to Li Hua's lifestyle and accommodate his professional responsibilities while still prioritizing his f
+  0.075 FLAG | What new species of flowers will be featured in the community garden r
+         -> Based on the feedback provided by Li Hua during the progress reports, the following species of flowers are planned for the community garden renovation
+  0.733      | What specific measurements did Li Hua take for the window size before 
+         -> Adam Smith then used these dimensions to get the curtains made.
+  0.411 FLAG | What specific design features did Li Hua suggest for Yuriko's studio h
+         -> Li Hua also suggested adding space for testimonials and possibly including visuals such as videos or photos of therapy sessions to make the homepage m
+  0.430 FLAG | What specific construction projects were discussed at the meeting betw
+         -> During the meeting held on May 27, 2026 at 10:00 AM, Turalyon presented the initial plan to limit noisy activities from 2-3 PM and suggested potential
+  0.081 FLAG | What movie did Li Hua and Wolfgang decide to watch together on New Yea
+         -> On New Year's Eve 2026, Li Hua and Wolfgang decided to watch the classic movie "Star Wars: A New Hope" together.
+  0.101 FLAG | What type of flowers were planted in the garden based on the residents
+         -> This aligns with the broader theme of incorporating a variety of native species to enhance the garden's biodiversity and sustainability.
+  0.009 FLAG | What type of diet is Li Hua following to support his training regimen 
+         -> WolfgangSchulz suggests that staying hydrated is key and recommends magnesium supplements and incorporating fruits and nuts into his diet to boost ene
+  0.038 FLAG | What were Li Hua's specific fitness goals and how did Jennifer's advic
+         -> This advice underscores the significance of a balanced approach to fitness, combining physical activity with nutritional strategies to achieve optimal
+  0.181 FLAG | What type of protein supplements did Li Hua use after the workout on S
+         -> Additionally, she suggested plant-based protein options such as pea or rice protein, which are alternatives for individuals who may prefer not to cons
+  0.127 FLAG | What is the favorite type of music that Li Hua and Yuriko plan to play
+         -> Specifically, they have discussed songs like "Hotel California," "Sweet Home Alabama," and "Blackbird." Thus, it appears that their favorite type of m
+
+correct non-Null answers flagged (first 12): score, weakest sentence
+  0.130 Single | What does JakeWatson suggest for refueling after a soccer game?
+         -> Based on the conversation between JakeWatson and LiHua, JakeWatson suggests quickly refueling after an intense soccer game.
+  0.415 Single | What game does ThaneChambers consider their top choice for storytellin
+         -> Additionally, Thane references "Gris" and "Journey" as games that surprise him with powerful storytelling despite seeming straightforward initially.
+  0.044 Single | Which scene stood out for Li Hua in The Witcher 3?
+         -> Another memorable scene for Li Hua was the quest where he helped the knights in the tournament.
+  0.431 Single | What does Aurora say about the atmosphere at the Bernabéu during tough
+         -> She notes that the Bernabéu is renowned for its strong support system, which contributes greatly to the team's performance, particularly during challe
+  0.415 Single | What is the current status of the curtains according to LiHua?
+         -> Additionally, LiHua mentions that she plans to measure the window in the basement for potential curtains to be made, suggesting that the existing curt
+  0.132 Single | Which moment involving Tyrion is Merrick's favorite?
+         -> Merrick also mentions another memorable moment involving Tyrion when he discusses the relatability of Cersei's protectiveness over her children, highl
+  0.042 Single | What is the topic of discussion between Li Hua and Wolfgang Schulz on 
+         -> They also touch on the best way to prepare these burgers, with Wolfgang suggesting keeping it simple with lettuce, tomato, and pickles, while Li Hua m
+  0.028 Single | When is the garage sale being discussed?
+         -> The discussion about the garage sale is taking place in TirionFordring's post dated 20260814_15:
+  0.054 Single | What is Li Hua's opinion on the characters in Succession?
+         -> Additionally, Li Hua brings up the theme of reconciliation between Kendall and his father Logan, suggesting that their relationship remains toxic and 
+  0.038 Single | Would LiHua be interested in playing co-op with the group?
+         -> A group purchase sounds like a great idea, especially if we can get some discounts.
+  0.092 Single | When did Li Hua inform Adam Smith that the rent was transferred?
+         -> There were no other specific dates mentioned in the provided data for the exact timing of the transfers.
+  0.077 Multi  | Is the time interval more than 7 days between Adam asking LiHua about 
+         -> This is followed by another interaction on November 10th at 11 AM, where Adam informs Li Hua about the delivery details.
+
+per-question scores: logs/v5d_step0_scores.jsonl

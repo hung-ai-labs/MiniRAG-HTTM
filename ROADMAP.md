@@ -499,6 +499,28 @@ Script: `reproduce/v5d_hhem_floor.py` → `logs/v5d_step0.txt`, `logs/v5d_step0_
 - **Tiêu chí dừng (áp nghiêm):** dừng V5d nếu **> 10%** câu đúng bị gắn cờ, **hoặc** bắt được
   **< 6/18** câu Null sai. Trượt một trong hai → ghi kết quả phủ định, không tinh chỉnh.
 
+**⛔ Kết quả V5d Bước 0 — DỪNG V5d (14/09 12:37, chạy sau commit đăng ký `dcfa691`)**
+
+Tái hiện điểm model card: sai lệch tối đa 2,7·10⁻⁷. 3.415 cặp (chunk, câu), CPU 8 phút.
+
+| Cổng | Kết quả | Ngưỡng dừng | |
+|---|---:|---:|---|
+| 1 — chặn nhầm câu đúng có đáp án (premise = chunk gold) | **165/347 = 47,6%** (Single 44,2%, Multi **85,7%**) | > 10% | **TRƯỢT** |
+| 2 — bắt câu Null sai (premise = Sources xấp xỉ) | 15/18 | < 6 | đạt |
+
+Trượt cổng 1 → **dừng V5d, không chỉnh ngưỡng hay cách gộp**. Chặn nhầm gần một nửa câu đúng
+*ngay cả với premise lý tưởng* là chunk gold; Sources thật chỉ làm tệ hơn ở 13% câu không
+truy hồi được chunk gold. Cổng 2 đạt vì bộ kiểm gắn cờ gần như mọi thứ (7/7 câu Null
+`neither` cũng bị gắn cờ) — không phải vì nó phân biệt được.
+
+Vì sao: câu trả lời của Qwen có câu tổng hợp, suy diễn, chuyển ý ("This advice underscores…",
+"These interactions demonstrate…") mà không chunk đơn nào entail; câu Multi cần ghép hai chunk
+nên từng câu đơn lẻ không được hỗ trợ (85,7%). Luật "câu yếu nhất" biến bất kỳ câu nào như vậy
+thành từ chối. Phân vị điểm có chồng lấn nhưng lệch (trung vị câu đúng 0,546, câu Null sai
+0,154) — **chỉ ghi nhận, không dùng**: chọn lại cách gộp sau khi xem kết quả là tinh chỉnh bằng nhãn.
+
+Chi tiết: `logs/v5d_step0.txt`, điểm từng câu `logs/v5d_step0_scores.jsonl`.
+
 ### Đồ thị: SLM dựng khác hẳn Gemini
 
 | | Qwen2.5-3B | Gemini Flash-Lite |

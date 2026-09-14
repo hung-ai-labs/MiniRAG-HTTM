@@ -1,0 +1,15 @@
+baseline: ./logs/qwen637_v3_judged.csv (1911 dòng, judge_failed=0)
+vec: ./logs/qwen637_vec_judged.csv (1911 dòng, judge_failed=0)
+câu ghép được: 635
+
+nhóm          n │  baseline acc    err    nei   prec │       vec acc    err    nei   prec │ McNemar
+TỔNG        635 │  61.94±0.45  23.78  14.28  72.26 │  65.20±0.42  25.04   9.76  72.25 │  80 lên/ 61 xuống net  +19 p=0.129
+Single      506 │  64.36±0.46  20.88  14.76  75.50 │  68.25±0.30  21.61  10.14  75.95 │  62 lên/ 43 xuống net  +19 p=0.078
+Multi        64 │  43.75±1.56  42.71  13.54  50.60 │  43.75±1.56  46.35   9.90  48.55 │  11 lên/ 11 xuống net   +0 p=1.000
+Null         65 │  61.03±2.35  27.69  11.28  68.79 │  62.56±0.89  30.77   6.67  67.03 │   7 lên/  7 xuống net   +0 p=1.000
+dev 200     200 │  59.67±0.29  26.83  13.50  68.98 │  64.50±0.87  26.00   9.50  71.27 │  28 lên/ 21 xuống net   +7 p=0.392
+ngoài dev   435 │  62.99±0.61  22.38  14.64  73.79 │  65.52±0.46  24.60   9.89  72.70 │  52 lên/ 40 xuống net  +12 p=0.251
+
+Efficiency baseline: 635 truy vấn · chunk trung vị 9 · context token trung vị 3870 · p90 4370 · max 4812
+
+Efficiency vec: 635 truy vấn · chunk trung vị 10 · context token trung vị 3921 · p90 4350 · max 4891

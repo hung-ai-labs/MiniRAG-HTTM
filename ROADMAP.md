@@ -457,6 +457,35 @@ Tức dự báo vector ≥ V3 ở Single, ≤ V3 ở Multi, tổng nghiêng nh�
   khác thứ tự RRF**.
 - Không tinh chỉnh top-30, ngân sách 4.000 hay k sau khi thấy kết quả.
 
+**Kết quả vector thuần (14/09 22:19) — theo luật đã đăng ký: (c) KHÔNG PHÂN BIỆT ĐƯỢC**
+(`logs/compare_vec_vs_v3.txt`, `logs/compare_vec_vs_v3_r2.txt`, `logs/compare_vec_vs_v3_r3.txt`, `logs/compare_vec.txt`)
+
+Kiểm toàn vẹn ĐẠT: 635/635 dòng context-log khớp A1(top-30 vector) tính offline, lệch 0 (`logs/check_vector_ctx.txt`).
+0 dòng `Error`, 0 `judge_failed`; QA chạy trên workspace `hung-ai-labs`.
+
+| Nhóm | n | V3 lượt 1 acc / err / neither | Vector thuần acc / err / neither | vs V3 lượt 1 | vs r2 | vs r3 |
+|---|---:|---|---|---|---|---|
+| **Tổng** | 635 | 61,94 / 23,78 / 14,28 | **65,20 ± 0,42** / 25,04 / 9,76 | **80 / 61, p = 0,13** | 90 / 55, p = 0,0046 | 91 / 65, p = 0,045 |
+| Single | 506 | 64,36 / 20,88 / 14,76 | 68,25 / 21,61 / 10,14 | 62 / 43, p = 0,078 | 67 / 40 | 69 / 50 |
+| Multi | 64 | 43,75 / 42,71 / 13,54 | 43,75 / 46,35 / 9,90 | 11 / 11 | 14 / 6 | 15 / 7 |
+| Null | 65 | 61,03 / 27,69 / 11,28 | 62,56 / 30,77 / 6,67 | 7 / 7 | 9 / 9 | 7 / 8 |
+| Ngoài dev | 435 | 62,99 / 22,38 / 14,64 | 65,52 / 24,60 / 9,89 | 52 / 40, p = 0,25 | 66 / 36, p = 0,004 | 63 / 41, p = 0,039 |
+
+acc/(acc+err) 72,25 so với 72,26. Context trung vị 3.921 token (V3 3.870, +1,3%), 10 chunk.
+
+**Đọc theo luật (c):** phép so chính (với V3 lượt 1) có p = 0,13 ≥ 0,05 → không phân biệt được. Viết: *trên LiHua-World, trộn
+RRF đồ thị + vector và vector thuần cho độ chính xác ngang nhau.* **Không** tuyên bố trộn hơn vector; **không** được viết "trộn
+giữ lợi thế multi-hop của đồ thị" (Multi 43,75 ở cả hai). Multi chỉ báo, không kết luận riêng.
+
+**Mô tả thêm, KHÔNG phải kiểm định đã đăng ký và không đổi kết luận (c):** vector thuần cao hơn cả ba lượt V3 (net +19, +35,
++26) và cao hơn trung bình ba lượt 4,48 điểm (ngoài dev +4,75). Nhưng vector thuần mới có **một** lượt sinh, trong khi sd giữa
+các lượt là 1,26 — đây là tín hiệu cần lặp lượt sinh để xác nhận, không phải kết quả.
+
+**Hệ quả cho cách trình bày V3:** mức tăng so với baseline tái hiện được bằng vector thuần (152 / 65, p = 3,3·10⁻⁹; ngoài dev
+107 / 38, p = 8,6·10⁻⁹). Vậy V3 **không chứng minh đồ thị đóng góp**; phần đứng được là *sửa khâu chọn chunk của MiniRAG bằng xếp
+hạng dày*. Null tụt ngang nhau (vector 62,56; V3 trung bình 61,54) → nguyên nhân là thêm chunk vector nói chung, không riêng
+việc trộn. Lượt này là mốc H2 cho B2 (BM25).
+
 **BM25 — đăng ký trước hai lượt B1, B2 (14/09, trước mọi code và mọi đầu ra)**
 
 Nguồn: probe offline trên dev 200, 0 API, 0 GPU (`reproduce/probe_query_signals.py`,
@@ -920,5 +949,10 @@ trả lời (kích thước cửa sổ 150 × 120 cm, bánh tart mâm xôi ở s
 **9. V3 dựa trên hai thay đổi khác đã bật sẵn.** A1@4000 (cắt Sources — bản thân là sửa lỗi upstream
 để vừa cửa sổ 32k) và bản vá answer-type. Cả hai được giữ cố định giữa baseline và V3, nên so sánh
 vẫn là một biến, nhưng kết quả không áp nguyên cho MiniRAG upstream chưa có hai thay đổi này.
+
+**10. Chưa chứng minh được xếp hạng đồ thị có đóng góp.** Ablation vector thuần đã đăng ký trước: 65,20 so với V3 lượt 1
+61,94 (80 / 61, p = 0,13) → theo luật (c), trộn và vector thuần ngang nhau; vector thuần tái hiện toàn bộ mức tăng so với
+baseline (152 / 65). Không được trình bày V3 là bằng chứng rằng đồ thị giúp truy hồi — chỉ được viết V3 sửa khâu chọn chunk.
+Vector thuần mới một lượt sinh.
 
 **Mặc định vẫn tắt** (`MINIRAG_CHUNK_FUSION`). Bật hay không là quyết định của nhóm; nếu bật thì giữ A1@4000.

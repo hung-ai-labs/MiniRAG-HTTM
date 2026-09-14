@@ -251,6 +251,7 @@ bằng reciprocal rank fusion (k=60, không tinh chỉnh), trước bước cắ
 | + cắt vách (V2) | 45,41 ± 0,18 | 23,52 | 31,08 | 65,88 | 64 / 100, p = 0,006 ⛔ |
 | + chỉ sửa lỗi `path2chunk` (V1) | 50,81 ± 0,64 | 26,35 | 22,83 | 65,85 | 76 / 78, p = 0,936 — không đổi |
 | + trộn RRF @2000 token (V4) | 52,28 ± 0,16 | 27,19 | 20,52 | 65,79 | 80 / 75, p = 0,748 — **so với V3: 37 / 100, p = 7,0·10⁻⁸** ⛔ |
+| + vector thuần (ablation V3, không đồ thị trong Sources) | 65,20 ± 0,42 | 25,04 | 9,76 | 72,25 | 152 / 65, p = 3,3·10⁻⁹ — **so với V3: 80 / 61, p = 0,13 → ngang nhau (luật (c))** |
 
 Phép thử sạch (435 câu ngoài dev): trung bình 3 lượt +11,34 acc, mỗi lượt p ≤ 4·10⁻⁴ (lượt 1: +13,56,
 p = 7,3·10⁻⁸). Cùng ngân sách token. **± ở dòng V3 là sd giữa 3 lượt sinh** (lượt 1 / r2 / r3 = 61,94 /
@@ -264,7 +265,8 @@ ngang đồ thị @4000). Không trình bày RRF như cải tiến Efficiency; n
 **Limitations của V3 đã chốt** (ROADMAP, mục "Limitations của V3"): Null đi ngược (cùng chiều cả 3 lượt sinh)
 và cả 5 hướng sửa (A3, V5a–V5e) đều phủ định — **đừng mở lại hướng verifier/từ chối**; lợi ích gắn ngân sách
 4.000; đã lặp 3 lượt sinh — tổng đứng vững nhưng **Multi không lặp lại được** (43,75 / 32,29 / 30,21, không được
-viết "cải thiện Multi-hop"); báo 435 câu ngoài dev làm kết quả chính.
+viết "cải thiện Multi-hop"); báo 435 câu ngoài dev làm kết quả chính; **ablation vector thuần ngang V3** (80 / 61, p = 0,13, luật (c)) và tái hiện toàn bộ
+mức tăng so với baseline → không được nói đồ thị đóng góp, không được viết "trộn giữ lợi thế đồ thị".
 
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 

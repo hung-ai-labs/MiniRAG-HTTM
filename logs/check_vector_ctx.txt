@@ -1,0 +1,17 @@
+python-dotenv could not parse statement starting at line 4
+python-dotenv could not parse statement starting at line 6
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+python-dotenv could not parse statement starting at line 9
+python-dotenv could not parse statement starting at line 4
+python-dotenv could not parse statement starting at line 6
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+python-dotenv could not parse statement starting at line 9
+USING 18 API KEY(S)
+USING LLM: gemini-flash-lite-latest
+USING EMBEDDING: local
+USING WORKING DIR: /private/tmp/claude-501/-Users-hunggoodboy-Documents-HTTM-TK-MiniRAG-HTTM/98feb849-7098-448d-a4e3-1eadc18112bd/scratchpad/qwen_index_check
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 15725.01it/s]
+context-log ./logs/qwen637_vec_ctx.jsonl: 635 câu, lệch 0
+KIỂM TOÀN VẸN: ĐẠT

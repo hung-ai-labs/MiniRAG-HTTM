@@ -544,6 +544,21 @@ thành từ chối. Phân vị điểm có chồng lấn nhưng lệch (trung v�
 
 Chi tiết: `logs/v5d_step0.txt`, điểm từng câu `logs/v5d_step0_scores.jsonl`.
 
+**⛔ V5e — Qwen2.5-3B tự kiểm chứng sau sinh: DỪNG, không fine-tune (14/09; chi tiết trên nhánh `research/v5e-qwen-verifier`, không merge)**
+
+Pilot có cổng, đăng ký trước (`cf71fc3`), V3 không đổi, chỉ thêm công tắc ghi `MINIRAG_RECORD` (mặc
+định tắt, chỉ trên nhánh). Verifier zero-shot (temperature 0, đầu ra nhị phân ràng buộc) nói
+UNSUPPORTED với gần như mọi thứ: bắt 16/16 Null sai nhưng chặn nhầm **37/40** câu đúng (Single 18/21,
+Multi 19/19) và 42/43 câu Null đã trả lời đúng → ròng dự phóng **−309 câu**; trượt G1, G3, G4 (`c005222`).
+Chi phí: +1 lời gọi Qwen/câu (+50%), +68% token đầu vào, 0,93 s/lời gọi.
+
+Lớp chẩn đoán (đăng ký `7b5219c`, phân loại lỗi mù `0abf676`): ROC-AUC 0,448 (CI 0,29–0,61), độ tin
+cậy bão hoà ~1,0 ở mọi nhóm, chỉ 35% lỗi thuộc loại học được → **khuyến nghị A: dừng hướng verifier,
+không micro-finetune**. Phát hiện cấu trúc: khoảng 1/3 câu V3 được giám khảo chấm *đúng* vẫn chứa
+ngày/thứ tự/người nói không có trong Sources, nên "được Sources hỗ trợ" và "đúng theo giám khảo"
+là hai mục tiêu khác nhau — verifier trung thành sẽ chặn cả chúng. **Toàn bộ V5a–V5e khép lại;
+giữ V3; ghi nhóm Null (−9,23, p = 0,092) vào Limitations.**
+
 ### Đồ thị: SLM dựng khác hẳn Gemini
 
 | | Qwen2.5-3B | Gemini Flash-Lite |

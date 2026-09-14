@@ -480,6 +480,25 @@ corpus và Sources xấp xỉ. Kết luận "dấu vết có thật" không ph�
 và Qwen chỉ thấy Sources. Hướng còn lại (NLI nhỏ V5d, Qwen verifier V5e) cần Sources thật →
 phải chạy lại V3 có ghi context trước.
 
+**📌 Đăng ký trước — V5d Bước 0: kiểm sàn HHEM-2.1-Open offline (14/09, ghi TRƯỚC khi chạy)**
+
+Duyệt 14/09. Chỉ offline, không đụng runtime MiniRAG hay V3. Không làm pilot 50 câu khi chưa duyệt.
+Script: `reproduce/v5d_hhem_floor.py` → `logs/v5d_step0.txt`, `logs/v5d_step0_scores.jsonl`.
+
+- **Model, ghim cố định:** `vectara/hallucination_evaluation_model` @ `8e4a2e6e96c708cc76c2344f7e4757df2515292c`,
+  trọng số sha256 `634de18a…2e72`; tokenizer + config `google/flan-t5-base` @ `7bcac572ce56db69c1ea7c8af255c5d7c9672fc2`.
+  CPU float32. **Không chạy remote code** (nó nạp flan-t5-base theo tên, không ghim): tái hiện
+  đúng 10 dòng suy luận của nó và phải khớp điểm công bố trong model card (sai lệch ≤ 1e-3) mới được chấm.
+- **Luật quyết định, cố định:** tách câu trả lời V3 thành câu (bỏ markdown, tách mục liệt kê dính, giữ
+  câu ≥ 4 từ). Điểm câu = max theo chunk premise. Điểm câu trả lời = min theo câu. **Gắn cờ
+  (sẽ từ chối) khi < 0,5.** Không tinh chỉnh ngưỡng, không đổi cách gộp.
+- **Quần thể và premise:**
+  - Câu có đáp án, V3 trả lời đúng (majority): premise = chunk gold theo Evidence (chỉ để chẩn
+    đoán; câu không map được chunk bị loại khỏi mẫu số và báo riêng).
+  - 18 câu Null V3 trả lời sai: premise = Sources xấp xỉ (MiniLM, lấp tới 4.000 token).
+- **Tiêu chí dừng (áp nghiêm):** dừng V5d nếu **> 10%** câu đúng bị gắn cờ, **hoặc** bắt được
+  **< 6/18** câu Null sai. Trượt một trong hai → ghi kết quả phủ định, không tinh chỉnh.
+
 ### Đồ thị: SLM dựng khác hẳn Gemini
 
 | | Qwen2.5-3B | Gemini Flash-Lite |

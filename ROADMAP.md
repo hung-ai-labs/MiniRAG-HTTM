@@ -453,6 +453,83 @@ Tức dự báo vector ≥ V3 ở Single, ≤ V3 ở Multi, tổng nghiêng nh�
   khác thứ tự RRF**.
 - Không tinh chỉnh top-30, ngân sách 4.000 hay k sau khi thấy kết quả.
 
+**BM25 — đăng ký trước hai lượt B1, B2 (14/09, trước mọi code và mọi đầu ra)**
+
+Nguồn: probe offline trên dev 200, 0 API, 0 GPU (`reproduce/probe_query_signals.py`,
+`reproduce/probe_bm25_fusion.py` → `logs/probe_query_signals.txt`, `logs/probe_bm25_fusion.txt`; chạy với
+`--workingdir` là **bản sao** index Qwen). Phát hiện chính: top-30 đồ thị ∪ top-30 vector đã chứa **93,7%** chunk
+đáp án, nhưng sau A1@4000 chỉ còn 66,7% — 56 chunk rơi ở bước cắt ngân sách, chỉ 13 (6,3%) nằm ngoài cả hai bảng.
+Nút thắt là **thứ tự trong ngân sách**, không phải tìm ứng viên hay hiểu câu hỏi. BM25 trên nguyên câu hỏi xếp
+chunk đáp án lên cao hơn (recall top-30 94,7% so với vector 87,0%) mà **không cần parser**.
+
+Cùng probe đã loại ba trường "query planner": câu con tách mệnh đề 0 lên / 1 xuống; xếp hạng qua cạnh
+`relationships_vdb` 8 / 22 (p = 0,016; Multi 0 / 5); ngày trong câu 12 / 0 so với V3 nhưng cộng thêm vào BM25 chỉ
+5 / 0 (p = 0,062) và dựa vào định dạng `YYYYMMDD` riêng của bộ câu hỏi → để sau, đăng ký riêng. **Không thu dữ liệu,
+không fine-tune parser** cho tới khi có kết quả hai lượt này.
+
+Hai biến thể qua công tắc `MINIRAG_CHUNK_FUSION` (mặc định vẫn tắt). Mọi thứ khác giữ nguyên V3 từng biến như
+`reproduce/run_vector637_qa.sh`: bảng Entities vẫn từ đồ thị, `ANSWER_TYPE_FIX=1`, `PATH2CHUNK_FIX=0`, không cắt vách,
+A1@4000, cùng index, model, judge, 637 câu; câu đồ thị không ra node/cạnh vẫn trả `fail_response`.
+
+| Lượt | Công tắc | Sources xếp hạng bằng | Khác đúng một biến so với |
+|---|---|---|---|
+| **B1** `qwen637_v3bm25` | `rrf_bm25` | RRF(đồ thị, vector top-30, BM25 top-30) | V3: thêm BM25 |
+| **B2** `qwen637_vecbm25` | `vector_bm25` | RRF(vector top-30, BM25 top-30) | vector thuần: thêm BM25 · B1: bỏ đồ thị |
+
+**Đặc tả BM25, chốt trước, không tinh chỉnh sau:**
+- Okapi BM25, k1 = 1,2, b = 0,75 (mặc định sách giáo khoa); idf = ln(1 + (N − n + 0,5) / (n + 0,5)).
+- Tập tài liệu: mọi chunk trong `kv_store_text_chunks.json` của working dir (514 chunk), trường `content` nguyên văn.
+  Dựng một lần trong bộ nhớ, **không ghi gì vào index**.
+- Tách từ: chữ thường, `[a-z0-9]+`; bỏ stopword ở phía câu hỏi theo đúng danh sách `STOP` trong
+  `probe_query_signals.py`.
+- Truy vấn: **nguyên câu hỏi gốc** — không dùng đầu ra parser, không trích ngày.
+- Lấy 30 chunk có điểm > 0 cao nhất (= `top_k / 2`, như vector); hoà điểm giữ thứ tự trong file.
+- Trộn bằng `_rrf_fuse` hiện có (k = 60); thứ tự bảng B1 = (đồ thị, vector, BM25), B2 = (vector, BM25).
+
+**Dự báo** (probe dev 200 — probe được thiết kế trên chính dev nên đây chỉ là dự báo; phép thử sạch là 435 câu ngoài dev):
+
+| Dev, 180 câu có evidence | Câu đủ đáp án | Chunk đáp án giữ | So với V3 (lên / xuống) |
+|---|---:|---:|---|
+| V3 | 62,8% | 66,7% | — |
+| Vector thuần (đang chạy) | 67,8% | 71,5% | 24 / 15 |
+| **B1** | 72,8% | 75,8% | 21 / 3 |
+| **B2** | 83,9% | 86,0% | 46 / 8 · so với B1: 28 / 8 |
+
+Theo loại: Single B1 72,3% (19 / 3), B2 85,5% (44 / 7); Multi (n = 21) B1 76,2% (2 / 0), B2 71,4% (2 / 1) — Multi là
+chỗ duy nhất đồ thị có thể còn giúp. Token Sources trung vị 3.600–3.700, ngang V3. BM25 tốn 0,8 ms/câu. **Null không dự
+báo được** ở mức truy hồi (không có evidence); chiều rủi ro là **xấu đi**: khớp từ vựng với tên thật trong câu hỏi về
+chuyện không có sẽ kéo thêm văn bản "trông liên quan" — đúng cơ chế đã làm Null của V3 tụt.
+
+**Ba giả thuyết chính** — phép so trên **435 câu ngoài dev**, McNemar chính xác hai phía trên phán quyết đa số,
+Holm–Bonferroni cho cả ba (α họ = 0,05):
+- **H1** BM25 cộng thêm được vào V3: B1 vs `qwen637_v3`.
+- **H2** BM25 cộng thêm được vào vector: B2 vs `qwen637_vec`.
+- **H3** Khi đã có BM25, đồ thị còn cần không: B2 vs B1.
+
+**Cổng trước khi đề xuất một biến thể làm cấu hình mới** (so với V3, trên 637 câu trừ khi ghi khác):
+- **E1** giả thuyết chính của nó đạt theo chiều biến thể (H1 cho B1, H2 cho B2).
+- **E2** Δacc ≥ +2,67 điểm (net ≥ 17 câu, §3) **và** ≥ 2 × sd giữa các lượt sinh của V3 (`logs/v3_replicates_summary.txt`).
+- **E3** Δerr ≤ +1,0 điểm (≈ 2 × sd giám khảo 0,45).
+- **E4** không nhóm nào (Single / Multi / Null) giảm có ý nghĩa (p < 0,05); riêng Null net giảm ≤ 3 câu.
+- **E5** token context trung vị trong ±5% của V3 (3.870); A1 giữ 4.000.
+- **E6** chiều so với `v3_r2` và `v3_r3` giống chiều so với V3.
+- **Toàn vẹn:** selftest trước khi tốn GPU (LLM giả, bản sao index, 40 câu): danh sách BM25 khớp bản offline 40/40 và
+  thứ tự sau trộn khớp `_rrf_fuse` 40/40. Sau khi chạy: context-log ghi thêm `chunk_ids` và `graph_ids` để tính lại
+  A1(RRF(...)) offline cho **mọi** câu; lệch câu nào thì kết quả không tính.
+
+**Luật đọc:**
+- H1 đạt và B1 qua E1–E6 → *"thêm xếp hạng từ vựng vào trộn đồ thị–vector cải thiện MiniRAG"*; bật hay không là quyết
+  định của nhóm.
+- H2 đạt và H3 nghiêng về B2 → báo thẳng: trên LiHua-World, khi đã có vector + BM25 thì xếp hạng chunk bằng đồ thị
+  không cần / kéo xuống. Đây là **kết quả phủ định về đồ thị**, không trình bày như đóng góp của đồ thị.
+- H3 không đạt → không được nói đồ thị giúp hay hại; báo cả hai con số.
+- H1 không đạt → chẩn đoán offline đã đánh giá quá cao tác dụng lên accuracy; dừng hướng BM25, không làm phần ngày.
+- Null trượt E4 → ghi Limitations; **không** mở lại hướng verifier / từ chối.
+- Không đổi k1, b, 30, k = 60, ngân sách 4.000 hay danh sách stopword sau khi thấy kết quả.
+
+**Thứ tự:** code + selftest (commit riêng) → B1 → B2, nối tiếp sau lượt vector thuần, không chạy song song QA. Mỗi lượt
+~2–3,5 giờ GPU (~2–4 USD) + chấm free tier. Ngày trong câu chỉ đăng ký sau khi có bên thắng giữa B1 và B2.
+
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 
 Đặc tả A3 trong kế hoạch: *từ chối nếu chunk tốt nhất dưới ngưỡng cosine*. Đo khả năng tách

@@ -1,0 +1,53 @@
+dev: 180 câu có evidence, 207 chunk đáp án. Single 159, Multi 21
+
+A. TỪNG BẢNG XẾP HẠNG: recall chunk đáp án ở top-30, và phần MỚI ngoài G∪V
+  G đồ thị                         180 câu 207 chunk · recall  61.8% · mới ngoài G∪V 0
+  V vector top-30                  180 câu 207 chunk · recall  87.0% · mới ngoài G∪V 0
+  vector top-100                   180 câu 207 chunk · recall  93.2% · mới ngoài G∪V 7
+  K BM25 câu gốc                   180 câu 207 chunk · recall  94.7% · mới ngoài G∪V 10
+  E cạnh                           180 câu 207 chunk · recall  48.3% · mới ngoài G∪V 2
+  T ngày (chỉ câu có ngày)          23 câu  30 chunk · recall  80.0% · mới ngoài G∪V 3
+  S câu con (chỉ câu tách được)     24 câu  48 chunk · recall  85.4% · mới ngoài G∪V 1
+  G∪V chứa 194/207 = 93.7%; sau A1@4000 còn 138 = 66.7%  → mất ở bước cắt ngân sách: 56 chunk
+  ngoài G∪V hoàn toàn: 13 chunk (6.3%) — trần của mọi 'nguồn ứng viên mới'
+
+B. MỖI BIẾN THỂ SAU A1@4000 (so với V3 mô phỏng; McNemar trên 'câu đủ đáp án')
+  --- TỔNG: 180 câu, 207 chunk
+    V3 = RRF(G,V)                  chunk  66.7% · đủ  62.8% ·  0 lên/ 0 xuống p=1.000 · đổi context   0 câu · token tv 3704 · chunk tv 8
+    +T ngày trong câu (regex)      chunk  72.9% · đủ  69.4% · 12 lên/ 0 xuống p=0.000 · đổi context  23 câu · token tv 3713 · chunk tv 8
+    +S câu con (tách mệnh đề)      chunk  66.2% · đủ  62.2% ·  0 lên/ 1 xuống p=1.000 · đổi context  24 câu · token tv 3708 · chunk tv 8
+    +K BM25 câu gốc                chunk  75.8% · đủ  72.8% · 21 lên/ 3 xuống p=0.000 · đổi context 175 câu · token tv 3698 · chunk tv 7
+    +E cạnh relationships_vdb      chunk  59.9% · đủ  55.0% ·  8 lên/22 xuống p=0.016 · đổi context 180 câu · token tv 3777 · chunk tv 8
+    vector thuần (tham chiếu)      chunk  71.5% · đủ  67.8% · 24 lên/15 xuống p=0.200 · đổi context 179 câu · token tv 3726 · chunk tv 10
+  --- Single: 159 câu, 159 chunk
+    V3 = RRF(G,V)                  chunk  62.3% · đủ  62.3% ·  0 lên/ 0 xuống p=1.000 · đổi context   0 câu · token tv 3676 · chunk tv 7
+    +T ngày trong câu (regex)      chunk  69.8% · đủ  69.8% · 12 lên/ 0 xuống p=0.000 · đổi context  21 câu · token tv 3703 · chunk tv 7
+    +S câu con (tách mệnh đề)      chunk  61.6% · đủ  61.6% ·  0 lên/ 1 xuống p=1.000 · đổi context   7 câu · token tv 3676 · chunk tv 7
+    +K BM25 câu gốc                chunk  72.3% · đủ  72.3% · 19 lên/ 3 xuống p=0.001 · đổi context 154 câu · token tv 3646 · chunk tv 7
+    +E cạnh relationships_vdb      chunk  56.6% · đủ  56.6% ·  8 lên/17 xuống p=0.108 · đổi context 159 câu · token tv 3770 · chunk tv 7
+    vector thuần (tham chiếu)      chunk  69.2% · đủ  69.2% · 23 lên/12 xuống p=0.090 · đổi context 158 câu · token tv 3687 · chunk tv 9
+  --- Multi: 21 câu, 48 chunk
+    V3 = RRF(G,V)                  chunk  81.2% · đủ  66.7% ·  0 lên/ 0 xuống p=1.000 · đổi context   0 câu · token tv 3851 · chunk tv 14
+    +T ngày trong câu (regex)      chunk  83.3% · đủ  66.7% ·  0 lên/ 0 xuống p=1.000 · đổi context   2 câu · token tv 3859 · chunk tv 14
+    +S câu con (tách mệnh đề)      chunk  81.2% · đủ  66.7% ·  0 lên/ 0 xuống p=1.000 · đổi context  17 câu · token tv 3888 · chunk tv 16
+    +K BM25 câu gốc                chunk  87.5% · đủ  76.2% ·  2 lên/ 0 xuống p=0.500 · đổi context  21 câu · token tv 3809 · chunk tv 12
+    +E cạnh relationships_vdb      chunk  70.8% · đủ  42.9% ·  0 lên/ 5 xuống p=0.062 · đổi context  21 câu · token tv 3829 · chunk tv 14
+    vector thuần (tham chiếu)      chunk  79.2% · đủ  57.1% ·  1 lên/ 3 xuống p=0.625 · đổi context  21 câu · token tv 3896 · chunk tv 19
+
+C. THỜI GIAN
+  câu có evidence mang ngày cụ thể: 23 (Counter({'Single': 21, 'Multi': 2}))
+  ngày trong câu TRÙNG ngày evidence: 22/23
+  V3 = RRF(G,V)                  đủ đáp án trên nhóm có ngày: 8/23
+  +T ngày trong câu (regex)      đủ đáp án trên nhóm có ngày: 20/23
+  +K BM25 câu gốc                đủ đáp án trên nhóm có ngày: 16/23
+  BM25 top-30 đã chứa đủ gold ở nhóm có ngày: 22/23
+
+D. CÂU CON
+  tách được: 24 câu (Counter({'Multi': 17, 'Single': 7}))
+     Multi | Did Adam Smith send Li Hua a reminder about the upcoming rent due date ‖ Li Hua sent a message about having already transferred the rent on 20260301
+     Single | What type of gameplay does Jareth enjoy ‖ a big challenge
+     Multi | Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today ‖ he wondered if she wanted to have Sichuan hot pot for dinner tonight
+     Multi | Did Chae tell Li Hua that taking a warm shower ‖ sleeping can improve the sleep quality before sharing the neuroscience article with her
+     Multi | Did Wolfgang ask Li Hua about watching "Star Wars: A New Hope" ‖ he asked Li Hua about going to see "Overwatch 3"
+     Multi | LiHua first asking Adam if he can buy a small fridge for the basement ‖ Adam asking LiHua about the size of the fridge
+  Multi: V3 thiếu evidence ở 7/21 câu

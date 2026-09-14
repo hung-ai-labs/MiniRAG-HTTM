@@ -1,0 +1,47 @@
+--- TỔNG: 180 câu, 207 chunk
+   V3 = RRF(G,V)            chunk  66.7% đủ  62.8% │ vs V3  0/ 0 p=1.000 │ vs +K  3/21 p=0.000 │ tok 3704
+   +K                       chunk  75.8% đủ  72.8% │ vs V3 21/ 3 p=0.000 │ vs +K  0/ 0 p=1.000 │ tok 3698
+   +K (bỏ token ngày)       chunk  74.9% đủ  71.7% │ vs V3 19/ 3 p=0.001 │ vs +K  0/ 2 p=0.500 │ tok 3706
+   +T                       chunk  72.9% đủ  69.4% │ vs V3 12/ 0 p=0.000 │ vs +K  8/14 p=0.286 │ tok 3713
+   +K+T                     chunk  78.3% đủ  75.6% │ vs V3 26/ 3 p=0.000 │ vs +K  5/ 0 p=0.062 │ tok 3672
+   RRF(V,K) bỏ đồ thị       chunk  86.0% đủ  83.9% │ vs V3 46/ 8 p=0.000 │ vs +K 28/ 8 p=0.001 │ tok 3602
+   RRF(V,K,T) bỏ đồ thị     chunk  87.0% đủ  85.0% │ vs V3 48/ 8 p=0.000 │ vs +K 30/ 8 p=0.000 │ tok 3600
+   K thuần                  chunk  87.9% đủ  86.1% │ vs V3 53/11 p=0.000 │ vs +K 34/10 p=0.000 │ tok 3600
+--- Single: 159 câu, 159 chunk
+   V3 = RRF(G,V)            chunk  62.3% đủ  62.3% │ vs V3  0/ 0 p=1.000 │ vs +K  3/19 p=0.001 │ tok 3676
+   +K                       chunk  72.3% đủ  72.3% │ vs V3 19/ 3 p=0.001 │ vs +K  0/ 0 p=1.000 │ tok 3646
+   +K (bỏ token ngày)       chunk  71.1% đủ  71.1% │ vs V3 17/ 3 p=0.003 │ vs +K  0/ 2 p=0.500 │ tok 3675
+   +T                       chunk  69.8% đủ  69.8% │ vs V3 12/ 0 p=0.000 │ vs +K  8/12 p=0.503 │ tok 3703
+   +K+T                     chunk  75.5% đủ  75.5% │ vs V3 24/ 3 p=0.000 │ vs +K  5/ 0 p=0.062 │ tok 3600
+   RRF(V,K) bỏ đồ thị       chunk  85.5% đủ  85.5% │ vs V3 44/ 7 p=0.000 │ vs +K 28/ 7 p=0.001 │ tok 3600
+   RRF(V,K,T) bỏ đồ thị     chunk  86.8% đủ  86.8% │ vs V3 46/ 7 p=0.000 │ vs +K 30/ 7 p=0.000 │ tok 3600
+   K thuần                  chunk  89.3% đủ  89.3% │ vs V3 52/ 9 p=0.000 │ vs +K 34/ 7 p=0.000 │ tok 3600
+--- Multi: 21 câu, 48 chunk
+   V3 = RRF(G,V)            chunk  81.2% đủ  66.7% │ vs V3  0/ 0 p=1.000 │ vs +K  0/ 2 p=0.500 │ tok 3851
+   +K                       chunk  87.5% đủ  76.2% │ vs V3  2/ 0 p=0.500 │ vs +K  0/ 0 p=1.000 │ tok 3809
+   +K (bỏ token ngày)       chunk  87.5% đủ  76.2% │ vs V3  2/ 0 p=0.500 │ vs +K  0/ 0 p=1.000 │ tok 3809
+   +T                       chunk  83.3% đủ  66.7% │ vs V3  0/ 0 p=1.000 │ vs +K  0/ 2 p=0.500 │ tok 3859
+   +K+T                     chunk  87.5% đủ  76.2% │ vs V3  2/ 0 p=0.500 │ vs +K  0/ 0 p=1.000 │ tok 3766
+   RRF(V,K) bỏ đồ thị       chunk  87.5% đủ  71.4% │ vs V3  2/ 1 p=1.000 │ vs +K  0/ 1 p=1.000 │ tok 3837
+   RRF(V,K,T) bỏ đồ thị     chunk  87.5% đủ  71.4% │ vs V3  2/ 1 p=1.000 │ vs +K  0/ 1 p=1.000 │ tok 3837
+   K thuần                  chunk  83.3% đủ  61.9% │ vs V3  1/ 2 p=1.000 │ vs +K  0/ 3 p=0.250 │ tok 3761
+--- câu CÓ ngày: 23 câu, 30 chunk
+   V3 = RRF(G,V)            chunk  46.7% đủ  34.8% │ vs V3  0/ 0 p=1.000 │ vs +K  0/ 8 p=0.008 │ tok 3642
+   +K                       chunk  76.7% đủ  69.6% │ vs V3  8/ 0 p=0.008 │ vs +K  0/ 0 p=1.000 │ tok 3793
+   +K (bỏ token ngày)       chunk  70.0% đủ  60.9% │ vs V3  6/ 0 p=0.031 │ vs +K  0/ 2 p=0.500 │ tok 3839
+   +T                       chunk  90.0% đủ  87.0% │ vs V3 12/ 0 p=0.000 │ vs +K  5/ 1 p=0.219 │ tok 3791
+   +K+T                     chunk  93.3% đủ  91.3% │ vs V3 13/ 0 p=0.000 │ vs +K  5/ 0 p=0.062 │ tok 3493
+   RRF(V,K) bỏ đồ thị       chunk  90.0% đủ  87.0% │ vs V3 12/ 0 p=0.000 │ vs +K  4/ 0 p=0.125 │ tok 3660
+   RRF(V,K,T) bỏ đồ thị     chunk  96.7% đủ  95.7% │ vs V3 14/ 0 p=0.000 │ vs +K  6/ 0 p=0.031 │ tok 3614
+   K thuần                  chunk  96.7% đủ  95.7% │ vs V3 14/ 0 p=0.000 │ vs +K  6/ 0 p=0.031 │ tok 3686
+--- câu KHÔNG ngày: 157 câu, 177 chunk
+   V3 = RRF(G,V)            chunk  70.1% đủ  66.9% │ vs V3  0/ 0 p=1.000 │ vs +K  3/13 p=0.021 │ tok 3707
+   +K                       chunk  75.7% đủ  73.2% │ vs V3 13/ 3 p=0.021 │ vs +K  0/ 0 p=1.000 │ tok 3698
+   +K (bỏ token ngày)       chunk  75.7% đủ  73.2% │ vs V3 13/ 3 p=0.021 │ vs +K  0/ 0 p=1.000 │ tok 3698
+   +T                       chunk  70.1% đủ  66.9% │ vs V3  0/ 0 p=1.000 │ vs +K  3/13 p=0.021 │ tok 3707
+   +K+T                     chunk  75.7% đủ  73.2% │ vs V3 13/ 3 p=0.021 │ vs +K  0/ 0 p=1.000 │ tok 3698
+   RRF(V,K) bỏ đồ thị       chunk  85.3% đủ  83.4% │ vs V3 34/ 8 p=0.000 │ vs +K 24/ 8 p=0.007 │ tok 3600
+   RRF(V,K,T) bỏ đồ thị     chunk  85.3% đủ  83.4% │ vs V3 34/ 8 p=0.000 │ vs +K 24/ 8 p=0.007 │ tok 3600
+   K thuần                  chunk  86.4% đủ  84.7% │ vs V3 39/11 p=0.000 │ vs +K 28/10 p=0.005 │ tok 3600
+
+BM25 xếp hạng 514 chunk: trung vị 0.80 ms/câu, max 3.57 ms (Python thuần, 1 luồng)

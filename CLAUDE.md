@@ -252,6 +252,10 @@ ngang đồ thị @4000). Không trình bày RRF như cải tiến Efficiency; n
 **Mặc định vẫn tắt** — việc bật là quyết định của nhóm. V2 so với V1
 (khác đúng cắt vách): 39 / 73, p = 0,002 → phần hại của V2 hoàn toàn do cắt vách. Chi tiết, kiểm độ sạch và cảnh báo nhóm Null (−9,23, p = 0,092): ROADMAP.
 
+**Limitations của V3 đã chốt** (ROADMAP, mục "Limitations của V3"): Null đi ngược và cả 5 hướng sửa
+(A3, V5a–V5e) đều phủ định — **đừng mở lại hướng verifier/từ chối**; lợi ích gắn ngân sách 4.000; mới
+một lượt sinh (chưa rerun); báo 435 câu ngoài dev làm kết quả chính; Multi chưa có ý nghĩa (p = 0,078).
+
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 
 

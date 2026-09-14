@@ -622,3 +622,56 @@ Ghi lại để đưa vào phần Limitations, không phải lỗi cần sửa g
 - **Đồ thị thưa hơn upstream** do bản vá O(N²) (upstream trích xuất lặp nên gom thêm entity)
 - **Dataset có 2 dòng trùng**: 637 dòng nhưng chỉ **635 câu duy nhất**
 - **Không có câu nào thiếu file evidence** — kiểm lại 09/09/2026, cả 637 câu đều trỏ tới file có thật. Con số "68 câu" ghi trước đây là **sai**: nó đếm câu trỏ tới tài liệu *chưa index* hồi corpus 267, không phải file không tồn tại. **Không có trần điểm cứng do dữ liệu.**
+
+### Limitations của V3 — trộn RRF (chốt 14/09/2026)
+
+Viết để đưa thẳng vào bài. Kết quả chính: Qwen2.5-3B, 637 câu, acc **61,94 ± 0,45** so với baseline
+51,02; McNemar 117 lên / 49 xuống, p = 1,4·10⁻⁷. Mỗi điểm dưới đây kèm bằng chứng đã đo.
+
+**1. Nhóm Null đi ngược chiều, và không có cách sửa rẻ.** Null giảm 70,26 → 61,03 acc, err
+17,44 → 27,69 (3 lên / 10 xuống, p = 0,092 — chưa có ý nghĩa, nhưng cùng chiều trên cả acc và err).
+Cơ chế khả dĩ: chunk vector thêm vào luôn "trông liên quan", nên với câu không có đáp án Qwen trả
+lời thay vì từ chối. Năm hướng khôi phục đều là kết quả phủ định có đăng ký trước: ngưỡng tín hiệu
+truy hồi (A3, AUC ≤ 0,648), luật dấu vết (V5a), kiểm quan hệ bằng đồ thị (V5b, chặn nhầm ≥ 63%),
+đặc trưng MiniLM (V5c), NLI nhỏ HHEM (V5d, chặn nhầm 47,6%), và Qwen tự kiểm chứng (V5e, chặn nhầm
+92,5%, AUC 0,448). Trần lợi ích tối đa chỉ 18 câu (≈ 2,8 điểm) nên hướng này đã đóng.
+
+**2. Lợi ích gắn với ngân sách 4.000 token — không phải cải tiến Efficiency.** Cùng cơ chế ở
+A1@2000 (V4) về ngang baseline (80 / 75, p = 0,748) và thua V3 37 / 100 (p = 7,0·10⁻⁸). V3 dùng
+context trung vị 3.870 token, như baseline. Không được trình bày là "chất lượng cao hơn với ít token hơn".
+
+**3. Mới đo một lượt sinh.** sd 0,45 chỉ là nhiễu của giám khảo (3 lượt chấm cùng một file), không
+phải nhiễu giữa các lần chạy. Qwen sinh có lấy mẫu (vLLM không truyền `temperature`), và độ ổn định
+đo gián tiếp khá thấp: giữa hai lần chạy gần như giống hệt (baseline vs V1, p = 0,936), chỉ 196/260
+câu Single đúng, 11/19 câu Multi đúng và 9/11 câu Null sai giữ nguyên phán quyết. Mức cải thiện
++10,92 lớn hơn nhiều so với biến động đó, nhưng **CLAUDE.md §3 yêu cầu chạy lại nhiều lượt cho benchmark cuối — chưa làm.**
+
+**4. Dev 200 không sạch; phép thử sạch là 435 câu ngoài dev.** Cơ chế được chọn sau chẩn đoán
+dùng nhãn Evidence trên dev 200, nên trên dev hiệu ứng chỉ +5,17 (32 / 21, p = 0,169). Trên 435
+câu ngoài dev: +13,56 (85 / 28, p = 7,3·10⁻⁸). Nên báo con số ngoài dev làm kết quả chính.
+
+**5. Multi-hop cải thiện nhưng chưa có ý nghĩa thống kê.** 30,21 → 43,75 (15 / 6, p = 0,078) trên
+chỉ 64 câu. Không được viết "cải thiện Multi-hop" như một kết luận.
+
+**6. Một model, một đồ thị, một giám khảo.**
+- Chỉ Qwen2.5-3B; `Phi-3.5-mini` chưa chạy.
+- Chỉ đồ thị do Qwen dựng: 1.556 node, 1.509 cạnh, 46% node cô lập, thưa hơn upstream do vá O(N²).
+  RRF có thể một phần đang *bù* cho đồ thị thưa; chưa kiểm trên đồ thị dày hơn (index Gemini 770 node).
+- Giám khảo Gemini Flash-Lite, bài báo dùng GPT-4o → so với bài báo chỉ là tham chiếu.
+- k = 60 lấy mặc định Cormack 2009, không tinh chỉnh — tốt cho độ sạch, nhưng chưa biết độ nhạy.
+
+**7. Tiêu chí của giám khảo dễ dãi với chi tiết sai.** Trong pilot V5e, 13/40 câu có đáp án được
+giám khảo chấm *đúng* vẫn chứa ngày, thứ tự hoặc người nói mâu thuẫn với Sources (vd. "February 5"
+thay vì 20261129) — giám khảo chỉ xét đáp án cuối có khớp vàng không. Mẫu pilot chọn lọc (lấy hết
+câu Multi đúng), nên đây **không** phải ước lượng cho quần thể, nhưng cho thấy acc có thể cao hơn
+độ trung thành thực sự. Áp dụng cho mọi cấu hình, không riêng V3.
+
+**8. Nhãn Null có nhiễu.** 3/16 câu Null "sai" trong pilot thực ra được Sources hỗ trợ đúng như câu
+trả lời (kích thước cửa sổ 150 × 120 cm, bánh tart mâm xôi ở sự kiện kỷ niệm, phản hồi sáng thứ Năm
+20260312). Một phần mức giảm của Null có thể là do nhãn, không phải do mô hình.
+
+**9. V3 dựa trên hai thay đổi khác đã bật sẵn.** A1@4000 (cắt Sources — bản thân là sửa lỗi upstream
+để vừa cửa sổ 32k) và bản vá answer-type. Cả hai được giữ cố định giữa baseline và V3, nên so sánh
+vẫn là một biến, nhưng kết quả không áp nguyên cho MiniRAG upstream chưa có hai thay đổi này.
+
+**Mặc định vẫn tắt** (`MINIRAG_CHUNK_FUSION`). Bật hay không là quyết định của nhóm; nếu bật thì giữ A1@4000.

@@ -121,6 +121,13 @@ không phải ngưỡng để so hai cấu hình. Đừng trộn hai thứ này.
 
 Khi làm benchmark cuối: **rerun nhiều lượt** để chứng minh cải tiến là thật.
 
+**Nhiễu giữa các lượt SINH lớn hơn nhiều so với nhiễu giám khảo** (đo 14/09, V3 × 3 lượt sinh × 3 lượt
+chấm): sd acc **1,26** ở n=635 (giám khảo 0,30), **2,09** trên 435 câu ngoài dev; 21% câu đổi phán quyết theo
+lượt lấy mẫu. Hai lượt **cùng cấu hình** đã cho net −16 (38 / 54) trên 635 câu và **p = 0,033** trên 435 câu
+ngoài dev. → Phép so **một lượt sinh** mà net dưới ~18 câu (≈ 2,5 điểm), hoặc chỉ "có ý nghĩa" trên một tập
+con, thì chưa kết luận được về cấu hình: phải lặp lượt, hoặc kiểm cùng chiều với các lượt lặp của V3
+(`qwen637_v3_r2`, `qwen637_v3_r3`).
+
 ### 4. Không xoá index khi chưa hỏi.
 
 `./LiHua-World-gemini/` là tài sản đắt nhất trong repo. Trước đây đã từng bị `rm -rf`
@@ -240,21 +247,24 @@ bằng reciprocal rank fusion (k=60, không tinh chỉnh), trước bước cắ
 | Qwen2.5-3B, 637 câu | acc | err | neither | acc/(acc+err) | McNemar vs baseline |
 |---|---:|---:|---:|---:|---|
 | Baseline `qwen637_fix` | 51,02 ± 0,42 | 27,66 | 21,31 | 64,84 | — |
-| **+ trộn RRF (V3)** | **61,94 ± 0,45** | **23,78** | 14,28 | **72,26** | **117 lên / 49 xuống, p = 1,4·10⁻⁷** |
+| **+ trộn RRF (V3)** — trung bình 3 lượt sinh | **60,72 ± 1,26** | **25,28** | 14,00 | **70,60** | **cả 3 lượt: 110–117 lên / 49–58 xuống, p ≤ 7,4·10⁻⁵** |
 | + cắt vách (V2) | 45,41 ± 0,18 | 23,52 | 31,08 | 65,88 | 64 / 100, p = 0,006 ⛔ |
 | + chỉ sửa lỗi `path2chunk` (V1) | 50,81 ± 0,64 | 26,35 | 22,83 | 65,85 | 76 / 78, p = 0,936 — không đổi |
 | + trộn RRF @2000 token (V4) | 52,28 ± 0,16 | 27,19 | 20,52 | 65,79 | 80 / 75, p = 0,748 — **so với V3: 37 / 100, p = 7,0·10⁻⁸** ⛔ |
 
-Phép thử sạch (435 câu ngoài dev): +13,56 acc, p = 7,3·10⁻⁸. Cùng ngân sách token.
+Phép thử sạch (435 câu ngoài dev): trung bình 3 lượt +11,34 acc, mỗi lượt p ≤ 4·10⁻⁴ (lượt 1: +13,56,
+p = 7,3·10⁻⁸). Cùng ngân sách token. **± ở dòng V3 là sd giữa 3 lượt sinh** (lượt 1 / r2 / r3 = 61,94 /
+59,42 / 60,79); các dòng khác mới một lượt, ± chỉ là nhiễu giám khảo — xem §3.
 **V4: lợi ích của RRF gắn với ngân sách 4.000** — cắt Sources còn 2.000 (context trung vị 1.872)
 đưa accuracy về ngang baseline, đúng như quét ngân sách dự báo (RRF @2000 giữ 48,8% chunk đáp án,
 ngang đồ thị @4000). Không trình bày RRF như cải tiến Efficiency; nếu bật thì giữ A1@4000.
 **Mặc định vẫn tắt** — việc bật là quyết định của nhóm. V2 so với V1
 (khác đúng cắt vách): 39 / 73, p = 0,002 → phần hại của V2 hoàn toàn do cắt vách. Chi tiết, kiểm độ sạch và cảnh báo nhóm Null (−9,23, p = 0,092): ROADMAP.
 
-**Limitations của V3 đã chốt** (ROADMAP, mục "Limitations của V3"): Null đi ngược và cả 5 hướng sửa
-(A3, V5a–V5e) đều phủ định — **đừng mở lại hướng verifier/từ chối**; lợi ích gắn ngân sách 4.000; mới
-một lượt sinh (chưa rerun); báo 435 câu ngoài dev làm kết quả chính; Multi chưa có ý nghĩa (p = 0,078).
+**Limitations của V3 đã chốt** (ROADMAP, mục "Limitations của V3"): Null đi ngược (cùng chiều cả 3 lượt sinh)
+và cả 5 hướng sửa (A3, V5a–V5e) đều phủ định — **đừng mở lại hướng verifier/từ chối**; lợi ích gắn ngân sách
+4.000; đã lặp 3 lượt sinh — tổng đứng vững nhưng **Multi không lặp lại được** (43,75 / 32,29 / 30,21, không được
+viết "cải thiện Multi-hop"); báo 435 câu ngoài dev làm kết quả chính.
 
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 

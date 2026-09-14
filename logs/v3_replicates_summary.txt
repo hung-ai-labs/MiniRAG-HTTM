@@ -1,0 +1,19 @@
+V3 LẶP LẠI — 3 lượt sinh × 3 lượt chấm, 635 câu ghép được
+baseline: qwen637_fix; các lượt: qwen637_v3, qwen637_v3_r2, qwen637_v3_r3
+
+TỔNG       n=635  baseline  51.02 │ V3 các lượt 61.94 / 59.42 / 60.79 │ trung bình 60.72 ± 1.26 (giữa lượt sinh), nhiễu giám khảo 0.30 │ err TB 25.28 │ Δ so baseline +9.69
+Single     n=506  baseline  51.19 │ V3 các lượt 64.36 / 62.65 / 64.43 │ trung bình 63.81 ± 1.01 (giữa lượt sinh), nhiễu giám khảo 0.28 │ err TB 22.31 │ Δ so baseline +12.63
+Multi      n=64   baseline  30.21 │ V3 các lượt 43.75 / 32.29 / 30.21 │ trung bình 35.42 ± 7.29 (giữa lượt sinh), nhiễu giám khảo 1.42 │ err TB 48.78 │ Δ so baseline +5.21
+Null       n=65   baseline  70.26 │ V3 các lượt 61.03 / 61.03 / 62.56 │ trung bình 61.54 ± 0.89 (giữa lượt sinh), nhiễu giám khảo 2.16 │ err TB 25.30 │ Δ so baseline -8.72
+ngoài dev  n=435  baseline  49.43 │ V3 các lượt 62.99 / 58.85 / 60.46 │ trung bình 60.77 ± 2.09 (giữa lượt sinh), nhiễu giám khảo 0.61 │ err TB 24.47 │ Δ so baseline +11.34
+
+McNEMAR TỪNG LƯỢT so với baseline (phán quyết đa số, nhị thức chính xác)
+  v3      TỔNG 117 lên / 49 xuống, p = 1.3e-07 · Null 3 lên / 10 xuống, p = 0.092 · ngoài dev 85 lên / 28 xuống, p = 7.3e-08
+  v3_r2   TỔNG 110 lên / 58 xuống, p = 7.4e-05 · Null 5 lên / 12 xuống, p = 0.14 · ngoài dev 78 lên / 39 xuống, p = 0.0004
+  v3_r3   TỔNG 110 lên / 49 xuống, p = 1.5e-06 · Null 4 lên / 10 xuống, p = 0.18 · ngoài dev 79 lên / 32 xuống, p = 9.5e-06
+
+ĐỒNG THUẬN GIỮA CÁC LƯỢT SINH (phán quyết đa số)
+  v3 vs v3_r2: cùng phán quyết 495/635 = 78.0%
+  v3 vs v3_r3: cùng phán quyết 508/635 = 80.0%
+  v3_r2 vs v3_r3: cùng phán quyết 503/635 = 79.2%
+  số lượt được chấm accurate trên mỗi câu: 3/3 lượt: 322 câu · 2/3 lượt: 60 câu · 1/3 lượt: 73 câu · 0/3 lượt: 180 câu

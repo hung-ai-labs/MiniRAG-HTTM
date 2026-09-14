@@ -355,6 +355,10 @@ hơn nhưng trả lời được ít hơn hẳn. **Loại cắt vách.** Giá tr
 acc/(acc+err) 64,84 → **72,26**. Context trung vị 3.870 token, 9 chunk — **cùng trần A1@4000**
 với baseline, nên điểm tăng không đến từ việc nhét thêm token.
 
+**Đã lặp 3 lượt sinh (14/09 20:32):** trung bình **60,72 ± 1,26**, cả ba lượt hơn baseline có ý nghĩa
+(p ≤ 7,4·10⁻⁵; ngoài dev p ≤ 4·10⁻⁴). **Multi không lặp lại được** (43,75 / 32,29 / 30,21) — dòng Multi
+trong bảng trên là lượt 1 may mắn. Chi tiết: Limitations điểm 3 và 5.
+
 **Kiểm độ sạch trước khi tin:**
 - Độ dài câu trả lời không đổi (trung vị 524 → 526 ký tự); riêng 117 câu lên còn **ngắn đi**
   (541 → 491) → không phải giám khảo ưu ái câu dài.
@@ -735,11 +739,15 @@ Ghi lại để đưa vào phần Limitations, không phải lỗi cần sửa g
 
 ### Limitations của V3 — trộn RRF (chốt 14/09/2026)
 
-Viết để đưa thẳng vào bài. Kết quả chính: Qwen2.5-3B, 637 câu, acc **61,94 ± 0,45** so với baseline
-51,02; McNemar 117 lên / 49 xuống, p = 1,4·10⁻⁷. Mỗi điểm dưới đây kèm bằng chứng đã đo.
+Viết để đưa thẳng vào bài. Kết quả chính (cập nhật 14/09 20:32, sau 3 lượt sinh): Qwen2.5-3B, 637 câu,
+acc **60,72 ± 1,26** (trung bình ± sd giữa 3 lượt sinh; lượt 1 / r2 / r3 = 61,94 / 59,42 / 60,79) so với
+baseline 51,02 — **cả ba lượt** hơn baseline có ý nghĩa (117 / 49, 110 / 58, 110 / 49; p ≤ 7,4·10⁻⁵). Mỗi
+điểm dưới đây kèm bằng chứng đã đo.
 
 **1. Nhóm Null đi ngược chiều, và không có cách sửa rẻ.** Null giảm 70,26 → 61,03 acc, err
 17,44 → 27,69 (3 lên / 10 xuống, p = 0,092 — chưa có ý nghĩa, nhưng cùng chiều trên cả acc và err).
+**Lặp lại được:** ba lượt sinh cho 61,03 / 61,03 / 62,56 (trung bình −8,72; 3 / 10, 5 / 12, 4 / 10,
+p = 0,09–0,18) — không lượt nào đạt ý nghĩa riêng, nhưng cả ba cùng chiều.
 Cơ chế khả dĩ: chunk vector thêm vào luôn "trông liên quan", nên với câu không có đáp án Qwen trả
 lời thay vì từ chối. Năm hướng khôi phục đều là kết quả phủ định có đăng ký trước: ngưỡng tín hiệu
 truy hồi (A3, AUC ≤ 0,648), luật dấu vết (V5a), kiểm quan hệ bằng đồ thị (V5b, chặn nhầm ≥ 63%),
@@ -750,18 +758,40 @@ truy hồi (A3, AUC ≤ 0,648), luật dấu vết (V5a), kiểm quan hệ bằn
 A1@2000 (V4) về ngang baseline (80 / 75, p = 0,748) và thua V3 37 / 100 (p = 7,0·10⁻⁸). V3 dùng
 context trung vị 3.870 token, như baseline. Không được trình bày là "chất lượng cao hơn với ít token hơn".
 
-**3. Mới đo một lượt sinh.** sd 0,45 chỉ là nhiễu của giám khảo (3 lượt chấm cùng một file), không
-phải nhiễu giữa các lần chạy. Qwen sinh có lấy mẫu (vLLM không truyền `temperature`), và độ ổn định
-đo gián tiếp khá thấp: giữa hai lần chạy gần như giống hệt (baseline vs V1, p = 0,936), chỉ 196/260
-câu Single đúng, 11/19 câu Multi đúng và 9/11 câu Null sai giữ nguyên phán quyết. Mức cải thiện
-+10,92 lớn hơn nhiều so với biến động đó, nhưng **CLAUDE.md §3 yêu cầu chạy lại nhiều lượt cho benchmark cuối — chưa làm.**
+**3. Biến động giữa các lượt sinh lớn gấp ~4 lần nhiễu giám khảo (đo 14/09, 3 lượt).** Qwen sinh có lấy
+mẫu (vLLM không truyền `temperature`). Cùng cấu hình V3, ba lượt sinh × 3 lượt chấm
+(`logs/v3_replicates_summary.txt`; lượt r3 chuyển sang workspace Modal `hung-ai-labs` giữa chừng lúc 18:57 —
+cùng model, vLLM, GPU):
+
+| Nhóm | n | Baseline | V3 lượt 1 / r2 / r3 | Trung bình ± sd giữa lượt | Nhiễu giám khảo |
+|---|---:|---:|---|---:|---:|
+| **Tổng** | 635 | 51,02 | 61,94 / 59,42 / 60,79 | **60,72 ± 1,26** | 0,30 |
+| Single | 506 | 51,19 | 64,36 / 62,65 / 64,43 | 63,81 ± 1,01 | 0,28 |
+| Multi | 64 | 30,21 | 43,75 / 32,29 / 30,21 | 35,42 ± 7,29 | 1,42 |
+| Null | 65 | 70,26 | 61,03 / 61,03 / 62,56 | 61,54 ± 0,89 | 2,16 |
+| **Ngoài dev** | 435 | 49,43 | 62,99 / 58,85 / 60,46 | **60,77 ± 2,09** | 0,61 |
+
+- Lợi ích **đứng vững**: mỗi lượt hơn baseline có ý nghĩa, cả tổng (110–117 lên / 49–58 xuống, p ≤ 7,4·10⁻⁵)
+  lẫn 435 câu ngoài dev (78–85 / 28–39, p ≤ 4·10⁻⁴). Δ trung bình **+9,69** (ngoài dev +11,34), không phải
+  +10,92 — lượt 1 là lượt cao nhất.
+- err thấp hơn baseline ở cả ba lượt (23,78 / 26,46 / 25,62 so với 27,66); acc/(acc+err) 72,26 / 69,19 /
+  70,35 so với 64,84. Context trung vị 3.870–3.874 token cả ba lượt.
+- Hai lượt bất kỳ đồng thuận 78–80% phán quyết: 322 câu đúng cả 3 lượt, 180 câu sai cả 3, **133 câu (21%)
+  đổi theo lượt lấy mẫu**.
+- **Biên nhiễu của một phép so một-lượt**, đo trên chính các cặp cùng cấu hình: r2 vs lượt 1 = 38 / 54
+  (net −16, p = 0,117; ngoài dev 23 / 41, **p = 0,033**), r3 vs lượt 1 = 43 / 50 (net −7), r3 vs r2 = 45 / 36
+  (net +9). Tức một lượt sinh có thể lệch ~16–18 câu net và "có ý nghĩa" trên tập con dù cấu hình giống hệt.
+  V3 so với baseline (net +52 đến +68) và V4 so với V3 (net −63) vượt xa biên này; V2 (net −36, p = 0,006)
+  vượt nhưng không xa; V1 (net −2) là số không.
 
 **4. Dev 200 không sạch; phép thử sạch là 435 câu ngoài dev.** Cơ chế được chọn sau chẩn đoán
 dùng nhãn Evidence trên dev 200, nên trên dev hiệu ứng chỉ +5,17 (32 / 21, p = 0,169). Trên 435
 câu ngoài dev: +13,56 (85 / 28, p = 7,3·10⁻⁸). Nên báo con số ngoài dev làm kết quả chính.
 
-**5. Multi-hop cải thiện nhưng chưa có ý nghĩa thống kê.** 30,21 → 43,75 (15 / 6, p = 0,078) trên
-chỉ 64 câu. Không được viết "cải thiện Multi-hop" như một kết luận.
+**5. Multi-hop KHÔNG cải thiện — mức tăng của lượt 1 là may.** Lượt 1: 30,21 → 43,75 (15 / 6, p = 0,078);
+r2: 32,29 (11 / 10, p = 1,0); r3: 30,21 (9 / 8, p = 1,0). Trung bình 35,42 ± 7,29 trên 64 câu. Không được viết
+"cải thiện Multi-hop". Chẩn đoán offline (Multi giữ đủ bằng chứng 28,6% → 66,7% trên dev) chưa chuyển thành
+accuracy; trên dev, một nửa số câu Multi V3 trả lời sai (6/12) đã có đủ bằng chứng trong Sources.
 
 **6. Một model, một đồ thị, một giám khảo.**
 - Chỉ Qwen2.5-3B; `Phi-3.5-mini` chưa chạy.

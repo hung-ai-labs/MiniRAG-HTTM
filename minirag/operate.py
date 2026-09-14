@@ -1420,8 +1420,17 @@ async def _build_mini_query_context(
     # chứa 87,0% chunk đáp án, xếp hạng đồ thị sau A1@4000 chỉ giữ 47,3%. Trộn hai bảng
     # bằng RRF giữ 66,7% (40 câu lên / 7 xuống, p<0,0001) với cùng ngân sách token.
     # A1 vẫn cắt phía sau như cũ.
-    if os.environ.get("MINIRAG_CHUNK_FUSION", "") == "rrf":
+    #
+    # MINIRAG_CHUNK_FUSION=vector: ablation của V3 -- bỏ hẳn xếp hạng đồ thị cho Sources,
+    # dùng nguyên top-30 vector theo thứ tự cosine. Mô phỏng dev 200 cho vector thuần giữ
+    # 71,5% chunk đáp án, NHIỀU HƠN RRF (66,7%), nên phải đo xem lợi ích của V3 là do trộn
+    # hay chỉ do thêm vector. Còn lại giữ nguyên như V3: bảng Entities vẫn từ đồ thị,
+    # kwd2chunk vẫn chạy, và câu đồ thị không ra node/cạnh vẫn trả None ở dưới.
+    fusion = os.environ.get("MINIRAG_CHUNK_FUSION", "")
+    if fusion == "rrf":
         final_chunk_id = _rrf_fuse(final_chunk_id, chunks_ids)
+    elif fusion == "vector":
+        final_chunk_id = list(chunks_ids)
 
     if not len(results_node):
         return None

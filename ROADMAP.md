@@ -420,6 +420,39 @@ thì giữ A1@4000. Null nhích lên ở V4 (+7,69 so với V3, p = 0,18, chưa 
 "ít văn bản trông liên quan hơn → ít trả lời bừa cho câu không có đáp án", nhưng đổi lại mất
 −57 câu Single. **Mặc định vẫn tắt** — việc bật là quyết định của nhóm.
 
+**Ablation vector thuần — đăng ký trước khi chạy (14/09, trước mọi đầu ra)**
+
+Câu hỏi: lợi ích của V3 đến từ *trộn* hay chỉ từ *thêm vector*? Mô phỏng dev 200 cho vector thuần giữ
+**nhiều** chunk đáp án hơn RRF, nên chưa đo thì chưa được viết "trộn giữ lợi thế multi-hop của đồ thị".
+
+Công tắc `MINIRAG_CHUNK_FUSION=vector`: Sources = top-30 `chunks_vdb` theo cosine trên câu hỏi gốc, rồi
+A1@4000. Mọi thứ khác giống V3 từng biến (`reproduce/run_vector637_qa.sh`): bảng Entities vẫn từ đồ thị,
+`ANSWER_TYPE_FIX=1`, `PATH2CHUNK_FIX=0`, không cắt vách, cùng index, model, judge, 637 câu; câu đồ thị
+không ra node/cạnh vẫn trả `fail_response` như V3.
+
+Dự báo từ mô phỏng (`logs/simulate_fusion.txt`, chunk đáp án giữ / câu đủ đáp án):
+
+| Dev 200 | Tổng | Single | Multi |
+|---|---:|---:|---:|
+| RRF (V3) | 66,7 / 62,8 | 62,3 / 62,3 | 81,2 / 66,7 |
+| Vector thuần | 71,5 / 67,8 | 69,2 / 69,2 | 79,2 / 57,1 |
+
+Tức dự báo vector ≥ V3 ở Single, ≤ V3 ở Multi, tổng nghiêng nhẹ về vector.
+
+**Luật đọc, chốt trước, không đổi sau khi thấy nhãn:**
+- Phép so chính: vector vs `qwen637_v3`, McNemar chính xác trên phán quyết đa số, 635 câu. Báo kèm 435 câu
+  ngoài dev, từng loại, và so với hai lượt lặp `v3_r2`, `v3_r3`.
+- **(a) Vector là đủ:** p < 0,05 theo chiều vector, **và** so với cả `v3_r2`, `v3_r3` cũng nghiêng về vector
+  (b > c). Hệ quả: không được viết "trộn giữ lợi thế đồ thị"; đóng góp phải viết lại thành "xếp hạng chunk
+  bằng đồ thị kéo accuracy xuống".
+- **(b) Trộn có giá trị riêng:** p < 0,05 theo chiều V3, cùng chiều với cả hai lượt lặp. Luận điểm V3 đứng.
+- **(c) Không phân biệt được:** mọi trường hợp còn lại. Viết "trên bộ này trộn RRF và vector thuần ngang
+  nhau"; không tuyên bố trộn hơn vector. Multi (n = 64) chỉ báo, không kết luận riêng.
+- Kết quả chỉ tính khi `reproduce/check_vector_ctx.py --ctxlog` ĐẠT: mọi dòng context-log của lượt chạy khớp
+  A1(top-30 vector) tính offline. Selftest trước khi chạy (LLM giả, bản sao index): **40/40 câu khớp, 40/40
+  khác thứ tự RRF**.
+- Không tinh chỉnh top-30, ngân sách 4.000 hay k sau khi thấy kết quả.
+
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 
 Đặc tả A3 trong kế hoạch: *từ chối nếu chunk tốt nhất dưới ngưỡng cosine*. Đo khả năng tách

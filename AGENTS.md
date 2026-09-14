@@ -243,9 +243,13 @@ bằng reciprocal rank fusion (k=60, không tinh chỉnh), trước bước cắ
 | **+ trộn RRF (V3)** | **61,94 ± 0,45** | **23,78** | 14,28 | **72,26** | **117 lên / 49 xuống, p = 1,4·10⁻⁷** |
 | + cắt vách (V2) | 45,41 ± 0,18 | 23,52 | 31,08 | 65,88 | 64 / 100, p = 0,006 ⛔ |
 | + chỉ sửa lỗi `path2chunk` (V1) | 50,81 ± 0,64 | 26,35 | 22,83 | 65,85 | 76 / 78, p = 0,936 — không đổi |
+| + trộn RRF @2000 token (V4) | 52,28 ± 0,16 | 27,19 | 20,52 | 65,79 | 80 / 75, p = 0,748 — **so với V3: 37 / 100, p = 7,0·10⁻⁸** ⛔ |
 
 Phép thử sạch (435 câu ngoài dev): +13,56 acc, p = 7,3·10⁻⁸. Cùng ngân sách token.
-**Mặc định vẫn tắt** — chờ ablation V4 (RRF @2000), rồi nhóm quyết. V2 so với V1
+**V4: lợi ích của RRF gắn với ngân sách 4.000** — cắt Sources còn 2.000 (context trung vị 1.872)
+đưa accuracy về ngang baseline, đúng như quét ngân sách dự báo (RRF @2000 giữ 48,8% chunk đáp án,
+ngang đồ thị @4000). Không trình bày RRF như cải tiến Efficiency; nếu bật thì giữ A1@4000.
+**Mặc định vẫn tắt** — việc bật là quyết định của nhóm. V2 so với V1
 (khác đúng cắt vách): 39 / 73, p = 0,002 → phần hại của V2 hoàn toàn do cắt vách. Chi tiết, kiểm độ sạch và cảnh báo nhóm Null (−9,23, p = 0,092): ROADMAP.
 
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc

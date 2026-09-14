@@ -372,7 +372,7 @@ Phải ghi vào Limitations; là ứng viên kết hợp với A3 (cơ chế t�
 **Đủ 5 bước §1b:** Observed Problem (chẩn đoán Evidence: 87,0% → 47,3%) · Hypothesis
 (`kwd2chunk` loại chunk không nằm trên đường đi) · Mechanism (RRF, k=60 không tinh chỉnh) ·
 Controlled Experiment (một công tắc; cùng index, model, judge, 637 câu) · Measurable Effect
-(Quality +10,92 acc; Efficiency cùng ngân sách; ablation V4 @2000 và V1 đang chạy).
+(Quality +10,92 acc; Efficiency cùng ngân sách; ablation V1 và V4 @2000 — đã đo, xem dưới).
 
 *So với bài báo (chỉ tham chiếu — khác giám khảo):* acc 61,94 so với 48,75, err 23,78 so với
 26,02 — lần đầu **vừa cao acc hơn vừa thấp err hơn**.
@@ -393,9 +393,32 @@ Lỗi có thật trong code nhưng không đổi điểm — đúng dự báo ch
 **Tách biến cho V2.** V2 so với V1 — khác nhau đúng một thứ là cắt vách: **39 lên / 73 xuống,
 net −34, p = 0,002** (ngoài dev 27 / 51, p = 0,009). → Toàn bộ phần hại của V2 là do cắt vách.
 
-**Chẩn đoán bằng Evidence dự báo đúng chiều cả ba biến thể trước khi tốn lượt chấm nào:**
-V1 ≈ 0 ✓ · V2 hại ✓ · V3 lợi ✓. Đây là lập luận phương pháp đáng đưa vào bài: nhãn Evidence
-có sẵn cho phép sàng lọc cơ chế truy hồi gần như miễn phí.
+**Chẩn đoán bằng Evidence dự báo đúng chiều cả bốn biến thể trước khi tốn lượt chấm nào:**
+V1 ≈ 0 ✓ · V2 hại ✓ · V3 lợi ✓ · V4 ≈ baseline ✓. Đây là lập luận phương pháp đáng đưa vào bài:
+nhãn Evidence có sẵn cho phép sàng lọc cơ chế truy hồi gần như miễn phí.
+
+**V4 — trộn RRF ở nửa ngân sách Sources (A1@2000): mất toàn bộ lợi ích của V3 (14/09 14:14, `logs/compare_v4.txt`, `logs/compare_v4_vs_v3.txt`)**
+
+| Nhóm | n | V3 (RRF @4000) acc / err / neither | V4 (RRF @2000) acc / err / neither | V4 vs V3 | V4 vs baseline |
+|---|---:|---|---|---|---|
+| **Tổng** | 635 | 61,94 / 23,78 / 14,28 | **52,28 ± 0,16** / 27,19 / 20,52 | **37 lên / 100 xuống, p = 7,0·10⁻⁸** | 80 / 75, p = 0,748 |
+| Single | 506 | 64,36 / 20,88 / 14,76 | 53,36 / 23,45 / 23,19 | 26 / 83, p = 4,0·10⁻⁸ | 67 / 58, p = 0,474 |
+| Multi | 64 | 43,75 / 42,71 / 13,54 | 27,08 / 61,46 / 11,46 | 4 / 15, p = 0,019 | 7 / 9, p = 0,804 |
+| Null | 65 | 61,03 / 27,69 / 11,28 | 68,72 / 22,56 / 8,72 | 7 / 2, p = 0,180 | 6 / 8, p = 0,791 |
+| Ngoài dev | 435 | 62,99 / 22,38 / 14,64 | 54,25 / 25,06 / 20,69 | 26 / 64, p = 7,7·10⁻⁵ | 58 / 39, p = 0,067 |
+
+Context trung vị **1.872** token, 4 chunk (V3: 3.870, 9 chunk) — giảm 52% token nhưng accuracy về
+ngang baseline (+1,26, p = 0,748) và thua V3 rõ rệt (−9,66). acc/(acc+err) 72,26 → 65,79.
+
+**Đúng như chẩn đoán dự báo:** quét ngân sách trên dev 200 cho RRF @2000 giữ **48,8%** chunk đáp án
+— ngang đồ thị gốc @4000 (47,3%) — còn RRF @4000 giữ 66,7%. Trộn RRF chèn chunk vector xen với
+chunk đồ thị, nên cần đủ chỗ cho cả hai; cắt còn một nửa thì phần thêm vào bị đẩy ra.
+
+**Kết luận cho nhóm:** lợi ích của V3 **gắn với ngân sách 4.000 token**, không phải "cùng chất lượng
+với ít token hơn". Không được trình bày RRF như một cải tiến Efficiency. Nếu bật RRF làm mặc định
+thì giữ A1@4000. Null nhích lên ở V4 (+7,69 so với V3, p = 0,18, chưa ý nghĩa) khớp giả thuyết
+"ít văn bản trông liên quan hơn → ít trả lời bừa cho câu không có đáp án", nhưng đổi lại mất
+−57 câu Single. **Mặc định vẫn tắt** — việc bật là quyết định của nhóm.
 
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 

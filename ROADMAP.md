@@ -418,6 +418,14 @@ Lý do: câu Null của LiHua-World là câu *gần đúng* về người và s�
 ra chunk giống hệt câu có đáp án. **Tín hiệu thiếu bằng chứng phải nằm ở nội dung, không ở
 độ tương đồng.** Đừng làm A3 theo đặc tả cũ.
 
+Tín hiệu nội dung rẻ nhất cũng đã thử và loại: kiểm "ngày trong câu hỏi không có trong
+corpus". Chỉ **1/65** câu Null nhắc ngày `YYYYMMDD` (câu có đáp án: 55/570), và **không câu
+nào** nhắc ngày vắng mặt khỏi 313 ngày có tin nhắn. Câu Null ở đây không sai về thời gian.
+
+**Trần lợi ích của A3 trên bộ này rất thấp:** V3 chỉ có 18 câu Null bị chấm `error`. Kể cả
+một cổng hoàn hảo cũng chỉ thêm tối đa 18/635 = 2,8 điểm, còn mỗi câu có đáp án bị từ chối
+nhầm mất trung bình ~0,62 điểm đúng. Ưu tiên thấp.
+
 ### Đồ thị: SLM dựng khác hẳn Gemini
 
 | | Qwen2.5-3B | Gemini Flash-Lite |

@@ -1,0 +1,24 @@
+{
+ "gates": {
+  "R1 net câu đủ đáp án ≥ +9 và McNemar p < 0,01": true,
+  "R2 chunk đáp án giữ ≥ +3 điểm": true,
+  "R3 token Sources trung vị ±5%": true,
+  "R4 Single xuống ≤ lên; Multi net ≥ −1": true,
+  "R5 truy hồi thêm ≤ 50 ms, không thêm lời gọi LLM": true
+ },
+ "decision": "CONTINUE TO CANARY",
+ "up": 46,
+ "down": 7,
+ "evidence_base": {
+  "questions": 180,
+  "gold_chunks": 207,
+  "retention": 66.18357487922705,
+  "full": 62.22222222222222
+ },
+ "evidence_var": {
+  "questions": 180,
+  "gold_chunks": 207,
+  "retention": 85.99033816425121,
+  "full": 83.88888888888889
+ }
+}

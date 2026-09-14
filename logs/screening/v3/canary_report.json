@@ -1,0 +1,61 @@
+{
+ "stage": "canary",
+ "decision": "FROZEN",
+ "summary": {
+  "n": 100,
+  "excluded": 0,
+  "up": 0,
+  "down": 0,
+  "net": 0,
+  "mcnemar_p": 1.0,
+  "base": {
+   "accurate": 62.0,
+   "error": 31.0,
+   "neither": 7.0
+  },
+  "var": {
+   "accurate": 62.0,
+   "error": 31.0,
+   "neither": 7.0
+  },
+  "err_delta_count": 0,
+  "by_type": {
+   "Single": {
+    "n": 59,
+    "base_acc": 69.49152542372882,
+    "var_acc": 69.49152542372882,
+    "up": 0,
+    "down": 0,
+    "net": 0
+   },
+   "Multi": {
+    "n": 21,
+    "base_acc": 38.095238095238095,
+    "var_acc": 38.095238095238095,
+    "up": 0,
+    "down": 0,
+    "net": 0
+   },
+   "Null": {
+    "n": 20,
+    "base_acc": 65.0,
+    "var_acc": 65.0,
+    "up": 0,
+    "down": 0,
+    "net": 0
+   }
+  },
+  "adj_base_acc": 65.74576271186442,
+  "adj_var_acc": 65.74576271186442
+ },
+ "evidence": {
+  "questions": 80,
+  "gold_chunks": 107,
+  "retention": 72.89719626168224,
+  "full": 66.25
+ },
+ "determinism": {
+  "sample": 20,
+  "identical": 16
+ }
+}

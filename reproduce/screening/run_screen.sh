@@ -16,6 +16,6 @@ export PYTHONUNBUFFERED=1 MINIRAG_SLM_KEY="$(tr -d '\n' < $S/slm_key.txt)"
 source reproduce/slm_env.sh modal >/dev/null || exit 1
 mkdir -p logs/screening
 echo "=== $(date '+%d/%m %H:%M') screen_variant $* (endpoint $MINIRAG_SLM_URL) ===" >> logs/screening/screen.log
-.venv/bin/python reproduce/screening/screen_variant.py --model "$MINIRAG_SLM_MODEL" \
+.venv/bin/python ${SCREEN_SCRIPT:-reproduce/screening/screen_variant.py} --model "$MINIRAG_SLM_MODEL" \
     --workingdir ./LiHua-World-qwen-modal "$@" 2>&1 | grep -v -E "^INFO:|python-dotenv|Loading weights" | tee -a logs/screening/screen.log
 exit ${pipestatus[1]}

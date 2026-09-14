@@ -1608,6 +1608,10 @@ async def minirag_query(  # MiniRAG
     use_model_func = global_config["llm_model_func"]
     kw_prompt_temp = PROMPTS["minirag_query2kwd"]
     TYPE_POOL, TYPE_POOL_w_CASE = await knowledge_graph_inst.get_types()
+    if os.environ.get("MINIRAG_KW_CACHE", "").strip():
+        # get_types() trả list(set): thứ tự đổi theo PYTHONHASHSEED, nên prompt và khoá cache đổi ở mỗi tiến trình.
+        # Chế độ sàng lọc cần prompt cố định; không đặt biến thì giữ nguyên hành vi upstream.
+        TYPE_POOL = sorted(TYPE_POOL)
     kw_prompt = kw_prompt_temp.format(query=query, TYPE_POOL=TYPE_POOL)
     result = await _keyword_llm(use_model_func, kw_prompt)
 

@@ -1,0 +1,17 @@
+Variant: b1 (rrf_bm25)
+Stage: offline (tầng A, dev 180 câu có evidence, parser cache, 0 judge)
+Retrieval:
+- chunk đáp án giữ sau cắt 4.000: 66,7% → 75,4%
+- câu đủ đáp án: 62,8% → 72,2% (20 lên / 3 xuống, p = 0.00049); Single 18/3 · Multi 2/0
+- recall@30 trong thứ tự trộn: 87,9% → 97,6% · hạng trung vị chunk đáp án: 5 → 3
+- token Sources trung vị: 3705 → 3692 · chunk trung vị: 8 → 7
+- truy hồi (dựng context) trung vị: 5003,6 → 5026,2 ms · seed đồ thị trung vị 92, đường 19504
+- dự báo từ probe: câu đủ đáp án 72,8% · chunk giữ 75,8% (probe dev)
+- lời gọi parser mới (điền cache): 180
+Gates:
+- ĐẠT: R1 net câu đủ đáp án ≥ +9 và McNemar p < 0,01
+- ĐẠT: R2 chunk đáp án giữ ≥ +3 điểm
+- ĐẠT: R3 token Sources trung vị ±5%
+- ĐẠT: R4 Single xuống ≤ lên; Multi net ≥ −1
+- ĐẠT: R5 truy hồi thêm ≤ 50 ms, không thêm lời gọi LLM
+Decision: CONTINUE TO CANARY

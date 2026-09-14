@@ -580,6 +580,21 @@ sinh và chấm lại. So bằng hash, có assertion, không xấp xỉ. Trướ
 câu trả lời trùng khớp (tái dùng vẫn hợp lệ nếu không trùng, vì đó là một lần rút chung, nhưng phải báo). Tầng D không dùng
 cache, seed sàng lọc hay câu trả lời tái dùng.
 
+**Sửa lỗi triển khai (14/09, trước khi sinh bất kỳ câu trả lời canary B1/B2 nào; không đổi cổng, tập câu hay biến thể).**
+`networkx_impl.get_types()` trả `list(set)`, nên thứ tự loại thực thể trong prompt `minirag_query2kwd` đổi theo
+`PYTHONHASHSEED`. Cache mang 460 khoá riêng (B1 offline 180, B2 offline 180, đông lạnh V3 100), không tiến trình nào tra lại
+được của tiến trình khác, và cả hai canary dừng ở bước dựng lại context V3 (thiếu cache), trước khi sinh. Sửa: khi bật
+`MINIRAG_KW_CACHE`, `operate.py` sắp xếp `TYPE_POOL`; không đặt biến thì giữ hành vi upstream. 100 lần rút của lượt đông lạnh
+V3 (dòng 361–460, sinh tuần tự theo thứ tự `canary100.csv`) được ghi lại dưới khoá của prompt đã sắp
+(`reproduce/screening/rekey_kw_cache.py`; bản gốc giữ ở `logs/screening/cache/kw_cache_unstable_20260914.jsonl`). V3 canary
+**không** sinh hay chấm lại. Kiểm: dựng lại context V3 cho 100 câu chỉ từ cache khớp chunk_ids, sha256 context và sha256 prompt
+đông lạnh **100/100 dưới `PYTHONHASHSEED=1` và 100/100 dưới `=2`** (`logs/screening/rekey_seed{1,2}.log`). Hệ quả, ghi nhận:
+(i) tầng A của B1 và B2 dùng hai lần rút parser khác nhau; mỗi lần ghép cặp V3 với biến thể trong cùng một tiến trình nên
+quyết định tầng A vẫn hợp lệ, và hai mốc V3 lệch nhẹ (câu đủ đáp án 62,8% / 62,2%) chính vì vậy; (ii) canary dùng lần rút
+parser của lượt đông lạnh, không phải của tầng A; (iii) thứ tự loại thực thể là một nguồn nhiễu parser trong mọi lượt chính thức
+trước đây — không sửa lùi, chỉ ghi nhận. Kiểm tất định lúc đông lạnh: **16/20** câu trả lời trùng khi sinh lại cùng seed, cùng
+prompt — seed không loại hết nhiễu sinh (nghi batching của vLLM, chưa kiểm). Tái dùng vẫn hợp lệ theo luật trên; σ(m) giữ nguyên.
+
 **Tầng A — cổng offline** (dev 180, tất định, so với V3):
 - R1 net "câu đủ đáp án" ≥ +9 **và** McNemar p < 0,01.
 - R2 chunk đáp án giữ sau cắt 4.000 token ≥ +3 điểm.

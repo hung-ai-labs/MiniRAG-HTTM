@@ -1,0 +1,9 @@
+Variant: v3 (đông lạnh, chế độ sàng lọc seed 20260914)
+Stage: canary
+- câu có phán quyết: 100/100 (thiếu 0)
+- acc / err / neither: 62,00 / 31,00 / 7,00; điều chỉnh theo tỉ lệ dev: 65,75
+- theo loại: Single 69,5 (n = 59) · Multi 38,1 (n = 21) · Null 65,0 (n = 20)
+- bằng chứng: chunk đáp án giữ 72,9% · câu đủ đáp án 66,2% (80 câu có evidence)
+- sinh mới lần này: 120 · lời gọi parser mới: 100 · judge: 100
+- kiểm tất định (sinh lại cùng seed): 16/20 trùng khớp
+Decision: FROZEN

@@ -1,0 +1,8 @@
+USING 1 API KEY(S)
+USING LLM: minirag-slm
+USING EMBEDDING: local
+USING WORKING DIR: ./LiHua-World-qwen-modal
+PYTHONHASHSEED=1 · 47 loại thực thể · sha256 TYPE_POOL đã sắp: 05636f19c0e93634
+đã ghi 100 lần rút của lượt đông lạnh V3 dưới khoá prompt đã sắp; bản gốc: /Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/logs/screening/cache/kw_cache_unstable_20260914.jsonl
+V3 dựng lại từ cache: 100/100 câu khớp hash đông lạnh
+KIỂM DỰNG LẠI V3: ĐẠT

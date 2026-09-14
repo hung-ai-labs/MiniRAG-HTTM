@@ -397,6 +397,27 @@ net −34, p = 0,002** (ngoài dev 27 / 51, p = 0,009). → Toàn bộ phần h�
 V1 ≈ 0 ✓ · V2 hại ✓ · V3 lợi ✓. Đây là lập luận phương pháp đáng đưa vào bài: nhãn Evidence
 có sẵn cho phép sàng lọc cơ chế truy hồi gần như miễn phí.
 
+**⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
+
+Đặc tả A3 trong kế hoạch: *từ chối nếu chunk tốt nhất dưới ngưỡng cosine*. Đo khả năng tách
+65 câu Null khỏi 570 câu có đáp án (`reproduce/a3_feasibility.py`; `Type` chỉ dùng để đo):
+
+| Tín hiệu | Null tv | Có đáp án tv | AUC |
+|---|---:|---:|---:|
+| Cosine chunk tốt nhất | 0,473 | 0,488 | 0,538 |
+| Cosine trung bình top-5 | 0,437 | 0,427 | 0,475 |
+| Khoảng cách top-1 − top-2 | 0,016 | 0,032 | 0,648 |
+| Trùng đồ thị ∩ vector top-30 (dev) | 11 | 11 | 0,546 |
+
+Mô phỏng cổng tốt nhất trên phán quyết V3 (`reproduce/a3_oracle_gate.py`), **ngưỡng chọn
+bằng chính nhãn** và giả định câu Null bị từ chối luôn được chấm đúng — cả hai đều thiên vị
+có lợi cho A3: **mọi ngưỡng đều làm giảm acc**. Từ chối 5% câu → chặn 5 Null nhưng chặn nhầm
+26 câu có đáp án, acc 62,05 → 60,47. Ngưỡng tốt nhất là không từ chối gì.
+
+Lý do: câu Null của LiHua-World là câu *gần đúng* về người và sự kiện có thật, nên truy hồi
+ra chunk giống hệt câu có đáp án. **Tín hiệu thiếu bằng chứng phải nằm ở nội dung, không ở
+độ tương đồng.** Đừng làm A3 theo đặc tả cũ.
+
 ### Đồ thị: SLM dựng khác hẳn Gemini
 
 | | Qwen2.5-3B | Gemini Flash-Lite |

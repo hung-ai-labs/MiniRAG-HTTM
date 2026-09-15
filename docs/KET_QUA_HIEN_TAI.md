@@ -67,6 +67,10 @@ không được viết "cải thiện Multi-hop".
 có thêm văn bản liên quan thì Qwen ít chịu nói "không biết" hơn (neither giảm) và bịa nhiều hơn (err tăng). V2 là cấu hình
 duy nhất Null tăng, vì nó bớt bằng chứng nên Qwen từ chối nhiều hơn — nhưng acc tổng tụt 5,6 điểm.
 
+**Kiểm toán 15/09.** 3/65 câu Null thực ra có đáp án trong corpus (nhãn sai), và 5 câu có rào đón vẫn bị chấm `error`. Sửa cả hai chỉ
+thu hẹp mức chênh Null khoảng 1 điểm: phần lớn mức giảm là hành vi thật — model trả lời tự tin với tiền đề ghép từ sự kiện lân cận.
+Chưa có cơ chế sửa khả thi (xem ROADMAP, Limitations mục 8).
+
 ## 3. Phép thử sạch — 435 câu ngoài dev
 
 Dev 200 là tập con của 637 và mọi quy tắc đã được nhìn trên dev, nên 435 câu còn lại là phép thử không bị rò.

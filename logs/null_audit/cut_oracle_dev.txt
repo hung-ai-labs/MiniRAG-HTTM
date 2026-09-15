@@ -1,0 +1,16 @@
+V3 (dev 200, phán quyết một lượt):
+  ngưỡng | N | Null sai bị gắn cờ (có thể cứu) | câu đúng bị gắn cờ | câu đúng mất đủ bằng chứng (có thể mất) | net lạc quan
+  ≤ 0.3  | 2 |  1                              |   2               |  2                                     | -1
+  ≤ 0.3  | 4 |  1                              |   2               |  1                                     | +0
+  ≤ 0.4  | 2 |  1                              |  11               |  5                                     | -4
+  ≤ 0.4  | 4 |  1                              |  11               |  4                                     | -3
+  ≤ 0.5  | 2 |  4                              |  23               |  9                                     | -5
+  ≤ 0.5  | 4 |  4                              |  23               |  6                                     | -2
+B2 (dev 200, phán quyết một lượt):
+  ngưỡng | N | Null sai bị gắn cờ (có thể cứu) | câu đúng bị gắn cờ | câu đúng mất đủ bằng chứng (có thể mất) | net lạc quan
+  ≤ 0.3  | 2 |  1                              |   1               |  1                                     | +0
+  ≤ 0.3  | 4 |  1                              |   1               |  1                                     | +0
+  ≤ 0.4  | 2 |  2                              |  10               |  3                                     | -1
+  ≤ 0.4  | 4 |  2                              |  10               |  2                                     | +0
+  ≤ 0.5  | 2 |  5                              |  25               |  7                                     | -2
+  ≤ 0.5  | 4 |  5                              |  25               |  4                                     | +1

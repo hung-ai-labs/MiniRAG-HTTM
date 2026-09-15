@@ -1,0 +1,33 @@
+PHÂN LOẠI 32 câu Null từng bị chấm error:
+   5 × nghi nhãn sai · có từ baseline
+   3 × nghi nhãn sai · mới ở lượt cải tiến
+   1 × rào đón bị chấm error · có từ baseline
+   4 × rào đón bị chấm error · mới ở lượt cải tiến
+   5 × tiền đề không có thật / ghép chi tiết lân cận · có từ baseline
+  14 × tiền đề không có thật / ghép chi tiết lân cận · mới ở lượt cải tiến
+
+câu có ≥ 1 lượt rào đón bị chấm error: 11 · lượt error có rào đón / tổng lượt error: 13/100
+
+CÂU NGHI NHÃN SAI (cần người đọc chunk):
+- [ngoài dev; sai ở fix,v3,v3_r2,v3_r3,vec] What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at "Central Perk"?
+    fix · chunk 20260726_14:00 · từ khớp ['comments', 'pastel', 'rating', 'star', 'testimonials', 'user'] · «I was thinking maybe a simple form for users to leave comments or suggestions.»
+    v3 · chunk 20260726_14:00 · từ khớp ['comments', 'pastel', 'rating', 'services', 'star', 'testimonials'] · «I was thinking maybe a simple form for users to leave comments or suggestions.»
+- [dev; sai ở fix,v3,v3_r2,v3_r3,vec,devV3,devB1,devB2] What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe "Central Perk" 
+    fix · chunk 20260309_10:00 · từ khớp ['outreach', 'programs'] · «I’d like to include some information about the therapy techniques I’m developing and maybe a section for community outreach programs.»
+    v3 · chunk 20260309_10:00 · từ khớp ['developing', 'information', 'outreach', 'programs'] · «I’d like to include some information about the therapy techniques I’m developing and maybe a section for community outreach programs.»
+- [ngoài dev; sai ở fix,v3,v3_r3,vec] What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?
+    v3_r3 · chunk 20260418_15:00 · từ khớp ['introduced', 'tart'] · «Any thoughts on the new products we introduced?»
+- [ngoài dev; sai ở fix,v3,v3_r3,vec] What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise con
+    fix · chunk 20260527_10:00 · từ khớp ['absorbing', 'advance', 'educational', 'entrance', 'informed', 'limiting'] · «It could serve as an educational point for residents too.»
+    v3 · chunk 20260527_10:00 · từ khớp ['absorbing', 'advance', 'barriers', 'climate', 'entrance', 'limit'] · «We could also think about notifying residents a day in advance about any particularly loud work.»
+- [dev; sai ở fix,v3,v3_r2,v3_r3,vec,devV3,devB1,devB2] What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training 
+    v3_r3 · chunk 20260610_16:00 · từ khớp ['cycling', 'swimming'] · «Mix up your activities, like cycling, running, or even swimming.»
+- [ngoài dev; sai ở v3] What is the favorite type of music that Li Hua and Yuriko plan to play together?
+    v3 · chunk 20260425_23:30 · từ khớp ['acoustic', 'alabama', 'blackbird', 'california', 'hotel', 'medley'] · «ChaeSong-hwa: I really enjoy "Hotel California!" It's such a classic.»
+    v3 · chunk 20260613_10:45 · từ khớp ['california', 'hotel'] · «ChaeSong-hwa: I’m up for "Hotel California" and "All You Need Is Love"!»
+- [dev; sai ở v3,devB2] What type of protein supplements did Li Hua use after the workout on September 19, 2026?
+    v3 · chunk 20260214_16:00 · từ khớp ['fillers', 'sugars', 'supplement', 'whey'] · «Just make sure you check the ingredients for added sugars or fillers!»
+    devB2 · chunk 20260214_16:00 · từ khớp ['fillers', 'sugars', 'supplement', 'whey'] · «Just make sure you check the ingredients for added sugars or fillers!»
+- [dev; sai ở devB1,devB2] What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?
+    devB1 · chunk 20260527_10:00 · từ khớp ['aesthetics', 'discussed', 'serve'] · «They provide both aesthetics and noise reduction.»
+    devB2 · chunk 20260518_10:00 · từ khớp ['backup', 'delays', 'selections'] · «Would hate to see any delays!»

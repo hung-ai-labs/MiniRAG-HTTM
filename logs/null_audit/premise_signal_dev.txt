@@ -1,0 +1,4 @@
+V3 · phủ hợp (union Sources): trung vị Null 0.67 / có đáp án 0.80 · AUC 0.733 · Null sai của V3: 7/20 · net oracle tốt nhất +0 (ngưỡng None, cứu 0, chặn nhầm 0)
+V3 · phủ trong 1 chunk tốt nhất: trung vị Null 0.50 / có đáp án 0.67 · AUC 0.776 · Null sai của V3: 7/20 · net oracle tốt nhất +0 (ngưỡng None, cứu 0, chặn nhầm 0)
+B2 · phủ hợp (union Sources): trung vị Null 0.78 / có đáp án 0.88 · AUC 0.684 · Null sai của B2: 9/20 · net oracle tốt nhất +0 (ngưỡng None, cứu 0, chặn nhầm 0)
+B2 · phủ trong 1 chunk tốt nhất: trung vị Null 0.50 / có đáp án 0.75 · AUC 0.852 · Null sai của B2: 9/20 · net oracle tốt nhất +0 (ngưỡng None, cứu 0, chặn nhầm 0)

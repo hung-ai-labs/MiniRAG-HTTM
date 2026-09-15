@@ -1092,6 +1092,27 @@ câu Multi đúng), nên đây **không** phải ước lượng cho quần th�
 trả lời (kích thước cửa sổ 150 × 120 cm, bánh tart mâm xôi ở sự kiện kỷ niệm, phản hồi sáng thứ Năm
 20260312). Một phần mức giảm của Null có thể là do nhãn, không phải do mô hình.
 
+**Kiểm toán Null (15/09/2026 — offline, 0 API, không dùng dữ liệu tầng D; nhóm chọn "kiểm toán trước, quyết sau").**
+Script `reproduce/null_audit/`, kết quả `logs/null_audit/`.
+- **Nhãn.** Cả 65 câu Null có đáp án vàng "Insufficient information". Đọc chunk gốc xác nhận **3 câu có đáp án trong corpus**:
+  kích thước cửa sổ (`20260928_10:00`: "150 cm wide and 120 cm high"); bánh ở sự kiện kỷ niệm (`20260418_15:00`: "especially that
+  raspberry tart" — câu hỏi nói "bread", corpus nói "pastries"); phản hồi của Yuriko về demo website (`20260312_16:00`, thứ Năm:
+  "absolutely loved the demo website you showed me this morning", kèm ý tưởng mục community outreach). Câu cửa sổ chỉ bị chấm sai ở
+  các lượt cải tiến: truy hồi tốt hơn tìm ra đáp án thật và bị phạt.
+- **Phân loại 32/65 câu Null từng bị chấm `error`** (baseline, V3 × 3, vector thuần; dev: V3, B1, B2). Phần lớn là **trả lời tự tin
+  với tiền đề ghép từ sự kiện lân cận**: 19 câu theo bộ lọc tự động, cộng phần lớn 8 câu bộ lọc nghi nhãn sai nhưng đọc lại là ghép
+  sự kiện khác (design homepage tháng 7 chứ không phải buổi gặp ở Central Perk; "Hotel California" của ChaeSong-hwa; "whey" là lời
+  khuyên tháng 2). 5 câu có rào đón mà vẫn bị chấm `error` (13/100 lượt `error`). 21/32 câu là lỗi chỉ xuất hiện ở lượt cải tiến.
+- **Độ nhạy** (phán quyết đa số, không thay số chính thức) — Null err: baseline 16,9 → V3 trung bình 24,6; bỏ 3 câu nhãn sai
+  14,5 → 21,5; thêm coi câu rào đón là `neither` 11,3 → 17,7; vector thuần 29,2 → 25,8 → 25,8. Nhãn và giám khảo chỉ giải thích
+  khoảng 1 điểm của mức chênh; **phần lớn mức giảm Null là hành vi thật**.
+- **Tín hiệu mới "độ phủ tiền đề"** (phần từ nội dung của câu hỏi nằm chung trong một chunk; chỉ đo trên dev): AUC 0,85 với context
+  B2, cao hơn mọi tín hiệu cũ (≤ 0,65). Nhưng làm cổng từ chối cứng thì net oracle = 0 ở mọi ngưỡng; cắt context còn 2–4 chunk khi
+  độ phủ thấp cho net lạc quan −2 đến +1 câu (B2) và −5 đến 0 (V3) trên dev 200. Lý do: câu Null độ phủ thấp model đã tự từ chối
+  đúng; câu Null model trả lời sai lại là loại độ phủ cao, tiền đề gần đúng trọn vẹn. **Không đăng ký biến thể Null nào; hướng
+  verifier / từ chối vẫn đóng.** Muốn sửa phải có biểu diễn cấp sự kiện (ai, khi nào, ở cuộc trò chuyện nào) — đồ thị hiện tại
+  không có (V5b).
+
 **9. V3 dựa trên hai thay đổi khác đã bật sẵn.** A1@4000 (cắt Sources — bản thân là sửa lỗi upstream
 để vừa cửa sổ 32k) và bản vá answer-type. Cả hai được giữ cố định giữa baseline và V3, nên so sánh
 vẫn là một biến, nhưng kết quả không áp nguyên cho MiniRAG upstream chưa có hai thay đổi này.

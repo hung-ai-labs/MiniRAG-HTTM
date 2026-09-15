@@ -651,6 +651,30 @@ tầng D — chấp nhận để dành tầng D đắt cho ứng viên mạnh. *
   vào D; ở giữa (quá sát để tách rẻ) → cả hai vào D.
 - Mọi số tầng A–C là **bằng chứng sàng lọc**, không tuyên bố ý nghĩa cho H1–H3.
 
+**Kết quả tầng B — canary (ghi sau khi chạy, 15/09/2026)**
+
+| | acc | err | neither | Single (59) | Multi (21) | Null (20) | So với V3 đông lạnh | Net / σ sau lô 40 · 80 · 100 | An toàn | Quyết định |
+|---|---:|---:|---:|---:|---:|---:|---|---|---|---|
+| V3 đông lạnh | 62,00 | 31,00 | 7,00 | 69,5 | 38,1 | 65,0 | — | — | — | FROZEN |
+| B1 | 66,00 | 29,00 | 5,00 | 79,7 | 38,1 | 55,0 | 10 / 6 (m = 97) | +3 / 2,89 · +5 / 4,01 · +4 / 4,50 | đạt 5/5 (truy hồi +47,0 ms) | **CONTINUE TO DEV200** |
+| B2 | 68,00 | 28,00 | 4,00 | 76,3 | 57,1 | 55,0 | 16 / 10 (m = 99) | +1 / 2,89 · +6 / 4,06 · +6 / 4,55 | **trượt: truy hồi +61,7 ms** (5.811,4 → 5.873,1) | **STOP** |
+
+Theo loại, B2: Single 10 / 6 · Multi 5 / 1 · Null 1 / 3 (B1: 8 / 2 · 2 / 2 · 0 / 2). Bằng chứng trên 80 câu có evidence: chunk
+đáp án giữ 72,9% → 80,4% (B1) / 84,1% (B2); câu đủ đáp án 66,2% → 75,0% / 78,8%. Token context trung vị: B1 +0,5%, B2 −0,6%.
+Phụ, không phải cổng: B2 so với B1 12 / 10 (net +2, 95 câu khác context, σ = 4,46); B2 so với vector thuần lượt chính thức 14 / 9.
+
+**Đọc.** B2 dừng **chỉ** vì cổng an toàn thời gian truy hồi; net +6 ≥ 1 và bốn cổng an toàn còn lại đạt, nên thiếu cổng này B2
+đã lên dev 200. Ghi **STOP** theo luật đã đăng ký — không sửa cổng hay quyết định sau khi thấy kết quả. Ghi nhận để bàn trước
+cho các biến thể sau: cổng đo hiệu thời gian dựng context trung vị giữa hai lượt tuần tự trong cùng tiến trình, trong khi phần
+BM25 thêm vào khoảng 1 ms (probe 0,8 ms); hiệu đo được giữa các lượt dao động từ −98,8 ms (tầng A, B2) đến +61,7 ms (canary,
+B2), và lượt đạt của B1 (+47,0 ms) cũng nằm trong khoảng nhiễu đó. Mọi thay đổi cách đo phải đăng ký trước; áp cho B2 thì phải
+ghi rõ là lệch đăng ký.
+
+**Đối chiếu dự báo ghi trước** (`logs/screening/b2/du_bao_truoc_ket_qua.md`, commit `4f83135`): net +8 (khoảng +3 đến +13) →
+thực +6 · câu đủ đáp án ~84% (79–89%) → 78,8%, ngay dưới khoảng · Multi net 0 (−3 đến +3) → +4, ngoài khoảng · Null −1 → −2 ·
+B2 so với B1 +3 → +2 · quyết định CONTINUE ~70% / STOP ~30%, nguyên nhân STOP khả dĩ nhất là cổng thời gian (~15%) → đúng
+nguyên nhân đó.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

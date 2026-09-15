@@ -1,0 +1,21 @@
+question,type,run,verdict
+What time do they agree to meet for pizza?,Single,1,accurate
+Who does Jake believe has the potential to be a game-changer for Barca?,Single,1,accurate
+What does Fionnuala think about matchmaking systems?,Single,1,accurate
+What aspect of Guardiola's career does JakeWatson admire?,Single,1,accurate
+What does ThaneChambers think about Sekiro: Shadows Die Twice?,Single,1,accurate
+How does LiHua feel about the soreness in their arm muscles?,Single,1,error
+Did Wolfgang's promotion announcement occur before he invited Li Hua for dinner on 20260430?,Multi,1,accurate
+Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?,Multi,1,accurate
+Is the time interval between LiHua asking JakeWatson to help him with dribbling skills and Li Hua asking the group about classic must-watch UCL matches more than 2 days (restrict your search within August)?,Multi,1,error
+What event is the community organizing?,Single,1,error
+Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?,Multi,1,error
+When was the first time Li Hua had dinner with Wolfgang this year?,Single,1,error
+What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?,Null,1,accurate
+Which character does LiHua mention as their favorite and describe as inspiring?,Single,1,accurate
+What does Saffron say Cersei was blinded by?,Single,1,accurate
+Did Li Hua ask Yuriko to play music together before Wolfgang proposed to pause playing musical instruments?,Multi,1,error
+What were the specific requirements that the customers modified and how did Li Hua respond to each change?,Null,1,accurate
+Who will bring the tools for the curtain installation?,Single,1,accurate
+"What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe ""Central Perk"" on Thursday morning, and how did Li Hua respond to her comments?",Null,1,error
+What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?,Null,1,error

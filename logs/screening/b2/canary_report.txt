@@ -1,0 +1,31 @@
+Variant: b2 (vector_bm25)
+Stage: canary (100/100 câu; một lượt sinh seed 20260914 × một lượt chấm; bằng chứng sàng lọc, không phải kết luận H1–H3)
+Endpoint: https://hung-ai-labs--minirag-slm-serve.modal.run · chạy bởi: Hunggoodboy
+Retrieval:
+- chunk đáp án giữ: 72,9% → 84,1% · câu đủ đáp án: 66,2% → 78,8% (80 câu có evidence)
+- token context trung vị: 3886 → 3862
+- truy hồi trung vị: 5811,4 → 5873,1 ms
+- context đổi so với V3: 99/100 câu (câu không đổi dùng lại câu trả lời + phán quyết V3)
+QA:
+- câu đánh giá: 100 (loại 0)
+- sinh mới: 99 (cộng dồn biến thể: 99) · lời gọi judge: 99 (cộng dồn: 99)
+- acc: 62,00 → 68,00 (Δ 6,00); điều chỉnh theo tỉ lệ dev: 65,75 → 72,14
+- err: 31,00 → 28,00 (Δ số phiếu -3); neither 7,00 → 4,00
+- Single: 10 lên / 6 xuống (acc 69,5 → 76,3, n = 59)
+- Multi: 5 lên / 1 xuống (acc 38,1 → 57,1, n = 21)
+- Null: 1 lên / 3 xuống (acc 65,0 → 55,0, n = 20)
+- ghép cặp: 16 lên / 10 xuống, net +6 (McNemar p = 0,327 — chỉ tham khảo)
+- phụ: so với vector thuần (lượt chính thức, run = 1, một lần rút không seed): 14 lên / 9 xuống
+- phụ: b2 so với b1 trên 100 câu chung: 12 lên / 10 xuống, net +2, m khác nhau = 95, σ = 4,46
+Sequential gates:
+- sau 40 câu: m = 40, net +1, σ(m) = 2,89, loại 0 → chạy tiếp
+- sau 80 câu: m = 79, net +6, σ(m) = 4,06, loại 0 → chạy tiếp
+- sau 100 câu: m = 99, net +6, σ(m) = 4,55, loại 0 → STOP
+Safety:
+- ĐẠT: Null net ≥ −3
+- ĐẠT: Multi net ≥ −3
+- ĐẠT: số phiếu error tăng ≤ +3
+- ĐẠT: token context trung vị ±5%
+- TRƯỢT: truy hồi thêm ≤ 50 ms
+Decision: STOP
+Tiết kiệm so với 637 × 3 cho biến thể này: sinh 99/637 (84,5% ít hơn), judge 99/1.911 (94,8% ít hơn).

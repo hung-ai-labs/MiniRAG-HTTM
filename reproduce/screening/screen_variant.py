@@ -363,6 +363,10 @@ async def freeze(rag, rows, stage, gold):
 
 # ---------------------------------------------------------------- tầng A
 async def stage_offline(rag, variant, gold):
+    done = os.path.join(OUT, variant, "offline_report.json")
+    if os.path.exists(done) and os.environ.get("SCREEN_FORCE") != "1":
+        sys.exit(f"{variant} offline đã có báo cáo ({done}) — không chạy lại: parser rút lại sẽ ghi đè kết quả đã commit. "
+                 "SCREEN_FORCE=1 để bỏ qua (phải ghi lý do vào ROADMAP).")
     rows = [r for r in dev_rows() if r["Question"] in gold]
     parser_before = cache_size()
     try:
@@ -413,6 +417,11 @@ async def stage_offline(rag, variant, gold):
 async def stage_screen(rag, variant, stage, gold):
     rows = question_set(stage)
     vdir = os.path.join(OUT, variant)
+    done = os.path.join(vdir, f"{stage}_report.json")
+    prior = json.load(open(done)).get("decision") if os.path.exists(done) else None
+    if prior in ("PROMOTE", "STOP") and os.environ.get("SCREEN_FORCE") != "1":
+        sys.exit(f"{variant} {stage} đã có quyết định {prior} ({done}) — không chạy lại: đo lại thời gian và ghi đè báo cáo "
+                 "đã commit. SCREEN_FORCE=1 để bỏ qua (phải ghi lý do vào ROADMAP).")
     frozen = load_jsonl(FROZEN)
     missing = [r for r in rows if frozen.get(r["Question"], {}).get("verdict") not in LABELS]
     if missing:

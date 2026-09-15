@@ -11,7 +11,7 @@ trước cho BM25 (tầng A–D). Script ở đây chỉ chạy tầng A–C tr�
 | Tầng A — B2 = RRF(Vector, BM25) | CONTINUE TO CANARY | hung-ai-labs (chỉ parser) | `739d024` |
 | Đông lạnh V3 canary | FROZEN — acc 62,00 | hung-ai-labs | `739d024` |
 | Canary B1 | CONTINUE TO DEV200 — net +4, dưới 1σ = 4,50 | hung-ai-labs | `65280ae` |
-| **Canary B2** | **chưa chạy — việc tiếp theo** | | |
+| Canary B2 | **STOP** — chỉ trượt cổng thời gian truy hồi (+61,7 ms); QA net +6 | hung-ai-labs | xem ROADMAP |
 | Dev 200, tầng D | chờ nhóm duyệt | | |
 
 ## Quy tắc — đọc trước khi chạy
@@ -77,6 +77,9 @@ Mở `.env` bằng trình soạn thảo, điền `GEMINI_API_KEY_1`, `GEMINI_API
 `.env` đã bị gitignore, không bao giờ commit.
 
 ## 4. Chạy canary B2
+
+> ⚠️ **Canary B2 đã chạy xong ngày 15/09 (STOP). Không chạy lại lệnh dưới.** Chạy lại sẽ dựng lại context, đo lại thời gian
+> và ghi đè báo cáo đã commit; script nay từ chối nếu bước đó đã có quyết định. Phần này giữ làm mẫu cho biến thể sau.
 
 ```bash
 git pull

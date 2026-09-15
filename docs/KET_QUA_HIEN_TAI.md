@@ -101,11 +101,12 @@ trước BM25.
 |---|---:|---:|---:|---:|---:|---:|---|---|
 | V3 đông lạnh (mốc) | 62,00 | 31,00 | 7,00 | 69,5 | 38,1 | 65,0 | — | FROZEN |
 | B1 = RRF(đồ thị, vector, BM25) | 66,00 | 29,00 | 5,00 | 79,7 | 38,1 | 55,0 | 10 / 6 trên 97 câu đổi context | lên dev 200 — qua sát nút (net +4 < 1σ = 4,50) |
-| B2 = RRF(vector, BM25) | — | — | — | — | — | — | — | canary chưa chạy |
+| B2 = RRF(vector, BM25) | 68,00 | 28,00 | 4,00 | 76,3 | 57,1 | 55,0 | 16 / 10 trên 99 câu đổi context | **STOP** — chỉ trượt cổng an toàn thời gian truy hồi (+61,7 ms > 50 ms); QA net +6 |
 
 Tầng A (offline, 180 câu dev có evidence, không sinh, không chấm) — tỉ lệ câu có đủ mọi chunk đáp án trong context:
 B1 62,8% → 72,2% (20 lên / 3 xuống, p = 0,0005); B2 62,2% → 83,9% (46 lên / 7 xuống, p = 4·10⁻⁸). Đây là dự báo chẩn đoán,
-không phải accuracy. Null của B1 trên canary: 0 lên / 2 xuống — cùng chiều vấn đề Null ở mục 2.
+không phải accuracy. Null trên canary: B1 0 lên / 2 xuống, B2 1 lên / 3 xuống — cùng chiều vấn đề Null ở mục 2. Cổng thời gian truy hồi đang đo
+chủ yếu nhiễu (BM25 thêm ~1 ms, hiệu đo được dao động −99 đến +62 ms giữa các lượt) — xem ROADMAP, kết quả tầng B.
 
 ## 6. Điều kiện bắt buộc khi trích dẫn
 

@@ -43,10 +43,15 @@ logs/*.jsonl
 !logs/fix1_devset_judged.csv
 !logs/qwen_modal_devset.csv
 !logs/qwen_modal_devset_judged.csv
+# Sàng lọc BM25 cần nhãn chunk đáp án (gold) và lượt vector thuần chính thức (so phụ của B2).
+!logs/diag_path2chunk.jsonl
+!logs/qwen637_vec_judged.csv
 
 uploads/
 playground-index/
 qwen-speedtest/
 gemini-speedtest/
 LiHua-World-qwen/
-LiHua-World-qwen-modal/
+# LiHua-World-qwen-modal/ được commit: index Qwen dùng chung cho sàng lọc (minirag.log vẫn bị *.log bỏ qua).
+logs/screening/cache/ctx_*.jsonl
+logs/screening/*.out

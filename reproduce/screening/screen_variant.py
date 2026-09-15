@@ -175,7 +175,8 @@ async def generate(rag, q, variant, ctx):
     sha = rec["context_sha256"] if rec else "NONE"
     if sha != ctx["context_sha256"]:
         sys.exit(f"ASSERT: context lúc sinh lệch hash đã tính ({q[:60]}) — pipeline không tất định, dừng")
-    return {"answer": (out or "").replace("\n", "").replace("\r", ""), "gen_ms": round(ms, 1), "generated": True}
+    return {"answer": (out or "").replace("\n", "").replace("\r", ""), "gen_ms": round(ms, 1), "generated": True,
+            "endpoint": os.environ.get("MINIRAG_SLM_URL", "")}
 
 
 def judge(items, tag, vdir):
@@ -264,7 +265,16 @@ def fmt(x, nd=2):
     return "–" if x is None else f"{x:.{nd}f}".replace(".", ",")
 
 
+def run_meta():
+    """Ai chạy, trên endpoint nào — mỗi người chạy trên Modal của riêng mình nên phải ghi lại (không ghi khoá)."""
+    name = subprocess.run(["git", "config", "user.name"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    return {"endpoint": os.environ.get("MINIRAG_SLM_URL", ""), "ran_by": name}
+
+
 def write_report(vdir, stage, rep, lines):
+    meta = run_meta()
+    rep = {**rep, **meta}
+    lines = lines[:2] + [f"Endpoint: {meta['endpoint'] or '–'} · chạy bởi: {meta['ran_by'] or '–'}"] + lines[2:]
     os.makedirs(vdir, exist_ok=True)
     json.dump(rep, open(os.path.join(vdir, f"{stage}_report.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     open(os.path.join(vdir, f"{stage}_report.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")

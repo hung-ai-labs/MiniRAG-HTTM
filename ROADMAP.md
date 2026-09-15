@@ -1090,28 +1090,38 @@ câu Multi đúng), nên đây **không** phải ước lượng cho quần th�
 
 **8. Nhãn Null có nhiễu.** 3/16 câu Null "sai" trong pilot thực ra được Sources hỗ trợ đúng như câu
 trả lời (kích thước cửa sổ 150 × 120 cm, bánh tart mâm xôi ở sự kiện kỷ niệm, phản hồi sáng thứ Năm
-20260312). Một phần mức giảm của Null có thể là do nhãn, không phải do mô hình.
+20260312). Một phần mức giảm của Null có thể là do nhãn, không phải do mô hình. *(Kiểm toán 15/09 tách lại: chỉ câu cửa sổ là nhãn sai
+rõ ràng, hai câu kia đáng tranh luận.)*
 
 **Kiểm toán Null (15/09/2026 — offline, 0 API, không dùng dữ liệu tầng D; nhóm chọn "kiểm toán trước, quyết sau").**
 Script `reproduce/null_audit/`, kết quả `logs/null_audit/`.
-- **Nhãn.** Cả 65 câu Null có đáp án vàng "Insufficient information". Đọc chunk gốc xác nhận **3 câu có đáp án trong corpus**:
-  kích thước cửa sổ (`20260928_10:00`: "150 cm wide and 120 cm high"); bánh ở sự kiện kỷ niệm (`20260418_15:00`: "especially that
-  raspberry tart" — câu hỏi nói "bread", corpus nói "pastries"); phản hồi của Yuriko về demo website (`20260312_16:00`, thứ Năm:
-  "absolutely loved the demo website you showed me this morning", kèm ý tưởng mục community outreach). Câu cửa sổ chỉ bị chấm sai ở
-  các lượt cải tiến: truy hồi tốt hơn tìm ra đáp án thật và bị phạt.
+- **Nhãn.** Cả 65 câu Null có đáp án vàng "Insufficient information". Đọc chunk gốc: **1 câu nhãn sai rõ ràng** — kích thước cửa sổ
+  (`20260928_10:00`: "150 cm wide and 120 cm high"); **2 câu đáng tranh luận** — bánh ở sự kiện kỷ niệm (`20260418_15:00`: "especially
+  that raspberry tart"; câu hỏi nói "bread", corpus nói "pastries") và phản hồi của Yuriko "trong buổi gặp" sáng thứ Năm ở Central Perk
+  (buổi gặp 12/03 có thật, nhưng phản hồi nằm trong tin nhắn `20260312_16:00` về "the demo website you showed me this morning" — phải
+  suy luận). Câu cửa sổ chỉ bị chấm sai ở các lượt cải tiến: truy hồi tốt hơn tìm ra đáp án thật và bị phạt.
 - **Phân loại 32/65 câu Null từng bị chấm `error`** (baseline, V3 × 3, vector thuần; dev: V3, B1, B2). Phần lớn là **trả lời tự tin
   với tiền đề ghép từ sự kiện lân cận**: 19 câu theo bộ lọc tự động, cộng phần lớn 8 câu bộ lọc nghi nhãn sai nhưng đọc lại là ghép
-  sự kiện khác (design homepage tháng 7 chứ không phải buổi gặp ở Central Perk; "Hotel California" của ChaeSong-hwa; "whey" là lời
-  khuyên tháng 2). 5 câu có rào đón mà vẫn bị chấm `error` (13/100 lượt `error`). 21/32 câu là lỗi chỉ xuất hiện ở lượt cải tiến.
-- **Độ nhạy** (phán quyết đa số, không thay số chính thức) — Null err: baseline 16,9 → V3 trung bình 24,6; bỏ 3 câu nhãn sai
-  14,5 → 21,5; thêm coi câu rào đón là `neither` 11,3 → 17,7; vector thuần 29,2 → 25,8 → 25,8. Nhãn và giám khảo chỉ giải thích
-  khoảng 1 điểm của mức chênh; **phần lớn mức giảm Null là hành vi thật**.
+  sự kiện khác (design homepage tháng 7 chứ không phải buổi gặp ở Central Perk; "whey" là lời khuyên tháng 2 gán vào ngày
+  19/09; "Hotel California" là bài cả nhóm có Li Hua và Yuriko chọn chơi, nên đó là suy diễn "thể loại yêu thích" chứ không phải sai
+  người). 5 câu có rào đón mà vẫn bị chấm `error` (13/100 lượt `error`) — rào đón chưa có nghĩa giám khảo sai, vì câu có thể rào đón
+  rồi vẫn khẳng định chi tiết sai. 21/32 câu là lỗi chỉ xuất hiện ở lượt cải tiến.
+- **Độ nhạy** (phán quyết đa số, không thay số chính thức) — Null err baseline → V3 trung bình: chính thức 16,9 → 24,6 (chênh 7,7);
+  bỏ câu cửa sổ 17,2 → 23,4 (6,2); bỏ cả 3 câu 14,5 → 21,5 (7,0); thêm giả định cận coi mọi câu rào đón bị chấm `error` là `neither`
+  11,3 → 17,7 (6,4). Vector thuần 29,2 → 28,1 → 25,8 → 25,8. Nhãn và rào đón chỉ thu hẹp chênh 0,7–1,5 điểm, nên **không giải thích
+  được phần lớn mức giảm**.
+- **Câu mất `accurate` đi đâu** (`reproduce/null_audit/flows.py`, rà soát cùng ngày). V3 mất 10 / 12 / 10 câu, sang `error` 4 / 6 / 5
+  và sang `neither` 6 / 6 / 5; neither trung bình của V3 *tăng* (12,31 → 13,16), nên không được viết "Null giảm vì model ít nói không
+  biết" cho V3 — cách nói đó chỉ khớp vector thuần (neither 6,67; 8/13 câu mất sang `error`). Lời từ chối thuần được chấm `accurate`
+  97–100% phiếu; câu "từ chối rồi suy đoán" nhận 11–52% phiếu `neither`, và 8/17 câu V3 đổi `accurate` → `neither` có phiếu không
+  đồng nhất → chỗ thước đo yếu là ranh giới `accurate` / `neither` ở câu trả lời pha trộn (đề xuất G1). Dev 200 và canary dùng cùng 20
+  câu Null với cùng câu trả lời: 65 → 55 của B1/B2 là một quan sát, không phải hai.
 - **Tín hiệu mới "độ phủ tiền đề"** (phần từ nội dung của câu hỏi nằm chung trong một chunk; chỉ đo trên dev): AUC 0,85 với context
   B2, cao hơn mọi tín hiệu cũ (≤ 0,65). Nhưng làm cổng từ chối cứng thì net oracle = 0 ở mọi ngưỡng; cắt context còn 2–4 chunk khi
   độ phủ thấp cho net lạc quan −2 đến +1 câu (B2) và −5 đến 0 (V3) trên dev 200. Lý do: câu Null độ phủ thấp model đã tự từ chối
   đúng; câu Null model trả lời sai lại là loại độ phủ cao, tiền đề gần đúng trọn vẹn. **Không đăng ký biến thể Null nào; hướng
-  verifier / từ chối vẫn đóng.** Muốn sửa phải có biểu diễn cấp sự kiện (ai, khi nào, ở cuộc trò chuyện nào) — đồ thị hiện tại
-  không có (V5b).
+  verifier / từ chối vẫn đóng.** Biểu diễn cấp sự kiện (ai, khi nào, ở cuộc trò chuyện nào) là giả thuyết dài hạn, chưa được
+  chứng minh — đồ thị hiện tại không có (V5b).
 
 **9. V3 dựa trên hai thay đổi khác đã bật sẵn.** A1@4000 (cắt Sources — bản thân là sửa lỗi upstream
 để vừa cửa sổ 32k) và bản vá answer-type. Cả hai được giữ cố định giữa baseline và V3, nên so sánh

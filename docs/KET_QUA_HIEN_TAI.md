@@ -10,7 +10,7 @@
   (`logs/qwen637_fix_judged.csv`) — **acc 51,02 · err 27,66 · neither 21,31**.
 - **Cải tiến có ý nghĩa và lặp lại được:** V3 = trộn RRF(đồ thị, vector) — **acc 60,72 ± 1,26 · err 25,28 · neither 14,00**
   (trung bình 3 lượt sinh). Cả ba lượt đều hơn baseline, p ≤ 7,4·10⁻⁵. Mặc định vẫn tắt.
-- **Nhóm Null đi ngược:** acc 70,26 → 61,54, err 17,44 → 25,30. Cùng chiều ở cả 3 lượt nhưng từng lượt chưa có ý nghĩa
+- **Nhóm Null đi ngược:** acc 70,26 → 61,54, err 17,44 → 25,30, neither 12,31 → 13,16. Cùng chiều ở cả 3 lượt nhưng từng lượt chưa có ý nghĩa
   (p = 0,09–0,18). Các hướng sửa A3, V5a–V5e đều phủ định — không mở lại hướng verifier / từ chối.
 - **Vector thuần ngang V3** (80 lên / 61 xuống, p = 0,13): đồ thị **chưa chứng minh được đóng góp**.
 - **BM25: B1 và B2 cùng qua dev 200** — B2 acc 59,00 → 74,50 (49 lên / 18 xuống), B1 → 69,00 (30 / 10). Vẫn là sàng lọc
@@ -63,13 +63,34 @@ không được viết "cải thiện Multi-hop".
 | V4 · RRF @2000 | 68,72 | 22,56 | 8,72 | 6 / 8, p = 0,791 |
 | Vector thuần | 62,56 | 30,77 | 6,67 | 6 / 13, p = 0,167 |
 
-**Đọc bảng này thế nào.** Null tụt ở mọi cấu hình đưa thêm chunk vector vào context (V3, vector thuần), không riêng việc trộn:
-có thêm văn bản liên quan thì Qwen ít chịu nói "không biết" hơn (neither giảm) và bịa nhiều hơn (err tăng). V2 là cấu hình
-duy nhất Null tăng, vì nó bớt bằng chứng nên Qwen từ chối nhiều hơn — nhưng acc tổng tụt 5,6 điểm.
+**Đọc bảng này thế nào.** Null tụt rõ nhất ở hai cấu hình đưa chunk vector vào context: V3 (cùng chiều cả 3 lượt) và vector thuần.
+Không lượt nào có ý nghĩa thống kê riêng; V1 và V4 cũng nhích xuống nhưng nằm trong nhiễu. V2 là cấu hình duy nhất Null tăng: nó bớt
+bằng chứng nên Qwen từ chối nhiều hơn, và với câu Null lời từ chối được chấm `accurate` — nhưng acc tổng tụt 5,6 điểm.
 
-**Kiểm toán 15/09.** 3/65 câu Null thực ra có đáp án trong corpus (nhãn sai), và 5 câu có rào đón vẫn bị chấm `error`. Sửa cả hai chỉ
-thu hẹp mức chênh Null khoảng 1 điểm: phần lớn mức giảm là hành vi thật — model trả lời tự tin với tiền đề ghép từ sự kiện lân cận.
-Chưa có cơ chế sửa khả thi (xem ROADMAP, Limitations mục 8).
+**Câu mất `accurate` đi đâu** (`logs/null_audit/flows.txt`). Không được đọc cả mức giảm là "bịa nhiều hơn":
+
+| Phán quyết đa số, 65 câu | câu mất `accurate` | sang `error` | sang `neither` | trả lời từ chối thuần | trả lời khẳng định |
+|---|---:|---:|---:|---:|---:|
+| Baseline | — | — | — | 29 | 27 |
+| V3 · lượt 1 / 2 / 3 | 10 / 12 / 10 | 4 / 6 / 5 | 6 / 6 / 5 | 18 / 26 / 23 | 36 / 29 / 35 |
+| Vector thuần | 13 | 8 | 5 | 25 | 31 |
+
+Hai cột cuối đếm kiểu câu trả lời bằng regex (phần còn lại là "mở đầu nói không có thông tin rồi vẫn suy đoán") — heuristic, chưa có
+người rà.
+
+- **Vector thuần** khớp cách giải thích "ít từ chối, khẳng định nhiều hơn": neither 12,31 → 6,67, err +13,33.
+- **V3 thì không hẳn:** neither trung bình *tăng* 12,31 → 13,16, và câu mất `accurate` chia gần đều giữa `error` và `neither`. Câu sang
+  `neither` chủ yếu là câu khẳng định hoặc "từ chối rồi suy đoán", 8/17 câu có phiếu chấm không đồng nhất. Lời từ chối thuần gần như
+  luôn được chấm `accurate` (97–100% phiếu), nên chỗ thước đo không ổn định là **câu trả lời pha trộn**, không phải lời từ chối.
+- Kiểu `error` hay gặp: đúng chủ đề nhưng **sai thời điểm hoặc sự kiện**. Ví dụ hỏi loại protein Li Hua dùng sau buổi tập 19/09: V3 lấy
+  lời khuyên whey / đạm thực vật trong chunk `20260214_16:00` rồi gán vào ngày 19/09, trong khi chunk `20260919_10:00` chỉ nhắc
+  "nhớ bổ sung protein", không nói loại.
+
+**Kiểm toán 15/09** (`logs/null_audit/`). Nhãn: **1 câu có đáp án rõ ràng** trong corpus (kích thước cửa sổ) và **2 câu đáng tranh
+luận** (câu hỏi nói "bread", corpus nói "pastries"; phản hồi của Yuriko nằm trong tin nhắn chiều cùng ngày, không phải tại buổi gặp).
+Bỏ các câu này, hoặc thêm giả định cận coi mọi câu rào đón bị chấm `error` là `neither` (**chưa xác nhận** giám khảo chấm sai), thì
+chênh Null err giữa V3 và baseline còn 6,2–7,0 điểm so với 7,7 chính thức: nhãn và rào đón không giải thích được phần lớn mức giảm.
+Ranh giới `accurate` / `neither` chưa được người kiểm (đề xuất K1, G1). Chưa có cơ chế sửa khả thi (ROADMAP, Limitations mục 8).
 
 ## 3. Phép thử sạch — 435 câu ngoài dev
 
@@ -123,7 +144,10 @@ không phải accuracy. Null trên canary: B1 0 lên / 2 xuống, B2 1 lên / 3 
 | B2 | 74,50 | 22,00 | 3,50 | 79,2 | 57,1 | 55,0 | 49 / 18 | +31 / 6,43 | **FINALIST** (lệch đăng ký từ tầng B) |
 
 B2 so với B1: 30 / 19 (net +11, σ = 6,33) — chỉ tham khảo. Cả hai vẫn là sàng lọc; kết luận chỉ có sau tầng D (435 câu
-ngoài dev × 3 seed), chưa chạy.
+ngoài dev × 3 seed), đang chạy và chưa xem kết quả.
+
+Cột **Null (20)** của tầng C là cùng 20 câu, cùng câu trả lời với canary (tầng C tái dùng câu trả lời tầng B): 65 → 55 ở hai bảng là
+**một** quan sát, không phải hai lần xác nhận, và 20 câu quá ít để kết luận riêng.
 
 ## 6. Điều kiện bắt buộc khi trích dẫn
 

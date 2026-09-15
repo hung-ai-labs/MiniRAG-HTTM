@@ -729,6 +729,19 @@ cáo canary 100/100. Hiệu thời gian từng câu dao động khoảng ±250�
 đo nhiễu. **B2 vào tầng C với nhãn lệch đăng ký**; khi viết bài phải báo cả quyết định STOP gốc (+61,7 ms) lẫn quyết định sau đo
 lại. Dev 200 của B1 và B2 vẫn chờ nhóm duyệt.
 
+**Sửa đổi đăng ký trước — cổng thời gian ở tầng C (15/09/2026; viết trước khi chạy bất kỳ câu dev 200 nào; nhóm duyệt)**
+
+Tầng C vẫn còn cổng "≤ 50 ms" đo **tuần tự** như tầng B cũ, nên mắc cùng lỗi đo nhiễu. Thay bằng: **cổng thời gian của tầng C lấy
+kết quả đo xen kẽ đã hợp lệ ở tầng B** — `logs/screening/<biến thể>/canary_amendment.json` phải có T1 và T2 cùng đạt. Không đo lại
+trên 200 câu, vì phần BM25 là cùng một cơ chế trên cùng index và tốn khoảng 1 ms bất kể câu hỏi; đo xen kẽ trên 200 câu tốn thêm
+khoảng một giờ CPU mà không thêm thông tin. Hiệu thời gian tuần tự của tầng C vẫn in trong báo cáo để tham khảo, **không làm cổng**.
+
+Mọi cổng khác của tầng C giữ nguyên: net ≥ +1,0 · σ(m), Δ số phiếu `error` ≤ +4, Null net ≥ −3, Multi net ≥ −3, Single net ≥ 0,
+token trung vị ±5%. Áp đối xứng cho B1 và B2; B2 vẫn mang nhãn lệch đăng ký từ tầng B.
+
+Thứ tự chạy, chốt trước: mở rộng V3 đông lạnh lên dev 200 (100 câu mới, một lần) → B1 → B2. Không chạy song song; máy cắm sạc,
+`caffeinate` bật. Lượt này không có tầng D: biến thể nào đạt tầng C thành **FINALIST** và chờ duyệt riêng.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

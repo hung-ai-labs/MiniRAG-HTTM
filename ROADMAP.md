@@ -675,6 +675,38 @@ thực +6 · câu đủ đáp án ~84% (79–89%) → 78,8%, ngay dưới khoả
 B2 so với B1 +3 → +2 · quyết định CONTINUE ~70% / STOP ~30%, nguyên nhân STOP khả dĩ nhất là cổng thời gian (~15%) → đúng
 nguyên nhân đó.
 
+**Sửa đổi đăng ký trước — đo lại cổng thời gian truy hồi (15/09/2026; viết sau kết quả canary B2, trước mọi lần đo lại; nhóm duyệt)**
+
+**Đây là lệch đăng ký, và phải báo đúng như vậy.** Sửa đổi được viết *sau khi* thấy B2 trượt đúng cổng này. Nó chỉ thay cách
+đo cổng an toàn "truy hồi thêm ≤ 50 ms" ở tầng B; không đụng phán quyết QA, cổng tuần tự, bốn cổng an toàn còn lại, hay tầng D.
+
+**Lý do.** Cổng cũ so trung vị `retrieval_ms` của hai lượt dựng context **tuần tự** (hết 100 câu V3 rồi mới tới 100 câu biến thể)
+trong cùng tiến trình. Phần BM25 tốn khoảng 1 ms (probe 0,8 ms), trong khi hiệu đo được giữa các lượt dao động từ −98,8 ms đến
++61,7 ms, và lượt canary B2 có máy ngủ xen giữa. Cổng đo trôi thời gian của máy (ngủ, nhiệt, tải nền), không đo cơ chế.
+
+**Cách đo mới** — chỉ CPU; không sinh, không chấm; parser chỉ lấy từ cache (`MINIRAG_KW_CACHE_ONLY=1`):
+- Câu: 100 câu canary, theo thứ tự cột `order` của `canary100.csv`.
+- Mỗi câu dựng context đúng một lần cho mỗi chế độ V3 (`rrf`), B1 (`rrf_bm25`), B2 (`vector_bm25`), xếp liền nhau. Thứ tự xoay
+  vòng theo câu: câu thứ i (đếm từ 0) dùng [V3, B1, B2] dịch trái i mod 3 bước, để mỗi chế độ đứng mỗi vị trí khoảng 33 lần.
+  Tổng 300 lần dựng, khoảng 30 phút.
+- Trước khi đo: mỗi chế độ dựng một câu khởi động không tính (câu canary đầu tiên), để nạp index BM25 và bộ nhớ đệm.
+- Máy giữ thức bằng `caffeinate -i -s` suốt lượt đo; không có tiến trình sinh hay chấm nào chạy song song.
+- Đại lượng: `retrieval_ms` và `bm25_ms` trong log context — cùng đại lượng cổng cũ dùng.
+- Hiệu ghép cặp mỗi câu = `retrieval_ms`(biến thể) − `retrieval_ms`(V3) của cùng câu.
+
+**Cổng thời gian sửa đổi** — áp **đối xứng** cho B1 và B2:
+- **T1:** trung vị qua 100 câu của hiệu ghép cặp ≤ 50 ms, **và**
+- **T2:** trung vị qua 100 câu của `bm25_ms` ≤ 50 ms.
+
+**Quyết định, chốt trước khi đo:**
+- **B2** đạt T1 và T2 → quyết định canary thành **PROMOTE (lệch đăng ký: cổng thời gian đo lại)**, vì cổng tuần tự (net +6 ≥ 1)
+  và bốn cổng an toàn khác đã đạt. Trượt một trong hai → **STOP** giữ nguyên.
+- **B1** đạt → PROMOTE giữ nguyên. Trượt → B1 chuyển **STOP**. Cùng một luật, không ưu tiên biến thể nào.
+- Chỉ đo một lần. Không đo lại, không đổi số vòng, thứ tự hay ngưỡng sau khi thấy số.
+- Ghi `logs/screening/latency_remeasure.{txt,json}` và `logs/screening/<biến thể>/canary_amendment.json`. Báo cáo canary gốc giữ
+  nguyên. `screen_variant.py` được sửa để tầng C nhận `canary_amendment.json` thay cho quyết định gốc.
+- Dev 200 của mọi biến thể vẫn cần nhóm duyệt riêng. Bài viết phải báo **cả** quyết định gốc lẫn quyết định sau sửa đổi.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

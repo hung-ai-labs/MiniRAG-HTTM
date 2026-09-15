@@ -7,8 +7,8 @@
 # Khoá không bao giờ nằm trong repo hay log. Không có tầng D ở đây.
 cd "$(dirname "$0")/../.." || exit 1
 CFG="${MINIRAG_CONFIG_DIR:-$HOME/.config/minirag}"
-[ -n "$MINIRAG_SLM_URL" ] || MINIRAG_SLM_URL="$(tr -d '[:space:]' < "$CFG/slm_url" 2>/dev/null)"
-[ -n "$MINIRAG_SLM_KEY" ] || MINIRAG_SLM_KEY="$(tr -d '\n' < "$CFG/slm_key" 2>/dev/null)"
+[ -n "$MINIRAG_SLM_URL" ] || MINIRAG_SLM_URL="$(tr -d '[:space:]' 2>/dev/null < "$CFG/slm_url")"
+[ -n "$MINIRAG_SLM_KEY" ] || MINIRAG_SLM_KEY="$(tr -d '\n' 2>/dev/null < "$CFG/slm_key")"
 if [ -z "$MINIRAG_SLM_URL" ] || [ -z "$MINIRAG_SLM_KEY" ]; then
   echo "Thiếu endpoint hoặc khoá SLM: đặt MINIRAG_SLM_URL / MINIRAG_SLM_KEY, hoặc tạo $CFG/slm_url và $CFG/slm_key" >&2
   echo "(xem reproduce/screening/HUONG_DAN_CHAY.md)" >&2

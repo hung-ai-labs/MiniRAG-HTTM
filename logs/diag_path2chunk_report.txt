@@ -1,0 +1,40 @@
+=== Chẩn đoán chọn chunk · 200 câu · A1@4000 ===
+context rỗng (None)           : 1
+không tới được kwd2chunk      : 0
+evidence không khớp chunk nào : 20
+dùng để phân tích             : 180 câu, 207 chunk đáp án
+
+--- TỔNG: 180 câu, 207 chunk đáp án ---
+                                     có lỗi (hiện tại)      đã sửa
+chunk đáp án có trong xếp hạng                   64.3%       67.1%
+chunk đáp án trong 30 chunk                      61.8%       62.3%
+chunk đáp án trong A1@4000                       47.3%       45.4%
+  [có lỗi] đủ MỌI chunk đáp án trong A1:  43.3% · hạng trung vị 3 · MRR 0.291 · token A1 trung vị 3678
+  [đã sửa] đủ MỌI chunk đáp án trong A1:  41.1% · hạng trung vị 4 · MRR 0.286 · token A1 trung vị 3754
+  McNemar (đủ đáp án trong A1): sửa lỗi làm 13 câu lên / 17 câu xuống, p = 0.585
+
+--- Single: 159 câu, 159 chunk đáp án ---
+                                     có lỗi (hiện tại)      đã sửa
+chunk đáp án có trong xếp hạng                   61.6%       66.0%
+chunk đáp án trong 30 chunk                      59.1%       61.0%
+chunk đáp án trong A1@4000                       45.3%       42.8%
+  [có lỗi] đủ MỌI chunk đáp án trong A1:  45.3% · hạng trung vị 3.0 · MRR 0.256 · token A1 trung vị 3677
+  [đã sửa] đủ MỌI chunk đáp án trong A1:  42.8% · hạng trung vị 4 · MRR 0.264 · token A1 trung vị 3744
+  McNemar (đủ đáp án trong A1): sửa lỗi làm 12 câu lên / 16 câu xuống, p = 0.572
+
+--- Multi: 21 câu, 48 chunk đáp án ---
+                                     có lỗi (hiện tại)      đã sửa
+chunk đáp án có trong xếp hạng                   72.9%       70.8%
+chunk đáp án trong 30 chunk                      70.8%       66.7%
+chunk đáp án trong A1@4000                       54.2%       54.2%
+  [có lỗi] đủ MỌI chunk đáp án trong A1:  28.6% · hạng trung vị 3 · MRR 0.557 · token A1 trung vị 3678
+  [đã sửa] đủ MỌI chunk đáp án trong A1:  28.6% · hạng trung vị 4.0 · MRR 0.454 · token A1 trung vị 3825
+  McNemar (đủ đáp án trong A1): sửa lỗi làm 1 câu lên / 1 câu xuống, p = 1.000
+
+--- tham chiếu ---
+chunk đáp án nằm trong top-30 vector thuần (chunks_vdb):  87.0%
+
+--- vách điểm (bản đã sửa · cắt tại chỗ điểm tụt mạnh nhất · A1@4000 làm trần) ---
+giữ trung vị 4.0 chunk · token Sources trung vị 2424 · chunk đáp án giữ được  37.2%
+phân bố số chunk giữ: {1: 26, 2: 22, 3: 31, 4: 31, 5: 26, 6: 9, 7: 9, 8: 12, 9: 4, 10: 6, 11: 2, 12: 1, 13: 1}
+(nhìn trên dev -- quy tắc đã chốt trước; phép thử sạch là 437 câu ngoài dev)

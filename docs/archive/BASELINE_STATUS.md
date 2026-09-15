@@ -1,5 +1,8 @@
 # Baseline Status — MiniRAG trên LiHua-World
 
+> 🗄️ **Lưu trữ 15/09/2026.** Số dev 200 câu trên Gemini ngày 07/09; quy tắc "chênh dưới 3 điểm không kết luận được" đã bãi bỏ.
+> Số hiện tại: [`../KET_QUA_HIEN_TAI.md`](../KET_QUA_HIEN_TAI.md).
+
 > Cập nhật 07/09/2026 · commit `dbfa0d1` · cấu hình đóng băng: [`baseline.yaml`](../../baseline.yaml)
 
 Tài liệu này trả lời đúng một câu hỏi cho slide: **"Nhóm đã reproduce MiniRAG đến

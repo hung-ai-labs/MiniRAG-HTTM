@@ -59,8 +59,8 @@ Mã task lấy từ trang kế hoạch. Những mã ghi `*` là tôi suy ra từ
 | 14 | `HD2*` Top-K sensitivity study (K = 1, 3, 5, 7, 10) theo từng loại query | Huy Đức | → 6 · `‖ C` | ⬜ |
 | 15 | `HD3*` Context efficiency — tỷ lệ chunk rác, chunk trùng lặp | Huy Đức | → 6 · `‖ C` | ⬜ |
 | 15b | 📊 `G3` Sensitivity study top_k + giới hạn token bảng Sources | Huy Đức | → 6 · `‖ C` | ⬜ |
-| 15c | ✅ `G2` **Entity resolution** lúc merge *(+`G6` dọn node rác, chung 1 lần index)* | **Hùng** | → 13 | ⬜ |
-| 15d | ✅ **Path re-weighting / pruning** — 96% đường đi hiện vô ích | **Hùng** | → 13 | ⬜ |
+| 15c | ✅ `G2` **Entity resolution** — gộp node trùng tên trên đồ thị đã trích xuất *(+`G6` dọn node rác)* · [`docs/phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md`](docs/phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md) | **Thành viên 2** | → 13 | ⬜ |
+| 15d | ✅ **Path re-weighting / pruning** — 96% đường đi vô ích (đo trên index Gemini) · [`docs/phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md`](docs/phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md) | **Thành viên 1** | → 13 | ⬜ |
 | 16 | `H4` **Lexical prototype (BM25)** — cứu thực thể hiếm | **Hùng** | → 13 | ⬜ |
 | 17 | `H5` **Fixed hybrid fusion** (dense + lexical) | **Hùng** | → 16 | ⬜ |
 | 18 | `H6` **Adaptive / router** — phân loại query rồi chọn chiến lược | **Hùng** | → 17 | ⬜ |

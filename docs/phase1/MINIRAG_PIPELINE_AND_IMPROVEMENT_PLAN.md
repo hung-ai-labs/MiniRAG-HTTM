@@ -1,5 +1,11 @@
 # MiniRAG Pipeline Audit & Improvement Plan
 
+> **Trạng thái 15/09/2026.** Audit đọc code trên index Gemini tại commit `dbfa0d1`; số dòng đã lệch vì code thêm bản vá và các
+> công tắc `MINIRAG_*`. Giả thuyết: **G1** đã sửa — không tăng điểm (kết quả phủ định) · **G3** → cắt Sources A1@4000 đang dùng ·
+> **G4** BM25 → Hùng đang sàng lọc · **path re-weighting** → [thành viên 1](../phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md) ·
+> **G2 + G6** → [thành viên 2](../phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md) · **G5** chưa làm.
+> Kết quả: [`../KET_QUA_HIEN_TAI.md`](../KET_QUA_HIEN_TAI.md).
+
 > **Phạm vi:** chỉ đọc code, trace luồng, audit graph đã dựng. **Không sửa code, không
 > re-index, không tốn quota.**
 > **Cơ sở:** code thực tế trong repo tại commit `dbfa0d1`, không suy luận từ paper/README.

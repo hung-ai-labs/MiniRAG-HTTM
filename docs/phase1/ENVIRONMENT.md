@@ -1,5 +1,8 @@
 # Environment Guide — MiniRAG + Gemini
 
+> **Ghi chú 15/09/2026.** Hướng dẫn Phase 1 cho đường Gemini, mới xác minh trên Windows. Chạy sàng lọc với SLM trên Modal bằng
+> khoá riêng: [`../../reproduce/screening/HUONG_DAN_CHAY.md`](../../reproduce/screening/HUONG_DAN_CHAY.md).
+
 > T1 environment guide. Verified on **Windows 10 x64 / PowerShell 5.1** at
 > commit `21dc08e` on `tai/phase1-environment`, checked
 > 2026-09-09. This document records package/import checks only; it does not

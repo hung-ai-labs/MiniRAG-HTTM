@@ -1,11 +1,16 @@
 # Kế hoạch triển khai — từ 10 nhược điểm sang code chạy được
 
+> 🗄️ **Lưu trữ 15/09/2026.** Trạng thái: mở rộng 637 câu ✅ · A1 → cắt Sources A1@4000 đang dùng ✅ · A4 đóng · A3 phủ định
+> (cùng V5a–V5e) · **A2 → [thành viên 1](../phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md)** · **cụm B → [thành viên 2](../phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md)**
+> (đổi sang gộp node trên đồ thị đã trích xuất, không index lại). Quy tắc "ngưỡng 3 điểm" ở mục 1 đã bãi bỏ — dùng McNemar
+> ([`CLAUDE.md`](../../CLAUDE.md) §3). Kết quả: [`../KET_QUA_HIEN_TAI.md`](../KET_QUA_HIEN_TAI.md).
+
 Tài liệu để **anh đọc rồi quyết định làm hay không**, không phải lệnh thi hành.
 Mỗi hạng mục có: sửa gì (kèm `file:line`), vì sao, đo thế nào, tốn bao nhiêu,
 hỏng thì hỏng ở đâu, và khuyến nghị nên/không nên.
 
 Nguồn: [`NHUOC_DIEM_VA_GIAI_PHAP.docx`](NHUOC_DIEM_VA_GIAI_PHAP.docx) ·
-[`MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md)
+[`MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](../phase1/MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md)
 · Cập nhật 11/09/2026
 
 ---

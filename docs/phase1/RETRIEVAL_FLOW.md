@@ -1,5 +1,9 @@
 # Retrieval Flow — MiniRAG đi từ Query tới Chunk như thế nào
 
+> **Ghi chú 15/09/2026.** Viết theo commit `dbfa0d1` trên index Gemini. Từ đó code đã thêm bản vá answer-type và các công tắc
+> `MINIRAG_*`, nên số dòng đã lệch; hành vi hiện tại xem [`../../ROADMAP.md`](../../ROADMAP.md), kết quả xem
+> [`../KET_QUA_HIEN_TAI.md`](../KET_QUA_HIEN_TAI.md).
+
 > Bản đồ khái niệm. Chi tiết File/Function/Input/Output xem
 > [`RETRIEVAL_CODE_MAP.md`](RETRIEVAL_CODE_MAP.md).
 

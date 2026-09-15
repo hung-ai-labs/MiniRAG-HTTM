@@ -427,9 +427,11 @@ async def stage_screen(rag, variant, stage, gold):
     if missing:
         sys.exit(f"thiếu V3 đông lạnh cho {len(missing)} câu — chạy --variant v3 --stage {stage} trước")
     if stage == "dev":
-        can = os.path.join(vdir, "canary_report.json")
-        if not os.path.exists(can) or json.load(open(can))["decision"] != "PROMOTE":
-            sys.exit("tầng C chỉ chạy khi canary của biến thể này là PROMOTE")
+        # Sửa đổi đăng ký trước 15/09 (đo lại cổng thời gian truy hồi): canary_amendment.json thay quyết định gốc nếu có.
+        can, amd = os.path.join(vdir, "canary_report.json"), os.path.join(vdir, "canary_amendment.json")
+        src = amd if os.path.exists(amd) else can
+        if not os.path.exists(src) or json.load(open(src))["decision"] != "PROMOTE":
+            sys.exit(f"tầng C chỉ chạy khi canary của biến thể này là PROMOTE ({os.path.basename(src)})")
     print("dựng lại context V3 (cache parser) để kiểm tất định và đo độ trễ cùng lượt...", flush=True)
     base_ctx = await contexts(rag, rows, "v3", cache_only=True)
     bad = [q for q, c in base_ctx.items() if not same_context(c, frozen[q])]

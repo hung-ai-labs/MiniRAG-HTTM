@@ -22,6 +22,13 @@ PREREG = "30d3485"
 OUT_BASE = os.path.join(sv.OUT, "latency_remeasure")
 
 
+def sleep_events(t0, t1):
+    """Sự kiện ngủ trong nhật ký nguồn điện giữa t0 và t1 ("YYYY-MM-DD HH:MM:SS", giờ máy)."""
+    log = subprocess.run(["pmset", "-g", "log"], capture_output=True, text=True).stdout
+    return [l[:19] + " " + l.split("due to", 1)[-1].split(":")[0].strip(" '") for l in log.splitlines()
+            if "Entering Sleep state" in l and t0 <= l[:19] <= t1]
+
+
 def order_for(i):
     k = i % 3
     return MODES[k:] + MODES[:k]
@@ -95,10 +102,13 @@ async def main():
             sys.exit(f"đã đo ({OUT_BASE}.json) — đăng ký trước chỉ cho đo một lần")
         if subprocess.run(["pgrep", "-f", "Step_1_QA.py|Step_2_evaluate.py"], capture_output=True).returncode == 0:
             sys.exit("đang có tiến trình sinh hoặc chấm chạy — đăng ký trước yêu cầu đo khi không có tải song song")
+        if "AC Power" not in subprocess.run(["pmset", "-g", "batt"], capture_output=True, text=True).stdout:
+            sys.exit("máy đang chạy pin — caffeinate không giữ máy thức được; cắm sạc, mở nắp rồi chạy lại")
         qs = [r["Question"] for r in sorted(sv.question_set("canary"), key=lambda r: int(r["order"]))]
         cache_only = True
 
     caff = subprocess.Popen(["caffeinate", "-i", "-s", "-w", str(os.getpid())])
+    t_start = time.strftime("%Y-%m-%d %H:%M:%S")
     rag = build_rag(get_args("remeasure_latency"))
     for m in MODES:                                   # khởi động mỗi chế độ, không tính
         await build(rag, qs[0], m, cache_only)
@@ -121,6 +131,15 @@ async def main():
         caff.terminate()
         sys.exit(0 if ok else 1)
 
+    sleeps = sleep_events(t_start, time.strftime("%Y-%m-%d %H:%M:%S"))
+    if sleeps:                                        # bổ sung đăng ký 15/09: máy ngủ trong lúc đo -> lượt đo không hợp lệ
+        bad = OUT_BASE + time.strftime("_invalid_%Y%m%d_%H%M.json")
+        json.dump({"reason": "máy ngủ trong lúc đo", "started": t_start, "sleep_events": sleeps, "rows": rows},
+                  open(bad, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        print(f"INVALID: {len(sleeps)} sự kiện ngủ trong lúc đo — không in thời gian, không áp quyết định; dữ liệu thô: {bad}",
+              flush=True)
+        caff.terminate()
+        sys.exit(2)
     frozen = sv.load_jsonl(sv.FROZEN)
     answers = {v: sv.load_jsonl(os.path.join(sv.OUT, v, "answers.jsonl")) for v in ("b1", "b2")}
     s = summarize(rows, frozen, answers)

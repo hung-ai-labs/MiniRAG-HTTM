@@ -707,6 +707,16 @@ trong cùng tiến trình. Phần BM25 tốn khoảng 1 ms (probe 0,8 ms), trong
   nguyên. `screen_variant.py` được sửa để tầng C nhận `canary_amendment.json` thay cho quyết định gốc.
 - Dev 200 của mọi biến thể vẫn cần nhóm duyệt riêng. Bài viết phải báo **cả** quyết định gốc lẫn quyết định sau sửa đổi.
 
+**Bổ sung trước lần đo hợp lệ (15/09/2026 15:40) — không đổi cổng hay luật quyết định.** Lần đo bắt đầu 14:10 bị **huỷ trước khi có
+số**: script chỉ ghi kết quả khi đo xong, và tới lúc huỷ chưa có thời gian nào được in hay lưu. Máy chạy pin rồi gập nắp; nhật ký
+nguồn điện ghi ngủ gần như liên tục từ 14:10 tới 15:32 (Maintenance Sleep, Clamshell Sleep). Điều kiện "máy giữ thức suốt lượt đo"
+không đạt, vì `caffeinate` không chặn được ngủ khi chạy pin hay gập nắp. Thêm hai kiểm tra hợp lệ vào script:
+1. Từ chối đo nếu máy không cắm sạc.
+2. Đo xong, đọc `pmset -g log` trong khoảng thời gian đo. Có sự kiện ngủ thì lượt đo **không hợp lệ**: không in thời gian, không áp
+   quyết định, lưu dữ liệu thô vào `logs/screening/latency_remeasure_invalid_*.json`, và đo lại khi máy thức.
+
+Chỉ **lượt hợp lệ đầu tiên** được dùng; tính hợp lệ chỉ xét theo nhật ký ngủ, không xét theo số đo.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

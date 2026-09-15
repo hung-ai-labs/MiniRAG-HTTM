@@ -759,6 +759,29 @@ tuần tự, chỉ tham khảo: B1 −311,7 ms, B2 −11,0 ms — lại là nhi�
 quy tắc đã được nhìn trên dev. Nhóm Null tụt ở cả hai (0 / 2, 1 / 3), cùng chiều vấn đề Null của V3. Kết luận H1–H3 chỉ có ở tầng
 D (435 câu ngoài dev × 3 seed), cần duyệt riêng.
 
+**Tầng D — nhóm duyệt 15/09/2026 cho cả B1 và B2; chi tiết triển khai chốt TRƯỚC khi chạy (không đổi cổng hay luật đọc)**
+
+- **Giả thuyết kiểm:** H1, H2, H3; Holm trên 3 giả thuyết. B2 mang nhãn lệch đăng ký từ tầng B.
+- **Tập câu:** `reproduce/stage_d/nondev435.csv` (sinh bằng `make_nondev435.py`) — 435 câu phân biệt ngoài dev, thứ tự theo
+  `query_set.csv`. Câu lặp văn bản duy nhất ngoài dev (*Who does Li Hua go to watch the movie "Overwatch 3" with?*, 2 dòng) được
+  sinh **một** lần; ở các file mốc 637 dòng nó có 2 phiếu, mỗi phiếu nặng 1/2, theo luật mẫu số.
+- **Mỗi lượt:** `reproduce/stage_d/run_one.sh <tag> <chế độ> <seed>`, cùng biến môi trường với lượt V3 và vector thuần chính thức
+  (`ANSWER_TYPE_FIX=1`, `PATH2CHUNK_FIX=0`, `CHUNK_CUT` rỗng, A1@4000) cộng `MINIRAG_SLM_SEED=<seed>` cho mọi lời gọi SLM (cả
+  parser); không `MINIRAG_KW_CACHE`. QA lệch số dòng hoặc có câu trả lời `Error` → dừng, không chấm. Chấm
+  `Step_2_evaluate.py --repeats 1`, chấm lại tới khi hết `judge_failed`.
+- **Thứ tự 8 lượt, cố định:** b1_s101 → b2_s101 → vec_s202 → b1_s202 → b2_s202 → vec_s303 → b1_s303 → b2_s303
+  (`chain_stage_d.sh`). Mốc V3 và `qwen637_vec` dùng file sẵn có, chỉ `run = 1`.
+- **Cặp lượt theo thứ tự:** B1 và B2 (s101, s202, s303) với V3 (lượt 1, r2, r3); B2 với vector thuần (chính thức, s202, s303);
+  B2 với B1 cùng seed.
+- **Phân tích** `reproduce/stage_d/analyze_stage_d.py`: "đúng" mỗi lượt theo đa số tuyệt đối có trọng số; trung bình theo câu qua
+  3 lượt mỗi nhánh; một câu vào phép so khi mọi lượt của cả hai nhánh có phiếu hợp lệ. Hoán vị: `numpy.random.default_rng(20260914)`
+  khởi tạo lại cho mỗi phép thử, 100.000 lần đổi dấu, p = (số lần |trung bình| ≥ |quan sát| + 1) / 100.001. E4 dùng cùng phép thử
+  trên từng nhóm, không hiệu chỉnh. E5: trung vị token context (Sources + Entities, bản ghi cuối mỗi câu) của **từng** lượt biến
+  thể nằm trong ±5% của 3.870. Lượt còn `judge_failed` hoặc thiếu phiếu quá 4 câu (1%) → nhánh đó KHÔNG HỢP LỆ, H liên quan
+  không được kiểm.
+- **Không xem trước:** trong lúc chạy chỉ đếm số dòng; không tính accuracy của lượt nào cho tới khi đủ 8 lượt. Phân tích chạy
+  một lần ở cuối chuỗi.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

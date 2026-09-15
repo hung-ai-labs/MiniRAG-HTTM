@@ -21,7 +21,7 @@
 
 | Người | Việc | Được sửa | Chỉ đọc |
 |---|---|---|---|
-| Hùng | Sàng lọc BM25: B1 = RRF(đồ thị, vector, BM25), B2 = RRF(vector, BM25) | khối trộn chunk và ghi log trong `_build_mini_query_context`; `_rrf_fuse`, `_bm25_index`, `_keyword_llm`, `minirag_query`; `minirag/bm25.py`; `reproduce/screening/`; `logs/screening/` | — |
+| Hùng | Sàng lọc BM25: B1 = RRF(đồ thị, vector, BM25), B2 = RRF(vector, BM25) | khối trộn chunk và ghi log trong `_build_mini_query_context`; `_rrf_fuse`, `_bm25_index`, `_keyword_llm`, `minirag_query`; `minirag/bm25.py`; `reproduce/screening/`; `logs/screening/`; tầng D: `reproduce/stage_d/`, `logs/stage_d/` | — |
 | Thành viên 1 | Cắt tỉa và chấm lại đường đi | `minirag/path_rerank.py`; đoạn duyệt đường đi trong `_build_mini_query_context` (chỉ thêm hook, mặc định giống hệt); hàm mới trong `minirag/utils.py`; `reproduce/path/`; `logs/path/` | index chung; `logs/screening/cache/` |
 | Thành viên 2 | Hợp nhất thực thể trùng tên | `reproduce/entity_resolution/`; `logs/entity_resolution/`; index mới `LiHua-World-qwen-entres/` | index chung; toàn bộ `minirag/` |
 

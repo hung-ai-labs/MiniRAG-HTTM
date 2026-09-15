@@ -1,7 +1,7 @@
 # Environment Guide — MiniRAG + Gemini
 
 > T1 environment guide. Verified on **Windows 10 x64 / PowerShell 5.1** at
-> commit `21dc08e` on `tai/phase1-environment`, checked
+> commit `287217d` on `tai/phase1-environment`, checked
 > 2026-09-09. This document records package/import checks only; it does not
 > claim that the baseline index or Gemini pipeline has been run on this
 > checkout.
@@ -35,10 +35,15 @@ The bare `python` command on the verified machine resolves to MinGW Python
 3.9.13. Do not use it for this project, and do not use global `pip`; always use
 the repository interpreter explicitly.
 
-The `.venv` was recreated with CPython 3.13.5 to match the reported baseline
-runtime. The previous Python 3.11 environment was moved outside this checkout
-as a local backup. The old broken environment remains in
-`.venv_broken_backup/`; `venv/` was not modified.
+The active project environment is **only** `.venv`, recreated with CPython
+3.13.5 to match the reported baseline runtime. Any previous Python 3.11 or
+broken virtual-environment directories are local backups only; they are not
+used by this guide and must not be copied or committed. The legacy `venv/`
+directory is also not the project environment.
+
+When running commands for this task, always invoke
+`./.venv/Scripts/python.exe` (or the equivalent `.venv/bin/python` on Unix).
+Do not activate or mix another virtual environment into the verification.
 
 ## Windows PowerShell setup
 
@@ -139,9 +144,10 @@ not a failure of the core/Gemini import check.
 
 ## Key and model boundaries
 
-No `.env` file and no matching Gemini/OpenAI key variable names were present
-during the audit. No key values were printed or written. The source accepts
-placeholders such as the following, but do not commit real values:
+The repository may contain a local root `.env` with blank placeholders, but no
+real key values are tracked or written by this guide. No key values were
+printed during the audit. The source accepts placeholders such as the
+following, but do not commit real values:
 
 ```text
 GEMINI_API_KEY_1=<your-key>

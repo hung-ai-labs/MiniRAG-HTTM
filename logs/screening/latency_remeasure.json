@@ -1,0 +1,2772 @@
+{
+ "prereg_commit": "30d3485",
+ "questions": 100,
+ "summary": {
+  "v3_sha_match": 100,
+  "v3_built": 100,
+  "b1": {
+   "n": 100,
+   "median_diff_ms": -15.06,
+   "mean_diff_ms": 11.52,
+   "p10_diff_ms": -255.6,
+   "p90_diff_ms": 323.1,
+   "median_bm25_ms": 0.945,
+   "T1": true,
+   "T2": true,
+   "median_retrieval_ms": {
+    "v3": 5373.6,
+    "b1": 5295.1
+   },
+   "sha_match": 100
+  },
+  "b2": {
+   "n": 100,
+   "median_diff_ms": -7.72,
+   "mean_diff_ms": -0.07,
+   "p10_diff_ms": -265.0,
+   "p90_diff_ms": 254.3,
+   "median_bm25_ms": 1.022,
+   "T1": true,
+   "T2": true,
+   "median_retrieval_ms": {
+    "v3": 5373.6,
+    "b2": 5489.9
+   },
+   "sha_match": 100
+  }
+ },
+ "decisions": {
+  "b1": {
+   "variant": "b1",
+   "original_decision": "PROMOTE",
+   "decision": "PROMOTE",
+   "decision_changed": false,
+   "declared_deviation": true,
+   "gate": "cổng thời gian truy hồi đo lại (sửa đổi đăng ký trước 15/09/2026)",
+   "prereg_commit": "30d3485",
+   "T1_median_paired_diff_ms": -15.06,
+   "T1": true,
+   "T2_median_bm25_ms": 0.945,
+   "T2": true,
+   "other_canary_gates_ok": true,
+   "measured_at": "2026-09-15 16:09"
+  },
+  "b2": {
+   "variant": "b2",
+   "original_decision": "STOP",
+   "decision": "PROMOTE",
+   "decision_changed": true,
+   "declared_deviation": true,
+   "gate": "cổng thời gian truy hồi đo lại (sửa đổi đăng ký trước 15/09/2026)",
+   "prereg_commit": "30d3485",
+   "T1_median_paired_diff_ms": -7.72,
+   "T1": true,
+   "T2_median_bm25_ms": 1.022,
+   "T2": true,
+   "other_canary_gates_ok": true,
+   "measured_at": "2026-09-15 16:09"
+  }
+ },
+ "rows": [
+  {
+   "i": 0,
+   "question": "Which game does Ileana mention for its unique world and storytelling?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 4466.75,
+    "bm25_ms": null,
+    "aquery_ms": 4469.0,
+    "context_sha256": "a0d897b4cc7c957daf99db9bd1712e4e8c6001d3945dac35ed56e7c34e56b993"
+   },
+   "b1": {
+    "retrieval_ms": 4643.41,
+    "bm25_ms": 1.074,
+    "aquery_ms": 4645.5,
+    "context_sha256": "9dfb24bdd6a8d05c7b01634c1fcb69258e27212b67a8678cff14c6887fc753e4"
+   },
+   "b2": {
+    "retrieval_ms": 4395.25,
+    "bm25_ms": 0.769,
+    "aquery_ms": 4397.2,
+    "context_sha256": "3a5ef33536f848bdba625b36454e202cd4ac3a2ecd3ccb35a54b3d8ebb722e51"
+   }
+  },
+  {
+   "i": 1,
+   "question": "What was the exact date and time when Cersei Lannister first met Jaime Lannister in the Game of Thrones series?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 3769.19,
+    "bm25_ms": 1.339,
+    "aquery_ms": 3771.3,
+    "context_sha256": "e19ccbce621c5c1e5efc4803ee48d680294e21c7e07e88f993ca75503aecec0b"
+   },
+   "b2": {
+    "retrieval_ms": 3957.62,
+    "bm25_ms": 1.798,
+    "aquery_ms": 3960.0,
+    "context_sha256": "e19ccbce621c5c1e5efc4803ee48d680294e21c7e07e88f993ca75503aecec0b"
+   },
+   "v3": {
+    "retrieval_ms": 3577.19,
+    "bm25_ms": null,
+    "aquery_ms": 3578.8,
+    "context_sha256": "4be04d3c5440178bfc3dc90411bab1951d188e00cac7d82c04b0ba9c08cac9db"
+   }
+  },
+  {
+   "i": 2,
+   "question": "What type of pizza does WolfgangSchulz prefer?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 3123.83,
+    "bm25_ms": 0.56,
+    "aquery_ms": 3126.0,
+    "context_sha256": "5a687c3857f9cc486ea9dcd620c060a309237493c8498c82f6dd05cb3e239331"
+   },
+   "v3": {
+    "retrieval_ms": 3194.07,
+    "bm25_ms": null,
+    "aquery_ms": 3195.9,
+    "context_sha256": "776c1726c82be8ef5102a2d66ba1a545044ce30d282a9a73b7569d21283da06d"
+   },
+   "b1": {
+    "retrieval_ms": 3240.45,
+    "bm25_ms": 0.924,
+    "aquery_ms": 3242.2,
+    "context_sha256": "6acbf9356c770574ef9cd7661d6ce96cc9b4cf9d04eddb45513645d8df5b723f"
+   }
+  },
+  {
+   "i": 3,
+   "question": "What playing style is associated with Guardiola's Barcelona team?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 2905.16,
+    "bm25_ms": null,
+    "aquery_ms": 2910.6,
+    "context_sha256": "59fae7db80bc1c94309249d743da1988fe1826a64a0273360ea92104a3be1905"
+   },
+   "b1": {
+    "retrieval_ms": 2909.74,
+    "bm25_ms": 0.848,
+    "aquery_ms": 2911.4,
+    "context_sha256": "fa13da0d9003d7b38d9c97a880ae3d3b5df4c3f87b782506198f39651dc38c8d"
+   },
+   "b2": {
+    "retrieval_ms": 2991.69,
+    "bm25_ms": 0.774,
+    "aquery_ms": 2993.3,
+    "context_sha256": "65fc53eb28783e67e2c506c23b2fa2275d4e4dbf4d32275141253bddd06226b0"
+   }
+  },
+  {
+   "i": 4,
+   "question": "Where do they plan to meet for soccer practice?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 1137.28,
+    "bm25_ms": 0.551,
+    "aquery_ms": 1138.5,
+    "context_sha256": "21c25a5eb55f7e7d9049c2bd57ec48fe0b05b3ff5a51f1220d9ba9f6657756d7"
+   },
+   "b2": {
+    "retrieval_ms": 1180.76,
+    "bm25_ms": 0.556,
+    "aquery_ms": 1182.0,
+    "context_sha256": "492ac03f9a5d7a5a0bc2929f2b64395c0a5960d03fd71449405e5331c5fbc718"
+   },
+   "v3": {
+    "retrieval_ms": 1175.19,
+    "bm25_ms": null,
+    "aquery_ms": 1176.4,
+    "context_sha256": "31cfdd4f32fe4995f298bd1fa63fa4966ff19dafce598815b35ae738a972d319"
+   }
+  },
+  {
+   "i": 5,
+   "question": "How does LiHua feel about the bench press challenge proposed by JenniferMoore?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7722.38,
+    "bm25_ms": 1.694,
+    "aquery_ms": 7725.8,
+    "context_sha256": "caf221a1f7ff74da6629bec5b3127e9f3e4f8051bb004d18c4dc0c4712533c26"
+   },
+   "v3": {
+    "retrieval_ms": 7389.79,
+    "bm25_ms": null,
+    "aquery_ms": 7392.1,
+    "context_sha256": "c31324086e3805e6938ec6d969f3b98ed8a0e156a4f4b47932c4e553672f7f6f"
+   },
+   "b1": {
+    "retrieval_ms": 8135.97,
+    "bm25_ms": 12.44,
+    "aquery_ms": 8140.1,
+    "context_sha256": "be2e11350c0fedf9f6f603c49df448c3e9fe89354dd0184cbf869842376697f1"
+   }
+  },
+  {
+   "i": 6,
+   "question": "What is JenniferMoore's reminder to LiHua about on 20260919?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 7759.82,
+    "bm25_ms": null,
+    "aquery_ms": 7762.2,
+    "context_sha256": "c353af46f44dad1a57956d95c8c3a113d07f5b5319ce3e5f407898fdfa615540"
+   },
+   "b1": {
+    "retrieval_ms": 8505.9,
+    "bm25_ms": 2.105,
+    "aquery_ms": 8509.3,
+    "context_sha256": "587d0dfa431c9fae85d1acb5244cb7d4cdcc3481007d1ad60f19b57d76b9b52a"
+   },
+   "b2": {
+    "retrieval_ms": 8455.98,
+    "bm25_ms": 8.63,
+    "aquery_ms": 8469.2,
+    "context_sha256": "017bbdaef33e4fd23374383488fef4d2a7c29ba29fb170d666ce05427ff0dca2"
+   }
+  },
+  {
+   "i": 7,
+   "question": "Which character's dynamic with Cersei is mentioned as complicated?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 3318.02,
+    "bm25_ms": 0.816,
+    "aquery_ms": 3323.0,
+    "context_sha256": "ae9a8f579fff58d6a6a45eda814b214d03708734887e662ca9068db5460643c2"
+   },
+   "b2": {
+    "retrieval_ms": 3027.77,
+    "bm25_ms": 1.149,
+    "aquery_ms": 3029.7,
+    "context_sha256": "ae9a8f579fff58d6a6a45eda814b214d03708734887e662ca9068db5460643c2"
+   },
+   "v3": {
+    "retrieval_ms": 2993.82,
+    "bm25_ms": null,
+    "aquery_ms": 2995.5,
+    "context_sha256": "244c9350f0910c4d59e2f937f228fdb1c73ed1449a6f8caf8bae768632610e36"
+   }
+  },
+  {
+   "i": 8,
+   "question": "What game has Gavriel been hooked on recently for its blend of RPG elements and social simulation?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 2793.57,
+    "bm25_ms": 0.792,
+    "aquery_ms": 2795.2,
+    "context_sha256": "abc316db0ff4a93a4874f12a2a6288c0d184f56f66480d88db87dd27f0fe0517"
+   },
+   "v3": {
+    "retrieval_ms": 3150.86,
+    "bm25_ms": null,
+    "aquery_ms": 3153.7,
+    "context_sha256": "b1cdbe238adf28ccf28c49d351d1d47098918d08aea2836975d9014facd2e669"
+   },
+   "b1": {
+    "retrieval_ms": 3064.29,
+    "bm25_ms": 3.182,
+    "aquery_ms": 3066.1,
+    "context_sha256": "aead678e1cc1c425efb138497db7dff8364403828e46804a2e2d702099b91938"
+   }
+  },
+  {
+   "i": 9,
+   "question": "What does LiHua predict will happen in \"The Rings of Power\"?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 6659.94,
+    "bm25_ms": null,
+    "aquery_ms": 6663.1,
+    "context_sha256": "557a13bf9c67dae0a9e0ee5a9112c4538441a6e9da59a3f5b224a206483b3801"
+   },
+   "b1": {
+    "retrieval_ms": 7053.16,
+    "bm25_ms": 1.516,
+    "aquery_ms": 7060.0,
+    "context_sha256": "01cd88a3ceb40a0bbeac02307968d9386d9b7ab86f7e2b22ecd9a46a9508bea9"
+   },
+   "b2": {
+    "retrieval_ms": 6331.59,
+    "bm25_ms": 0.726,
+    "aquery_ms": 6333.9,
+    "context_sha256": "e9b8f73fd4ee3f63c7f2feea91635ee9d50f2c96ed814230ded3aabacbf3dcda"
+   }
+  },
+  {
+   "i": 10,
+   "question": "What does EmilyBurnett think about the future relevance of Westworld's themes?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8553.5,
+    "bm25_ms": 2.613,
+    "aquery_ms": 8558.3,
+    "context_sha256": "25a55373c759958f425355ae176aa8b75dde168c58ae588edfab64dbec4cf6d5"
+   },
+   "b2": {
+    "retrieval_ms": 7894.45,
+    "bm25_ms": 0.86,
+    "aquery_ms": 7897.7,
+    "context_sha256": "9311658e7489f0113453d6fdd4ac9537fe813451e9540021f73eb3530634a40d"
+   },
+   "v3": {
+    "retrieval_ms": 7963.37,
+    "bm25_ms": null,
+    "aquery_ms": 7967.0,
+    "context_sha256": "93301c7672bb304b68a430a45dbbe9aecc6c0b612a03705c98319d726e0299f8"
+   }
+  },
+  {
+   "i": 11,
+   "question": "When does Li Hua ask Jennifer Moore about adjusting the protein in her meal plan?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7548.96,
+    "bm25_ms": 1.53,
+    "aquery_ms": 7551.4,
+    "context_sha256": "6f832a186846e7fd673a964dddb3582b20068431f0301a1b0e69c5350eaabd93"
+   },
+   "v3": {
+    "retrieval_ms": 7749.22,
+    "bm25_ms": null,
+    "aquery_ms": 7753.4,
+    "context_sha256": "7d7945795fd124e9decc911d0a628c2e8b56b1283fb5ccb61bba731e9b85c6e9"
+   },
+   "b1": {
+    "retrieval_ms": 7580.82,
+    "bm25_ms": 0.931,
+    "aquery_ms": 7583.3,
+    "context_sha256": "fc7eae6e0a573dc7fee9be9d3582be46a3087a217297b5d43e6a20555f0677ba"
+   }
+  },
+  {
+   "i": 12,
+   "question": "Who initiated the discussion about Cersei's journey in Game of Thrones?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 2744.42,
+    "bm25_ms": null,
+    "aquery_ms": 2745.9,
+    "context_sha256": "bd8ad47f9648a1181626efaf3d0acea0e5e8c1d323517d9957b1d184da63b492"
+   },
+   "b1": {
+    "retrieval_ms": 3067.5,
+    "bm25_ms": 0.907,
+    "aquery_ms": 3069.2,
+    "context_sha256": "bd8ad47f9648a1181626efaf3d0acea0e5e8c1d323517d9957b1d184da63b492"
+   },
+   "b2": {
+    "retrieval_ms": 2752.38,
+    "bm25_ms": 0.864,
+    "aquery_ms": 2754.1,
+    "context_sha256": "2bc5f0117930dd25f6e553e43dbf51e3196562a20c2c62192f0e693ca56b6dc0"
+   }
+  },
+  {
+   "i": 13,
+   "question": "What feedbacks does Hailey ask from LiHua in July?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 7088.7,
+    "bm25_ms": 0.946,
+    "aquery_ms": 7091.2,
+    "context_sha256": "ee7089db23ebcc8857e570490a015b848cdde1c6c5e9c52aadaf8b1073172690"
+   },
+   "b2": {
+    "retrieval_ms": 7656.22,
+    "bm25_ms": 0.925,
+    "aquery_ms": 7659.4,
+    "context_sha256": "6ad5278d9bc1bce2932d79c983f7d043391d32c71b8fcd6eda25fc95d743228d"
+   },
+   "v3": {
+    "retrieval_ms": 7260.87,
+    "bm25_ms": null,
+    "aquery_ms": 7263.3,
+    "context_sha256": "f122117e08ee29c83436b69f52f0a317d21ec612e60f9b502f79ce1f0fa41a51"
+   }
+  },
+  {
+   "i": 14,
+   "question": "Which game does Jareth praise for its storytelling in side quests?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 6180.65,
+    "bm25_ms": 1.36,
+    "aquery_ms": 6184.5,
+    "context_sha256": "5a9f8140919a5b2b4a771e1166ebab7063a4bca22f9b659bdcfc0d0098de9c84"
+   },
+   "v3": {
+    "retrieval_ms": 6105.13,
+    "bm25_ms": null,
+    "aquery_ms": 6107.5,
+    "context_sha256": "1b6aba9d38893223a0b5e74d20db935102dc6a25c86893bbed2e3b98088c27f1"
+   },
+   "b1": {
+    "retrieval_ms": 6804.17,
+    "bm25_ms": 5.01,
+    "aquery_ms": 6807.7,
+    "context_sha256": "a6dc79d50768b99c532170666d99b0e1807db628dd6a792d2206d94820c3a9e8"
+   }
+  },
+  {
+   "i": 15,
+   "question": "What new species of flowers will be featured in the community garden renovation, according to the feedback provided by Li Hua during the progress reports?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 7612.29,
+    "bm25_ms": null,
+    "aquery_ms": 7615.1,
+    "context_sha256": "b7b409b82d7ef054a6146ef257904a67e1c34c4c6840bc0023fa7df70c8fa2c2"
+   },
+   "b1": {
+    "retrieval_ms": 7158.05,
+    "bm25_ms": 2.072,
+    "aquery_ms": 7160.2,
+    "context_sha256": "58bc96991c71d6855f67d9780ffc2813461d8f4afe44d1ef589204e3dc706e1f"
+   },
+   "b2": {
+    "retrieval_ms": 7416.67,
+    "bm25_ms": 1.571,
+    "aquery_ms": 7420.3,
+    "context_sha256": "e1717c159f751ad321ef98e5107d14d62df824d170c3a2e035373c1856c2cc3a"
+   }
+  },
+  {
+   "i": 16,
+   "question": "Is the time interval more than 3 days between LiHua first asking Adam if he can buy a small fridge for the basement and Adam asking LiHua about the size of the fridge?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 12137.71,
+    "bm25_ms": 3.744,
+    "aquery_ms": 12142.7,
+    "context_sha256": "5a98c0d96baf719df010eafa0981b852022f29619c8ebb62b898c24255ff12a6"
+   },
+   "b2": {
+    "retrieval_ms": 11833.94,
+    "bm25_ms": 2.401,
+    "aquery_ms": 11839.2,
+    "context_sha256": "0e3dc8b39ae8b65203c2216d7d946688efe7f189f591b9360cc531644030500d"
+   },
+   "v3": {
+    "retrieval_ms": 12513.05,
+    "bm25_ms": null,
+    "aquery_ms": 12519.4,
+    "context_sha256": "dd7fb5d471cfe89d2b63a5204b385fe7cff39c8bc53d8243db35bb532b9fc38f"
+   }
+  },
+  {
+   "i": 17,
+   "question": "What does RexxarRemar suggest to have available to keep everyone hydrated during the picnic?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 5289.83,
+    "bm25_ms": 1.505,
+    "aquery_ms": 5292.8,
+    "context_sha256": "c1d90afb7e233274e7fd593fab173b71163bd662f69800be9302656708b9b182"
+   },
+   "v3": {
+    "retrieval_ms": 4517.64,
+    "bm25_ms": null,
+    "aquery_ms": 4519.6,
+    "context_sha256": "33e472a560125402bf33726c00170abf801c89fb56bebc1ec631bd30da771d25"
+   },
+   "b1": {
+    "retrieval_ms": 4585.26,
+    "bm25_ms": 0.89,
+    "aquery_ms": 4587.4,
+    "context_sha256": "1d64aa9f7bd2c2f6bd6790ec28b4c0bf972467d2416482c8cf5ed2fcfc9828c8"
+   }
+  },
+  {
+   "i": 18,
+   "question": "What local dish did WolfgangSchulz try in Prague?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 5262.94,
+    "bm25_ms": null,
+    "aquery_ms": 5266.6,
+    "context_sha256": "c0932fff3ac5be354bb2f2b84669e45d4a20456862d638facc4ba68b9549475c"
+   },
+   "b1": {
+    "retrieval_ms": 5039.71,
+    "bm25_ms": 1.364,
+    "aquery_ms": 5041.8,
+    "context_sha256": "10e98b565d96d9930dcd24078dc8dff8739eceb4f5800d70135bb518853b4a79"
+   },
+   "b2": {
+    "retrieval_ms": 5047.33,
+    "bm25_ms": 0.722,
+    "aquery_ms": 5049.5,
+    "context_sha256": "cbfc86aef81a9a3316a1ceb7381fde07ab97114f80d667227c3ea71847ae1173"
+   }
+  },
+  {
+   "i": 19,
+   "question": "Did Yuriko tell Li Hua about booking a seat at the \"Central Perk\" cafe before Li Hua sent her a message to confirm the details of their next meeting?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 11405.7,
+    "bm25_ms": 2.443,
+    "aquery_ms": 11409.6,
+    "context_sha256": "2522761ebdfc7ae1adb81c1b0f0d632c53c71e8814315b24ca8decdfe600d685"
+   },
+   "b2": {
+    "retrieval_ms": 10963.12,
+    "bm25_ms": 1.73,
+    "aquery_ms": 10966.4,
+    "context_sha256": "2eb59d8cf143a39d389910ad14835056d3c3e6bbff32f360161cfb0e0db0561c"
+   },
+   "v3": {
+    "retrieval_ms": 10647.41,
+    "bm25_ms": null,
+    "aquery_ms": 10650.4,
+    "context_sha256": "39572b0d8c738ff5eec9713ffeb909dfc3cabb8326c4f5ef736892ec6cf550dc"
+   }
+  },
+  {
+   "i": 20,
+   "question": "What payment method did Li Hua use to purchase groceries from the store on April 15, 2026?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7579.24,
+    "bm25_ms": 1.724,
+    "aquery_ms": 7582.6,
+    "context_sha256": "a5216ffb600758c7c7a83ab591533549bfb4fa1c4267989f2f5d52157c55b46a"
+   },
+   "v3": {
+    "retrieval_ms": 6936.91,
+    "bm25_ms": null,
+    "aquery_ms": 6939.2,
+    "context_sha256": "2c268c0df3050593ef76daaa4c8e9953c748d5858877620eae15e99c1b8c3cf4"
+   },
+   "b1": {
+    "retrieval_ms": 7025.23,
+    "bm25_ms": 0.897,
+    "aquery_ms": 7027.4,
+    "context_sha256": "d6840dcc68d0fe16031173e1d6da7bbc3653607959d0f71e42c32f158ba50e0b"
+   }
+  },
+  {
+   "i": 21,
+   "question": "What topics will be covered in the community medical knowledge lecture?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3649.46,
+    "bm25_ms": null,
+    "aquery_ms": 3651.2,
+    "context_sha256": "8029d4ec6021865baf51efb020b929a14f654cf0f2dad93335d1146e07723955"
+   },
+   "b1": {
+    "retrieval_ms": 3995.34,
+    "bm25_ms": 1.324,
+    "aquery_ms": 3997.8,
+    "context_sha256": "0dbbd919b8c018a888dbda65b08a15283050f8ab6b9f828c95bf47950017506c"
+   },
+   "b2": {
+    "retrieval_ms": 3832.46,
+    "bm25_ms": 0.663,
+    "aquery_ms": 3834.4,
+    "context_sha256": "c870b480b53fecea46afee147fc627ac3527459319585a2df41f61874bd93452"
+   }
+  },
+  {
+   "i": 22,
+   "question": "Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today before he wondered if she wanted to have Sichuan hot pot for dinner tonight?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8557.14,
+    "bm25_ms": 1.563,
+    "aquery_ms": 8559.9,
+    "context_sha256": "3754dc5d4749ebd3f7f0907de8e07769d0f008345ceb82f76b360e2984795355"
+   },
+   "b2": {
+    "retrieval_ms": 8760.53,
+    "bm25_ms": 2.592,
+    "aquery_ms": 8764.0,
+    "context_sha256": "830aa2b01bbf0f5803a0f4a9c78517134d2379ee09d22c3085960e5e9844eab3"
+   },
+   "v3": {
+    "retrieval_ms": 8850.07,
+    "bm25_ms": null,
+    "aquery_ms": 8853.3,
+    "context_sha256": "ceb0f7120af7576c3d13d28a6b9ebc7f2f448121137fb966a54d494a3f95b1a5"
+   }
+  },
+  {
+   "i": 23,
+   "question": "Which game does LiHua mention he's been playing on 20260920?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 5055.01,
+    "bm25_ms": 2.338,
+    "aquery_ms": 5057.6,
+    "context_sha256": "0e96e44fca8b637afc0c9db26df32d93505625b4f0c708e167b4ec030cdcde0e"
+   },
+   "v3": {
+    "retrieval_ms": 4497.76,
+    "bm25_ms": null,
+    "aquery_ms": 4499.9,
+    "context_sha256": "c8ff28513da8b59e120f3a8424f23a917cf4e64cc3aa13ff1b05f8262d76e640"
+   },
+   "b1": {
+    "retrieval_ms": 4685.59,
+    "bm25_ms": 0.881,
+    "aquery_ms": 4687.4,
+    "context_sha256": "1f968b63fc1fc17ee51e76a1fa4ed6a1e9033b7cd0463de84ad5c9afecae8d26"
+   }
+  },
+  {
+   "i": 24,
+   "question": "What is Thane's favorite type of food that he enjoys while playing video games?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 4083.79,
+    "bm25_ms": null,
+    "aquery_ms": 4086.5,
+    "context_sha256": "8b22f2f42b9a7345dd53c923254e0522d062320beda3e3651a23bd15bda7d0b8"
+   },
+   "b1": {
+    "retrieval_ms": 3746.12,
+    "bm25_ms": 1.706,
+    "aquery_ms": 3749.0,
+    "context_sha256": "c8a9e94cf4455731c1936f1248da14e49850618942e41ca542e0f34ae9ea2bf4"
+   },
+   "b2": {
+    "retrieval_ms": 3659.03,
+    "bm25_ms": 0.978,
+    "aquery_ms": 3660.7,
+    "context_sha256": "a540ab364ec5802a9ef6535b687deecdcf5cc797454befd9feb0e0c1bbb6fcd6"
+   }
+  },
+  {
+   "i": 25,
+   "question": "What song does Yuriko propose that the band can practice this weekend according to the band's discussion on 20260703?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8856.47,
+    "bm25_ms": 1.599,
+    "aquery_ms": 8860.3,
+    "context_sha256": "76cec0e13d6ff7bf1e7982fbaee25ff4512ddb984bd97f9bccf6c0cd3d7db89e"
+   },
+   "b2": {
+    "retrieval_ms": 8108.96,
+    "bm25_ms": 0.933,
+    "aquery_ms": 8111.2,
+    "context_sha256": "83fb15e456cc282f42bf47b0fa17ad3eabb4a73bdcae8e4a4814eab5d6362179"
+   },
+   "v3": {
+    "retrieval_ms": 8328.56,
+    "bm25_ms": null,
+    "aquery_ms": 8331.1,
+    "context_sha256": "eedc8cc247ec015efac70462b5fb2df294589c53a7bfe57705933d54fe02eab7"
+   }
+  },
+  {
+   "i": 26,
+   "question": "What type of passes does Briar suggest adding to the practice?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 3259.75,
+    "bm25_ms": 0.677,
+    "aquery_ms": 3261.7,
+    "context_sha256": "72d2434e325c514b9c471f4698c22fe07f216c7bbfb30e3a8e8a78355ffaa613"
+   },
+   "v3": {
+    "retrieval_ms": 3262.33,
+    "bm25_ms": null,
+    "aquery_ms": 3264.1,
+    "context_sha256": "3d0d826f54ba904951b9bcdf985fd1b52edaf5e72556057bf81d5d2696f78423"
+   },
+   "b1": {
+    "retrieval_ms": 3434.8,
+    "bm25_ms": 1.373,
+    "aquery_ms": 3437.1,
+    "context_sha256": "cf506d586bf9ac0d98d4fd519105b49f36296313302943b27ab36b9f2a03d4ef"
+   }
+  },
+  {
+   "i": 27,
+   "question": "What song did Yuriko and Wolfgang decide to perform together after watching the drum tutorial?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 10301.79,
+    "bm25_ms": null,
+    "aquery_ms": 10305.7,
+    "context_sha256": "74921c42d4310fcf5cd649706f09fe1c2dc90ae9887d2267ac52e97020a3aad7"
+   },
+   "b1": {
+    "retrieval_ms": 10265.73,
+    "bm25_ms": 1.867,
+    "aquery_ms": 10269.3,
+    "context_sha256": "146e6ecdb8b754b22b6aae9ae4e8fca0a973424841960d4a93af5503ef460de2"
+   },
+   "b2": {
+    "retrieval_ms": 9690.27,
+    "bm25_ms": 1.284,
+    "aquery_ms": 9693.8,
+    "context_sha256": "d3c92d7e72ce027ea8ef4ff0ca196a943ad748a8d9f5fd9824e34464846a4367"
+   }
+  },
+  {
+   "i": 28,
+   "question": "What could Jaime and Brienne have done to rebuild trust according to Merrick?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 3223.51,
+    "bm25_ms": 0.597,
+    "aquery_ms": 3225.3,
+    "context_sha256": "65f6692db072766b839eed3a927a7051f4feac437941d0ae12836c135fbeaaf5"
+   },
+   "b2": {
+    "retrieval_ms": 3034.04,
+    "bm25_ms": 0.614,
+    "aquery_ms": 3035.7,
+    "context_sha256": "57f31db2d7ee47d76e2d800d8be6d12364d92cfd3fafb501b6b2023dac5dc63d"
+   },
+   "v3": {
+    "retrieval_ms": 3317.17,
+    "bm25_ms": null,
+    "aquery_ms": 3318.7,
+    "context_sha256": "ad1567386f324858a15531986b59c7ea2f01532fc12b0a22c5cc15e50a1c6195"
+   }
+  },
+  {
+   "i": 29,
+   "question": "What was the final match score of the 2025 UEFA Champions League final?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 1440.72,
+    "bm25_ms": 0.676,
+    "aquery_ms": 1442.3,
+    "context_sha256": "8a5a69fdc6d8d785e5a2f56be0c5f788f29d644c1851849f54898da5838a576f"
+   },
+   "v3": {
+    "retrieval_ms": 1409.74,
+    "bm25_ms": null,
+    "aquery_ms": 1411.4,
+    "context_sha256": "ef9972b186eee7c3f7f8c67dcaed1651642b790f1b471853d5697b300f99251b"
+   },
+   "b1": {
+    "retrieval_ms": 1414.47,
+    "bm25_ms": 0.612,
+    "aquery_ms": 1416.3,
+    "context_sha256": "f4e6b8bb6ba571e352e3dee5105c576ed50545de977df8e5998b786a7611b433"
+   }
+  },
+  {
+   "i": 30,
+   "question": "What color was the curtain that Li Hua chose for his living room?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 7042.7,
+    "bm25_ms": null,
+    "aquery_ms": 7045.4,
+    "context_sha256": "ad095545c31a86a1fe0638d2574d02756a16a3d598e39bbae607649b2e157299"
+   },
+   "b1": {
+    "retrieval_ms": 6929.92,
+    "bm25_ms": 2.244,
+    "aquery_ms": 6932.4,
+    "context_sha256": "77807235eec2b421d972ab779b9ac3e28da803d952caa2989fda3de9b3fd8e62"
+   },
+   "b2": {
+    "retrieval_ms": 6966.37,
+    "bm25_ms": 0.704,
+    "aquery_ms": 6968.6,
+    "context_sha256": "a9f46e11de866f2e18e6f69eb47970e08731ab1ac30671c43de7bbf9a885b637"
+   }
+  },
+  {
+   "i": 31,
+   "question": "What type of equipment does Wolfgang Schulz use when he works out at the gym?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 3002.06,
+    "bm25_ms": 0.791,
+    "aquery_ms": 3003.8,
+    "context_sha256": "5e8bf79ff59d97c9c2e4890616b14ac8a86e079c3232fa26a5d2a7abe65eceea"
+   },
+   "b2": {
+    "retrieval_ms": 3003.45,
+    "bm25_ms": 0.804,
+    "aquery_ms": 3005.1,
+    "context_sha256": "69c81e87e6c20b2a869c4609e9b1d44d33747dad92451a8e283f68a517432883"
+   },
+   "v3": {
+    "retrieval_ms": 3268.43,
+    "bm25_ms": null,
+    "aquery_ms": 3270.1,
+    "context_sha256": "3094631ce72c89ef734e8f1c539a19126d77d9871f104691f84196368031eac3"
+   }
+  },
+  {
+   "i": 32,
+   "question": "Did Wolfgang ask Li Hua about watching \"Star Wars: A New Hope\" after he asked Li Hua about going to see \"Overwatch 3\"?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7856.34,
+    "bm25_ms": 2.503,
+    "aquery_ms": 7859.5,
+    "context_sha256": "f50a3bc2f5f635dd6236b04988bc5cc0ce5f9261a176cd8f22130cbb3c2e177c"
+   },
+   "v3": {
+    "retrieval_ms": 8420.73,
+    "bm25_ms": null,
+    "aquery_ms": 8424.6,
+    "context_sha256": "924e0dfa92e113b0bdb047217e427658420a72a94d55a88c22c81ca9925aab4a"
+   },
+   "b1": {
+    "retrieval_ms": 7619.92,
+    "bm25_ms": 2.104,
+    "aquery_ms": 7622.4,
+    "context_sha256": "672ea93920dc694609669865c3172a5b467052610a320e76de41b917a6af4f60"
+   }
+  },
+  {
+   "i": 33,
+   "question": "What drinks does WolfgangSchulz want to have while watching the movie?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3752.59,
+    "bm25_ms": null,
+    "aquery_ms": 3754.3,
+    "context_sha256": "40937770a2d9a1f926ab6b12b1dc44cf8f142620fafde38d4a213f75472322cf"
+   },
+   "b1": {
+    "retrieval_ms": 3565.7,
+    "bm25_ms": 0.797,
+    "aquery_ms": 3567.5,
+    "context_sha256": "045b354d13a4cac8665373e12dad67d553205cca33eac3f50048372e3b29a2d1"
+   },
+   "b2": {
+    "retrieval_ms": 3727.32,
+    "bm25_ms": 0.921,
+    "aquery_ms": 3743.5,
+    "context_sha256": "8b2dfbfddaa39c547c8170c1bfa653eb6b7489c800098b833f1b4774f6bca9f5"
+   }
+  },
+  {
+   "i": 34,
+   "question": "What aspect of \"Black Myth: Wukong\" does LiHua find the most impressive?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8497.83,
+    "bm25_ms": 4.917,
+    "aquery_ms": 8515.8,
+    "context_sha256": "cb1db90bcef1cb346b13dafcdab638e2249b71ac054f0d806a78466362ea4f78"
+   },
+   "b2": {
+    "retrieval_ms": 9087.53,
+    "bm25_ms": 7.105,
+    "aquery_ms": 9103.6,
+    "context_sha256": "0b69ef4d1d22ac8e1b5d3d53b880379a81a829e0a7f9518c518917240a48fb81"
+   },
+   "v3": {
+    "retrieval_ms": 8162.0,
+    "bm25_ms": null,
+    "aquery_ms": 8164.8,
+    "context_sha256": "d0f4edb6420b04c8cddeba77d86901317d7d0c964dbb84e14fea712e3e4d3144"
+   }
+  },
+  {
+   "i": 35,
+   "question": "Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 6892.34,
+    "bm25_ms": 1.982,
+    "aquery_ms": 6894.6,
+    "context_sha256": "67cfaccb30cd89fa2b3968b5aa93e1bd8e618a177c1e6f9c41635dcf5a94fd7b"
+   },
+   "v3": {
+    "retrieval_ms": 6789.52,
+    "bm25_ms": null,
+    "aquery_ms": 6791.7,
+    "context_sha256": "feee0fb7513850e1fa31bc48aed0ff31ac52662a62d81f6d87deaaddcdd01a8f"
+   },
+   "b1": {
+    "retrieval_ms": 6993.65,
+    "bm25_ms": 1.267,
+    "aquery_ms": 6995.9,
+    "context_sha256": "5b780be51fae10708b8d55d15334bfb2c25161f4e6e5c2e3426a78270ff5cb7f"
+   }
+  },
+  {
+   "i": 36,
+   "question": "What is Li Hua's opinion on the characters in Succession?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 4047.27,
+    "bm25_ms": null,
+    "aquery_ms": 4049.3,
+    "context_sha256": "9c6b0053e4523e7d6f35ca0a86d697d05f55b5dac4cdbe5c2e5e9928c666fc0f"
+   },
+   "b1": {
+    "retrieval_ms": 4018.25,
+    "bm25_ms": 0.913,
+    "aquery_ms": 4020.1,
+    "context_sha256": "7749c987856d2f4b8bcae0a6b2f055ffd8d8fd93fe85445c316794fc005528a5"
+   },
+   "b2": {
+    "retrieval_ms": 4007.69,
+    "bm25_ms": 0.833,
+    "aquery_ms": 4009.5,
+    "context_sha256": "e875190ad2c5d522845e2fcbe036c65f055c3302f0d4b16afaf98119b5ed2406"
+   }
+  },
+  {
+   "i": 37,
+   "question": "What is the opportunity that makes Wolfgang and Yuriko acquaitances?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 6422.03,
+    "bm25_ms": 2.254,
+    "aquery_ms": 6424.2,
+    "context_sha256": "fa44a788c4c3a8db95cd73ae5a9dff9fca0630a3746c5b91f32cdfb75fcc1697"
+   },
+   "b2": {
+    "retrieval_ms": 6332.02,
+    "bm25_ms": 0.535,
+    "aquery_ms": 6334.2,
+    "context_sha256": "d60244dfba7ed5e52f58391a60dc42b43b7adbf1b82b116bf96ff597fc0852da"
+   },
+   "v3": {
+    "retrieval_ms": 6549.91,
+    "bm25_ms": null,
+    "aquery_ms": 6552.3,
+    "context_sha256": "e179f0c03e3d9bf85602fa354d93cdc3518586dca09a515f13f432b5458f6d6a"
+   }
+  },
+  {
+   "i": 38,
+   "question": "What tips does Jennifer give to LiHua about preventing muscle soreness after a tough workout?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 5958.49,
+    "bm25_ms": 1.067,
+    "aquery_ms": 5960.6,
+    "context_sha256": "ad9c8fe452f0b0574d9f6063bdfd0a7dc57f823c769d9b1f3049979357562751"
+   },
+   "v3": {
+    "retrieval_ms": 5936.24,
+    "bm25_ms": null,
+    "aquery_ms": 5938.5,
+    "context_sha256": "6381993509042a0c1a65a46a28c398b6bb8be697a17534df4b8e2d6e405c83d5"
+   },
+   "b1": {
+    "retrieval_ms": 5955.64,
+    "bm25_ms": 1.668,
+    "aquery_ms": 5957.9,
+    "context_sha256": "696217a199dddc57338f111440cf3b84a6d1c4376cc7b7feee71e1e191a5607a"
+   }
+  },
+  {
+   "i": 39,
+   "question": "Which boss did Gavriel struggle with the most in \"Octopath Traveler\"?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 2478.81,
+    "bm25_ms": null,
+    "aquery_ms": 2480.3,
+    "context_sha256": "8c3d1949b7dcdc094dc5e50c9f37a2972e191a27319838c54face228775a34a5"
+   },
+   "b1": {
+    "retrieval_ms": 2639.85,
+    "bm25_ms": 0.538,
+    "aquery_ms": 2641.4,
+    "context_sha256": "cb5c4f33f2766fad3c5175eddccc631ede7ad7021dbb27d816f5d6255dbff03c"
+   },
+   "b2": {
+    "retrieval_ms": 2461.34,
+    "bm25_ms": 0.51,
+    "aquery_ms": 2462.9,
+    "context_sha256": "392a0aee6a1628f219feae953bc07cce22fe8e6edf61269a6ca006df4c217c62"
+   }
+  },
+  {
+   "i": 40,
+   "question": "Did Li Hua ask Jennifer for advice on how to prevent muscle soreness after an intense workout session before he told her that he feels soreness in his arm muscles after the workout this week?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 5643.54,
+    "bm25_ms": 1.437,
+    "aquery_ms": 5645.8,
+    "context_sha256": "eabfe145eb17099b182e416bf6bebc52a63f5616bf220082d40ae06fcc2200c4"
+   },
+   "b2": {
+    "retrieval_ms": 5595.84,
+    "bm25_ms": 1.38,
+    "aquery_ms": 5598.0,
+    "context_sha256": "9a05a48bb5ef105922f97fd6e900b9aabf1048ee78cf5bd3729d3a0fe46e6d0a"
+   },
+   "v3": {
+    "retrieval_ms": 5641.0,
+    "bm25_ms": null,
+    "aquery_ms": 5643.1,
+    "context_sha256": "194ee67be84fb2bbc08334e585915f7ab2d06dfa39b526a4568f02948752992e"
+   }
+  },
+  {
+   "i": 41,
+   "question": "What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 6412.36,
+    "bm25_ms": 1.123,
+    "aquery_ms": 6414.5,
+    "context_sha256": "c3e297ac42ddb057c641dec32d38458ad00db043f1f972383c7e01a7e2469764"
+   },
+   "v3": {
+    "retrieval_ms": 6278.57,
+    "bm25_ms": null,
+    "aquery_ms": 6280.8,
+    "context_sha256": "8fb45e50461a4178e991a24d33caa727a1e1076fc863ae368cfbd325f36a72f9"
+   },
+   "b1": {
+    "retrieval_ms": 6301.67,
+    "bm25_ms": 1.304,
+    "aquery_ms": 6303.9,
+    "context_sha256": "a172b048cc4cda51ce07aecbde4fe65b014d3fd6fed758cd22352b0a70e05edf"
+   }
+  },
+  {
+   "i": 42,
+   "question": "What does Briar think about Real Madrid's chances for the rest of the season?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3711.32,
+    "bm25_ms": null,
+    "aquery_ms": 3713.0,
+    "context_sha256": "0a0f7f456f1fac3fea51abc90090e9f7122f4d656437aa55d806b7e03d809c67"
+   },
+   "b1": {
+    "retrieval_ms": 3711.61,
+    "bm25_ms": 0.896,
+    "aquery_ms": 3713.7,
+    "context_sha256": "2e0978a99ec5d6f0bedb65915b345269a243eb484368b9115d5bae60301e84bc"
+   },
+   "b2": {
+    "retrieval_ms": 3735.65,
+    "bm25_ms": 0.911,
+    "aquery_ms": 3737.4,
+    "context_sha256": "7c663ec027d7108a8bd824dfd72cc0ba8ff282f1a2dcad084e11545a5bab3f32"
+   }
+  },
+  {
+   "i": 43,
+   "question": "Did Hailey announce the new line of high-protein breads before inviting Li Hua to the special bakery event?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 7669.22,
+    "bm25_ms": 1.133,
+    "aquery_ms": 7671.7,
+    "context_sha256": "32562e8d89b33d0e3f7860304754d1b43ae49eda79f6ccc16b9dc155156c9956"
+   },
+   "b2": {
+    "retrieval_ms": 7600.3,
+    "bm25_ms": 1.128,
+    "aquery_ms": 7602.7,
+    "context_sha256": "06e1f5f5d545477529a8d2dbd36f4b35e8aff6fa854e3430ebe23d0348cbb790"
+   },
+   "v3": {
+    "retrieval_ms": 7439.53,
+    "bm25_ms": null,
+    "aquery_ms": 7441.8,
+    "context_sha256": "cacf914f6fc9cbae1126a579f8d762d4c1fba1ffd09bccdf9ae0d971e619433e"
+   }
+  },
+  {
+   "i": 44,
+   "question": "What is IllidanStormrage's suggestion to the ongoing garden construction according to the discussion on 20260522?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 4673.41,
+    "bm25_ms": 1.132,
+    "aquery_ms": 4675.5,
+    "context_sha256": "9a7ece9f59d1fa45acc3977e7c8d4b53e1a1b651a885aafe4fdca6a866f35a8c"
+   },
+   "v3": {
+    "retrieval_ms": 4917.31,
+    "bm25_ms": null,
+    "aquery_ms": 4919.3,
+    "context_sha256": "5531d081698f32e828b69b7474f488c75d7874c232b320bd8d1398db31449961"
+   },
+   "b1": {
+    "retrieval_ms": 4637.5,
+    "bm25_ms": 0.852,
+    "aquery_ms": 4639.4,
+    "context_sha256": "14c28d66e6e93c275d7aec66e10513731c39c07e3f0a28c63a823b6f27a9b9b5"
+   }
+  },
+  {
+   "i": 45,
+   "question": "Question: Did Jennifer remind Li Hua to consume enough protein after the workout before she shared tips with the group members on common mistakes to avoid after an intense workout?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 8521.0,
+    "bm25_ms": null,
+    "aquery_ms": 8523.4,
+    "context_sha256": "8b23ec9236e8d125a1866479fb696e39dac0c19bb92c3e58f51b8658537cfd09"
+   },
+   "b1": {
+    "retrieval_ms": 8510.22,
+    "bm25_ms": 1.379,
+    "aquery_ms": 8512.5,
+    "context_sha256": "034be9baa9b2c803630f77a9411247166e6d2758ea97a3a6be622a2aaf849e35"
+   },
+   "b2": {
+    "retrieval_ms": 8775.31,
+    "bm25_ms": 3.558,
+    "aquery_ms": 8781.9,
+    "context_sha256": "49ce8e3b2bff29f20dd3102eee08288f914474dfce1a47286c62ae6939814f30"
+   }
+  },
+  {
+   "i": 46,
+   "question": "What is Jake's first tip for avoiding soccer injuries?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 2922.13,
+    "bm25_ms": 0.77,
+    "aquery_ms": 2923.8,
+    "context_sha256": "bad08b0102c2516832392c659cccb0b1e62444c326f0e1387720c328594417ff"
+   },
+   "b2": {
+    "retrieval_ms": 2921.29,
+    "bm25_ms": 0.782,
+    "aquery_ms": 2922.9,
+    "context_sha256": "ab8e7c697c7f388529a212c451830267b7fd3632696f9aaa299bc597478c7df3"
+   },
+   "v3": {
+    "retrieval_ms": 2921.58,
+    "bm25_ms": null,
+    "aquery_ms": 2923.1,
+    "context_sha256": "e22dccaf2b0703d7ee21d91cf2a0c8dcc1a49e74c60b55e3f64520ec2b3f8516"
+   }
+  },
+  {
+   "i": 47,
+   "question": "What does Kieran wish Jaime had done differently?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 2776.36,
+    "bm25_ms": 0.485,
+    "aquery_ms": 2778.1,
+    "context_sha256": "0ecda3a385cb1abea51c71e3e8c13a84651963707526c064349a60452539c553"
+   },
+   "v3": {
+    "retrieval_ms": 2822.6,
+    "bm25_ms": null,
+    "aquery_ms": 2824.1,
+    "context_sha256": "6ad9ab350b08fe9e385f14ad7c8e88dfc414ec1b390cefb17d778f74476b0e80"
+   },
+   "b1": {
+    "retrieval_ms": 2782.05,
+    "bm25_ms": 0.476,
+    "aquery_ms": 2783.6,
+    "context_sha256": "6ad9ab350b08fe9e385f14ad7c8e88dfc414ec1b390cefb17d778f74476b0e80"
+   }
+  },
+  {
+   "i": 48,
+   "question": "What time does Li Hua watch the movie \"Overwatch 3\"?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3705.77,
+    "bm25_ms": null,
+    "aquery_ms": 3707.4,
+    "context_sha256": "a983eaa0639eef3bf0a22de1ca12e11f66c9de5518b795d7f42c40ac95af62ca"
+   },
+   "b1": {
+    "retrieval_ms": 3905.4,
+    "bm25_ms": 0.906,
+    "aquery_ms": 3907.1,
+    "context_sha256": "52b87c67c0704bddc0219b407dc31c328b1c19e7dbe317a79afeec99507e84ed"
+   },
+   "b2": {
+    "retrieval_ms": 3767.55,
+    "bm25_ms": 0.887,
+    "aquery_ms": 3769.3,
+    "context_sha256": "3d3d3e605deb53f6d40f384f185919c1e34f3aa3b3d9d47cf3076af7620d310c"
+   }
+  },
+  {
+   "i": 49,
+   "question": "Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 6153.21,
+    "bm25_ms": 1.133,
+    "aquery_ms": 6155.4,
+    "context_sha256": "27c9aa1e314405900bb852ec32e9bbf1796836df63872055780b17b4e477850e"
+   },
+   "b2": {
+    "retrieval_ms": 6169.1,
+    "bm25_ms": 1.132,
+    "aquery_ms": 6171.2,
+    "context_sha256": "cd14fe79cb9d66e782de31a61fb11fab3c189ad12ea956bbc601b19ae5dc4c9b"
+   },
+   "v3": {
+    "retrieval_ms": 6235.48,
+    "bm25_ms": null,
+    "aquery_ms": 6237.9,
+    "context_sha256": "3ac50aff5a78b0f54113dcb8d110051de8b63e8698d70c2d8bef710a63c0ecc3"
+   }
+  },
+  {
+   "i": 50,
+   "question": "What are some of the upcoming PS5 exclusives discussed?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 2034.14,
+    "bm25_ms": 0.761,
+    "aquery_ms": 2035.5,
+    "context_sha256": "d3ae695ee591fb75db173699143decc675a9b59b8f574ae67776e0dd15c18fb6"
+   },
+   "v3": {
+    "retrieval_ms": 2133.88,
+    "bm25_ms": null,
+    "aquery_ms": 2135.4,
+    "context_sha256": "9a30f9b25f93f907248baac42a05d31fcfdb9c921c2b6702a154f1b248c17810"
+   },
+   "b1": {
+    "retrieval_ms": 2028.21,
+    "bm25_ms": 0.469,
+    "aquery_ms": 2029.7,
+    "context_sha256": "328538c7e603d82d8dde554722917551e757aa6b193e6b203196f5e8829f3472"
+   }
+  },
+  {
+   "i": 51,
+   "question": "Which regions in Witcher 3 did Li Hua and Thane Chambers discuss?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 5690.54,
+    "bm25_ms": null,
+    "aquery_ms": 5692.5,
+    "context_sha256": "160d8c94088bcaab289d867ce6c973ec9d326fed307b8b8f191ec3fe873a2655"
+   },
+   "b1": {
+    "retrieval_ms": 5634.31,
+    "bm25_ms": 0.805,
+    "aquery_ms": 5636.3,
+    "context_sha256": "160d8c94088bcaab289d867ce6c973ec9d326fed307b8b8f191ec3fe873a2655"
+   },
+   "b2": {
+    "retrieval_ms": 5632.82,
+    "bm25_ms": 0.775,
+    "aquery_ms": 5634.8,
+    "context_sha256": "160d8c94088bcaab289d867ce6c973ec9d326fed307b8b8f191ec3fe873a2655"
+   }
+  },
+  {
+   "i": 52,
+   "question": "Who offers to help with setting up for the garage sale?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 1964.5,
+    "bm25_ms": 0.817,
+    "aquery_ms": 1965.9,
+    "context_sha256": "1b4013f328b6507b1ae133d63fa80a6f603299551f585a831154f7d433921816"
+   },
+   "b2": {
+    "retrieval_ms": 1967.68,
+    "bm25_ms": 0.806,
+    "aquery_ms": 1969.1,
+    "context_sha256": "f17192270769e96656563b44fa40c3e3fcc776c736de0997e6d521293d13cd8c"
+   },
+   "v3": {
+    "retrieval_ms": 1943.85,
+    "bm25_ms": null,
+    "aquery_ms": 1945.3,
+    "context_sha256": "b9c675dacc763ef0e21aee3afab9871869894ee2067f66e18469cae96ccfb0aa"
+   }
+  },
+  {
+   "i": 53,
+   "question": "Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7822.79,
+    "bm25_ms": 1.154,
+    "aquery_ms": 7825.2,
+    "context_sha256": "ca1e29aeb008b45be5ecc36d585f65ad1d2f5a46a17ffb5c438990a9f84a455a"
+   },
+   "v3": {
+    "retrieval_ms": 7679.63,
+    "bm25_ms": null,
+    "aquery_ms": 7682.5,
+    "context_sha256": "dd226156887ce093a760264d949ee3c371f2f48c1d4b143f8cab674f2dd77d80"
+   },
+   "b1": {
+    "retrieval_ms": 7660.3,
+    "bm25_ms": 1.38,
+    "aquery_ms": 7662.8,
+    "context_sha256": "9266292800943606ed4e42decc51f6b1b8da64c57dbc733111af961f35184cd5"
+   }
+  },
+  {
+   "i": 54,
+   "question": "What are LiHua's favorite snacks for the game?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 7095.04,
+    "bm25_ms": null,
+    "aquery_ms": 7097.2,
+    "context_sha256": "315a20f3a2a7981b5482bd71f4f9a14aaaa3e2c4ac47c0262ca754189789c7fb"
+   },
+   "b1": {
+    "retrieval_ms": 6948.85,
+    "bm25_ms": 0.906,
+    "aquery_ms": 6951.0,
+    "context_sha256": "74755a7ee502785f341ffc20620a4b468312f592b4f7c1ff80fa51a9f2046218"
+   },
+   "b2": {
+    "retrieval_ms": 6996.53,
+    "bm25_ms": 0.928,
+    "aquery_ms": 6999.0,
+    "context_sha256": "57e7683ce1f112e8379640972b85858d95ee9817af0a3c637ff296f59a676339"
+   }
+  },
+  {
+   "i": 55,
+   "question": "What did Li Hua enjoy the most about the restaurant that he and Wolfgang visited for dinner on 20260514?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 9124.75,
+    "bm25_ms": 0.783,
+    "aquery_ms": 9127.1,
+    "context_sha256": "a93d1c79a106bfa98f69b2903bbaddb86f7fc72813be6914202ddc6695ff8ebe"
+   },
+   "b2": {
+    "retrieval_ms": 8923.16,
+    "bm25_ms": 1.081,
+    "aquery_ms": 8925.6,
+    "context_sha256": "80cbd544c4ea326183057e4116e0e93999d058d2ac6c4dcbc9bbd88903aaece6"
+   },
+   "v3": {
+    "retrieval_ms": 8909.19,
+    "bm25_ms": null,
+    "aquery_ms": 8911.4,
+    "context_sha256": "edc21da8f1d50c8cffcf928a0a108a6c7c163db0652623167ce39c648e4783c9"
+   }
+  },
+  {
+   "i": 56,
+   "question": "What is the common interest between Li Hua and Jake Watson?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 4089.04,
+    "bm25_ms": 0.753,
+    "aquery_ms": 4090.8,
+    "context_sha256": "676a531165664e574635c9a57f1fb6ce4cac9a7a53cfdd7c79a34974278ef072"
+   },
+   "v3": {
+    "retrieval_ms": 4195.88,
+    "bm25_ms": null,
+    "aquery_ms": 4197.7,
+    "context_sha256": "d15b7be35fc254e64b21ccf49fb65fd072d01e9cd9b17abcc836ac5513d34b8a"
+   },
+   "b1": {
+    "retrieval_ms": 4082.88,
+    "bm25_ms": 0.707,
+    "aquery_ms": 4084.7,
+    "context_sha256": "ca672517e63182522fee74c16c9f8c585f40f99a32f7db4eba2668baf538a3cc"
+   }
+  },
+  {
+   "i": 57,
+   "question": "Who offers to help with the installation of the curtains?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 1931.03,
+    "bm25_ms": null,
+    "aquery_ms": 1932.5,
+    "context_sha256": "fafe9db7510e62c8bae6e1990afc2e9aef83e6b4e0c6789b08611910f575558e"
+   },
+   "b1": {
+    "retrieval_ms": 1976.84,
+    "bm25_ms": 0.805,
+    "aquery_ms": 1978.4,
+    "context_sha256": "a44a2321e030a1187e5118c2017e56d7baaea58dc4d83f22de546454e49890c3"
+   },
+   "b2": {
+    "retrieval_ms": 1932.56,
+    "bm25_ms": 0.552,
+    "aquery_ms": 1934.0,
+    "context_sha256": "26d55ed1e6f46b39c9d6da1137304bf69f967d10e2e2bbb84b85c0c347d1359a"
+   }
+  },
+  {
+   "i": 58,
+   "question": "What drink does JakeWatson recommend for hydration after a match?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 4555.62,
+    "bm25_ms": 0.601,
+    "aquery_ms": 4557.6,
+    "context_sha256": "ed4384e5204f12263a8d70cd2553739279b86ce91c83a215aef7b4719f5f9d14"
+   },
+   "b2": {
+    "retrieval_ms": 4535.92,
+    "bm25_ms": 0.608,
+    "aquery_ms": 4537.7,
+    "context_sha256": "57565f730730860756223c111f686cb900ea9451ac6dfa7295022f1c873439c1"
+   },
+   "v3": {
+    "retrieval_ms": 4614.33,
+    "bm25_ms": null,
+    "aquery_ms": 4616.2,
+    "context_sha256": "986606095b89152f07abbf4d66f77953d859bf0a010886e70765b4552d955eb0"
+   }
+  },
+  {
+   "i": 59,
+   "question": "What color did Li Hua decide to paint the walls of the basement after completing the renovation?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7863.02,
+    "bm25_ms": 1.251,
+    "aquery_ms": 7865.6,
+    "context_sha256": "7a1fe483a8f18e32965d0649e4b2f1344255cf375f5d15e99b9c01e2b5f513c5"
+   },
+   "v3": {
+    "retrieval_ms": 7728.51,
+    "bm25_ms": null,
+    "aquery_ms": 7730.9,
+    "context_sha256": "7978e7f36df7c20fcd8b280a5bdb004d5057cd55cfc7d8604a605463f696eac8"
+   },
+   "b1": {
+    "retrieval_ms": 7661.87,
+    "bm25_ms": 0.901,
+    "aquery_ms": 7664.2,
+    "context_sha256": "0edb6826955e8c0652ca125d5827e2755a5031e5070f2b3bb9ddbdac525d3078"
+   }
+  },
+  {
+   "i": 60,
+   "question": "What does Li Hua think about the rosemary focaccia?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 4086.55,
+    "bm25_ms": null,
+    "aquery_ms": 4088.3,
+    "context_sha256": "b3de3be3b1b012c0de26dee52d85394662dae3e4e6ec5ecb447f6fb18473841b"
+   },
+   "b1": {
+    "retrieval_ms": 4002.06,
+    "bm25_ms": 0.745,
+    "aquery_ms": 4003.8,
+    "context_sha256": "58448eb9d8ab4da19a53b5fc2755444eaca21e429bb310e5c5f6442655bd8444"
+   },
+   "b2": {
+    "retrieval_ms": 3994.97,
+    "bm25_ms": 0.784,
+    "aquery_ms": 3996.7,
+    "context_sha256": "96109b583211bddd6ec228463dafa823a24155215e579b72c239804c10737796"
+   }
+  },
+  {
+   "i": 61,
+   "question": "What is the name of the café where Li Hua and YurikoYamamoto first meeting to talk about Yuriko's website?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 9746.98,
+    "bm25_ms": 1.201,
+    "aquery_ms": 9749.3,
+    "context_sha256": "d7e8303ef9a55c6aa8b85c2e97a5160d0246ab0e990a8528b8871c5e21327b0f"
+   },
+   "b2": {
+    "retrieval_ms": 9960.44,
+    "bm25_ms": 1.207,
+    "aquery_ms": 9963.0,
+    "context_sha256": "74324b31ef47670086dfce35b6aa09b3d639d6dd68c99f6fdd6cb5f8fa3f989a"
+   },
+   "v3": {
+    "retrieval_ms": 9819.54,
+    "bm25_ms": null,
+    "aquery_ms": 9822.4,
+    "context_sha256": "3b1901d60ebad56f835e47b5bd6d28f00d03be2cedd9bfb9db60b280c5a4a605"
+   }
+  },
+  {
+   "i": 62,
+   "question": "What is the name of the song that Li Hua will sing at the karaoke on 20260425?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 6345.27,
+    "bm25_ms": 1.259,
+    "aquery_ms": 6347.4,
+    "context_sha256": "fc06919b0643dc1d98a3bd4d6e4278d9dd2c60f0c2512b4f2ebf910e2bafefb9"
+   },
+   "v3": {
+    "retrieval_ms": 6394.33,
+    "bm25_ms": null,
+    "aquery_ms": 6396.4,
+    "context_sha256": "3291c2b472f2fa86f4e00ee00d118cdf40fddf03f6f173e84efcedd8cfbabfe7"
+   },
+   "b1": {
+    "retrieval_ms": 6556.54,
+    "bm25_ms": 0.731,
+    "aquery_ms": 6558.6,
+    "context_sha256": "eb9d88769aa13fd7bb884a15b5dcf09e34fa04f09bcca130756c7b3646652bb1"
+   }
+  },
+  {
+   "i": 63,
+   "question": "What type of gameplay does Jareth enjoy after a big challenge?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3601.39,
+    "bm25_ms": null,
+    "aquery_ms": 3603.1,
+    "context_sha256": "1a686f4b66262cce156d87d1432081da513e2268ba978b7cb610cdf80a8d28b3"
+   },
+   "b1": {
+    "retrieval_ms": 3606.95,
+    "bm25_ms": 0.825,
+    "aquery_ms": 3609.5,
+    "context_sha256": "2a44cf78b1ed101cc3b3faf2f30a00c5bcfffbed6e7383a0e2bb54e25252906c"
+   },
+   "b2": {
+    "retrieval_ms": 3598.19,
+    "bm25_ms": 0.754,
+    "aquery_ms": 3600.0,
+    "context_sha256": "9d8a4bbc39bfe22fc9d1449333513470718956f85abf92f778feb96d4ea837b1"
+   }
+  },
+  {
+   "i": 64,
+   "question": "Why does LiHua bring up Adam Smith in the band's conversation on 20260616?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8617.19,
+    "bm25_ms": 1.183,
+    "aquery_ms": 8619.7,
+    "context_sha256": "4644f6b09163af5c4989a0ad9b767beb622382ef56b195c526e4d4a8a77fb32c"
+   },
+   "b2": {
+    "retrieval_ms": 8440.74,
+    "bm25_ms": 1.4,
+    "aquery_ms": 8443.4,
+    "context_sha256": "34c0bb67901d30ac951c78cb4091e45abcc0c1adc7fcac572b6df33c771e0293"
+   },
+   "v3": {
+    "retrieval_ms": 8577.35,
+    "bm25_ms": null,
+    "aquery_ms": 8580.0,
+    "context_sha256": "437541b903c0e6c29c9ff3478d8c9ea4bfc8d8f7095861732594d1e76dc3f6d5"
+   }
+  },
+  {
+   "i": 65,
+   "question": "What was the content of the first-ever delivery from Hailey to LiHua and what was LiHua's opinion about it?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7202.46,
+    "bm25_ms": 1.491,
+    "aquery_ms": 7205.0,
+    "context_sha256": "bf886fc611825ff223a42a46a6ffa3b94a15541e86fd56121e139a40e48e34b6"
+   },
+   "v3": {
+    "retrieval_ms": 7401.72,
+    "bm25_ms": null,
+    "aquery_ms": 7403.9,
+    "context_sha256": "8322031dc3d927301770c7ee88f46d21dc11b39d5c9a2504d8d8798fa5add62d"
+   },
+   "b1": {
+    "retrieval_ms": 7117.3,
+    "bm25_ms": 1.063,
+    "aquery_ms": 7119.4,
+    "context_sha256": "b921145dc2716c0cb4a4adb6a0dc04951198bc59ea341f7e11a8573f94715c2d"
+   }
+  },
+  {
+   "i": 66,
+   "question": "What new song does the Jolly band decide to work on for the jam session according to their discussion on 20260410?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 4155.04,
+    "bm25_ms": null,
+    "aquery_ms": 4156.8,
+    "context_sha256": "fadc8fd9a7b267e13b31f360a6f744477761dae5c3200c2476c0fbb579d62bed"
+   },
+   "b1": {
+    "retrieval_ms": 4183.56,
+    "bm25_ms": 1.106,
+    "aquery_ms": 4185.5,
+    "context_sha256": "d2b519f91e8e85bf9b98b68da646902de84eaf514da3f1cb1197fcadcf7d0829"
+   },
+   "b2": {
+    "retrieval_ms": 4157.73,
+    "bm25_ms": 0.951,
+    "aquery_ms": 4159.5,
+    "context_sha256": "39c5135edb17019eecbc27b5e70f7a881a8e2c4ff2f4bc643f5eecd9760f1993"
+   }
+  },
+  {
+   "i": 67,
+   "question": "What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 14150.46,
+    "bm25_ms": 1.789,
+    "aquery_ms": 14154.3,
+    "context_sha256": "6daf04ce073393ba9f9aed1b6e6f004eefcfd2e01f7d4d02bd7f32f7e3de0544"
+   },
+   "b2": {
+    "retrieval_ms": 14245.92,
+    "bm25_ms": 1.232,
+    "aquery_ms": 14250.0,
+    "context_sha256": "72f3bf64434b765bc6040736cd5fb2c7c0ea7721db6161fcf0df62b774f699de"
+   },
+   "v3": {
+    "retrieval_ms": 14447.3,
+    "bm25_ms": null,
+    "aquery_ms": 14451.1,
+    "context_sha256": "456fb7f5bb7e4bb852c1aef56843f16dba5656601dd9dd5cac7f855e39ccf0fc"
+   }
+  },
+  {
+   "i": 68,
+   "question": "What percentage discount is Hailey Johnson offering for Mother's Day pastries?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 3218.84,
+    "bm25_ms": 1.206,
+    "aquery_ms": 3220.6,
+    "context_sha256": "164ccaa7cfcdf8d6aba9b6378afcc4a4b7cb3db7b9a8c523b2590e312daf38d1"
+   },
+   "v3": {
+    "retrieval_ms": 3195.32,
+    "bm25_ms": null,
+    "aquery_ms": 3197.0,
+    "context_sha256": "7e87045e1c577a12bddb56072b024914c0a47810aa1174173d924ea86c6a4a59"
+   },
+   "b1": {
+    "retrieval_ms": 3417.52,
+    "bm25_ms": 1.076,
+    "aquery_ms": 3419.4,
+    "context_sha256": "54a9d2b5af131a6a1e565b2a8d12fa4610fcc9eaecbdc55fa506f230af909863"
+   }
+  },
+  {
+   "i": 69,
+   "question": "When did Li Hua inform Adam Smith that the rent was transferred?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 5484.23,
+    "bm25_ms": null,
+    "aquery_ms": 5486.3,
+    "context_sha256": "bb8ee8ac7ac6e39dc0fe939a9a60264e0173d2a430c85d205f8274a433ec53e4"
+   },
+   "b1": {
+    "retrieval_ms": 5464.52,
+    "bm25_ms": 0.73,
+    "aquery_ms": 5466.3,
+    "context_sha256": "9ae0cada08ec8d1c6e156786fb8d54f2f12c905b5bf0eb01cb483ce3d10931eb"
+   },
+   "b2": {
+    "retrieval_ms": 5656.4,
+    "bm25_ms": 0.811,
+    "aquery_ms": 5658.3,
+    "context_sha256": "0e8cfe59b5a5291ba880426fd2a2bc57446d2b48c804ce747ca0ab93c9c5364b"
+   }
+  },
+  {
+   "i": 70,
+   "question": "Who does EmilyBurnett think is a standout character in the Game of Thrones series?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 4647.04,
+    "bm25_ms": 0.847,
+    "aquery_ms": 4649.0,
+    "context_sha256": "98ee6cbcb620cf6dbc5e044cfe50d9bbdf550c4d82cb16c977ef7f3e96c387d3"
+   },
+   "b2": {
+    "retrieval_ms": 4557.78,
+    "bm25_ms": 0.797,
+    "aquery_ms": 4559.8,
+    "context_sha256": "5555a891d60182a8888b674c4eba992aa8bab91e87ec99440d94b0cc65a1f0f8"
+   },
+   "v3": {
+    "retrieval_ms": 4570.01,
+    "bm25_ms": null,
+    "aquery_ms": 4571.9,
+    "context_sha256": "579e6350eca39c09dc9d4935b552fdd00bbbed8e10e51eafa65c4c58e520a262"
+   }
+  },
+  {
+   "i": 71,
+   "question": "What new components are being added to the garden project as Turalyon announces it on 20260806?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 4998.44,
+    "bm25_ms": 1.101,
+    "aquery_ms": 5000.7,
+    "context_sha256": "e19a216aae9d34480ce13cfd7526969fab07fefb65be88d24c5f0b8626e66c03"
+   },
+   "v3": {
+    "retrieval_ms": 5028.9,
+    "bm25_ms": null,
+    "aquery_ms": 5031.0,
+    "context_sha256": "41ec031b9f11cfd073bf9709f0f419594f5a2102f5c9612e571efd3afa5bc8c3"
+   },
+   "b1": {
+    "retrieval_ms": 4848.96,
+    "bm25_ms": 0.942,
+    "aquery_ms": 4851.0,
+    "context_sha256": "601ad8ecced86b963f3d4162c9efcc8f675c05c5d3ab31a446dcdfa896e69159"
+   }
+  },
+  {
+   "i": 72,
+   "question": "What type of protein supplements did Li Hua use after the workout on September 19, 2026?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3971.35,
+    "bm25_ms": null,
+    "aquery_ms": 3973.2,
+    "context_sha256": "f2dc207b335bab058ab4bf2d59d0407ec96daff376d281537cfce38e3bae2061"
+   },
+   "b1": {
+    "retrieval_ms": 3834.89,
+    "bm25_ms": 0.992,
+    "aquery_ms": 3836.6,
+    "context_sha256": "9389a6cfa5e3f801eea7df17452b481f62201dbfdc13ee28f8c4276574c09dd3"
+   },
+   "b2": {
+    "retrieval_ms": 3841.35,
+    "bm25_ms": 0.93,
+    "aquery_ms": 3843.1,
+    "context_sha256": "65b382b0d66387c2a2fe6a8ca4437879ce7e512316f93b68fe526ff52f5e0d84"
+   }
+  },
+  {
+   "i": 73,
+   "question": "What specific measurements did Li Hua take for the window size before the installation of the curtain?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 2557.64,
+    "bm25_ms": 0.931,
+    "aquery_ms": 2559.3,
+    "context_sha256": "24310b8fc5730bccae4dc7632cbdb9e9df7ce2ead02e484b55a064dd927272e6"
+   },
+   "b2": {
+    "retrieval_ms": 2533.42,
+    "bm25_ms": 0.89,
+    "aquery_ms": 2535.0,
+    "context_sha256": "a0ef22605459bcc95acd9b7c2dc82f37979f583e13c69acc70580ec1ad24406b"
+   },
+   "v3": {
+    "retrieval_ms": 2813.23,
+    "bm25_ms": null,
+    "aquery_ms": 2815.1,
+    "context_sha256": "0263c1db817c48c029cc56927b486f1f089cb299bc5d8015c1a5e8635ebecc86"
+   }
+  },
+  {
+   "i": 74,
+   "question": "What does Lachlan find haunting about Cersei's end?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 4107.99,
+    "bm25_ms": 1.179,
+    "aquery_ms": 4109.9,
+    "context_sha256": "99028f3b998e0aca952f88bde51a61d0ea869c0d15b8e745f934e46e7fd13de8"
+   },
+   "v3": {
+    "retrieval_ms": 4061.29,
+    "bm25_ms": null,
+    "aquery_ms": 4063.3,
+    "context_sha256": "7c3d9404c04bd0fecef6a616979c70f0e9fae6426135296504a7fa50e019bcfa"
+   },
+   "b1": {
+    "retrieval_ms": 4066.07,
+    "bm25_ms": 0.777,
+    "aquery_ms": 4067.9,
+    "context_sha256": "99028f3b998e0aca952f88bde51a61d0ea869c0d15b8e745f934e46e7fd13de8"
+   }
+  },
+  {
+   "i": 75,
+   "question": "What type of instrument does Li Hua play in the basement?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 5222.02,
+    "bm25_ms": null,
+    "aquery_ms": 5224.0,
+    "context_sha256": "105cab8d8d7e559b68b8e5393a4430c09f49ecce22df4823a1942cded08be6bd"
+   },
+   "b1": {
+    "retrieval_ms": 5171.85,
+    "bm25_ms": 0.763,
+    "aquery_ms": 5173.7,
+    "context_sha256": "5b062ff2fc065f6c803092e68e242ef92afbedd1372491c241c014ddd3119510"
+   },
+   "b2": {
+    "retrieval_ms": 5383.92,
+    "bm25_ms": 1.12,
+    "aquery_ms": 5385.9,
+    "context_sha256": "4f3e88f662f0817a84275833d42f085c48908b5377d2a172f0066a9fe2ddb81a"
+   }
+  },
+  {
+   "i": 76,
+   "question": "What funny glitch did Fionnuala experience in the game Red Dead Redemption 2?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 4422.99,
+    "bm25_ms": 0.944,
+    "aquery_ms": 4425.0,
+    "context_sha256": "aa56712ce14de7d8ee93e569f3ecacefe4fa0104461ba396b05b09053e14cb4f"
+   },
+   "b2": {
+    "retrieval_ms": 4381.88,
+    "bm25_ms": 0.764,
+    "aquery_ms": 4383.6,
+    "context_sha256": "aa56712ce14de7d8ee93e569f3ecacefe4fa0104461ba396b05b09053e14cb4f"
+   },
+   "v3": {
+    "retrieval_ms": 4342.22,
+    "bm25_ms": null,
+    "aquery_ms": 4344.0,
+    "context_sha256": "aafdf7918c9125bf16194ad1793a89aed034d013b97e9eb2b6988efda4e64c9d"
+   }
+  },
+  {
+   "i": 77,
+   "question": "What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 1722.34,
+    "bm25_ms": 1.234,
+    "aquery_ms": 1723.9,
+    "context_sha256": "f08689850d99e8be19252a5c538bcd526b5b329cdaaac1f57e2ba9bcd054bf25"
+   },
+   "v3": {
+    "retrieval_ms": 1772.11,
+    "bm25_ms": null,
+    "aquery_ms": 1773.5,
+    "context_sha256": "c8f3b00d64c98fe5cb79610ceaae97d36912a575be9b923d93de077b22da662f"
+   },
+   "b1": {
+    "retrieval_ms": 1717.97,
+    "bm25_ms": 1.35,
+    "aquery_ms": 1720.4,
+    "context_sha256": "88400ef59a5d99e1705e9b3c5b410ac5bb5ed0c7ff124823d91391f871a44a3c"
+   }
+  },
+  {
+   "i": 78,
+   "question": "Did Li Hua send a message to Jennifer asking if he can turn the Thursday class to Friday after he requested a change in his training schedule for Thursday?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 8251.29,
+    "bm25_ms": null,
+    "aquery_ms": 8254.0,
+    "context_sha256": "82ae458dd9642a1f50d711b2ca17d274bd3b464ca5bda1537a80460497a65983"
+   },
+   "b1": {
+    "retrieval_ms": 8040.72,
+    "bm25_ms": 1.337,
+    "aquery_ms": 8043.3,
+    "context_sha256": "1004eb5f1e779b4cd5b4ad0481235b8bb6ce977db091470c948ab266c342c5e0"
+   },
+   "b2": {
+    "retrieval_ms": 8062.52,
+    "bm25_ms": 1.427,
+    "aquery_ms": 8065.1,
+    "context_sha256": "1b542a58bdd3818f9bcf281e04fa3fe1e9665f931789c78c7fcbddc4c811424d"
+   }
+  },
+  {
+   "i": 79,
+   "question": "What food did Emily order for the group's discussion about Game of Thrones characters?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8386.11,
+    "bm25_ms": 0.935,
+    "aquery_ms": 8388.5,
+    "context_sha256": "83a55b8b42aa32d2740749b045acafef256c2e64b4dfe4ae276c93e132721447"
+   },
+   "b2": {
+    "retrieval_ms": 8227.74,
+    "bm25_ms": 0.892,
+    "aquery_ms": 8229.9,
+    "context_sha256": "68108d52675178cc6559967be52fe75f789a6f56f63d4b0924308a3a8a876332"
+   },
+   "v3": {
+    "retrieval_ms": 8276.5,
+    "bm25_ms": null,
+    "aquery_ms": 8279.2,
+    "context_sha256": "da5e476b8e47a88f1354f2d32961f55b616955b724e8b8c3433ed006bd70587e"
+   }
+  },
+  {
+   "i": 80,
+   "question": "How does LiHua feel about the soreness in their arm muscles?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 5648.9,
+    "bm25_ms": 1.247,
+    "aquery_ms": 5651.2,
+    "context_sha256": "eeee5dcbbc34b63e5ef233e6f2ebbd487a72e0b7a8fed41c6bcec0653684021b"
+   },
+   "v3": {
+    "retrieval_ms": 5509.01,
+    "bm25_ms": null,
+    "aquery_ms": 5511.4,
+    "context_sha256": "21202de2bd24b9a1391cdede4afcdf0497482cb28e7aa4475c304a001065134a"
+   },
+   "b1": {
+    "retrieval_ms": 5418.37,
+    "bm25_ms": 0.796,
+    "aquery_ms": 5420.4,
+    "context_sha256": "5098acfcdfb67df7f87ea66d1ba3f5b82eb3c83dafaf6a882acc1ef125034147"
+   }
+  },
+  {
+   "i": 81,
+   "question": "What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 7325.26,
+    "bm25_ms": null,
+    "aquery_ms": 7327.6,
+    "context_sha256": "5975b25e28cf8b0324f9391ab70b5e3597f44b7bb39bd80ed9a90c7b5e887341"
+   },
+   "b1": {
+    "retrieval_ms": 7492.53,
+    "bm25_ms": 1.102,
+    "aquery_ms": 7495.7,
+    "context_sha256": "95107de153724a946a1557e00d89f88b1c3c5cb2c1877b9c0b1fa8f5b4ae1c0b"
+   },
+   "b2": {
+    "retrieval_ms": 7456.35,
+    "bm25_ms": 1.208,
+    "aquery_ms": 7458.7,
+    "context_sha256": "bd9c049b65036222dfec21439df7923e10e321739493b31ab6b18eee9319d10b"
+   }
+  },
+  {
+   "i": 82,
+   "question": "What does ThaneChambers think about Sekiro: Shadows Die Twice?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 2640.91,
+    "bm25_ms": 0.857,
+    "aquery_ms": 2642.6,
+    "context_sha256": "cc3489ccecbea7963b849bc2d18bdde868d4f9da45e53726adad764e516bb227"
+   },
+   "b2": {
+    "retrieval_ms": 2605.43,
+    "bm25_ms": 0.678,
+    "aquery_ms": 2608.2,
+    "context_sha256": "882a5d9f2a5236274950db4682c9b0061d680bf36dc00562339d9beaf56ec5c6"
+   },
+   "v3": {
+    "retrieval_ms": 2603.55,
+    "bm25_ms": null,
+    "aquery_ms": 2606.1,
+    "context_sha256": "1ecf83f5bc1669f19ec3dbc044c7208c434ee6eadcb4ac4f3d135917a0ab4c41"
+   }
+  },
+  {
+   "i": 83,
+   "question": "What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 7516.18,
+    "bm25_ms": 1.105,
+    "aquery_ms": 7519.0,
+    "context_sha256": "af3ad7d1b58ff7518881a08ada12aa0fc337c3cb6109b720623b784380abede8"
+   },
+   "v3": {
+    "retrieval_ms": 7311.61,
+    "bm25_ms": null,
+    "aquery_ms": 7314.2,
+    "context_sha256": "cd970a42865c6ff304f4a8896a5bd54fde283d37b703e10a471b6cf46c46ce0b"
+   },
+   "b1": {
+    "retrieval_ms": 7220.52,
+    "bm25_ms": 1.491,
+    "aquery_ms": 7222.7,
+    "context_sha256": "c85dfe8c6d6d17eca4f8dd96896e16679d73084395a5ab364e8a71960e319502"
+   }
+  },
+  {
+   "i": 84,
+   "question": "What does Saffron say Cersei was blinded by?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 3654.14,
+    "bm25_ms": null,
+    "aquery_ms": 3656.8,
+    "context_sha256": "f88283ac1c3ecfe3a1d0191c6ec3bc60e753103b3a540d191d37e23a9688cce9"
+   },
+   "b1": {
+    "retrieval_ms": 3775.82,
+    "bm25_ms": 0.526,
+    "aquery_ms": 3777.7,
+    "context_sha256": "3be72a05057b52aff864d9350d911d81b428da5e062ee2b4d599aa756f1045ce"
+   },
+   "b2": {
+    "retrieval_ms": 3619.7,
+    "bm25_ms": 0.54,
+    "aquery_ms": 3621.7,
+    "context_sha256": "24aace60444df825f27dd13b4d7a67915c5cf26f05127a2ef412a290d08f8b04"
+   }
+  },
+  {
+   "i": 85,
+   "question": "What time do they agree to meet for pizza?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 1854.53,
+    "bm25_ms": 0.76,
+    "aquery_ms": 1856.1,
+    "context_sha256": "885b3977da7a83f2342ba647c79dcea05c541efb6d83be6cee311c0f1ff29384"
+   },
+   "b2": {
+    "retrieval_ms": 1860.28,
+    "bm25_ms": 0.78,
+    "aquery_ms": 1861.7,
+    "context_sha256": "d58e77b3fe73a68b687a6db0d9e82180dce400c8db0ba822d39dad8f6b699002"
+   },
+   "v3": {
+    "retrieval_ms": 1896.96,
+    "bm25_ms": null,
+    "aquery_ms": 1898.5,
+    "context_sha256": "f627356d74c25b864722727a517663ccde6ee39adac1119c62b0c31b4e8db589"
+   }
+  },
+  {
+   "i": 86,
+   "question": "Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 9328.43,
+    "bm25_ms": 1.07,
+    "aquery_ms": 9330.9,
+    "context_sha256": "804ee381247103b3430892f7152b19280a7c5b714dd8670d4dc2f90055d3b3a7"
+   },
+   "v3": {
+    "retrieval_ms": 9664.46,
+    "bm25_ms": null,
+    "aquery_ms": 9666.9,
+    "context_sha256": "fd5e6e9ad640ee310e5f5614a70488884f3636d4c67bb1e323b023a5263be6ae"
+   },
+   "b1": {
+    "retrieval_ms": 9322.43,
+    "bm25_ms": 1.365,
+    "aquery_ms": 9325.3,
+    "context_sha256": "5390c87f54bde1fb594601d4815707a95f3d381549790901c08cd525be1434ff"
+   }
+  },
+  {
+   "i": 87,
+   "question": "Who will bring the tools for the curtain installation?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 778.67,
+    "bm25_ms": null,
+    "aquery_ms": 780.2,
+    "context_sha256": "f4973122db6db1b191684edfe1ce4c40b2ac731adb254ba35abf41c63a3127a8"
+   },
+   "b1": {
+    "retrieval_ms": 821.51,
+    "bm25_ms": 0.568,
+    "aquery_ms": 822.7,
+    "context_sha256": "bc4bf7e2e22d913656d4d36c598d20ac62fcd6e11f9b4d3375ffec987068915c"
+   },
+   "b2": {
+    "retrieval_ms": 781.66,
+    "bm25_ms": 0.53,
+    "aquery_ms": 783.3,
+    "context_sha256": "e7b8f9622260f50626b9c45c46ce1ef545c77d684e7f049daf3748caabb47199"
+   }
+  },
+  {
+   "i": 88,
+   "question": "What were the specific requirements that the customers modified and how did Li Hua respond to each change?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 6498.9,
+    "bm25_ms": 1.028,
+    "aquery_ms": 6501.2,
+    "context_sha256": "b62684f119cfe977dc9ba3ba2a8654bfffef6e7948e4d868f5408006a9b40f33"
+   },
+   "b2": {
+    "retrieval_ms": 6420.47,
+    "bm25_ms": 0.861,
+    "aquery_ms": 6422.6,
+    "context_sha256": "8b1a52ac0e30cf9226e547695fb93027918d944f8a39f471e6956fa0af3149a8"
+   },
+   "v3": {
+    "retrieval_ms": 6744.57,
+    "bm25_ms": null,
+    "aquery_ms": 6747.1,
+    "context_sha256": "bd42181cb0a79752e348d1a32d4730a26ace30f311ce6132ea4f573bb343e724"
+   }
+  },
+  {
+   "i": 89,
+   "question": "Who does Jake believe has the potential to be a game-changer for Barca?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 4631.15,
+    "bm25_ms": 1.231,
+    "aquery_ms": 4633.5,
+    "context_sha256": "6950e656dbc8b9aff1d2b4e038e790432b7f357452a8285f62e9f76445eac3a0"
+   },
+   "v3": {
+    "retrieval_ms": 4723.1,
+    "bm25_ms": null,
+    "aquery_ms": 4725.0,
+    "context_sha256": "cec5c6908dfdb22e7004f71058dd8ae8f0672000a2bbe8309ff3edd432f5e44b"
+   },
+   "b1": {
+    "retrieval_ms": 4664.13,
+    "bm25_ms": 0.621,
+    "aquery_ms": 4666.2,
+    "context_sha256": "58d5878031bcfae95404a1815cb739ce2bf5fcecf192870f54795994cff1d1b8"
+   }
+  },
+  {
+   "i": 90,
+   "question": "When was the first time Li Hua had dinner with Wolfgang this year?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 6590.99,
+    "bm25_ms": null,
+    "aquery_ms": 6593.1,
+    "context_sha256": "412fa44924b3991f7c1ad92b5c7c8feb85bd4dea14c22268a39245e2d57ddb5f"
+   },
+   "b1": {
+    "retrieval_ms": 6458.46,
+    "bm25_ms": 1.721,
+    "aquery_ms": 6461.0,
+    "context_sha256": "4727fcf37a9245be2d0c2e8424b34318c859bdd7db6a0befc405d1465cfb119b"
+   },
+   "b2": {
+    "retrieval_ms": 6370.0,
+    "bm25_ms": 0.889,
+    "aquery_ms": 6372.2,
+    "context_sha256": "f08215da18cd81ac23242d3225d1087629d35881d116a01b0dce51d4610ea76f"
+   }
+  },
+  {
+   "i": 91,
+   "question": "Which character does LiHua mention as their favorite and describe as inspiring?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 7084.08,
+    "bm25_ms": 0.914,
+    "aquery_ms": 7086.8,
+    "context_sha256": "1382c0da2819237f4388a2cad62c67cc8062c6f845ccdc2f285c8d02c50f9435"
+   },
+   "b2": {
+    "retrieval_ms": 7257.98,
+    "bm25_ms": 1.516,
+    "aquery_ms": 7260.6,
+    "context_sha256": "d6fbba29f7dc5eacaa7ed65b540a14167d51c410195e681b5966e96f2974a5db"
+   },
+   "v3": {
+    "retrieval_ms": 6864.62,
+    "bm25_ms": null,
+    "aquery_ms": 6867.0,
+    "context_sha256": "d2c4b3e5efe5e2b4fa2a437f4938d7410376f6a624258b724f141af58ab7585e"
+   }
+  },
+  {
+   "i": 92,
+   "question": "What aspect of Guardiola's career does JakeWatson admire?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 4438.91,
+    "bm25_ms": 1.191,
+    "aquery_ms": 4440.9,
+    "context_sha256": "2502fc841a1923ac5fcc986c114fe902410a5bccfcc91074844e762c56dc071e"
+   },
+   "v3": {
+    "retrieval_ms": 4425.69,
+    "bm25_ms": null,
+    "aquery_ms": 4427.6,
+    "context_sha256": "af634dc6d8c289130be891354f3120ecf5d7dabf85ec0b149d82e82e24f9a3b4"
+   },
+   "b1": {
+    "retrieval_ms": 4420.29,
+    "bm25_ms": 0.748,
+    "aquery_ms": 4422.1,
+    "context_sha256": "7504c93029ca7b5d34fa2944a7fb439a5efc48971a33198fd3650d84a1a5df74"
+   }
+  },
+  {
+   "i": 93,
+   "question": "Is the time interval between LiHua asking JakeWatson to help him with dribbling skills and Li Hua asking the group about classic must-watch UCL matches more than 2 days (restrict your search within August)?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 11928.2,
+    "bm25_ms": null,
+    "aquery_ms": 11931.4,
+    "context_sha256": "ae37f0e8af15e1b31d98e4faddb0b13b658cb09baafe9e76caea40e76d02ad8f"
+   },
+   "b1": {
+    "retrieval_ms": 11813.97,
+    "bm25_ms": 1.971,
+    "aquery_ms": 11817.0,
+    "context_sha256": "bbe0769302f80d0d8e346df752364b60bf3dcd113eaf7b6473e5348c36943be9"
+   },
+   "b2": {
+    "retrieval_ms": 12118.4,
+    "bm25_ms": 1.654,
+    "aquery_ms": 12121.7,
+    "context_sha256": "c5e395a336317ffff4de5dd9d8a0b55a2f6b2c18208fd5566e39fbd8c5532836"
+   }
+  },
+  {
+   "i": 94,
+   "question": "What event is the community organizing?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 3928.15,
+    "bm25_ms": 0.465,
+    "aquery_ms": 3929.8,
+    "context_sha256": "47fbc0ac0034d1dec22d5f4ab72d4ccf5c99f7e422f8c79a2d4a8fc0c3f677cd"
+   },
+   "b2": {
+    "retrieval_ms": 3941.94,
+    "bm25_ms": 0.43,
+    "aquery_ms": 3943.6,
+    "context_sha256": "6a91f7a6ad717f95c5ae9c913430e978d4f5558876450963f5af2de3241f0342"
+   },
+   "v3": {
+    "retrieval_ms": 3935.33,
+    "bm25_ms": null,
+    "aquery_ms": 3937.2,
+    "context_sha256": "e1496d665893b204122f781fb38747a643275bf3666d0f3ba5b35df04a1a90c6"
+   }
+  },
+  {
+   "i": 95,
+   "question": "What does Fionnuala think about matchmaking systems?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 3294.97,
+    "bm25_ms": 0.671,
+    "aquery_ms": 3296.9,
+    "context_sha256": "f7801e81e6d5d3adaaf7ae74d3fcfcf892b8b59fa35ec9a42081d47194781667"
+   },
+   "v3": {
+    "retrieval_ms": 3275.58,
+    "bm25_ms": null,
+    "aquery_ms": 3277.2,
+    "context_sha256": "9e82a0c2c57314335157658ccf9bf9877f5b2a7d62197c4ef436a701c09572da"
+   },
+   "b1": {
+    "retrieval_ms": 3253.72,
+    "bm25_ms": 0.91,
+    "aquery_ms": 3255.3,
+    "context_sha256": "b5dfda19a7e18f7829402ee8ee7bb264a80fc5f4dd43432f94c76e29d2e2a745"
+   }
+  },
+  {
+   "i": 96,
+   "question": "What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe \"Central Perk\" on Thursday morning, and how did Li Hua respond to her comments?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 15267.94,
+    "bm25_ms": null,
+    "aquery_ms": 15271.7,
+    "context_sha256": "0f13b23fbbb0b6dace1e155dfa58c7d14d36eab584c799546515697997822c9f"
+   },
+   "b1": {
+    "retrieval_ms": 15057.75,
+    "bm25_ms": 1.914,
+    "aquery_ms": 15061.4,
+    "context_sha256": "4a3595c71d18804a97709e1d2502e022e2cd835ddf1cb1de9093fb0ab30e7f3a"
+   },
+   "b2": {
+    "retrieval_ms": 15466.61,
+    "bm25_ms": 1.922,
+    "aquery_ms": 15471.6,
+    "context_sha256": "6cf28201d2a335a87f2a92b6b0b6d2cbc5fcf0561a6d211caee2b3de37b4c02d"
+   }
+  },
+  {
+   "i": 97,
+   "question": "Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?",
+   "order": [
+    "b1",
+    "b2",
+    "v3"
+   ],
+   "b1": {
+    "retrieval_ms": 8463.52,
+    "bm25_ms": 1.513,
+    "aquery_ms": 8466.2,
+    "context_sha256": "c4e47d15061bcd1d5d841c30a07add0c09400430529308a84b0a8e9a45f1979a"
+   },
+   "b2": {
+    "retrieval_ms": 8630.39,
+    "bm25_ms": 1.432,
+    "aquery_ms": 8632.9,
+    "context_sha256": "bb6a330370376b2435a35a3405b78fec397500a038cc4d3d818d3515a6ebf4c6"
+   },
+   "v3": {
+    "retrieval_ms": 8468.61,
+    "bm25_ms": null,
+    "aquery_ms": 8471.1,
+    "context_sha256": "5b06cc6637f1d24b9d1763f8abe6f8ee5e5176d5945833df73f7f77e51d221ab"
+   }
+  },
+  {
+   "i": 98,
+   "question": "Did Li Hua ask Yuriko to play music together before Wolfgang proposed to pause playing musical instruments?",
+   "order": [
+    "b2",
+    "v3",
+    "b1"
+   ],
+   "b2": {
+    "retrieval_ms": 10878.09,
+    "bm25_ms": 1.409,
+    "aquery_ms": 10880.8,
+    "context_sha256": "e8f4a5b1e71f19e040903f813ee367134439fcd8cdfe4e0e59b77cd987cad484"
+   },
+   "v3": {
+    "retrieval_ms": 10996.07,
+    "bm25_ms": null,
+    "aquery_ms": 10998.8,
+    "context_sha256": "bd71b7a9fecd49c1b10df225e8f10a0630e5ff94ad653aaee35c0c03f25fe7e3"
+   },
+   "b1": {
+    "retrieval_ms": 10911.75,
+    "bm25_ms": 1.173,
+    "aquery_ms": 10914.6,
+    "context_sha256": "883ab8d09203ba7ad80fea07b8d6d03462ea45c139a927ec314976b4288e85f7"
+   }
+  },
+  {
+   "i": 99,
+   "question": "Did Wolfgang's promotion announcement occur before he invited Li Hua for dinner on 20260430?",
+   "order": [
+    "v3",
+    "b1",
+    "b2"
+   ],
+   "v3": {
+    "retrieval_ms": 6187.08,
+    "bm25_ms": null,
+    "aquery_ms": 6189.5,
+    "context_sha256": "bbf187a5564bb797e9195c872351f4e381aced38afd39f6b77b0a43c0337907f"
+   },
+   "b1": {
+    "retrieval_ms": 6045.23,
+    "bm25_ms": 0.999,
+    "aquery_ms": 6047.4,
+    "context_sha256": "f0b97e7cf6c21f9cf9b7b70681df90cdd67456efbd401379e80949fdd7476899"
+   },
+   "b2": {
+    "retrieval_ms": 6060.84,
+    "bm25_ms": 1.258,
+    "aquery_ms": 6063.2,
+    "context_sha256": "a7b770460a85aa40ddbd2fe3d92ac289356a77b33089afb97a75bb8b645efbc2"
+   }
+  }
+ ]
+}

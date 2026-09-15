@@ -717,6 +717,18 @@ không đạt, vì `caffeinate` không chặn được ngủ khi chạy pin hay 
 
 Chỉ **lượt hợp lệ đầu tiên** được dùng; tính hợp lệ chỉ xét theo nhật ký ngủ, không xét theo số đo.
 
+**Kết quả đo lại (15/09/2026 15:39–16:09, lượt hợp lệ đầu tiên; `logs/screening/latency_remeasure.txt`)**
+
+| | T1: trung vị hiệu ghép cặp `retrieval_ms` | trung bình · p10 · p90 | T2: trung vị `bm25_ms` | Quyết định canary: gốc → sau sửa đổi |
+|---|---:|---|---:|---|
+| B1 | −15,06 ms ✓ | +11,52 · −255,6 · +323,1 | 0,945 ms ✓ | PROMOTE → **PROMOTE** |
+| B2 | −7,72 ms ✓ | −0,07 · −265,0 · +254,3 | 1,022 ms ✓ | STOP → **PROMOTE (lệch đăng ký)** |
+
+Nguồn AC suốt lượt đo, nhật ký nguồn điện không có sự kiện ngủ. Context V3 khớp hash đông lạnh 100/100; context B1 và B2 khớp báo
+cáo canary 100/100. Hiệu thời gian từng câu dao động khoảng ±250–320 ms (p10–p90) trong khi BM25 tốn khoảng 1 ms, xác nhận cổng cũ
+đo nhiễu. **B2 vào tầng C với nhãn lệch đăng ký**; khi viết bài phải báo cả quyết định STOP gốc (+61,7 ms) lẫn quyết định sau đo
+lại. Dev 200 của B1 và B2 vẫn chờ nhóm duyệt.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

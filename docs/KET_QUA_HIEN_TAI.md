@@ -100,13 +100,14 @@ trước BM25.
 | Biến thể | acc | err | neither | Single (59) | Multi (21) | Null (20) | So với V3 canary | Quyết định |
 |---|---:|---:|---:|---:|---:|---:|---|---|
 | V3 đông lạnh (mốc) | 62,00 | 31,00 | 7,00 | 69,5 | 38,1 | 65,0 | — | FROZEN |
-| B1 = RRF(đồ thị, vector, BM25) | 66,00 | 29,00 | 5,00 | 79,7 | 38,1 | 55,0 | 10 / 6 trên 97 câu đổi context | lên dev 200 — qua sát nút (net +4 < 1σ = 4,50) |
-| B2 = RRF(vector, BM25) | 68,00 | 28,00 | 4,00 | 76,3 | 57,1 | 55,0 | 16 / 10 trên 99 câu đổi context | **STOP** — chỉ trượt cổng an toàn thời gian truy hồi (+61,7 ms > 50 ms); QA net +6 |
+| B1 = RRF(đồ thị, vector, BM25) | 66,00 | 29,00 | 5,00 | 79,7 | 38,1 | 55,0 | 10 / 6 trên 97 câu đổi context | lên dev 200 — qua sát nút (net +4 < 1σ = 4,50); đo lại thời gian vẫn đạt (T1 −15,1 ms) |
+| B2 = RRF(vector, BM25) | 68,00 | 28,00 | 4,00 | 76,3 | 57,1 | 55,0 | 16 / 10 trên 99 câu đổi context | gốc **STOP** (cổng thời gian +61,7 ms); đo lại theo sửa đổi đăng ký: **PROMOTE — lệch đăng ký** (T1 −7,7 ms, BM25 1,0 ms) |
 
 Tầng A (offline, 180 câu dev có evidence, không sinh, không chấm) — tỉ lệ câu có đủ mọi chunk đáp án trong context:
 B1 62,8% → 72,2% (20 lên / 3 xuống, p = 0,0005); B2 62,2% → 83,9% (46 lên / 7 xuống, p = 4·10⁻⁸). Đây là dự báo chẩn đoán,
-không phải accuracy. Null trên canary: B1 0 lên / 2 xuống, B2 1 lên / 3 xuống — cùng chiều vấn đề Null ở mục 2. Cổng thời gian truy hồi đang đo
-chủ yếu nhiễu (BM25 thêm ~1 ms, hiệu đo được dao động −99 đến +62 ms giữa các lượt) — xem ROADMAP, kết quả tầng B.
+không phải accuracy. Null trên canary: B1 0 lên / 2 xuống, B2 1 lên / 3 xuống — cùng chiều vấn đề Null ở mục 2. Cổng thời gian cũ đo chủ yếu nhiễu:
+đo lại xen kẽ (lệch đăng ký đã khai báo) cho BM25 tốn ~1 ms, hiệu ghép cặp trung vị B1 −15,1 ms / B2 −7,7 ms, từng câu dao động
+±250–320 ms — xem ROADMAP, kết quả tầng B.
 
 ## 6. Điều kiện bắt buộc khi trích dẫn
 

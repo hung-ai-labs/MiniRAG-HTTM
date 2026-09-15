@@ -1,0 +1,13 @@
+Đo lại cổng thời gian truy hồi — tầng B (sửa đổi đăng ký trước, commit 30d3485; lệch đăng ký đã khai báo)
+Đo lúc 15/09/2026 16:09 · 100 câu canary × 3 chế độ liền nhau, thứ tự xoay vòng · parser chỉ từ cache · caffeinate bật
+Kiểm toàn vẹn: V3 dựng được 100/100, khớp hash đông lạnh 100
+B1 (n = 100; context khớp báo cáo canary 100/100):
+- T1 trung vị hiệu ghép cặp retrieval_ms: -15.06 ms (trung bình +11.52, p10 -255.6, p90 +323.1) → ĐẠT (≤ 50 ms)
+- T2 trung vị bm25_ms: 0.945 ms → ĐẠT
+- trung vị retrieval_ms: V3 5373,6 · B1 5295,1 ms
+- quyết định canary: gốc PROMOTE → sau sửa đổi PROMOTE
+B2 (n = 100; context khớp báo cáo canary 100/100):
+- T1 trung vị hiệu ghép cặp retrieval_ms: -7.72 ms (trung bình -0.07, p10 -265.0, p90 +254.3) → ĐẠT (≤ 50 ms)
+- T2 trung vị bm25_ms: 1.022 ms → ĐẠT
+- trung vị retrieval_ms: V3 5373,6 · B2 5489,9 ms
+- quyết định canary: gốc STOP → sau sửa đổi PROMOTE (đổi quyết định — lệch đăng ký)

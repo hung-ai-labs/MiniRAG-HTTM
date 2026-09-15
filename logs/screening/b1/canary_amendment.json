@@ -1,0 +1,15 @@
+{
+ "variant": "b1",
+ "original_decision": "PROMOTE",
+ "decision": "PROMOTE",
+ "decision_changed": false,
+ "declared_deviation": true,
+ "gate": "cổng thời gian truy hồi đo lại (sửa đổi đăng ký trước 15/09/2026)",
+ "prereg_commit": "30d3485",
+ "T1_median_paired_diff_ms": -15.06,
+ "T1": true,
+ "T2_median_bm25_ms": 0.945,
+ "T2": true,
+ "other_canary_gates_ok": true,
+ "measured_at": "2026-09-15 16:09"
+}

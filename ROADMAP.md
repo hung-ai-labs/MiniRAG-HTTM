@@ -742,6 +742,23 @@ token trung vị ±5%. Áp đối xứng cho B1 và B2; B2 vẫn mang nhãn lệ
 Thứ tự chạy, chốt trước: mở rộng V3 đông lạnh lên dev 200 (100 câu mới, một lần) → B1 → B2. Không chạy song song; máy cắm sạc,
 `caffeinate` bật. Lượt này không có tầng D: biến thể nào đạt tầng C thành **FINALIST** và chờ duyệt riêng.
 
+**Kết quả tầng C — dev 200 (15/09/2026 16:51–19:44; một lượt sinh seed 20260914 × một lượt chấm; nguồn AC, không có sự kiện ngủ)**
+
+| | acc | err | neither | Single (159) | Multi (21) | Null (20) | So với V3 đông lạnh | net / σ(m) | Quyết định |
+|---|---:|---:|---:|---|---|---|---|---|---|
+| V3 đông lạnh (dev 200) | 59,00 | 28,50 | 12,50 | 61,0 | 38,1 | 65,0 | — | — | FROZEN |
+| B1 = RRF(đồ thị, vector, BM25) | 69,00 | 24,50 | 6,50 | 74,8 · 28 / 6 | 38,1 · 2 / 2 | 55,0 · 0 / 2 | 30 / 10 (m = 195) | +20 / 6,38 | **FINALIST** |
+| B2 = RRF(vector, BM25) | 74,50 | 22,00 | 3,50 | 79,2 · 43 / 14 | 57,1 · 5 / 1 | 55,0 · 1 / 3 | 49 / 18 (m = 198) | +31 / 6,43 | **FINALIST (lệch đăng ký từ tầng B)** |
+
+Bằng chứng trên 180 câu có evidence: chunk đáp án giữ 66,7% → 75,8% (B1) / 86,0% (B2); câu đủ đáp án 62,8% → 72,8% / 83,9%.
+Phiếu `error`: B1 −8, B2 −13. Token context trung vị: B1 +0,3%, B2 −0,3%. An toàn đạt 6/6 ở cả hai. Phụ, không phải cổng:
+B2 so với B1 30 / 19 (net +11, 192 câu khác context, σ = 6,33); B2 so với vector thuần lượt chính thức 37 / 16. Hiệu thời gian
+tuần tự, chỉ tham khảo: B1 −311,7 ms, B2 −11,0 ms — lại là nhiễu.
+
+**Đọc.** Cả hai qua tầng C rõ ràng (B1 ≈ 3,1σ, B2 ≈ 4,8σ). Đây vẫn là **sàng lọc**: một lượt sinh, dev 200 đã chứa canary, và mọi
+quy tắc đã được nhìn trên dev. Nhóm Null tụt ở cả hai (0 / 2, 1 / 3), cùng chiều vấn đề Null của V3. Kết luận H1–H3 chỉ có ở tầng
+D (435 câu ngoài dev × 3 seed), cần duyệt riêng.
+
 **Tầng D — xác nhận bằng lặp lượt sinh** (chỉ ứng viên chung kết; lệnh riêng, duyệt riêng):
 - Biến thể: 435 câu ngoài dev × 3 seed sinh cố định {101, 202, 303} × 1 lượt chấm. Không cache parser, không tái dùng câu
   trả lời, **không chọn seed tốt nhất**.

@@ -1,0 +1,29 @@
+Variant: b1 (rrf_bm25)
+Stage: dev (200/200 câu; một lượt sinh seed 20260914 × một lượt chấm; bằng chứng sàng lọc, không phải kết luận H1–H3)
+Endpoint: https://hung-ai-labs--minirag-slm-serve.modal.run · chạy bởi: Hunggoodboy
+Retrieval:
+- chunk đáp án giữ: 66,7% → 75,8% · câu đủ đáp án: 62,8% → 72,8% (180 câu có evidence)
+- token context trung vị: 3888 → 3900
+- truy hồi trung vị: 5483,7 → 5172,0 ms
+- context đổi so với V3: 195/200 câu (câu không đổi dùng lại câu trả lời + phán quyết V3)
+QA:
+- câu đánh giá: 200 (loại 0)
+- sinh mới: 98 (cộng dồn biến thể: 195) · lời gọi judge: 98 (cộng dồn: 195)
+- acc: 59,00 → 69,00 (Δ 10,00); điều chỉnh theo tỉ lệ dev: 59,00 → 69,00
+- err: 28,50 → 24,50 (Δ số phiếu -8); neither 12,50 → 6,50
+- Single: 28 lên / 6 xuống (acc 61,0 → 74,8, n = 159)
+- Multi: 2 lên / 2 xuống (acc 38,1 → 38,1, n = 21)
+- Null: 0 lên / 2 xuống (acc 65,0 → 55,0, n = 20)
+- ghép cặp: 30 lên / 10 xuống, net +20 (McNemar p = 0,002 — chỉ tham khảo)
+- phụ: b1 so với b2 trên 101 câu chung: 10 lên / 12 xuống, net -2, m khác nhau = 192, σ = 6,33
+Sequential gates:
+- sau 200 câu: m = 195, net +20, σ(m) = 6,38, loại 0 → PROMOTE
+Safety:
+- ĐẠT: Null net ≥ −3
+- ĐẠT: Multi net ≥ −3
+- ĐẠT: số phiếu error tăng ≤ +4
+- ĐẠT: token context trung vị ±5%
+- ĐẠT: thời gian truy hồi: đo xen kẽ tầng B đạt T1 và T2
+- ĐẠT: Single net ≥ 0
+Decision: FINALIST (chờ duyệt tầng D)
+Tiết kiệm so với 637 × 3 cho biến thể này: sinh 195/637 (69,4% ít hơn), judge 195/1.911 (89,8% ít hơn).

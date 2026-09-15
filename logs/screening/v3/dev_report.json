@@ -1,0 +1,63 @@
+{
+ "stage": "dev",
+ "decision": "FROZEN",
+ "summary": {
+  "n": 200,
+  "excluded": 0,
+  "up": 0,
+  "down": 0,
+  "net": 0,
+  "mcnemar_p": 1.0,
+  "base": {
+   "accurate": 59.0,
+   "error": 28.5,
+   "neither": 12.5
+  },
+  "var": {
+   "accurate": 59.0,
+   "error": 28.5,
+   "neither": 12.5
+  },
+  "err_delta_count": 0,
+  "by_type": {
+   "Single": {
+    "n": 159,
+    "base_acc": 61.0062893081761,
+    "var_acc": 61.0062893081761,
+    "up": 0,
+    "down": 0,
+    "net": 0
+   },
+   "Multi": {
+    "n": 21,
+    "base_acc": 38.095238095238095,
+    "var_acc": 38.095238095238095,
+    "up": 0,
+    "down": 0,
+    "net": 0
+   },
+   "Null": {
+    "n": 20,
+    "base_acc": 65.0,
+    "var_acc": 65.0,
+    "up": 0,
+    "down": 0,
+    "net": 0
+   }
+  },
+  "adj_base_acc": 59.0,
+  "adj_var_acc": 59.0
+ },
+ "evidence": {
+  "questions": 180,
+  "gold_chunks": 207,
+  "retention": 66.66666666666667,
+  "full": 62.77777777777778
+ },
+ "determinism": {
+  "sample": 20,
+  "identical": 16
+ },
+ "endpoint": "https://hung-ai-labs--minirag-slm-serve.modal.run",
+ "ran_by": "Hunggoodboy"
+}

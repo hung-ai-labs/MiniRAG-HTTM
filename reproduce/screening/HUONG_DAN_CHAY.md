@@ -13,7 +13,10 @@ trước cho BM25 (tầng A–D). Script ở đây chỉ chạy tầng A–C tr�
 | Canary B1 | CONTINUE TO DEV200 — net +4, dưới 1σ = 4,50 | hung-ai-labs | `65280ae` |
 | Canary B2 | gốc STOP (cổng thời gian +61,7 ms) → đo lại theo sửa đổi đăng ký: **PROMOTE, lệch đăng ký**; QA net +6 | hung-ai-labs | xem ROADMAP |
 | Đo lại cổng thời gian (B1, B2) | cả hai đạt: T1 −15,1 / −7,7 ms, BM25 ~1 ms | CPU máy Hùng | xem ROADMAP |
-| Dev 200, tầng D | chờ nhóm duyệt | | |
+| Dev 200 — mở rộng V3 | FROZEN (200/200) | hung-ai-labs | xem ROADMAP |
+| Dev 200 — B1 | **FINALIST** — 30 lên / 10 xuống, net +20 (3,1σ) | hung-ai-labs | xem ROADMAP |
+| Dev 200 — B2 | **FINALIST** (lệch đăng ký từ tầng B) — 49 lên / 18 xuống, net +31 (4,8σ) | hung-ai-labs | xem ROADMAP |
+| Tầng D | chờ nhóm duyệt | | |
 
 ## Quy tắc — đọc trước khi chạy
 

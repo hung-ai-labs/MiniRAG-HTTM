@@ -13,7 +13,8 @@
 - **Nhóm Null đi ngược:** acc 70,26 → 61,54, err 17,44 → 25,30. Cùng chiều ở cả 3 lượt nhưng từng lượt chưa có ý nghĩa
   (p = 0,09–0,18). Các hướng sửa A3, V5a–V5e đều phủ định — không mở lại hướng verifier / từ chối.
 - **Vector thuần ngang V3** (80 lên / 61 xuống, p = 0,13): đồ thị **chưa chứng minh được đóng góp**.
-- **BM25 (B1, B2) đang ở tầng sàng lọc** — chưa có số trên 637 câu (mục 5).
+- **BM25: B1 và B2 cùng qua dev 200** — B2 acc 59,00 → 74,50 (49 lên / 18 xuống), B1 → 69,00 (30 / 10). Vẫn là sàng lọc
+  một lượt sinh; kết luận chờ tầng D (mục 5).
 
 ## 1. Bảng chính — Qwen2.5-3B, 637 câu, 3 lượt chấm Gemini
 
@@ -108,6 +109,17 @@ B1 62,8% → 72,2% (20 lên / 3 xuống, p = 0,0005); B2 62,2% → 83,9% (46 lê
 không phải accuracy. Null trên canary: B1 0 lên / 2 xuống, B2 1 lên / 3 xuống — cùng chiều vấn đề Null ở mục 2. Cổng thời gian cũ đo chủ yếu nhiễu:
 đo lại xen kẽ (lệch đăng ký đã khai báo) cho BM25 tốn ~1 ms, hiệu ghép cặp trung vị B1 −15,1 ms / B2 −7,7 ms, từng câu dao động
 ±250–320 ms — xem ROADMAP, kết quả tầng B.
+
+**Tầng C — dev 200** (200 câu dev, gồm cả 100 câu canary; một lượt sinh × một lượt chấm):
+
+| Biến thể | acc | err | neither | Single (159) | Multi (21) | Null (20) | So với V3: lên / xuống | net / σ | Quyết định |
+|---|---:|---:|---:|---:|---:|---:|---|---|---|
+| V3 đông lạnh | 59,00 | 28,50 | 12,50 | 61,0 | 38,1 | 65,0 | — | — | FROZEN |
+| B1 | 69,00 | 24,50 | 6,50 | 74,8 | 38,1 | 55,0 | 30 / 10 | +20 / 6,38 | **FINALIST** |
+| B2 | 74,50 | 22,00 | 3,50 | 79,2 | 57,1 | 55,0 | 49 / 18 | +31 / 6,43 | **FINALIST** (lệch đăng ký từ tầng B) |
+
+B2 so với B1: 30 / 19 (net +11, σ = 6,33) — chỉ tham khảo. Cả hai vẫn là sàng lọc; kết luận chỉ có sau tầng D (435 câu
+ngoài dev × 3 seed), chưa chạy.
 
 ## 6. Điều kiện bắt buộc khi trích dẫn
 

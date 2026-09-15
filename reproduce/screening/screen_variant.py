@@ -237,7 +237,7 @@ def compare(rows, base, var):
             "by_type": by, "adj_base_acc": adj(base), "adj_var_acc": adj(var)}
 
 
-def safety(s, var_ctx, base_ctx, rows, stage):
+def safety(s, var_ctx, base_ctx, rows, stage, variant=None):
     qs = [r["Question"] for r in rows]
     vt, bt = med(var_ctx[q]["tokens"] for q in qs), med(base_ctx[q]["tokens"] for q in qs)
     vm, bm = med(var_ctx[q]["retrieval_ms"] for q in qs), med(base_ctx[q]["retrieval_ms"] for q in qs)
@@ -245,10 +245,16 @@ def safety(s, var_ctx, base_ctx, rows, stage):
     checks = {"Null net ≥ −3": s["by_type"]["Null"]["net"] >= -3,
               "Multi net ≥ −3": s["by_type"]["Multi"]["net"] >= -3,
               f"số phiếu error tăng ≤ +{err_lim}": s["err_delta_count"] <= err_lim,
-              "token context trung vị ±5%": bool(vt and bt and abs(vt / bt - 1) <= 0.05),
-              "truy hồi thêm ≤ 50 ms": bool(vm is not None and bm is not None and vm - bm <= 50)}
+              "token context trung vị ±5%": bool(vt and bt and abs(vt / bt - 1) <= 0.05)}
     if stage == "dev":
+        # Sửa đổi đăng ký trước 15/09 (commit fe36c1e): cổng thời gian tầng C lấy kết quả đo xen kẽ hợp lệ ở tầng B;
+        # hiệu tuần tự vm − bm vẫn in trong báo cáo để tham khảo, không làm cổng.
+        amd = os.path.join(OUT, variant or "", "canary_amendment.json")
+        a = json.load(open(amd, encoding="utf-8")) if variant and os.path.exists(amd) else {}
+        checks["thời gian truy hồi: đo xen kẽ tầng B đạt T1 và T2"] = bool(a.get("T1") and a.get("T2"))
         checks["Single net ≥ 0"] = s["by_type"]["Single"]["net"] >= 0
+    else:
+        checks["truy hồi thêm ≤ 50 ms"] = bool(vm is not None and bm is not None and vm - bm <= 50)
     return checks, {"tokens_var": vt, "tokens_base": bt, "retrieval_ms_var": vm, "retrieval_ms_base": bm}
 
 
@@ -482,7 +488,7 @@ async def stage_screen(rag, variant, stage, gold):
         s = compare(processed, base, variant_verdicts(processed))
         m = sum(changed[r["Question"]] for r in processed)
         sg = sigma(m)
-        checks, eff = safety(s, var_ctx, base_ctx, processed, stage)
+        checks, eff = safety(s, var_ctx, base_ctx, processed, stage, variant)
         invalid = s["excluded"] > 0.01 * len(processed)
         note = f"sau {len(processed)} câu: m = {m}, net {s['net']:+d}, σ(m) = {fmt(sg)}, loại {s['excluded']}"
         if invalid:
@@ -506,7 +512,7 @@ async def stage_screen(rag, variant, stage, gold):
             break
 
     s = compare(processed or rows, base, variant_verdicts(processed or rows))
-    checks, eff = safety(s, var_ctx, base_ctx, processed or rows, stage)
+    checks, eff = safety(s, var_ctx, base_ctx, processed or rows, stage, variant)
     gens_total = sum(1 for a in answers.values() if a.get("generated"))
     judges_total = sum(1 for a in answers.values() if a.get("verdict") in LABELS)
     extra = []

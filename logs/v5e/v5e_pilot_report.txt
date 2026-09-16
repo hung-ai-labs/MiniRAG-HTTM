@@ -1,0 +1,32 @@
+V5e PILOT -- Qwen2.5-3B verifier, fixed prompt, temperature 0, seed 0, binary structured output
+questions 118; verifier calls 118; skipped 0; Sources rows not mapped to exactly one chunk: 0
+populations from V3-R strict-majority verdicts: wrong Null 16, correct Single 21, correct Multi 19; no majority: 2
+
+wrong Null caught (true abstention)     16/16 = 100.0%
+correct Single wrongly abstained        18/21 = 85.7%
+correct Multi wrongly abstained         19/19 = 100.0%
+pooled false abstention                 37/40 = 92.5%
+projected net on V3 population          1.000 x 18 - 0.925 x 354 = -309.45 questions
+invalid outputs                         0/118
+
+  G1 pooled false abstention <= 10%        FAIL
+  G2 wrong Null caught >= ceil(W/3) = 6    pass
+  G3 FAR_multi <= FAR_single + 10 pp       FAIL
+  G4 projected net on 18-vs-354 > 0        FAIL
+  G5 invalid outputs <= 5%                 pass
+
+VERDICT STOP V5e -- G1 pooled false abstention <= 10%; G3 FAR_multi <= FAR_single + 10 pp; G4 projected net on 18-vs-354 > 0. No prompt tuning, threshold change or retry.
+
+COST
+  extra Qwen calls per query        1 (V3: 2 -> 3, +50%)
+  verifier latency per call         median 0.93 s, p90 1.04 s, mean 0.93 s (sequential, laptop -> Modal)
+  verifier input tokens             median 4300, mean 4191; output tokens mean 3.0
+  V3 input tokens (kw + answer)     median 6193; extra input = 68.1% of V3's
+  verifier wall time                1.9 min for 118 calls
+  estimated GPU cost                ~$0.44 for recording (22.0 min) + verification, at an assumed $1.1/h, excluding cold starts and the 5-min idle tail per session
+
+(informational, not gated)
+  Null neither     flagged 5/5
+  Null accurate    flagged 42/43
+  non-Null error   flagged 10/11
+per-question outputs: logs/v5e_verifier.csv

@@ -1,0 +1,6 @@
+V5e G0 -- smoke check (4 synthetic items, fixed prompt and decoding)
+  relation_swap      expected UNSUPPORTED got UNSUPPORTED ok  (98.02 s, 220 in, 3 out, structured_outputs)
+  entity_swap        expected UNSUPPORTED got UNSUPPORTED ok  (0.37 s, 186 in, 3 out, structured_outputs)
+  date_shift         expected UNSUPPORTED got UNSUPPORTED ok  (0.36 s, 190 in, 3 out, structured_outputs)
+  supported_control  expected SUPPORTED   got SUPPORTED   ok  (0.36 s, 192 in, 3 out, structured_outputs)
+G0 4/4 -> PASS

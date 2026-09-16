@@ -15,7 +15,8 @@ IN = "logs/null_audit/d3_label_audit"
 LABELS = ("accurate", "error", "neither")
 ARMS_637 = {"Baseline": "fix", "V3 lượt 1": "v3", "V3 lượt 2": "v3_r2", "V3 lượt 3": "v3_r3", "Vector thuần": "vec"}
 ARMS_D = {"B1": [f"b1_s{s}" for s in (101, 202, 303)], "B2": [f"b2_s{s}" for s in (101, 202, 303)],
-          "VEC (tầng D)": ["vec_s202", "vec_s303"]}
+          # lượt vector thuần chính thức nằm ở file 637 câu, không phải trong logs/stage_d/
+          "VEC (tầng D)": ["vec_official", "vec_s202", "vec_s303"]}
 
 
 def kappa(pairs):
@@ -46,7 +47,8 @@ def verdicts_637(tag, keep):
 
 
 def verdicts_stage_d(tag, keep):
-    return {r["question"]: r["verdict"] for r in csv.DictReader(open(f"logs/stage_d/{tag}_judged.csv", encoding="utf-8"))
+    path = "logs/qwen637_vec_judged.csv" if tag == "vec_official" else f"logs/stage_d/{tag}_judged.csv"
+    return {r["question"]: r["verdict"] for r in csv.DictReader(open(path, encoding="utf-8"))
             if r["run"] == "1" and r["question"] in keep}
 
 
@@ -64,19 +66,24 @@ def main():
     b = {r["id"]: r for r in csv.DictReader(open(f"{IN}/sheet_B.csv", encoding="utf-8")) if r["nhan"].strip()}
     sheet = {r["id"]: r["cau_hoi"] for r in csv.DictReader(open(f"{IN}/sheet_A.csv", encoding="utf-8"))}
     print(f"Đ3 — người A đã rà {len(a)}/{len(sheet)} câu · người B {len(b)}/{len(sheet)}")
-    if not a or not b:
-        sys.exit("Chưa đủ hai người rà — chưa tính được gì.")
+    if not a:
+        sys.exit("Chưa ai rà — cột nhan còn trống.")
 
-    both = sorted(set(a) & set(b))
-    pairs = [(a[i]["nhan"].strip().upper(), b[i]["nhan"].strip().upper()) for i in both]
-    print(f"\n1. Hai người trên {len(both)} câu: trùng {100 * sum(x == y for x, y in pairs) / len(pairs):.1f}% · κ = {kappa(pairs):.3f}")
-    p2 = [(a[i]["doi_mot_chi_tiet"].strip().upper(), b[i]["doi_mot_chi_tiet"].strip().upper()) for i in both]
-    print(f"   doi_mot_chi_tiet: trùng {100 * sum(x == y for x, y in p2) / len(p2):.1f}% · κ = {kappa(p2):.3f}")
-
-    agreed = {i: a[i]["nhan"].strip().upper() for i in both if a[i]["nhan"].strip().upper() == b[i]["nhan"].strip().upper()}
+    if b:
+        both = sorted(set(a) & set(b))
+        pairs = [(a[i]["nhan"].strip().upper(), b[i]["nhan"].strip().upper()) for i in both]
+        print(f"\n1. Hai người trên {len(both)} câu: trùng {100 * sum(x == y for x, y in pairs) / len(pairs):.1f}% · κ = {kappa(pairs):.3f}")
+        p2 = [(a[i]["doi_mot_chi_tiet"].strip().upper(), b[i]["doi_mot_chi_tiet"].strip().upper()) for i in both]
+        print(f"   doi_mot_chi_tiet: trùng {100 * sum(x == y for x, y in p2) / len(p2):.1f}% · κ = {kappa(p2):.3f}")
+        agreed = {i: a[i]["nhan"].strip().upper() for i in both if a[i]["nhan"].strip().upper() == b[i]["nhan"].strip().upper()}
+    else:
+        agreed = {i: a[i]["nhan"].strip().upper() for i in a}
+        both = sorted(a)
+        print("\n1. CHỈ MỘT NGƯỜI RÀ (sửa đăng ký 16/09) — không tính được κ.")
+        print("   Mọi con số dưới đây là cách đọc của một người; phải ghi đúng như vậy trong Limitations.")
     co_du = {sheet[i] for i, v in agreed.items() if v == "CO_DU"}
     mot_phan = {sheet[i] for i, v in agreed.items() if v == "CO_MOT_PHAN"}
-    print(f"\n2. Hai người đồng thuận: CO_DU {len(co_du)} câu · CO_MOT_PHAN {len(mot_phan)} câu · "
+    print(f"\n2. CO_DU {len(co_du)} câu · CO_MOT_PHAN {len(mot_phan)} câu · "
           f"bất đồng {len(both) - len(agreed)} câu (cần người thứ ba)")
 
     keep = set(null_all())

@@ -19,6 +19,29 @@ Cả 65 câu Null dùng chung đáp án vàng "Insufficient information". Kiểm
   embedding, làm phiếu khó tái lập; danh sách "đã vào Sources" là bằng chứng sát hơn và tái lập được từ file đã commit.
 - Sinh bằng `reproduce/null_audit/make_label_audit_sheet.py`. Người rà được phép tra thêm corpus tự do.
 
+## Sửa đăng ký, 16/09/2026 — phiếu tốt hơn, và một người rà
+
+**Chốt trước khi có bất kỳ nhãn nào.**
+
+**(a) Bằng chứng trong phiếu.** Bản đầu chỉ có BM25 top-10 và chunk đã vào Sources; thử đọc thì thấy với nhiều câu, BM25 trả về
+đoạn hội thoại không liên quan (hỏi giờ ăn sáng, trả về chuyện đàn guitar). Phiếu mới ghép **bốn** nguồn ứng viên, bỏ trùng, trung
+bình 17 chunk mỗi câu:
+
+| Nhóm | Cách lấy | Có ứng viên ở |
+|---|---|---|
+| MỐC THỜI GIAN | ngày tháng nhắc trong câu hỏi khớp dấu thời gian của chunk; ngày trần ("ngày 9") phải kèm đúng người được nhắc | 6/65 câu |
+| NGƯỜI | mọi người được nhắc trong câu hỏi cùng xuất hiện trong chunk | 63/65 câu |
+| BM25 | top 10 trên nguyên văn câu hỏi | 65/65 câu |
+| ĐÃ VÀO CONTEXT | chunk từng vào Sources của bất kỳ nhánh nào | 63/65 câu |
+
+**(b) Một người rà thay vì hai.** Nhóm giao Đ3 cho **thành viên 2 (Anh Tài)**; hướng dẫn:
+[`docs/phan-cong/THANH_VIEN_2_RA_NHAN_NULL.md`](../../../docs/phan-cong/THANH_VIEN_2_RA_NHAN_NULL.md).
+- **Cái mất:** không tính được Cohen's κ, nên không có thước đo độ tin cậy của việc gán nhãn.
+- **Hệ quả khi báo cáo:** mọi con số của Đ3 phải ghi là **cách đọc của một người**, và nêu trong Limitations.
+- **Giảm nhẹ:** bắt buộc ghi `chunk_id` và `trich_dan` cho mọi câu gán `CO_DU` hoặc `CO_MOT_PHAN`, để người khác kiểm lại được
+  mà không phải đọc lại từ đầu.
+- Nếu sau này có người thứ hai rảnh, rà 10 câu bất kỳ trong `sheet_B.csv` là script tự tính κ trên phần chồng lấn.
+
 ## Người gán nhãn và cách làm mù
 
 Hai người, mỗi người một file (`sheet_A.csv`, `sheet_B.csv`), làm **độc lập**. Phiếu **không** chứa câu trả lời của bất kỳ

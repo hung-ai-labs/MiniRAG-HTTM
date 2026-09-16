@@ -1,0 +1,28 @@
+vector tính lại lệch cờ đã lưu: 0/180 câu  <- mô phỏng CHÍNH XÁC
+
+--- TỔNG: 180 câu, 207 chunk đáp án · A1@4000 ---
+cách xếp hạng                   chunk đáp án giữ  câu đủ đáp án  chunk tv  token tv
+đồ thị có lỗi (hiện tại)                   47.3%          43.3%       6.0      3678
+đồ thị đã sửa                              45.4%          41.1%       7.0      3754
+vector thuần                               71.5%          67.8%      10.0      3726
+RRF(đồ thị có lỗi, vector)                 66.7%          62.8%       8.0      3704
+RRF(đồ thị đã sửa, vector)                 66.2%          61.7%       8.0      3724
+McNemar 'câu đủ đáp án', RRF(đã sửa) vs hiện tại: 40 lên / 7 xuống, p = 0.0000
+
+--- Single: 159 câu, 159 chunk đáp án · A1@4000 ---
+cách xếp hạng                   chunk đáp án giữ  câu đủ đáp án  chunk tv  token tv
+đồ thị có lỗi (hiện tại)                   45.3%          45.3%       6.0      3677
+đồ thị đã sửa                              42.8%          42.8%       6.0      3744
+vector thuần                               69.2%          69.2%       9.0      3687
+RRF(đồ thị có lỗi, vector)                 62.3%          62.3%       7.0      3676
+RRF(đồ thị đã sửa, vector)                 61.0%          61.0%       7.0      3600
+McNemar 'câu đủ đáp án', RRF(đã sửa) vs hiện tại: 32 lên / 7 xuống, p = 0.0001
+
+--- Multi: 21 câu, 48 chunk đáp án · A1@4000 ---
+cách xếp hạng                   chunk đáp án giữ  câu đủ đáp án  chunk tv  token tv
+đồ thị có lỗi (hiện tại)                   54.2%          28.6%      10.0      3678
+đồ thị đã sửa                              54.2%          28.6%      12.0      3825
+vector thuần                               79.2%          57.1%      19.0      3896
+RRF(đồ thị có lỗi, vector)                 81.2%          66.7%      14.0      3851
+RRF(đồ thị đã sửa, vector)                 83.3%          66.7%      15.0      3872
+McNemar 'câu đủ đáp án', RRF(đã sửa) vs hiện tại: 8 lên / 0 xuống, p = 0.0078

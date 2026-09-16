@@ -1,0 +1,66 @@
+V5e DIAGNOSTICS (does not change the official verdict)
+confidence pass labels == official labels: 118/118
+
+P(UNSUPPORTED) by group
+  wrong Null (A)         n=16  min 0.732 · Q1 0.986 · median 0.999 · Q3 1.000 · max 1.000
+  correct Single         n=21  min 0.038 · Q1 0.882 · median 0.996 · Q3 1.000 · max 1.000
+  correct Multi          n=19  min 0.953 · Q1 1.000 · median 1.000 · Q3 1.000 · max 1.000
+  correct non-Null (B)   n=40  min 0.038 · Q1 0.981 · median 1.000 · Q3 1.000 · max 1.000
+  (info) Null neither    n=5   min 1.000 · Q1 1.000 · median 1.000 · Q3 1.000 · max 1.000
+  (info) Null accurate   n=43  min 0.324 · Q1 1.000 · median 1.000 · Q3 1.000 · max 1.000
+  (info) Single error    n=4   min 0.061 · Q1 0.755 · median 0.987 · Q3 0.992 · max 1.000
+  (info) Multi error     n=7   min 0.854 · Q1 1.000 · median 1.000 · Q3 1.000 · max 1.000
+
+SEPARABILITY  wrong Null (positive) vs correct non-Null
+  ROC-AUC 0.448  (bootstrap 95% CI 0.294-0.608, 2000 resamples, seed 13)
+  PR-AUC  0.263  (pilot base rate 0.286; population base rate 0.048)
+  ROC-AUC vs correct Single 0.616 · vs correct Multi 0.263
+  overlap coefficient (10 bins) 0.900
+  share of wrong Null above the correct-group median: 0.44
+
+CALIBRATION (pilot composition, enriched for wrong Null -- not the population)
+  P(UNS) bin      n   mean P(UNS)   observed share wrong Null
+  [0.0, 0.1)     1   0.038         0.000
+  [0.1, 0.5)     3   0.323         0.000
+  [0.5, 0.9)     4   0.818         0.500
+  [0.9, 1.0)    48   0.994         0.292
+
+BREAK-EVEN on the real V3 population (18 wrong Null vs 354 correct non-Null)
+  FAR_max = catch_rate x 18 / 354
+  catch observed  100.0% -> FAR_max 5.08%
+  catch 1/3        33.3% -> FAR_max 1.69%
+  catch 50%        50.0% -> FAR_max 2.54%
+  catch 70%        70.0% -> FAR_max 3.56%
+  catch 100%      100.0% -> FAR_max 5.08%
+  observed FAR 92.5% (Single 85.7%, Multi 100.0%)
+
+ERROR TAXONOMY (classified blind to confidence)
+  false_abstention   harmless_summary_sentence      9  learnable
+  false_abstention   long_context_miss              1  not learnable
+  false_abstention   multihop_synthesis             3  learnable
+  false_abstention   other                         23  not learnable
+  false_abstention   paraphrased_evidence           1  learnable
+  wrong_null_caught  compound_one_clause            2  learnable
+  wrong_null_caught  cross_chunk_splice             1  learnable
+  wrong_null_caught  label_noise_ambiguous_gold     3  not learnable
+  wrong_null_caught  missing_evidence               1  learnable
+  wrong_null_caught  temporal_shift                 1  learnable
+  wrong_null_caught  unsupported_qualifier          4  learnable
+  wrong_null_caught  wrong_premise                  4  learnable
+
+PRE-REGISTERED DECISION
+  official V5e gates: failed
+  conditions for C:
+    [x] catch rate >= 1/3 (1.000)
+    [ ] ROC-AUC >= 0.70 (0.448)
+    [ ] AUC bootstrap CI lower bound > 0.50 (0.294)
+    [ ] learnable share of errors >= 50% (0.35, n=37)
+  STOP signals present:
+    [ ] catch rate < 1/3
+    [x] false abstention high (> 10%)
+    [x] ROC-AUC < 0.65
+    [x] distributions strongly overlap (overlap coefficient >= 0.50)
+    [x] errors mostly not learnable (< 50%)
+    [x] Multi false abstention very high (>= 50%)
+
+RECOMMENDATION: A. STOP VERIFIER DIRECTION

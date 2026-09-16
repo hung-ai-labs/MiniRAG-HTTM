@@ -36,7 +36,7 @@ không có — phải chấm thế nào. Đ1 đo xem người và Gemini lệch 
 ## Sửa đăng ký lần 2, 16/09/2026 — một người chấm thay vì hai
 
 **Vẫn chốt trước khi có bất kỳ nhãn nào.** Nhóm quyết định giao Đ1 cho **một thành viên** (hướng dẫn:
-[`docs/phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md`](../../../docs/phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md)).
+[`docs/phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md`](../../../docs/phan-cong/CHAM_LAI_NHOM_NULL.md)).
 
 - **Cái mất:** không tính được Cohen's κ giữa hai người, nên không có thước đo độ tin cậy của việc gán nhãn.
 - **Hệ quả bắt buộc khi báo cáo:** mọi con số của Đ1 phải ghi rõ là **cách đọc của một người**, không được trình bày như

@@ -1,0 +1,119 @@
+question,type,v3r_majority,verdict,raw,skipped,latency_s,prompt_tokens,completion_tokens,v3_input_tokens,n_sources
+"Did Wolfgang ask Li Hua about watching ""Star Wars: A New Hope"" after he asked Li Hua about going to see ""Overwatch 3""?",Multi,error,UNSUPPORTED,UNSUPPORTED,,1.165839249966666,4441,3,6407,15
+"Did Yuriko ask Li Hua for help with her studio's homepage before she booked a seat at the ""Central Perk"" cafe?",Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.904488708009012,3888,3,5800,17
+"Did Wolfgang Schulz recommend the band learns ""Viva la Vida"" by Coldplay after he and Li Hua discussed what song to play this Sunday?",Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.897778999991715,4157,3,6128,6
+Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9333814580459148,3956,3,5698,10
+Did Li Hua ask Jennifer Moore for book recommendations on fitness nutrition before she announced the special guest speaker at the gym?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9397961250506341,4313,3,6176,12
+Did Jennifer remind Li Hua about proper nutrition and hydration before Jake shared his tips for staying hydrated during the match?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.8769035000586882,3941,3,5672,11
+Did Li Hua ask Thane about his opinion on The Last of Us before he asked about Sekiro: Shadows Die Twice?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9287420000182465,3477,3,5517,5
+Did the group members debate about the best football manager in the Premier League history after they debated if Pep Guardiola is the greatest soccer manager in football history?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.8742247089976445,3537,3,5995,3
+Did the discussion about Jaime Lannister's character occur after the discussion about Cersei Lannister's character?,Multi,neither,UNSUPPORTED,UNSUPPORTED,,0.9095387910492718,3931,3,6343,3
+Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today before he wondered if she wanted to have Sichuan hot pot for dinner tonight?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.960635417024605,4484,3,6661,17
+Did Jennifer challenge Li Hua to do 60 pull-ups in a training session after she challenged him to do 100 pushups?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.8677932500140741,4123,3,6181,15
+Did Jake share common knowledge about offside in soccer with Li Hua before he passed practical techniques to Li Hua on how to avoid offside for a forward?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9434587500290945,4345,3,6096,7
+Did Wolfgang arrive in Hong Kong after he informed Li Hua about his upcoming trip?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9707397079328075,4593,3,6593,17
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,,UNSUPPORTED,UNSUPPORTED,,1.0148476249305531,4426,3,6270,10
+Has Wolfgang ever been to Hong Kong?,Multi,error,UNSUPPORTED,UNSUPPORTED,,0.8918516669655219,4483,3,6656,17
+Who knows about Wolfgang going to Hong Kong?,Multi,error,UNSUPPORTED,UNSUPPORTED,,0.8922126250108704,3815,3,6011,14
+Who introduced the bread delivery service and recommend Alice for the delivery?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,1.182333083008416,4626,3,6982,31
+What opportunity did LiHua create for Chae to meet Wolfgang and Yuriko?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9737707088934258,4593,3,6574,9
+Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9598637078888714,4585,3,6455,16
+Is the time interval more than 3 days between LiHua asking Adam to help him install a curtain on the basement window and Adam asking LiHua to measure the size of the window?,Multi,error,UNSUPPORTED,UNSUPPORTED,,0.9636588750872761,4486,3,6228,17
+Is the time interval more than 3 days between LiHua first asking Adam if he can buy a small fridge for the basement and Adam asking LiHua about the size of the fridge?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9554749579401687,4397,3,6162,26
+Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,1.0348285000072792,4698,3,6153,22
+Wolfgang suddenly becomes very concerned about good body shape and healthy food choices in December. What are the two conversations he had with LiHua in December that reflect this?,Multi,error,UNSUPPORTED,UNSUPPORTED,,0.9891211249632761,4771,3,6352,17
+Did Li Hua agree to have dinner with Wolfgang after he told Wolfgang about the lunch arrangement?,Multi,error,UNSUPPORTED,UNSUPPORTED,,0.9506436660885811,4300,3,6271,20
+Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9478951250202954,4398,3,6190,13
+Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?,Multi,error,UNSUPPORTED,UNSUPPORTED,,0.9235478749033064,4255,3,6108,25
+Did Li Hua tell Wolfgang about making a new friend before Yuriko reminded the group members to meet for the music festival?,Multi,accurate,UNSUPPORTED,UNSUPPORTED,,1.0484020420117304,4463,3,6462,9
+"Did Yuriko tell Li Hua about booking a seat at the ""Central Perk"" cafe before Li Hua sent her a message to confirm the details of their next meeting?",Multi,accurate,UNSUPPORTED,UNSUPPORTED,,0.9826312919612974,4553,3,6404,17
+What is the name of the gym that Wolfgang recommended LiHua to go to?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8624268340645358,3292,3,5155,8
+When did Li Hua change the training plan?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.9503483329899609,4300,3,6133,12
+When does Li Hua request a delivery from Hailey Johnson?,Single,error,UNSUPPORTED,UNSUPPORTED,,0.9525238340720534,4596,3,6331,22
+What joke does Wolfgang make as an April Fool's joke?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8187361669261009,3747,3,5815,10
+How does RexxarRemar plan to spend time in the garden once it's done?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8342492920346558,3658,3,5421,3
+What is the phone number for the maintenance worker that Adam Smith provided to Li Hua for the broken streetlight?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.9835782499285415,4340,3,6350,19
+What dietary restrictions does LiHua have in his conversation with Hailey?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.920966750010848,4311,3,6060,17
+What is the main topic of the conversation between LiHua and ChaeSong-hwa on 20260626?,Single,error,UNSUPPORTED,UNSUPPORTED,,1.004157374962233,4502,3,6270,15
+Who offers to help with setting up for the garage sale?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,1.0417103749932721,4383,3,7018,14
+Which regions in Witcher 3 did Li Hua and Thane Chambers discuss?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8943834999809042,3957,3,6234,5
+What toppings does Wolfgang Schulz prefer on his burger?,Single,error,UNSUPPORTED,UNSUPPORTED,,0.9344802920240909,4499,3,6536,15
+Who is the most hateable character in Game of Thrones in Orion's opinion?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8687127910088748,3137,3,5522,3
+Who is the most hateable character in Game of Thrones in Merrick's opinion?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.7851937080267817,3863,3,6306,3
+How many servings of vegetables should LiHua aim for each day to keep body in good shape according to Jennifer?,Single,accurate,SUPPORTED,SUPPORTED,,0.9590411669341847,4381,4,6193,11
+What is Jake's first tip for avoiding soccer injuries?,Single,accurate,SUPPORTED,SUPPORTED,,0.9034287499962375,4110,3,5921,8
+How does strength training help prevent soccer injuries?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.9003197079291567,4351,3,6931,10
+What memorable quote is mentioned by Phaedra?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.9036993329646066,3872,3,5903,3
+How does Niamh think Jaime could've ended up differently?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.6841393330832943,3942,3,6192,3
+"What is LiHua curious about regarding the ""Man in Black"" in Westworld?",Single,accurate,UNSUPPORTED,UNSUPPORTED,,1.0295746659394354,4389,3,6339,10
+How does Fionnuala describe the convenience of the Control Center's audio settings adjustment?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8979432079941034,4104,3,5911,5
+What time does LiHua propose for dinner on 20260930?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.8882852499373257,4102,3,7085,22
+What does Giselle emphasize about passing drills?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.9396315419580787,4288,3,6690,11
+What game is ThaneChambers currently playing?,Single,accurate,UNSUPPORTED,UNSUPPORTED,,0.907817916944623,4390,3,6159,8
+Who offers to help with the installation of the curtains?,Single,accurate,SUPPORTED,SUPPORTED,,0.9013728749705479,4260,3,6643,18
+What TV show does EmilyBurnett recommend LiHua to watch?,Single,error,SUPPORTED,SUPPORTED,,0.9238192919874564,4238,3,6012,7
+What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.9744006249820814,4591,3,6523,20
+What type of equipment does Wolfgang Schulz use when he works out at the gym?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8838827080326155,3907,3,5980,10
+"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0153026250191033,3924,3,5932,10
+What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0491182910045609,4284,3,6391,11
+"What did Li Hua eat for dinner on January 20, 2026?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8050821250071749,3509,3,5323,17
+What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8322267909534276,3600,3,5444,13
+What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.9440254580695182,4614,3,6548,19
+What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.940289375022985,4470,3,6487,15
+What were the specific requirements that the customers modified and how did Li Hua respond to each change?,Null,error,UNSUPPORTED,UNSUPPORTED,,1.0167797090252861,4752,3,6234,9
+"What payment method did Li Hua use to purchase groceries from the store on April 15, 2026?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8182404999388382,3528,3,5308,22
+What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.93789708300028,4457,3,6082,9
+What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.787110458011739,3561,3,5267,7
+What type of diet is Li Hua following to support his training regimen and sleep schedule?,Null,error,UNSUPPORTED,UNSUPPORTED,,1.0661736249458045,4563,3,6195,9
+What type of protein shake does Li Hua prefer to drink before his workout sessions?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0480056660016999,4256,3,6139,9
+What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.882863707956858,3879,3,5643,10
+What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9124461250612512,3750,3,5520,8
+What color did Li Hua decide to paint the walls of the basement after completing the renovation?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0158814169699326,4420,3,6198,23
+"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",Null,error,UNSUPPORTED,UNSUPPORTED,,0.9062938339775428,3991,3,5986,13
+What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,Null,accurate,SUPPORTED,SUPPORTED,,0.9406130409333855,4375,3,6284,13
+What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9043647920479998,3974,3,5987,13
+What color did Li Hua paint his house before the community garden renovation began?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9082716669654474,4111,3,5986,10
+What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9230855409987271,4245,3,6003,8
+"What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe ""Central Perk"" on Thursday morning, and how did Li Hua respond to her comments?",Null,error,UNSUPPORTED,UNSUPPORTED,,0.9840016670059413,4593,3,6659,17
+What is the exact reason for Li Hua's unexpected work meeting on Thursday?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0448663749266416,4483,3,6350,16
+"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",Null,error,UNSUPPORTED,UNSUPPORTED,,1.0880932919681072,4406,3,6259,23
+What is the favorite type of music that Li Hua and Yuriko plan to play together?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.9824189159553498,4155,3,6017,4
+What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9293694170191884,4191,3,5959,6
+What song did Yuriko and Wolfgang decide to perform together after watching the drum tutorial?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9458297500386834,4430,3,6487,5
+"What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?",Null,error,UNSUPPORTED,UNSUPPORTED,,0.9279223750345409,4423,3,6369,10
+What is the name of the last song Wolfgang played using the new drum practice app?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8606016660341993,3843,3,6020,5
+What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.950163499917835,4502,3,6280,19
+What is the name of the song that Li Hua will sing at the karaoke on 20260425?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9587124160025269,4543,3,6476,9
+What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0447310840245336,4506,3,6912,18
+What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.96062358294148,4448,3,6373,17
+What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.7348794999998063,3100,3,4893,4
+"What new species of flowers will be featured in the community garden renovation, according to the feedback provided by Li Hua during the progress reports?",Null,neither,UNSUPPORTED,UNSUPPORTED,,0.8880935000488535,4366,3,6234,5
+What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.9358122920384631,4344,3,6054,9
+What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9315222500590608,4633,3,6414,26
+What song did Li Hua perform at the local music festival in 2026?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.863888124935329,3899,3,5853,7
+"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9380683749914169,4521,3,6511,17
+What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9537378749810159,4566,3,7189,19
+What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,Null,neither,UNSUPPORTED,UNSUPPORTED,,1.088014250039123,4529,3,6194,8
+What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8757700830465183,3380,3,5197,12
+"What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8029022080590948,3583,3,5364,13
+What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,Null,,UNSUPPORTED,UNSUPPORTED,,0.9130154590820894,3735,3,5789,5
+What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.6412246669642627,4164,3,5772,4
+"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",Null,neither,UNSUPPORTED,UNSUPPORTED,,0.9027745830826461,4277,3,5968,20
+What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?,Null,error,UNSUPPORTED,UNSUPPORTED,,0.9109599170042202,4437,3,6587,12
+What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9644856660161167,4267,3,6685,6
+"What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8466311671072617,3810,3,5641,10
+What food did Emily order for the group's discussion about Game of Thrones characters?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.7655434580519795,3435,3,5643,4
+"What type of protein supplements did Li Hua use after the workout on September 19, 2026?",Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9773105829954147,4512,3,6370,14
+What color was the curtain that Li Hua chose for his living room?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.7999325420241803,3356,3,5137,18
+What specific measurements did Li Hua take for the window size before the installation of the curtain?,Null,error,UNSUPPORTED,UNSUPPORTED,,1.0376751250587404,4397,3,6195,11
+What is Thane's favorite type of food that he enjoys while playing video games?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.76434600003995,4269,3,6501,7
+What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9565797079121694,4244,3,6145,4
+What was the final match score of the 2025 UEFA Champions League final?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.012119417078793,4235,3,6980,4
+What was the exact date and time when Cersei Lannister first met Jaime Lannister in the Game of Thrones series?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.7995744170621037,3866,3,6336,3
+What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,1.0069501249818131,4481,3,6383,16
+What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8898199170362204,4094,3,5885,12
+What strategy did Li Hua use to score a goal in the championship match against their rival team?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.8837794580031186,3764,3,5539,4
+What is Li Hua's favorite type of exercise outside of pull-ups?,Null,neither,UNSUPPORTED,UNSUPPORTED,,0.9239654580596834,4361,3,6075,10
+What time did Chae first suggest they visit the music festival in the morning?,Null,accurate,UNSUPPORTED,UNSUPPORTED,,0.9462209170451388,4492,3,7124,12
+What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,Null,error,UNSUPPORTED,UNSUPPORTED,,1.0503412089310586,4559,3,6228,13
+What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,Null,neither,UNSUPPORTED,UNSUPPORTED,,1.0680790829937905,4538,3,6453,13

@@ -1,0 +1,358 @@
+question,type,run,verdict
+What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,Null,1,error
+"What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?",Null,1,error
+"What is LiHua curious about regarding the ""Man in Black"" in Westworld?",Single,1,accurate
+What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,Null,1,error
+What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,Null,1,accurate
+What time does LiHua propose for dinner on 20260930?,Single,1,accurate
+What type of equipment does Wolfgang Schulz use when he works out at the gym?,Null,1,accurate
+What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,Null,1,neither
+What time did Chae first suggest they visit the music festival in the morning?,Null,1,accurate
+Who is the most hateable character in Game of Thrones in Merrick's opinion?,Single,1,accurate
+What TV show does EmilyBurnett recommend LiHua to watch?,Single,1,error
+Did Jake share common knowledge about offside in soccer with Li Hua before he passed practical techniques to Li Hua on how to avoid offside for a forward?,Multi,1,accurate
+"Did Wolfgang ask Li Hua about watching ""Star Wars: A New Hope"" after he asked Li Hua about going to see ""Overwatch 3""?",Multi,1,error
+Wolfgang suddenly becomes very concerned about good body shape and healthy food choices in December. What are the two conversations he had with LiHua in December that reflect this?,Multi,1,error
+What color was the curtain that Li Hua chose for his living room?,Null,1,accurate
+Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?,Multi,1,error
+What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?,Null,1,error
+Did Li Hua ask Jennifer Moore for book recommendations on fitness nutrition before she announced the special guest speaker at the gym?,Multi,1,accurate
+"Did Wolfgang Schulz recommend the band learns ""Viva la Vida"" by Coldplay after he and Li Hua discussed what song to play this Sunday?",Multi,1,accurate
+What color did Li Hua paint his house before the community garden renovation began?,Null,1,accurate
+What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,Null,1,accurate
+What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?,Null,1,accurate
+How does strength training help prevent soccer injuries?,Single,1,accurate
+What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,Null,1,error
+What is the favorite type of music that Li Hua and Yuriko plan to play together?,Null,1,error
+What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,Null,1,error
+What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,Null,1,error
+What was the final match score of the 2025 UEFA Champions League final?,Null,1,accurate
+How many servings of vegetables should LiHua aim for each day to keep body in good shape according to Jennifer?,Single,1,accurate
+"What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",Null,1,accurate
+What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,Null,1,accurate
+What is the main topic of the conversation between LiHua and ChaeSong-hwa on 20260626?,Single,1,error
+"What did Li Hua eat for dinner on January 20, 2026?",Null,1,accurate
+What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,Null,1,accurate
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,1,neither
+"What payment method did Li Hua use to purchase groceries from the store on April 15, 2026?",Null,1,accurate
+What was the exact date and time when Cersei Lannister first met Jaime Lannister in the Game of Thrones series?,Null,1,accurate
+What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,Null,1,accurate
+When did Li Hua change the training plan?,Single,1,accurate
+"Did Yuriko tell Li Hua about booking a seat at the ""Central Perk"" cafe before Li Hua sent her a message to confirm the details of their next meeting?",Multi,1,accurate
+What food did Emily order for the group's discussion about Game of Thrones characters?,Null,1,accurate
+What is Thane's favorite type of food that he enjoys while playing video games?,Null,1,accurate
+What specific measurements did Li Hua take for the window size before the installation of the curtain?,Null,1,error
+What is the exact reason for Li Hua's unexpected work meeting on Thursday?,Null,1,accurate
+What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,Null,1,error
+What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,Null,1,accurate
+What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,Null,1,accurate
+What song did Yuriko and Wolfgang decide to perform together after watching the drum tutorial?,Null,1,accurate
+Who offers to help with the installation of the curtains?,Single,1,accurate
+What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,Null,1,error
+What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,Null,1,accurate
+Did Jennifer remind Li Hua about proper nutrition and hydration before Jake shared his tips for staying hydrated during the match?,Multi,1,accurate
+Did the group members debate about the best football manager in the Premier League history after they debated if Pep Guardiola is the greatest soccer manager in football history?,Multi,1,accurate
+Did Li Hua ask Thane about his opinion on The Last of Us before he asked about Sekiro: Shadows Die Twice?,Multi,1,accurate
+Who introduced the bread delivery service and recommend Alice for the delivery?,Multi,1,accurate
+What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?,Null,1,accurate
+Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?,Multi,1,accurate
+"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",Null,1,error
+What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,Null,1,accurate
+What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,Null,1,neither
+What toppings does Wolfgang Schulz prefer on his burger?,Single,1,error
+What is Li Hua's favorite type of exercise outside of pull-ups?,Null,1,neither
+What opportunity did LiHua create for Chae to meet Wolfgang and Yuriko?,Multi,1,accurate
+Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?,Multi,1,accurate
+What were the specific requirements that the customers modified and how did Li Hua respond to each change?,Null,1,error
+What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,Null,1,accurate
+Did Li Hua agree to have dinner with Wolfgang after he told Wolfgang about the lunch arrangement?,Multi,1,error
+What song did Li Hua perform at the local music festival in 2026?,Null,1,accurate
+Has Wolfgang ever been to Hong Kong?,Multi,1,error
+Did Wolfgang arrive in Hong Kong after he informed Li Hua about his upcoming trip?,Multi,1,accurate
+"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",Null,1,accurate
+What game is ThaneChambers currently playing?,Single,1,accurate
+How does Fionnuala describe the convenience of the Control Center's audio settings adjustment?,Single,1,accurate
+Did Li Hua tell Wolfgang about making a new friend before Yuriko reminded the group members to meet for the music festival?,Multi,1,accurate
+What strategy did Li Hua use to score a goal in the championship match against their rival team?,Null,1,accurate
+Did Jennifer challenge Li Hua to do 60 pull-ups in a training session after she challenged him to do 100 pushups?,Multi,1,accurate
+Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?,Multi,1,accurate
+What is Jake's first tip for avoiding soccer injuries?,Single,1,accurate
+"What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe ""Central Perk"" on Thursday morning, and how did Li Hua respond to her comments?",Null,1,error
+What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,Null,1,error
+Did the discussion about Jaime Lannister's character occur after the discussion about Cersei Lannister's character?,Multi,1,neither
+"Did Yuriko ask Li Hua for help with her studio's homepage before she booked a seat at the ""Central Perk"" cafe?",Multi,1,accurate
+Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?,Multi,1,accurate
+What dietary restrictions does LiHua have in his conversation with Hailey?,Single,1,accurate
+"What type of protein supplements did Li Hua use after the workout on September 19, 2026?",Null,1,accurate
+What is the name of the song that Li Hua will sing at the karaoke on 20260425?,Null,1,accurate
+What color did Li Hua decide to paint the walls of the basement after completing the renovation?,Null,1,accurate
+Is the time interval more than 3 days between LiHua first asking Adam if he can buy a small fridge for the basement and Adam asking LiHua about the size of the fridge?,Multi,1,accurate
+Is the time interval more than 3 days between LiHua asking Adam to help him install a curtain on the basement window and Adam asking LiHua to measure the size of the window?,Multi,1,accurate
+What type of diet is Li Hua following to support his training regimen and sleep schedule?,Null,1,error
+What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,Null,1,accurate
+What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,Null,1,accurate
+How does Niamh think Jaime could've ended up differently?,Single,1,accurate
+"What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",Null,1,accurate
+What memorable quote is mentioned by Phaedra?,Single,1,accurate
+Who is the most hateable character in Game of Thrones in Orion's opinion?,Single,1,accurate
+What is the name of the gym that Wolfgang recommended LiHua to go to?,Single,1,accurate
+How does RexxarRemar plan to spend time in the garden once it's done?,Single,1,accurate
+Who knows about Wolfgang going to Hong Kong?,Multi,1,error
+"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",Null,1,neither
+What does Giselle emphasize about passing drills?,Single,1,accurate
+What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,Null,1,accurate
+What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?,Null,1,accurate
+Which regions in Witcher 3 did Li Hua and Thane Chambers discuss?,Single,1,accurate
+What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,Null,1,accurate
+What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,Null,1,error
+Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today before he wondered if she wanted to have Sichuan hot pot for dinner tonight?,Multi,1,accurate
+"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",Null,1,accurate
+Who offers to help with setting up for the garage sale?,Single,1,accurate
+What joke does Wolfgang make as an April Fool's joke?,Single,1,accurate
+What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,Null,1,accurate
+What is the phone number for the maintenance worker that Adam Smith provided to Li Hua for the broken streetlight?,Single,1,accurate
+When does Li Hua request a delivery from Hailey Johnson?,Single,1,error
+What type of protein shake does Li Hua prefer to drink before his workout sessions?,Null,1,accurate
+What is the name of the last song Wolfgang played using the new drum practice app?,Null,1,accurate
+What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,Null,1,accurate
+"What new species of flowers will be featured in the community garden renovation, according to the feedback provided by Li Hua during the progress reports?",Null,1,neither
+"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",Null,1,error
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,1,accurate
+Which regions in Witcher 3 did Li Hua and Thane Chambers discuss?,Single,2,accurate
+What song did Li Hua perform at the local music festival in 2026?,Null,2,accurate
+"Did Yuriko tell Li Hua about booking a seat at the ""Central Perk"" cafe before Li Hua sent her a message to confirm the details of their next meeting?",Multi,2,accurate
+What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,Null,2,error
+When does Li Hua request a delivery from Hailey Johnson?,Single,2,error
+"What new species of flowers will be featured in the community garden renovation, according to the feedback provided by Li Hua during the progress reports?",Null,2,neither
+What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,Null,2,accurate
+"What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",Null,2,accurate
+Who introduced the bread delivery service and recommend Alice for the delivery?,Multi,2,accurate
+Who offers to help with setting up for the garage sale?,Single,2,accurate
+"What type of protein supplements did Li Hua use after the workout on September 19, 2026?",Null,2,accurate
+What is the name of the song that Li Hua will sing at the karaoke on 20260425?,Null,2,accurate
+What is the name of the last song Wolfgang played using the new drum practice app?,Null,2,accurate
+What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,Null,2,error
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,2,accurate
+What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,Null,2,accurate
+Did Li Hua agree to have dinner with Wolfgang after he told Wolfgang about the lunch arrangement?,Multi,2,error
+What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,Null,2,accurate
+How does Fionnuala describe the convenience of the Control Center's audio settings adjustment?,Single,2,accurate
+What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,Null,2,error
+What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,Null,2,neither
+Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today before he wondered if she wanted to have Sichuan hot pot for dinner tonight?,Multi,2,accurate
+What time did Chae first suggest they visit the music festival in the morning?,Null,2,accurate
+"What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe ""Central Perk"" on Thursday morning, and how did Li Hua respond to her comments?",Null,2,error
+"Did Wolfgang ask Li Hua about watching ""Star Wars: A New Hope"" after he asked Li Hua about going to see ""Overwatch 3""?",Multi,2,error
+"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",Null,2,accurate
+Did Wolfgang arrive in Hong Kong after he informed Li Hua about his upcoming trip?,Multi,2,accurate
+How many servings of vegetables should LiHua aim for each day to keep body in good shape according to Jennifer?,Single,2,accurate
+Who offers to help with the installation of the curtains?,Single,2,accurate
+"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",Null,2,error
+What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,Null,2,neither
+What color was the curtain that Li Hua chose for his living room?,Null,2,accurate
+What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?,Null,2,accurate
+What type of equipment does Wolfgang Schulz use when he works out at the gym?,Null,2,accurate
+"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",Null,2,accurate
+Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?,Multi,2,accurate
+What food did Emily order for the group's discussion about Game of Thrones characters?,Null,2,accurate
+Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?,Multi,2,accurate
+What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,Null,2,accurate
+What song did Yuriko and Wolfgang decide to perform together after watching the drum tutorial?,Null,2,accurate
+Who is the most hateable character in Game of Thrones in Merrick's opinion?,Single,2,accurate
+What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,Null,2,accurate
+Who knows about Wolfgang going to Hong Kong?,Multi,2,error
+Did Jennifer remind Li Hua about proper nutrition and hydration before Jake shared his tips for staying hydrated during the match?,Multi,2,accurate
+What type of protein shake does Li Hua prefer to drink before his workout sessions?,Null,2,accurate
+What time does LiHua propose for dinner on 20260930?,Single,2,accurate
+What is the phone number for the maintenance worker that Adam Smith provided to Li Hua for the broken streetlight?,Single,2,accurate
+Did Jake share common knowledge about offside in soccer with Li Hua before he passed practical techniques to Li Hua on how to avoid offside for a forward?,Multi,2,accurate
+What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?,Null,2,accurate
+What joke does Wolfgang make as an April Fool's joke?,Single,2,accurate
+What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,Null,2,accurate
+What specific measurements did Li Hua take for the window size before the installation of the curtain?,Null,2,error
+What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,Null,2,neither
+"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",Null,2,error
+What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,Null,2,accurate
+What strategy did Li Hua use to score a goal in the championship match against their rival team?,Null,2,accurate
+Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?,Multi,2,accurate
+What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,Null,2,accurate
+What was the final match score of the 2025 UEFA Champions League final?,Null,2,accurate
+What color did Li Hua paint his house before the community garden renovation began?,Null,2,accurate
+Did Li Hua ask Thane about his opinion on The Last of Us before he asked about Sekiro: Shadows Die Twice?,Multi,2,accurate
+What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,Null,2,error
+What is the exact reason for Li Hua's unexpected work meeting on Thursday?,Null,2,accurate
+Is the time interval more than 3 days between LiHua asking Adam to help him install a curtain on the basement window and Adam asking LiHua to measure the size of the window?,Multi,2,error
+"What payment method did Li Hua use to purchase groceries from the store on April 15, 2026?",Null,2,accurate
+What is the main topic of the conversation between LiHua and ChaeSong-hwa on 20260626?,Single,2,error
+What color did Li Hua decide to paint the walls of the basement after completing the renovation?,Null,2,accurate
+Wolfgang suddenly becomes very concerned about good body shape and healthy food choices in December. What are the two conversations he had with LiHua in December that reflect this?,Multi,2,error
+What opportunity did LiHua create for Chae to meet Wolfgang and Yuriko?,Multi,2,accurate
+Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?,Multi,2,error
+What was the exact date and time when Cersei Lannister first met Jaime Lannister in the Game of Thrones series?,Null,2,accurate
+"What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?",Null,2,error
+Did the discussion about Jaime Lannister's character occur after the discussion about Cersei Lannister's character?,Multi,2,neither
+What game is ThaneChambers currently playing?,Single,2,accurate
+What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,Null,2,accurate
+What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,Null,2,accurate
+What is the favorite type of music that Li Hua and Yuriko plan to play together?,Null,2,error
+"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",Null,2,accurate
+How does Niamh think Jaime could've ended up differently?,Single,2,accurate
+What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,Null,2,accurate
+What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?,Null,2,error
+Did Jennifer challenge Li Hua to do 60 pull-ups in a training session after she challenged him to do 100 pushups?,Multi,2,accurate
+What were the specific requirements that the customers modified and how did Li Hua respond to each change?,Null,2,error
+What is Thane's favorite type of food that he enjoys while playing video games?,Null,2,accurate
+"What did Li Hua eat for dinner on January 20, 2026?",Null,2,accurate
+What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,Null,2,accurate
+What is Li Hua's favorite type of exercise outside of pull-ups?,Null,2,accurate
+What TV show does EmilyBurnett recommend LiHua to watch?,Single,2,error
+What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,Null,2,neither
+What toppings does Wolfgang Schulz prefer on his burger?,Single,2,error
+What is the name of the gym that Wolfgang recommended LiHua to go to?,Single,2,accurate
+Who is the most hateable character in Game of Thrones in Orion's opinion?,Single,2,accurate
+What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,Null,2,error
+What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,Null,2,accurate
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,2,neither
+How does strength training help prevent soccer injuries?,Single,2,accurate
+How does RexxarRemar plan to spend time in the garden once it's done?,Single,2,accurate
+What does Giselle emphasize about passing drills?,Single,2,accurate
+What dietary restrictions does LiHua have in his conversation with Hailey?,Single,2,accurate
+What memorable quote is mentioned by Phaedra?,Single,2,accurate
+What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,Null,2,error
+What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?,Null,2,accurate
+What is Jake's first tip for avoiding soccer injuries?,Single,2,accurate
+Has Wolfgang ever been to Hong Kong?,Multi,2,error
+What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,Null,2,accurate
+"What is LiHua curious about regarding the ""Man in Black"" in Westworld?",Single,2,accurate
+What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,Null,2,accurate
+Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?,Multi,2,accurate
+What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,Null,2,accurate
+"What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",Null,2,accurate
+Did the group members debate about the best football manager in the Premier League history after they debated if Pep Guardiola is the greatest soccer manager in football history?,Multi,2,accurate
+"Did Wolfgang Schulz recommend the band learns ""Viva la Vida"" by Coldplay after he and Li Hua discussed what song to play this Sunday?",Multi,2,accurate
+When did Li Hua change the training plan?,Single,2,accurate
+Is the time interval more than 3 days between LiHua first asking Adam if he can buy a small fridge for the basement and Adam asking LiHua about the size of the fridge?,Multi,2,accurate
+Did Li Hua ask Jennifer Moore for book recommendations on fitness nutrition before she announced the special guest speaker at the gym?,Multi,2,accurate
+What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,Null,2,accurate
+What type of diet is Li Hua following to support his training regimen and sleep schedule?,Null,2,error
+"Did Yuriko ask Li Hua for help with her studio's homepage before she booked a seat at the ""Central Perk"" cafe?",Multi,2,accurate
+Did Li Hua tell Wolfgang about making a new friend before Yuriko reminded the group members to meet for the music festival?,Multi,2,accurate
+What dietary restrictions does LiHua have in his conversation with Hailey?,Single,3,accurate
+What was the final match score of the 2025 UEFA Champions League final?,Null,3,accurate
+Did the discussion about Jaime Lannister's character occur after the discussion about Cersei Lannister's character?,Multi,3,neither
+"Did Yuriko tell Li Hua about booking a seat at the ""Central Perk"" cafe before Li Hua sent her a message to confirm the details of their next meeting?",Multi,3,accurate
+Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?,Multi,3,accurate
+Who is the most hateable character in Game of Thrones in Orion's opinion?,Single,3,accurate
+What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,Null,3,error
+How does Fionnuala describe the convenience of the Control Center's audio settings adjustment?,Single,3,accurate
+What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,Null,3,accurate
+What type of protein shake does Li Hua prefer to drink before his workout sessions?,Null,3,accurate
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,3,accurate
+"What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",Null,3,accurate
+Did Li Hua ask Thane about his opinion on The Last of Us before he asked about Sekiro: Shadows Die Twice?,Multi,3,accurate
+What does Giselle emphasize about passing drills?,Single,3,accurate
+What is the phone number for the maintenance worker that Adam Smith provided to Li Hua for the broken streetlight?,Single,3,accurate
+What opportunity did LiHua create for Chae to meet Wolfgang and Yuriko?,Multi,3,accurate
+What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?,Null,3,accurate
+What is Thane's favorite type of food that he enjoys while playing video games?,Null,3,accurate
+Did Li Hua tell Wolfgang about making a new friend before Yuriko reminded the group members to meet for the music festival?,Multi,3,accurate
+What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,Null,3,error
+"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",Null,3,neither
+Who is the most hateable character in Game of Thrones in Merrick's opinion?,Single,3,accurate
+What were the specific requirements that the customers modified and how did Li Hua respond to each change?,Null,3,error
+What is Jake's first tip for avoiding soccer injuries?,Single,3,accurate
+Who introduced the bread delivery service and recommend Alice for the delivery?,Multi,3,accurate
+What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,Null,3,error
+What game is ThaneChambers currently playing?,Single,3,accurate
+"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",Null,3,accurate
+Did Wolfgang arrive in Hong Kong after he informed Li Hua about his upcoming trip?,Multi,3,accurate
+What type of equipment does Wolfgang Schulz use when he works out at the gym?,Null,3,accurate
+Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?,Multi,3,accurate
+What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,Null,3,error
+"What new species of flowers will be featured in the community garden renovation, according to the feedback provided by Li Hua during the progress reports?",Null,3,neither
+What time did Chae first suggest they visit the music festival in the morning?,Null,3,accurate
+Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?,Multi,3,error
+Has Wolfgang ever been to Hong Kong?,Multi,3,error
+"What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?",Null,3,error
+What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,Null,3,accurate
+What memorable quote is mentioned by Phaedra?,Single,3,accurate
+What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,Null,3,accurate
+What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,Null,3,accurate
+What color did Li Hua paint his house before the community garden renovation began?,Null,3,accurate
+Did the group members debate about the best football manager in the Premier League history after they debated if Pep Guardiola is the greatest soccer manager in football history?,Multi,3,accurate
+What time does LiHua propose for dinner on 20260930?,Single,3,accurate
+"What is LiHua curious about regarding the ""Man in Black"" in Westworld?",Single,3,accurate
+What is the name of the last song Wolfgang played using the new drum practice app?,Null,3,accurate
+"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",Null,3,error
+"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",Null,3,error
+What food did Emily order for the group's discussion about Game of Thrones characters?,Null,3,accurate
+"What type of protein supplements did Li Hua use after the workout on September 19, 2026?",Null,3,accurate
+What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,Null,3,accurate
+What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,Null,3,error
+Did Li Hua ask Jennifer Moore for book recommendations on fitness nutrition before she announced the special guest speaker at the gym?,Multi,3,accurate
+What color did Li Hua decide to paint the walls of the basement after completing the renovation?,Null,3,accurate
+What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,Null,3,accurate
+Is the time interval more than 3 days between LiHua first asking Adam if he can buy a small fridge for the basement and Adam asking LiHua about the size of the fridge?,Multi,3,accurate
+What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,Null,3,neither
+What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,Null,3,accurate
+Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today before he wondered if she wanted to have Sichuan hot pot for dinner tonight?,Multi,3,accurate
+When does Li Hua request a delivery from Hailey Johnson?,Single,3,error
+Who knows about Wolfgang going to Hong Kong?,Multi,3,error
+Did Li Hua agree to have dinner with Wolfgang after he told Wolfgang about the lunch arrangement?,Multi,3,error
+What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,Null,3,accurate
+What was the exact date and time when Cersei Lannister first met Jaime Lannister in the Game of Thrones series?,Null,3,accurate
+Did Jennifer challenge Li Hua to do 60 pull-ups in a training session after she challenged him to do 100 pushups?,Multi,3,accurate
+What is Li Hua's favorite type of exercise outside of pull-ups?,Null,3,neither
+Did Jennifer remind Li Hua about proper nutrition and hydration before Jake shared his tips for staying hydrated during the match?,Multi,3,accurate
+What is the favorite type of music that Li Hua and Yuriko plan to play together?,Null,3,error
+Wolfgang suddenly becomes very concerned about good body shape and healthy food choices in December. What are the two conversations he had with LiHua in December that reflect this?,Multi,3,error
+What type of diet is Li Hua following to support his training regimen and sleep schedule?,Null,3,error
+What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,Null,3,error
+"What payment method did Li Hua use to purchase groceries from the store on April 15, 2026?",Null,3,accurate
+How does strength training help prevent soccer injuries?,Single,3,accurate
+Did Jake share common knowledge about offside in soccer with Li Hua before he passed practical techniques to Li Hua on how to avoid offside for a forward?,Multi,3,accurate
+What strategy did Li Hua use to score a goal in the championship match against their rival team?,Null,3,accurate
+What color was the curtain that Li Hua chose for his living room?,Null,3,accurate
+What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,Null,3,neither
+What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,Null,3,neither
+What song did Li Hua perform at the local music festival in 2026?,Null,3,accurate
+What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?,Null,3,error
+What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,Null,3,accurate
+"What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe ""Central Perk"" on Thursday morning, and how did Li Hua respond to her comments?",Null,3,error
+"What did Li Hua eat for dinner on January 20, 2026?",Null,3,accurate
+What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?,Null,3,accurate
+Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?,Multi,3,accurate
+What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,Null,3,accurate
+What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,Null,3,accurate
+What specific measurements did Li Hua take for the window size before the installation of the curtain?,Null,3,error
+Is the time interval more than 3 days between LiHua asking Adam to help him install a curtain on the basement window and Adam asking LiHua to measure the size of the window?,Multi,3,error
+"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",Null,3,accurate
+What joke does Wolfgang make as an April Fool's joke?,Single,3,accurate
+What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,Null,3,accurate
+"What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",Null,3,accurate
+"Did Wolfgang Schulz recommend the band learns ""Viva la Vida"" by Coldplay after he and Li Hua discussed what song to play this Sunday?",Multi,3,accurate
+What toppings does Wolfgang Schulz prefer on his burger?,Single,3,error
+What is the exact reason for Li Hua's unexpected work meeting on Thursday?,Null,3,accurate
+What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,Null,3,accurate
+Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?,Multi,3,accurate
+What is the name of the song that Li Hua will sing at the karaoke on 20260425?,Null,3,accurate
+How many servings of vegetables should LiHua aim for each day to keep body in good shape according to Jennifer?,Single,3,accurate
+Which regions in Witcher 3 did Li Hua and Thane Chambers discuss?,Single,3,accurate
+Who offers to help with setting up for the garage sale?,Single,3,accurate
+"Did Yuriko ask Li Hua for help with her studio's homepage before she booked a seat at the ""Central Perk"" cafe?",Multi,3,accurate
+What is the name of the gym that Wolfgang recommended LiHua to go to?,Single,3,accurate
+What song did Yuriko and Wolfgang decide to perform together after watching the drum tutorial?,Null,3,accurate
+When did Li Hua change the training plan?,Single,3,accurate
+How does RexxarRemar plan to spend time in the garden once it's done?,Single,3,accurate
+What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,Null,3,error
+What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,Null,3,error
+What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?,Null,3,accurate
+Who offers to help with the installation of the curtains?,Single,3,accurate
+"Did Wolfgang ask Li Hua about watching ""Star Wars: A New Hope"" after he asked Li Hua about going to see ""Overwatch 3""?",Multi,3,error
+What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,Null,3,accurate
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Multi,3,neither
+What TV show does EmilyBurnett recommend LiHua to watch?,Single,3,error
+What is the main topic of the conversation between LiHua and ChaeSong-hwa on 20260626?,Single,3,error
+What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,Null,3,accurate
+What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,Null,3,error
+How does Niamh think Jaime could've ended up differently?,Single,3,accurate

@@ -55,3 +55,5 @@ LiHua-World-qwen/
 # LiHua-World-qwen-modal/ được commit: index Qwen dùng chung cho sàng lọc (minirag.log vẫn bị *.log bỏ qua).
 logs/screening/cache/ctx_*.jsonl
 logs/screening/*.out
+# Tầng D: giữ câu trả lời và phán quyết, bỏ context thô (22 MB) — trung vị token đã lưu trong stage_d_report.json
+logs/stage_d/*_ctx.jsonl

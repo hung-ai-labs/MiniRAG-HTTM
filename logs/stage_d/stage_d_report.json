@@ -1,0 +1,365 @@
+{
+ "classes": {
+  "H1": "ROBUST POSITIVE",
+  "H2": "BORDERLINE",
+  "H3": "ROBUST POSITIVE"
+ },
+ "comparisons": {
+  "H1": {
+   "n": 435,
+   "diff_pts": 6.513409961685824,
+   "p_perm": 3.999960000399996e-05,
+   "pairs": [
+    {
+     "variant": "logs/stage_d/b1_s101_judged.csv",
+     "base": "logs/qwen637_v3_judged.csv",
+     "up": 58,
+     "down": 38,
+     "net": 20,
+     "mcnemar_p": 0.05191052214883845,
+     "null_net": -2
+    },
+    {
+     "variant": "logs/stage_d/b1_s202_judged.csv",
+     "base": "logs/qwen637_v3_r2_judged.csv",
+     "up": 55,
+     "down": 25,
+     "net": 30,
+     "mcnemar_p": 0.0010527348573533444,
+     "null_net": -1
+    },
+    {
+     "variant": "logs/stage_d/b1_s303_judged.csv",
+     "base": "logs/qwen637_v3_r3_judged.csv",
+     "up": 59,
+     "down": 24,
+     "net": 35,
+     "mcnemar_p": 0.00015455941078329165,
+     "null_net": 2
+    }
+   ],
+   "pairs_positive": 3,
+   "groups": {
+    "Single": {
+     "n": 347,
+     "diff_pts": 7.300672430355429,
+     "p": 3.999960000399996e-05,
+     "significant_drop": false
+    },
+    "Multi": {
+     "n": 43,
+     "diff_pts": 7.751937984496123,
+     "p": 0.1906080939190608,
+     "significant_drop": false
+    },
+    "Null": {
+     "n": 45,
+     "diff_pts": -0.7407407407407413,
+     "p": 1.0,
+     "significant_drop": false
+    }
+   },
+   "delta_err_pts": -1.6091954022988517,
+   "null_net_mean": -0.3333333333333333,
+   "tokens_median": [
+    3860.0,
+    3847.5,
+    3855.0
+   ],
+   "E3": true,
+   "E4": true,
+   "E5": true,
+   "p_holm": 7.999920000799993e-05,
+   "class": "ROBUST POSITIVE"
+  },
+  "H2": {
+   "n": 435,
+   "diff_pts": 8.122605363984675,
+   "p_perm": 1.999980000199998e-05,
+   "pairs": [
+    {
+     "variant": "logs/stage_d/b2_s101_judged.csv",
+     "base": "logs/qwen637_vec_judged.csv",
+     "up": 65,
+     "down": 32,
+     "net": 33,
+     "mcnemar_p": 0.0010496073324912283,
+     "null_net": -4
+    },
+    {
+     "variant": "logs/stage_d/b2_s202_judged.csv",
+     "base": "logs/stage_d/vec_s202_judged.csv",
+     "up": 61,
+     "down": 36,
+     "net": 25,
+     "mcnemar_p": 0.014389633007095661,
+     "null_net": -7
+    },
+    {
+     "variant": "logs/stage_d/b2_s303_judged.csv",
+     "base": "logs/stage_d/vec_s303_judged.csv",
+     "up": 69,
+     "down": 21,
+     "net": 48,
+     "mcnemar_p": 3.881817444056319e-07,
+     "null_net": 1
+    }
+   ],
+   "pairs_positive": 3,
+   "groups": {
+    "Single": {
+     "n": 347,
+     "diff_pts": 10.85494716618636,
+     "p": 9.99990000099999e-06,
+     "significant_drop": false
+    },
+    "Multi": {
+     "n": 43,
+     "diff_pts": 2.325581395348839,
+     "p": 0.7979420205797942,
+     "significant_drop": false
+    },
+    "Null": {
+     "n": 45,
+     "diff_pts": -7.407407407407408,
+     "p": 0.23154768452315477,
+     "significant_drop": false
+    }
+   },
+   "delta_err_pts": -4.521072796934867,
+   "null_net_mean": -3.3333333333333335,
+   "tokens_median": [
+    3863.0,
+    3873.0,
+    3861.0
+   ],
+   "E3": true,
+   "E4": false,
+   "E5": true,
+   "p_holm": 5.999940000599994e-05,
+   "class": "BORDERLINE"
+  },
+  "H3": {
+   "n": 435,
+   "diff_pts": 6.590038314176246,
+   "p_perm": 0.00016999830001699983,
+   "pairs": [
+    {
+     "variant": "logs/stage_d/b2_s101_judged.csv",
+     "base": "logs/stage_d/b1_s101_judged.csv",
+     "up": 63,
+     "down": 38,
+     "net": 25,
+     "mcnemar_p": 0.016505855701607598,
+     "null_net": 0
+    },
+    {
+     "variant": "logs/stage_d/b2_s202_judged.csv",
+     "base": "logs/stage_d/b1_s202_judged.csv",
+     "up": 60,
+     "down": 34,
+     "net": 26,
+     "mcnemar_p": 0.009547810466077418,
+     "null_net": -4
+    },
+    {
+     "variant": "logs/stage_d/b2_s303_judged.csv",
+     "base": "logs/stage_d/b1_s303_judged.csv",
+     "up": 64,
+     "down": 29,
+     "net": 35,
+     "mcnemar_p": 0.00036579567696276875,
+     "null_net": -2
+    }
+   ],
+   "pairs_positive": 3,
+   "groups": {
+    "Single": {
+     "n": 347,
+     "diff_pts": 9.221902017291066,
+     "p": 1.999980000199998e-05,
+     "significant_drop": false
+    },
+    "Multi": {
+     "n": 43,
+     "diff_pts": -3.10077519379845,
+     "p": 0.6647633523664763,
+     "significant_drop": false
+    },
+    "Null": {
+     "n": 45,
+     "diff_pts": -4.444444444444444,
+     "p": 0.45631543684563153,
+     "significant_drop": false
+    }
+   },
+   "delta_err_pts": -3.2183908045977,
+   "null_net_mean": -2,
+   "tokens_median": [
+    3863.0,
+    3873.0,
+    3861.0
+   ],
+   "E3": true,
+   "E4": true,
+   "E5": true,
+   "p_holm": 0.00016999830001699983,
+   "class": "ROBUST POSITIVE"
+  }
+ },
+ "notes": [],
+ "arms": {
+  "V3": [
+   {
+    "path": "logs/qwen637_v3_judged.csv",
+    "rate": {
+     "accurate": 63.333333333333336,
+     "error": 21.839080459770116,
+     "neither": 14.827586206896552
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 1,
+    "tokens_median": null
+   },
+   {
+    "path": "logs/qwen637_v3_r2_judged.csv",
+    "rate": {
+     "accurate": 59.08045977011494,
+     "error": 25.977011494252874,
+     "neither": 14.942528735632184
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 1,
+    "tokens_median": null
+   },
+   {
+    "path": "logs/qwen637_v3_r3_judged.csv",
+    "rate": {
+     "accurate": 60.3448275862069,
+     "error": 25.28735632183908,
+     "neither": 14.367816091954023
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 1,
+    "tokens_median": null
+   }
+  ],
+  "VEC": [
+   {
+    "path": "logs/qwen637_vec_judged.csv",
+    "rate": {
+     "accurate": 65.97701149425288,
+     "error": 24.82758620689655,
+     "neither": 9.195402298850574
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 1,
+    "tokens_median": null
+   },
+   {
+    "path": "logs/stage_d/vec_s202_judged.csv",
+    "rate": {
+     "accurate": 66.20689655172414,
+     "error": 24.137931034482758,
+     "neither": 9.655172413793103
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3918
+   },
+   {
+    "path": "logs/stage_d/vec_s303_judged.csv",
+    "rate": {
+     "accurate": 65.28735632183908,
+     "error": 23.2183908045977,
+     "neither": 11.494252873563218
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3921
+   }
+  ],
+  "B1": [
+   {
+    "path": "logs/stage_d/b1_s101_judged.csv",
+    "rate": {
+     "accurate": 67.816091954023,
+     "error": 21.149425287356323,
+     "neither": 11.03448275862069
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3860.0
+   },
+   {
+    "path": "logs/stage_d/b1_s202_judged.csv",
+    "rate": {
+     "accurate": 65.97701149425288,
+     "error": 24.367816091954023,
+     "neither": 9.655172413793103
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3847.5
+   },
+   {
+    "path": "logs/stage_d/b1_s303_judged.csv",
+    "rate": {
+     "accurate": 68.27586206896552,
+     "error": 22.75862068965517,
+     "neither": 8.96551724137931
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3855.0
+   }
+  ],
+  "B2": [
+   {
+    "path": "logs/stage_d/b2_s101_judged.csv",
+    "rate": {
+     "accurate": 73.5632183908046,
+     "error": 20.689655172413794,
+     "neither": 5.747126436781609
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3863.0
+   },
+   {
+    "path": "logs/stage_d/b2_s202_judged.csv",
+    "rate": {
+     "accurate": 71.95402298850574,
+     "error": 20.229885057471265,
+     "neither": 7.816091954022989
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3873.0
+   },
+   {
+    "path": "logs/stage_d/b2_s303_judged.csv",
+    "rate": {
+     "accurate": 76.32183908045977,
+     "error": 17.701149425287355,
+     "neither": 5.977011494252873
+    },
+    "missing": 0,
+    "failed": 0,
+    "dup_questions": 0,
+    "tokens_median": 3861.0
+   }
+  ]
+ }
+}

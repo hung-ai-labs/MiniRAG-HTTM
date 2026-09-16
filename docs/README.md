@@ -1,6 +1,6 @@
 # Tài liệu dự án MiniRAG-HTTM
 
-> Cập nhật 15/09/2026. Quy tắc bắt buộc: [`../CLAUDE.md`](../CLAUDE.md). Kế hoạch, lịch sử thí nghiệm và đăng ký trước:
+> Cập nhật 16/09/2026. Quy tắc bắt buộc: [`../CLAUDE.md`](../CLAUDE.md). Kế hoạch, lịch sử thí nghiệm và đăng ký trước:
 > [`../ROADMAP.md`](../ROADMAP.md).
 
 ## Đọc gì trước
@@ -10,7 +10,7 @@
 | Kết quả hiện tại so với baseline (acc / err / neither / Null) | [`KET_QUA_HIEN_TAI.md`](KET_QUA_HIEN_TAI.md) |
 | Việc của **thành viên 1** — cắt tỉa và chấm lại đường đi | [`phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md`](phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md) |
 | Việc của **thành viên 2** — hợp nhất thực thể trùng tên | [`phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md`](phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md) |
-| Đề xuất kiểm tra dataset, nhãn và giám khảo (từ kiểm toán nhóm Null) | [`DE_XUAT_KIEM_TRA_DATASET_NHAN.md`](DE_XUAT_KIEM_TRA_DATASET_NHAN.md) |
+| Đề xuất cải thiện nhóm Null (chẩn đoán B2, kiểm nhãn, kiểm giám khảo) | [`DE_XUAT_CAI_THIEN_NULL.md`](DE_XUAT_CAI_THIEN_NULL.md) |
 | Chạy sàng lọc BM25 trên máy mình (Modal và khoá riêng) | [`../reproduce/screening/HUONG_DAN_CHAY.md`](../reproduce/screening/HUONG_DAN_CHAY.md) |
 | MiniRAG truy hồi thế nào | [`phase1/RETRIEVAL_FLOW.md`](phase1/RETRIEVAL_FLOW.md) → [`phase1/RETRIEVAL_CODE_MAP.md`](phase1/RETRIEVAL_CODE_MAP.md) → [`phase1/QUERY_TRACE.md`](phase1/QUERY_TRACE.md) |
 | Audit pipeline và các giả thuyết G1–G6 | [`phase1/MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md`](phase1/MINIRAG_PIPELINE_AND_IMPROVEMENT_PLAN.md) |

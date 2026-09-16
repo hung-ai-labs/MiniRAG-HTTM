@@ -1,0 +1,40 @@
+NHÓM NULL TRÊN TẦNG D — 45 câu ngoài dev, mỗi lượt sinh chấm 1 lượt (mô tả, không thay số chính thức)
+
+1. acc / err / neither của nhóm Null, trung bình các lượt sinh
+   V3   acc  63.0 · err  24.4 · neither  12.6  (acc từng lượt: 64.4 / 64.4 / 60.0)
+   VEC  acc  65.2 · err  27.4 · neither   7.4  (acc từng lượt: 68.9 / 68.9 / 57.8)
+   B1   acc  62.2 · err  25.2 · neither  12.6  (acc từng lượt: 60.0 / 62.2 / 64.4)
+   B2   acc  57.8 · err  23.0 · neither  19.3  (acc từng lượt: 60.0 / 53.3 / 60.0)
+
+2. Kiểu câu trả lời × phán quyết (cộng mọi lượt sinh; regex)
+   V3:
+     từ chối thuần           43 câu-lượt · accurate  42 · error   0 · neither   1
+     từ chối rồi suy đoán    27 câu-lượt · accurate  17 · error   3 · neither   7
+     khẳng định              65 câu-lượt · accurate  26 · error  30 · neither   9
+   VEC:
+     từ chối thuần           46 câu-lượt · accurate  45 · error   0 · neither   1
+     từ chối rồi suy đoán    28 câu-lượt · accurate  23 · error   4 · neither   1
+     khẳng định              61 câu-lượt · accurate  20 · error  33 · neither   8
+   B1:
+     từ chối thuần           41 câu-lượt · accurate  41 · error   0 · neither   0
+     từ chối rồi suy đoán    26 câu-lượt · accurate  17 · error   2 · neither   7
+     khẳng định              68 câu-lượt · accurate  26 · error  32 · neither  10
+   B2:
+     từ chối thuần           45 câu-lượt · accurate  44 · error   0 · neither   1
+     từ chối rồi suy đoán    19 câu-lượt · accurate  11 · error   1 · neither   7
+     khẳng định              71 câu-lượt · accurate  23 · error  30 · neither  18
+
+3. Câu bị chấm `neither`: có nói rõ 'không tìm thấy thông tin' ở đâu đó trong câu trả lời không?
+   V3    17 câu-lượt `neither` · có nói rõ  11 (65%) · không nói   6
+   VEC   10 câu-lượt `neither` · có nói rõ   6 (60%) · không nói   4
+   B1    17 câu-lượt `neither` · có nói rõ  10 (59%) · không nói   7
+   B2    26 câu-lượt `neither` · có nói rõ  15 (58%) · không nói  11
+
+4. Độ nhạy (cận trên lạc quan): nếu mọi câu `neither` có nói rõ 'không tìm thấy' được tính là `accurate`
+   nhánh | Null acc chính thức | Null acc theo cách đọc rộng
+   V3    |                63.0 | 71.1
+   VEC   |                65.2 | 69.6
+   B1    |                62.2 | 69.6
+   B2    |                57.8 | 68.9
+
+   Đây là CẬN, không phải số đã sửa: phân loại bằng regex và chưa có người rà (G1).

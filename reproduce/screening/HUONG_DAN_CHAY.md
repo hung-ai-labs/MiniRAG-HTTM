@@ -3,7 +3,7 @@
 Cho các thành viên nhóm. Quy trình và cổng quyết định nằm trong [ROADMAP.md](../../ROADMAP.md), mục sửa đổi đăng ký
 trước cho BM25 (tầng A–D). Script ở đây chỉ chạy tầng A–C trên tập dev. Tầng D (435 câu ngoài dev) không có ở đây.
 
-## Trạng thái (15/09/2026)
+## Trạng thái (16/09/2026)
 
 | Bước | Kết quả | Endpoint | Commit |
 |---|---|---|---|
@@ -16,7 +16,7 @@ trước cho BM25 (tầng A–D). Script ở đây chỉ chạy tầng A–C tr�
 | Dev 200 — mở rộng V3 | FROZEN (200/200) | hung-ai-labs | xem ROADMAP |
 | Dev 200 — B1 | **FINALIST** — 30 lên / 10 xuống, net +20 (3,1σ) | hung-ai-labs | xem ROADMAP |
 | Dev 200 — B2 | **FINALIST** (lệch đăng ký từ tầng B) — 49 lên / 18 xuống, net +31 (4,8σ) | hung-ai-labs | xem ROADMAP |
-| Tầng D | đã duyệt 15/09 cho B1 và B2 — Hùng chạy bằng `reproduce/stage_d/chain_stage_d.sh`; **không ai chạy song song** | hung-ai-labs | xem ROADMAP |
+| Tầng D — 435 câu × 3 seed | **XONG 16/09**: H1 +6,51 và H3 +6,59 ROBUST POSITIVE, H2 BORDERLINE (trượt cổng Null). Nhóm **chốt B2**; báo cáo `logs/stage_d/stage_d_report.txt`. Không chạy lại | hung-ai-labs | xem ROADMAP |
 
 ## Quy tắc — đọc trước khi chạy
 

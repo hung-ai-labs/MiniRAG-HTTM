@@ -816,6 +816,43 @@ D (435 câu ngoài dev × 3 seed), cần duyệt riêng.
 **Thứ tự:** commit đăng ký này → code BM25 + cache parser + seed + ghi context + selftest + `screen_variant.py` (commit riêng)
 → selftest → đông lạnh V3 canary → canary B1, B2 → báo và **xin duyệt** trước dev 200. Không chạy 637 × 3.
 
+**Kết quả tầng D (16/09/2026).** 8 lượt chạy 20:33 15/09 → 07:50 16/09, máy cắm điện, không có sự kiện ngủ. Hợp lệ: cả 8 lượt đủ
+435 câu, `judge_failed = 0`, không thiếu phiếu. Báo cáo `logs/stage_d/stage_d_report.{txt,json}`; câu trả lời và phán quyết trong
+`logs/stage_d/*.csv` (context thô `*_ctx.jsonl` không commit — trung vị token của E5 đã nằm trong báo cáo JSON).
+
+| Nhánh | acc trung bình 3 lượt | err | neither | acc/(acc+err) | Single (347) | Multi (43) | Null (45) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| V3 (mốc) | 60,92 ± 2,18 | 24,37 | 14,71 | 71,43 | 64,27 | 31,78 | 62,96 |
+| Vector thuần | 65,82 ± 0,48 | 24,06 | 10,11 | 73,24 | 69,93 | 33,33 | 65,19 |
+| B1 = RRF(đồ thị, vector, BM25) | 67,36 ± 1,22 | 22,76 | 9,89 | 74,75 | 71,57 | 38,76 | 62,22 |
+| **B2 = RRF(vector, BM25)** | **73,95 ± 2,21** | **19,54** | 6,51 | **79,09** | **80,79** | 35,66 | **57,78** |
+
+| | So sánh | Hiệu | Holm p | Cặp lượt (lên / xuống) | E3 | E4 | E5 | Phân loại |
+|---|---|---:|---:|---|---|---|---|---|
+| **H1** | B1 với V3 | +6,51 | 0,00008 | 58/38 · 55/25 · 59/24 | ĐẠT (−1,61) | ĐẠT (Null −0,74, p = 1,000; net −0,33) | ĐẠT | **ROBUST POSITIVE** |
+| **H2** | B2 với vector thuần | +8,12 | 0,00006 | 65/32 · 61/36 · 69/21 | ĐẠT (−4,52) | **TRƯỢT** (Null −7,41, p = 0,232; net −3,33 < −3) | ĐẠT | **BORDERLINE** |
+| **H3** | B2 với B1 | +6,59 | 0,00017 | 63/38 · 60/34 · 64/29 | ĐẠT (−3,22) | ĐẠT (Null −4,44, p = 0,456; net −2,00) | ĐẠT | **ROBUST POSITIVE** |
+
+**Đọc theo luật đã khoá.** H3 đạt → *khi đã có trộn từ vựng + vector, xếp hạng suy từ đồ thị hiện tại làm hại*; đây là kết quả chính.
+Câu luật "H1 đạt + H2 trượt → BM25 chỉ có ích khi đi cùng xếp hạng đồ thị" **không mô tả đúng dữ liệu này** và mâu thuẫn với chính
+H3: H2 trượt không phải vì thiếu hiệu ứng (+8,12 điểm, Holm p = 0,00006, dương 3/3) mà chỉ vì cổng an toàn E4 về nhóm Null, lệch
+0,33 câu. Giữ nguyên cả hai câu trong báo cáo để người đọc tự kiểm; không sửa luật sau khi thấy kết quả.
+
+**Quyết định của nhóm 16/09: chốt B2 — lệch đăng ký, đã khai báo.** Căn cứ: B2 thắng B1 sạch mọi cổng (H3) và B1 thắng V3 sạch mọi
+cổng (H1); phép so duy nhất vướng cổng là H2, và chỉ vướng E4. Ràng buộc đi kèm:
+- H2 vẫn báo **BORDERLINE**; **không** được viết "BM25 cộng thêm giá trị so với vector thuần" như thể đã chứng minh.
+- **Không nới E4.** Nhóm Null của B2 đi vào Limitations.
+- Muốn nâng H2 lên ROBUST POSITIVE thì phải đăng ký trước 3 seed mới cho **cả** B2 và vector thuần, giữ nguyên ngưỡng −3
+  (đề xuất Đ4 trong `docs/DE_XUAT_CAI_THIEN_NULL.md`).
+
+**Nhóm Null của B2 — chẩn đoán sau khi phân tích chính thức đã chạy** (`reproduce/null_audit/b2_null_stage_d.py`,
+`logs/null_audit/b2_null_stage_d.txt`; mô tả, không thay số chính thức). B2 **không** bịa nhiều hơn: err của nhóm Null là 22,96,
+thấp nhất trong bốn nhánh, và B2 từ chối thuần nhiều hơn B1 (45 so với 41 câu-lượt). Điểm mất chạy vào `neither` của nhóm câu
+khẳng định (18 so với 10 câu-lượt). Trong 26 câu-lượt `neither` của B2, 15 (58%) có nói rõ chi tiết được hỏi không có trong dữ
+liệu; nếu tính là `accurate` thì Null acc bốn nhánh còn cách nhau 2,2 điểm (V3 71,1 · vector thuần 69,6 · B1 69,6 · B2 68,9) và
+chênh B2 với vector thuần rơi từ 7,4 xuống 0,7 điểm. Phân loại bằng regex, **chưa có người rà** — đề xuất Đ1 (người chấm lại theo
+kiểu câu trả lời) và Đ2 (chấm lại nhóm Null 3 lượt làm độ nhạy).
+
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 
 Đặc tả A3 trong kế hoạch: *từ chối nếu chunk tốt nhất dưới ngưỡng cosine*. Đo khả năng tách

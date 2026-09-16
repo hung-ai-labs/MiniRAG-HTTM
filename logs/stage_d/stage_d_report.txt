@@ -1,0 +1,27 @@
+TẦNG D — 435 câu ngoài dev × 3 lượt sinh × lượt chấm run = 1 (đăng ký trước; B2 mang nhãn lệch đăng ký từ tầng B)
+Hoán vị đổi dấu 100,000 lần, seed 20260914, hai phía · Holm trên 3 giả thuyết · T = 4,18 điểm
+V3: acc từng lượt 63,33 / 59,08 / 60,34 · trung bình 60,92 ± 2,18 · err từng lượt 21,84 / 25,98 / 25,29 · neither 14,83 / 14,94 / 14,37 · thiếu phiếu [0, 0, 0] · judge_failed [0, 0, 0]
+VEC: acc từng lượt 65,98 / 66,21 / 65,29 · trung bình 65,82 ± 0,48 · err từng lượt 24,83 / 24,14 / 23,22 · neither 9,20 / 9,66 / 11,49 · thiếu phiếu [0, 0, 0] · judge_failed [0, 0, 0]
+B1: acc từng lượt 67,82 / 65,98 / 68,28 · trung bình 67,36 ± 1,22 · err từng lượt 21,15 / 24,37 / 22,76 · neither 11,03 / 9,66 / 8,97 · thiếu phiếu [0, 0, 0] · judge_failed [0, 0, 0]
+B2: acc từng lượt 73,56 / 71,95 / 76,32 · trung bình 73,95 ± 2,21 · err từng lượt 20,69 / 20,23 / 17,70 · neither 5,75 / 7,82 / 5,98 · thiếu phiếu [0, 0, 0] · judge_failed [0, 0, 0]
+H1 = B1 vs V3 (435 câu ghép được): hiệu trung bình +6,51 điểm (so với T = 4,18: +2,33) · hoán vị p = 0.00004 · Holm p = 0.00008
+  cặp lượt: 58 lên / 38 xuống (McNemar p = 0.0519) · 55 lên / 25 xuống (McNemar p = 0.00105) · 59 lên / 24 xuống (McNemar p = 0.000155) · cùng chiều dương 3/3
+  E3 Δerr trung bình -1,61 điểm → ĐẠT
+  E4 Single +7,30 (n = 347, p = 0.000) · Multi +7,75 (n = 43, p = 0.191) · Null -0,74 (n = 45, p = 1.000) · Null net trung bình -0,33 câu → ĐẠT
+  E5 token context trung vị từng lượt [3860.0, 3847.5, 3855.0] (±5% của 3.870) → ĐẠT
+  Phân loại: ROBUST POSITIVE
+H2 = B2 vs VEC (435 câu ghép được): hiệu trung bình +8,12 điểm (so với T = 4,18: +3,94) · hoán vị p = 0.00002 · Holm p = 0.00006
+  cặp lượt: 65 lên / 32 xuống (McNemar p = 0.00105) · 61 lên / 36 xuống (McNemar p = 0.0144) · 69 lên / 21 xuống (McNemar p = 3.88e-07) · cùng chiều dương 3/3
+  E3 Δerr trung bình -4,52 điểm → ĐẠT
+  E4 Single +10,85 (n = 347, p = 0.000) · Multi +2,33 (n = 43, p = 0.798) · Null -7,41 (n = 45, p = 0.232) · Null net trung bình -3,33 câu → TRƯỢT
+  E5 token context trung vị từng lượt [3863.0, 3873.0, 3861.0] (±5% của 3.870) → ĐẠT
+  Phân loại: BORDERLINE
+H3 = B2 vs B1 (435 câu ghép được): hiệu trung bình +6,59 điểm (so với T = 4,18: +2,41) · hoán vị p = 0.00017 · Holm p = 0.00017
+  cặp lượt: 63 lên / 38 xuống (McNemar p = 0.0165) · 60 lên / 34 xuống (McNemar p = 0.00955) · 64 lên / 29 xuống (McNemar p = 0.000366) · cùng chiều dương 3/3
+  E3 Δerr trung bình -3,22 điểm → ĐẠT
+  E4 Single +9,22 (n = 347, p = 0.000) · Multi -3,10 (n = 43, p = 0.665) · Null -4,44 (n = 45, p = 0.456) · Null net trung bình -2,00 câu → ĐẠT
+  E5 token context trung vị từng lượt [3863.0, 3873.0, 3861.0] (±5% của 3.870) → ĐẠT
+  Phân loại: ROBUST POSITIVE
+Luật đọc:
+- H1 đạt + H2 trượt → BM25 chỉ có ích khi đi cùng xếp hạng đồ thị; báo đúng như vậy.
+- B2 thắng B1 (H3 ROBUST POSITIVE theo chiều B2) → khi đã có trộn từ vựng + vector, xếp hạng suy từ đồ thị hiện tại làm hại.

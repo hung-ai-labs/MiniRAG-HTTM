@@ -1,6 +1,6 @@
 # Kết quả hiện tại so với baseline
 
-> Cập nhật 15/09/2026. Số lấy từ `logs/compare_*.txt`, `logs/v3_replicates_summary.txt` và `logs/screening/`.
+> Cập nhật 16/09/2026. Số lấy từ `logs/compare_*.txt`, `logs/v3_replicates_summary.txt` và `logs/screening/`.
 > Quy tắc đọc ở [`CLAUDE.md`](../CLAUDE.md) §3: ghép từng câu, đếm câu lên / xuống, chạy McNemar; không dùng ngưỡng điểm.
 > Lịch sử và bằng chứng đầy đủ nằm trong [`ROADMAP.md`](../ROADMAP.md).
 
@@ -13,8 +13,8 @@
 - **Nhóm Null đi ngược:** acc 70,26 → 61,54, err 17,44 → 25,30, neither 12,31 → 13,16. Cùng chiều ở cả 3 lượt nhưng từng lượt chưa có ý nghĩa
   (p = 0,09–0,18). Các hướng sửa A3, V5a–V5e đều phủ định — không mở lại hướng verifier / từ chối.
 - **Vector thuần ngang V3** (80 lên / 61 xuống, p = 0,13): đồ thị **chưa chứng minh được đóng góp**.
-- **BM25: B1 và B2 cùng qua dev 200** — B2 acc 59,00 → 74,50 (49 lên / 18 xuống), B1 → 69,00 (30 / 10). Vẫn là sàng lọc
-  một lượt sinh; kết luận chờ tầng D (mục 5).
+- **BM25 đã xong tầng D; nhóm chốt B2** = RRF(vector, BM25): acc **73,95 ± 2,21** trên 435 câu ngoài dev, hơn V3 13,03 điểm.
+  H1 và H3 ROBUST POSITIVE, H2 BORDERLINE vì trượt cổng Null. Cái giá là nhóm Null 57,78 so với 62,96 của V3 (mục 5).
 
 ## 1. Bảng chính — Qwen2.5-3B, 637 câu, 3 lượt chấm Gemini
 
@@ -117,7 +117,7 @@ Khác đồ thị (Gemini dựng 770 node) và khác model sinh, nên **không s
 
 Vá so với chưa vá: 24 lên / 29 xuống, p = 0,583 — bản vá sửa lỗi thật nhưng không tăng điểm, trên cả Gemini lẫn Qwen.
 
-## 5. Đang sàng lọc — BM25 (chưa phải kết quả chính)
+## 5. BM25 — sàng lọc trên dev, kết luận ở tầng D
 
 Canary = 100 câu cố định rút từ dev (cả 21 Multi, 20 Null, 59 Single), **một** lượt sinh seed 20260914 × **một** lượt chấm.
 Multi và Null gấp đôi tỉ lệ thật, nên số ở đây **không so được** với các bảng trên. Quy trình và cổng: ROADMAP, mục đăng ký
@@ -144,10 +144,37 @@ không phải accuracy. Null trên canary: B1 0 lên / 2 xuống, B2 1 lên / 3 
 | B2 | 74,50 | 22,00 | 3,50 | 79,2 | 57,1 | 55,0 | 49 / 18 | +31 / 6,43 | **FINALIST** (lệch đăng ký từ tầng B) |
 
 B2 so với B1: 30 / 19 (net +11, σ = 6,33) — chỉ tham khảo. Cả hai vẫn là sàng lọc; kết luận chỉ có sau tầng D (435 câu
-ngoài dev × 3 seed), đang chạy và chưa xem kết quả.
+ngoài dev × 3 seed), ở mục dưới.
 
 Cột **Null (20)** của tầng C là cùng 20 câu, cùng câu trả lời với canary (tầng C tái dùng câu trả lời tầng B): 65 → 55 ở hai bảng là
 **một** quan sát, không phải hai lần xác nhận, và 20 câu quá ít để kết luận riêng.
+
+### Tầng D — 435 câu ngoài dev × 3 lượt sinh (16/09/2026)
+
+8 lượt chạy từ 20:33 ngày 15/09 đến 07:50 ngày 16/09, máy cắm điện, không có sự kiện ngủ. Cả 8 lượt đủ 435 câu,
+`judge_failed = 0`, không thiếu phiếu. Báo cáo: `logs/stage_d/stage_d_report.txt`.
+
+| Nhánh | acc trung bình 3 lượt | err | neither | acc/(acc+err) | Single (347) | Multi (43) | Null (45) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| V3 (mốc) | 60,92 ± 2,18 | 24,37 | 14,71 | 71,43 | 64,27 | 31,78 | 62,96 |
+| Vector thuần | 65,82 ± 0,48 | 24,06 | 10,11 | 73,24 | 69,93 | 33,33 | 65,19 |
+| B1 = RRF(đồ thị, vector, BM25) | 67,36 ± 1,22 | 22,76 | 9,89 | 74,75 | 71,57 | 38,76 | 62,22 |
+| **B2 = RRF(vector, BM25)** | **73,95 ± 2,21** | **19,54** | 6,51 | **79,09** | **80,79** | 35,66 | **57,78** |
+
+| | So sánh | Hiệu | Holm p | Cặp lượt (lên / xuống) | E3 | E4 | E5 | Phân loại |
+|---|---|---:|---:|---|---|---|---|---|
+| **H1** | B1 với V3 | +6,51 | 0,00008 | 58/38 · 55/25 · 59/24 | ĐẠT (−1,61) | ĐẠT (Null −0,74, p = 1,000; net −0,33) | ĐẠT | **ROBUST POSITIVE** |
+| **H2** | B2 với vector thuần | +8,12 | 0,00006 | 65/32 · 61/36 · 69/21 | ĐẠT (−4,52) | **TRƯỢT** (Null −7,41, p = 0,232; net −3,33 < −3) | ĐẠT | **BORDERLINE** |
+| **H3** | B2 với B1 | +6,59 | 0,00017 | 63/38 · 60/34 · 64/29 | ĐẠT (−3,22) | ĐẠT (Null −4,44, p = 0,456; net −2,00) | ĐẠT | **ROBUST POSITIVE** |
+
+**Quyết định 16/09: chốt B2 — lệch đăng ký, đã khai báo.** B2 thắng B1 sạch mọi cổng (H3) và B1 thắng V3 sạch mọi cổng (H1); phép so
+duy nhất vướng cổng là H2, và chỉ vướng E4 về nhóm Null với mức lệch 0,33 câu. Kèm theo là ba ràng buộc: H2 vẫn báo **BORDERLINE**,
+không nới cổng E4, và Null của B2 đi vào Limitations.
+
+**Nhóm Null của B2** (`logs/null_audit/b2_null_stage_d.txt`): B2 **không** bịa nhiều hơn — err của nhóm Null là 22,96, thấp nhất
+trong bốn nhánh. Điểm mất chạy vào `neither` (19,26 so với 12,59 của B1). Trong 26 câu-lượt `neither` của B2, 15 câu (58%) có nói rõ
+chi tiết được hỏi không có trong dữ liệu; tính những câu đó là `accurate` thì Null acc của B2 lên 68,9 và chênh so với vector thuần
+rơi từ 7,4 xuống 0,7 điểm. Đây là cận đo bằng regex, chưa có người rà — xem [`DE_XUAT_CAI_THIEN_NULL.md`](DE_XUAT_CAI_THIEN_NULL.md).
 
 ## 6. Điều kiện bắt buộc khi trích dẫn
 

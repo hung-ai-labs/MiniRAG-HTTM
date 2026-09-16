@@ -1,0 +1,587 @@
+MiniRAG duplicate entity review (READ ONLY)
+graph: ./LiHua-World-qwen-modal\graph_chunk_entity_relation.graphml
+nodes: 1556
+edges: 1509
+duplicate_groups: 21
+duplicate_nodes: 42
+
+====================================================================================================
+GROUP 01 | norm_key='lihua' | total_degree=393
+----------------------------------------------------------------------------------------------------
+NODE 1: '"LIHUA"'
+norm_key: 'lihua'
+degree: 331
+entity_type: '"PERSON"'
+source_id: chunk-97ca5f171e90862d82392935ace3a394<SEP>chunk-0a52b00f8795104991606227d4eb1e3f<SEP>chunk-eff9f65e9b457052b40f3ec2eea27d3e<SEP>chunk-1218528446b5878bdc411b8d66bed671<SEP>chunk-d214b856bb85e5e18b66db7ab3e7bef4<SEP>chunk-21de16fffd4dc0af32991bb42d761be5<SEP>chunk-e9d094615a7b785496e62a948ae4549c<...
+description: "Li Hua confirms everyone's enthusiasm for the garage sale and looks forward to seeing what everyone brings."<SEP>"Li Hua is a participant who plans to bring items to sell and looks forward to catching up with everyone."<SEP>"Li Hua is a person who checks in with Jennifer Moore about her progress and wants to keep track of her fitness plan."<SEP>"Li Hua is a person who responds to Jennifer Moore's check-in and discusses exercise plans."<SEP>"LiHua is a participant in a musical jam session pla...
+neighbors_shown: 8
+  - '"WOLFGANGSCHULZ"' (degree=122)
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"YURIKOYAMAMOTO"' (degree=63)
+  - '"JENNIFER MOORE"' (degree=52)
+  - '"ADAMSMITH"' (degree=46)
+  - '"JENNIFERMOORE"' (degree=46)
+  - '"EMILY BURNETT"' (degree=42)
+  - '"JAKEWATSON"' (degree=32)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"LI HUA"'
+norm_key: 'lihua'
+degree: 62
+entity_type: '"PERSON"'
+source_id: chunk-89f9625c031e93eb2b8aa77ef112784f<SEP>chunk-fa6f0478f5664fe074e3c66ab5a1340f<SEP>chunk-98a85749951f61ad7a4977c04482dcc2<SEP>chunk-8ad87bb5dedc5ee9a0daaf6f38056412<SEP>chunk-00830061390701e5b386f3ec28df7d9a<SEP>chunk-08926d05c96817ec380605bdcd7b7262<SEP>chunk-3e00de46f09ba3e4728f21ed0cbc7685<...
+description: "Li Hua engages in musical sessions, expressing the refreshing experience of making music and the motivation to create new tunes."<SEP>"Li Hua is a client who appreciates Jennifer Moore's support and agrees to share his story with others to inspire them."<SEP>"Li Hua is a person who initiates a repair request for a door hinge."<SEP>"Li Hua is a person who inquires about a small repair on the door hinge."|<SEP>"Li Hua is a person who responds positively to the reminder and expresses excitement...
+neighbors_shown: 8
+  - '"WOLFGANGSCHULZ"' (degree=122)
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"JENNIFER MOORE"' (degree=52)
+  - '"ADAMSMITH"' (degree=46)
+  - '"JENNIFERMOORE"' (degree=46)
+  - '"EMILY BURNETT"' (degree=42)
+  - '"JAKEWATSON"' (degree=32)
+  - '"PHOENIX"' (degree=26)
+
+====================================================================================================
+GROUP 02 | norm_key='wolfgangschulz' | total_degree=130
+----------------------------------------------------------------------------------------------------
+NODE 1: '"WOLFGANGSCHULZ"'
+norm_key: 'wolfgangschulz'
+degree: 122
+entity_type: '"PERSON"'
+source_id: chunk-77304878eb9f9e4ab6e0c791c23bbea6<SEP>chunk-70a0a6724c38307306880b9b0335d6ee<SEP>chunk-435458ceb8a0830d73a6d17bfcb70143<SEP>chunk-76cb8e85a78ff9062a4bb2db54fa84df<SEP>chunk-7283968b9f8b5e19c3961e8246ebfccb<SEP>chunk-0a52b00f8795104991606227d4eb1e3f<SEP>chunk-5c8daddc3c7bad85ec3bdb3b754997e8<...
+description: "WolfgangSchulz accepts LiHua's invitation to celebrate Chinese Lunar New Year, expressing excitement and willingness to help with preparations."<SEP>"WolfgangSchulz agrees to join LiHua for a photography walk, showing interest and eagerness to explore a new location."<SEP>"WolfgangSchulz is a person offering photography tips to LiHua about scenic spots in the city."<SEP>"WolfgangSchulz is a person welcoming LiHua to the city and providing photography tips."<SEP>"WolfgangSchulz is a person wh...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"YURIKOYAMAMOTO"' (degree=63)
+  - '"LI HUA"' (degree=62)
+  - '"JAM SESSION"' (degree=20)
+  - '"KARAOKE NIGHT"' (degree=11)
+  - '"BASEMENT"' (degree=9)
+  - '"SUNDAY"' (degree=9)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"WOLFGANG SCHULZ"'
+norm_key: 'wolfgangschulz'
+degree: 8
+entity_type: '"PERSON"'
+source_id: chunk-f3281427475f6d47792b7a67f82bebb6<SEP>chunk-185a5bdb67fb5b40985c0003d607e565<SEP>chunk-af00d01b74d01c127a34824ce483cbe1<SEP>chunk-1cf10a73e2f0333e9897c7de213c7097<SEP>chunk-8f190cae08f918e9a0d738bfd72f355c
+description: "Wolfgang Schulz is a participant in a meeting at the basement and provides suggestions for the music festival."<SEP>"Wolfgang Schulz is a person who discusses plans with Li Hua and suggests playing "Hey Jude" at the jam session."<SEP>"Wolfgang Schulz is a person who introduces himself to Yuriko, expresses excitement about hanging out, and looks forward to a jam session."<SEP>"Wolfgang Schulz is a person who suggests playing "Hey Jude" and offers to help arrange the next jam session."<SEP>"Wo...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"LI HUA"' (degree=62)
+  - '"JAM SESSION"' (degree=20)
+  - '"YURIKO YAMAMOTO"' (degree=10)
+  - '"STUDIO"' (degree=6)
+  - '"BAND PRACTICE"' (degree=4)
+  - '"CHAE SONG-HWA"' (degree=4)
+  - '"SPEECH THERAPY STUDIO"' (degree=4)
+
+====================================================================================================
+GROUP 03 | norm_key='jennifermoore' | total_degree=98
+----------------------------------------------------------------------------------------------------
+NODE 1: '"JENNIFER MOORE"'
+norm_key: 'jennifermoore'
+degree: 52
+entity_type: '"PERSON"'
+source_id: chunk-89f9625c031e93eb2b8aa77ef112784f<SEP>chunk-fa6f0478f5664fe074e3c66ab5a1340f<SEP>chunk-46cc1ca5a18e70debd96bd63d22e3c95<SEP>chunk-00830061390701e5b386f3ec28df7d9a<SEP>chunk-08926d05c96817ec380605bdcd7b7262<SEP>chunk-4deabeffb13ff808bb5e8614c4e33f48<SEP>chunk-70015e8f1df5fb9c9f96f4fd9cb69128<...
+description: "Jennifer Moore is a fitness coach providing guidance and feedback to LiHua."<SEP>"Jennifer Moore is a fitness coach providing guidance and feedback to LiHua."*<SEP>"Jennifer Moore is a member of a fitness community, providing updates and motivational messages."<SEP>"Jennifer Moore is a person sending a message to Li Hua, offering a fitness bag as a gift for contract renewal."|>"offer, gift"<SEP>"Jennifer Moore is a person sending a message to Li Hua, offering a fitness bag as a gift for rene...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"LI HUA"' (degree=62)
+  - '"PHOENIX"' (degree=26)
+  - '"RAZE"' (degree=16)
+  - '"VIPER"' (degree=16)
+  - '"OMEN"' (degree=15)
+  - '"JETT"' (degree=12)
+  - '"SAGE"' (degree=12)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"JENNIFERMOORE"'
+norm_key: 'jennifermoore'
+degree: 46
+entity_type: '"PERSON"'
+source_id: chunk-40e3f4f5c49bfceedc285ffdb617e373<SEP>chunk-84d17d5ba893ffe73776ad3a7d860483<SEP>chunk-b1a4801756e7be802c6d76cb26345711<SEP>chunk-70015e8f1df5fb9c9f96f4fd9cb69128<SEP>chunk-cf944ad3212ae840246d071571e81134<SEP>chunk-410ebfff2fdf88b6a7fd722aaf89fa07<SEP>chunk-99779d9c370d6d05fcb66ac95fd6e6ee<...
+description: "Jennifer Moore is a participant and encourager of ladder drills, sharing her enthusiasm and tips."<SEP>"Jennifer Moore is a participant and encourager of ladder drills, sharing her experience and tips."<SEP>"Jennifer Moore is a person providing health tips and recipes to Li Hua."|<SEP>"Jennifer Moore is a person who checks in on Li Hua's progress and provides exercise recommendations."<SEP>"JenniferMoore is a teacher who agrees to switch LiHua's class to Friday and confirms the time."<SEP>"J...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"LI HUA"' (degree=62)
+  - '"PHOENIX"' (degree=26)
+  - '"CYPHER"' (degree=19)
+  - '"RAZE"' (degree=16)
+  - '"VIPER"' (degree=16)
+  - '"OMEN"' (degree=15)
+  - '"BEGINNER-FRIENDLY YOGA CLASSES"' (degree=10)
+
+====================================================================================================
+GROUP 04 | norm_key='chaesonghwa' | total_degree=75
+----------------------------------------------------------------------------------------------------
+NODE 1: '"CHAESONG-HWA"'
+norm_key: 'chaesonghwa'
+degree: 71
+entity_type: '"PERSON"'
+source_id: chunk-70a0a6724c38307306880b9b0335d6ee<SEP>chunk-a289c2efce3b65b6a78446ca24a633e8<SEP>chunk-c7ec35daa1b937efdeec1effd7d95ede<SEP>chunk-7697feea03e49821185b35fde9f6c7b2<SEP>chunk-a49466a5eb6486cb7fdf68382c442f81<SEP>chunk-3e4bf65777278349507a832e476eba5e<SEP>chunk-734e27a060a5d1b368cb27be205679c4<...
+description: "Chae Song-hwa agrees to have simple finger foods and refreshing drinks at the garage sale."<SEP>"Chae Song-hwa expresses excitement about the garage sale and the chance to declutter and catch up with everyone."<SEP>"Chae Song-hwa plans to bring items and looks forward to clearing out things and catching up with everyone."<SEP>"ChaeSong-hwa agrees with MuradinBronzebeard's suggestion of planting native plants and emphasizes their benefits."<SEP>"ChaeSong-hwa agrees with MuradinBronzebeard's s...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"WOLFGANGSCHULZ"' (degree=122)
+  - '"YURIKOYAMAMOTO"' (degree=63)
+  - '"LI HUA"' (degree=62)
+  - '"ADAMSMITH"' (degree=46)
+  - '"JAM SESSION"' (degree=20)
+  - '"ARTHASMENETHIL"' (degree=17)
+  - '"MURADINBRONZEBEARD"' (degree=17)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"CHAE SONG-HWA"'
+norm_key: 'chaesonghwa'
+degree: 4
+entity_type: '"PERSON"'
+source_id: chunk-185a5bdb67fb5b40985c0003d607e565<SEP>chunk-8f190cae08f918e9a0d738bfd72f355c<SEP>chunk-af00d01b74d01c127a34824ce483cbe1
+description: "Chae Song-hwa actively contributes to musical sessions, bringing energy and enthusiasm to the group."<SEP>"Chae Song-hwa is a person who also contributes songs for the practice and expresses excitement for the jam session."<SEP>"Chae Song-hwa is a participant in a meeting at the basement and discusses the music festival with others."
+neighbors_shown: 4
+  - '"LI HUA"' (degree=62)
+  - '"YURIKO YAMAMOTO"' (degree=10)
+  - '"WOLFGANG SCHULZ"' (degree=8)
+  - '"BAND PRACTICE"' (degree=4)
+
+====================================================================================================
+GROUP 05 | norm_key='yurikoyamamoto' | total_degree=73
+----------------------------------------------------------------------------------------------------
+NODE 1: '"YURIKOYAMAMOTO"'
+norm_key: 'yurikoyamamoto'
+degree: 63
+entity_type: '"PERSON"'
+source_id: chunk-b9a8500da7050d8775bda8dcde8ca5b2<SEP>chunk-70a0a6724c38307306880b9b0335d6ee<SEP>chunk-f8aa3c808e0d5c030cc4dbffa8c57c9a<SEP>chunk-21a62c8919d04ba7ddb851be8988bf61<SEP>chunk-b3c40f1071f8061d9e3e063062cecf67<SEP>chunk-b809786e62c2394043a661b475309d92<SEP>chunk-ad2f8ac24a96bd4a9fc0f23d7caf1e2a<...
+description: "YurikoYamamoto contributes ideas for band names, mixing musical terms with names and incorporating themes from songs they play."<SEP>"YurikoYamamoto contributes to the jam session, deciding on song leaders and bringing her own creative touch."<SEP>"YurikoYamamoto is a person initiating a conversation about testing a new feature for scheduling available time on the studio homepage."<SEP>"YurikoYamamoto is a person who initiates a conversation about testing a new feature for scheduling availab...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"WOLFGANGSCHULZ"' (degree=122)
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"JAM SESSION"' (degree=20)
+  - '"KARAOKE NIGHT"' (degree=11)
+  - '"BASEMENT"' (degree=9)
+  - '"NEXT JAM SESSION"' (degree=6)
+  - '"PRACTICE SESSION"' (degree=6)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"YURIKO YAMAMOTO"'
+norm_key: 'yurikoyamamoto'
+degree: 10
+entity_type: '"PERSON"'
+source_id: chunk-f3281427475f6d47792b7a67f82bebb6<SEP>chunk-185a5bdb67fb5b40985c0003d607e565<SEP>chunk-af00d01b74d01c127a34824ce483cbe1<SEP>chunk-8ad87bb5dedc5ee9a0daaf6f38056412<SEP>chunk-34ff95eb10ec23c105813ac7d8360f43<SEP>chunk-1cf10a73e2f0333e9897c7de213c7097<SEP>chunk-8f190cae08f918e9a0d738bfd72f355c<...
+description: "Yuriko Yamamoto is a participant in a meeting at the basement and mentions a music festival."<SEP>"Yuriko Yamamoto is a participant in musical sessions, sharing insights and updates about the benefits of playing musical instruments on cognitive function."<SEP>"Yuriko Yamamoto is a person receiving information about the final website presentation and looking forward to it."<SEP>"Yuriko Yamamoto is a person who initiates a reminder for a chat and brainstorming session with Li Hua."<SEP>"Yuriko...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"LI HUA"' (degree=62)
+  - '"JAM SESSION"' (degree=20)
+  - '"BASEMENT"' (degree=9)
+  - '"WOLFGANG SCHULZ"' (degree=8)
+  - '"STUDIO"' (degree=6)
+  - '"BAND PRACTICE"' (degree=4)
+  - '"CHAE SONG-HWA"' (degree=4)
+
+====================================================================================================
+GROUP 06 | norm_key='adamsmith' | total_degree=47
+----------------------------------------------------------------------------------------------------
+NODE 1: '"ADAMSMITH"'
+norm_key: 'adamsmith'
+degree: 46
+entity_type: '"PERSON"'
+source_id: chunk-dc2c200ebe90d0ee39e0e09a787265d8<SEP>chunk-0f99edc5392dcdd9b42b22a3d0b67e52<SEP>chunk-97ca5f171e90862d82392935ace3a394<SEP>chunk-c27c89d15b15ea4baa1d9290e8af0ebb<SEP>chunk-136f6fdcf5782dd7910921afee3c3cbb<SEP>chunk-512b656e198a4fa69b285d9626ce4b8c<SEP>chunk-6fc4c86f59ba3ca58bfdd8a32c2032b3<...
+description: "Adam Smith offers to help set up for the garage sale and is willing to lend a hand if needed."<SEP>"AdamSmith agrees with the importance of clear communication and looking forward to the garden's transformation."<SEP>"AdamSmith agrees with the importance of clear communication and looks forward to the garden's transformation."<SEP>"AdamSmith emphasizes the importance of teamwork and working together to make the garden a community effort."<SEP>"AdamSmith expresses excitement about the communi...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"LI HUA"' (degree=62)
+  - '"ARTHASMENETHIL"' (degree=17)
+  - '"MURADINBRONZEBEARD"' (degree=17)
+  - '"REXXARREMAR"' (degree=17)
+  - '"MALFURIONSTORMRAGE"' (degree=16)
+  - '"TURALYON"' (degree=16)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"ADAM SMITH"'
+norm_key: 'adamsmith'
+degree: 1
+entity_type: '"PERSON"'
+source_id: chunk-b39ef402a0690325c682e99e62f89e69<SEP>chunk-df0fcc273a8afea7151630a00c2223e4
+description: "Adam Smith is a person who agrees to arrange for the repair and coordinates with the repair service."<SEP>"Adam Smith offers his skills in data analysis and planning as a potential volunteer for the community emergency response team."
+neighbors_shown: 1
+  - '"DOOR HINGE"' (degree=2)
+
+====================================================================================================
+GROUP 07 | norm_key='emilyburnett' | total_degree=47
+----------------------------------------------------------------------------------------------------
+NODE 1: '"EMILY BURNETT"'
+norm_key: 'emilyburnett'
+degree: 42
+entity_type: '"PERSON"'
+source_id: chunk-98a85749951f61ad7a4977c04482dcc2<SEP>chunk-64bfd730e14a1e1ead630cbe0712cbad<SEP>chunk-29db8f2cea363e3ea7cf31601cf9fbbe<SEP>chunk-3e00de46f09ba3e4728f21ed0cbc7685<SEP>chunk-38b3069d16bb4d2f6c8133e53cd1d4a9<SEP>chunk-fa5fee30de88cc57479bcbe8426a38a2<SEP>chunk-dca3a8b582737569aed3a04cf9934915<...
+description: "Emily Burnett emphasizes the importance of resilience, adaptability, and practical training for the peacekeepers."<SEP>"Emily Burnett is a character who discusses TV shows and recommends others to her friend Li Hua."<SEP>"Emily Burnett is a participant in a poll for their favorite HBO series, leading the conversation and asking for opinions on the shows."<SEP>"Emily Burnett is a participant in a poll for their favorite HBO series, showing engagement with the discussion."<SEP>"Emily Burnett i...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"LI HUA"' (degree=62)
+  - '"QUILLAN"' (degree=15)
+  - '"SAFFRON"' (degree=14)
+  - '"CERSEI LANNISTER"' (degree=10)
+  - '"CERSEI"' (degree=10)
+  - '"KENDALL"' (degree=9)
+  - '"KIERAN"' (degree=9)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"EMILYBURNETT"'
+norm_key: 'emilyburnett'
+degree: 5
+entity_type: '"PERSON"'
+source_id: chunk-2c5e5f4bb7bbe2044095b40d65eca145<SEP>chunk-9040642fe461f6c978382c429887097b<SEP>chunk-73ac16d5ca2f1837b874ab427bb865b7
+description: "EmilyBurnett emphasizes the importance of resilience, adaptability, and practical training for the peacekeepers."<SEP>"EmilyBurnett is a participant in the discussion about potential future developments in Westworld and the ethical considerations surrounding AI and consciousness."<SEP>"EmilyBurnett is a user who recommends sci-fi shows to LiHua and discusses her own viewing habits."
+neighbors_shown: 5
+  - '"QUILLAN"' (degree=15)
+  - '"BLACK MIRROR"' (degree=2)
+  - '"SAN JUNIPERO"' (degree=2)
+  - '"THE EXPANSE"' (degree=2)
+  - '"WATCHING HABITS"' (degree=2)
+
+====================================================================================================
+GROUP 08 | norm_key='thanechambers' | total_degree=39
+----------------------------------------------------------------------------------------------------
+NODE 1: '"THANECHAMBERS"'
+norm_key: 'thanechambers'
+degree: 21
+entity_type: '"PERSON"'
+source_id: chunk-fb14624ae08f728624d90672e0213f65<SEP>chunk-497c176fc2b7df1d7a3866a9c7f16f89<SEP>chunk-5f03d28c56281f372c9de3557782b56f<SEP>chunk-285391a15c889f82cd6b6263f347f59a<SEP>chunk-86ac2e5fccbaeed4fe898cff3097e651<SEP>chunk-d5820851396b14d9f53a92945004b411<SEP>chunk-ee36354378e5e8c034f13bbab40f288b<...
+description: "ThaneChambers discusses the potential for stealth mechanics, emphasizing their impact on gameplay and co-op experiences."<SEP>"ThaneChambers is a character discussing the game, sharing personal stories, and experiences with Arthur."<SEP>"ThaneChambers is a character sharing personal stories and experiences with Arthur and the game."<SEP>"ThaneChambers is a character who initiates a discussion about Dutch van der Linde, a complex and multifaceted figure in the game."<SEP>"ThaneChambers is a p...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"ELARA"' (degree=15)
+  - '"FIONNUALA"' (degree=15)
+  - '"GAVRIEL"' (degree=15)
+  - '"CAELUM"' (degree=12)
+  - '"ILEANA"' (degree=12)
+  - '"DUTCH"' (degree=10)
+  - '"DYLLAN"' (degree=10)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"THANE CHAMBERS"'
+norm_key: 'thanechambers'
+degree: 18
+entity_type: '"PERSON"'
+source_id: chunk-ff33c2a4c7a4ad6ce48fdb93240ae6e1<SEP>chunk-0a0e37c955ed83033c9144df42611eef<SEP>chunk-430e8cddee106871c8512521fbef0ce2<SEP>chunk-81ecb7b830dfa590874a2c18ab0c8594<SEP>chunk-295e2ee40671a699f134d711e7a02a1c<SEP>chunk-348bab181b86a7c4db5d601ade7ccf5d<SEP>chunk-168252cb122d05b62333573b92a01ca5<...
+description: "Thane Chambers is a character discussing the complexity of Micah Bell's character in the game."<SEP>"Thane Chambers is a character initiating a conversation with Li Hua, expressing interest in their gaming preferences."<SEP>"Thane Chambers is a person who initiates a shopping invitation with Li Hua, suggesting discounts on PS5 games at a local game store."<SEP>"Thane Chambers is a person who initiates the conversation and shares his preferences for games."<SEP>"Thane Chambers is a person who...
+neighbors_shown: 8
+  - '"LI HUA"' (degree=62)
+  - '"BRONWYN"' (degree=15)
+  - '"ARTHUR"' (degree=12)
+  - '"FIREWATCH"' (degree=6)
+  - '"BLACK MYTH: WUKONG"' (degree=5)
+  - '"PHYSICAL DISC"' (degree=4)
+  - '"PS DIGITAL STORE"' (degree=4)
+  - '"WITCHER 3"' (degree=4)
+
+====================================================================================================
+GROUP 09 | norm_key='jakewatson' | total_degree=34
+----------------------------------------------------------------------------------------------------
+NODE 1: '"JAKEWATSON"'
+norm_key: 'jakewatson'
+degree: 32
+entity_type: '"PERSON"'
+source_id: chunk-fb47e8d4960961f8afe7446547ede2d5<SEP>chunk-cba2af7c9c54c6e0462966b61184d5f1<SEP>chunk-c9f7522fdb582cd62219123768db599d<SEP>chunk-4924a73a8fd9e533510964dd2a1c5d39<SEP>chunk-54f91257a1ca7ff08bf13efecf1ebe73<SEP>chunk-95a53993006547f37aedd8ddfa33acbf<SEP>chunk-caf657bc6b2fafb802eee90b2451e562<...
+description: "Jake Watson, a participant in the conversation, expressing enthusiasm for the practice session and the potential for new stars to reach the heights of Messi and Ronaldo."<SEP>"Jake Watson, a participant in the discussion about the greatest soccer player, expressing admiration for both Messi and Ronaldo."<SEP>"JakeWatson expresses excitement for the upcoming practice session and looks forward to showing off their skills."<SEP>"JakeWatson is a participant in a conversation discussing the best...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"LI HUA"' (degree=62)
+  - '"EVANGELINE"' (degree=12)
+  - '"BRIAR"' (degree=10)
+  - '"FARRAH"' (degree=9)
+  - '"BAYERN"' (degree=8)
+  - '"HENLEY"' (degree=8)
+  - '"HYDRATION"' (degree=6)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"JAKE WATSON"'
+norm_key: 'jakewatson'
+degree: 2
+entity_type: '"PERSON"'
+source_id: chunk-9bd2bb56ec9afeda556777544e64e854
+description: "Jake Watson is a person who discusses classic matches between Barca and Bayern, expressing admiration for the drama and emotion in these matches."
+neighbors_shown: 2
+  - '"BARCA"' (degree=3)
+  - '"PEDRI"' (degree=3)
+
+====================================================================================================
+GROUP 10 | norm_key='rexxarremar' | total_degree=17
+----------------------------------------------------------------------------------------------------
+NODE 1: '"REXXARREMAR"'
+norm_key: 'rexxarremar'
+degree: 17
+entity_type: '"PERSON"'
+source_id: chunk-94081b25023f694b67c0e4a98e43df42<SEP>chunk-ab39590d11605e18bfeedc7879abc9d4<SEP>chunk-616ba5bd064062da19f710068e846b9a<SEP>chunk-a289c2efce3b65b6a78446ca24a633e8<SEP>chunk-90a64d64f88197ff0dba183e6ad5c4cc<SEP>chunk-c7ec35daa1b937efdeec1effd7d95ede<SEP>chunk-127a5f5c58d64ccaa31d0fb68b68b170<...
+description: "Rexxar Remar suggests having snacks and drinks at the garage sale to encourage more people to come and chat."<SEP>"Rexxar Remar suggests having snacks at the garage sale and proposes simple and easy-to-grab options."<SEP>"Rexxar Remar supports the garage sale idea and suggests bringing snacks."<SEP>"RexxarRemar anticipates the garden's transformation and the community gatherings it will host."<SEP>"RexxarRemar envisions the garden as a place for family gatherings and relaxing afternoons."<SE...
+neighbors_shown: 8
+  - '"ADAMSMITH"' (degree=46)
+  - '"ARTHASMENETHIL"' (degree=17)
+  - '"MURADINBRONZEBEARD"' (degree=17)
+  - '"TURALYON"' (degree=16)
+  - '"ILLIDANSTORMRAGE"' (degree=14)
+  - '"TIRIONFORDRING"' (degree=13)
+  - '"GROMHELLSCREAM"' (degree=11)
+  - '"COMMUNITY GARDEN"' (degree=10)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"REXXAR REMAR"'
+norm_key: 'rexxarremar'
+degree: 0
+entity_type: '"PERSON"'
+source_id: chunk-df0fcc273a8afea7151630a00c2223e4
+description: "Rexxar Remar supports the idea of distinct roles and believes it will help volunteers feel more engaged."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 11 | norm_key='malfurionstormrage' | total_degree=16
+----------------------------------------------------------------------------------------------------
+NODE 1: '"MALFURIONSTORMRAGE"'
+norm_key: 'malfurionstormrage'
+degree: 16
+entity_type: '"PERSON"'
+source_id: chunk-94081b25023f694b67c0e4a98e43df42<SEP>chunk-ab39590d11605e18bfeedc7879abc9d4<SEP>chunk-616ba5bd064062da19f710068e846b9a<SEP>chunk-c7ec35daa1b937efdeec1effd7d95ede<SEP>chunk-127a5f5c58d64ccaa31d0fb68b68b170<SEP>chunk-3dc7029d6294f8355c9d521e412f136d<SEP>chunk-210ab14ff68daf26acd659c55d918d81<...
+description: "Malfurion Stormrage expresses excitement about the garage sale and the potential to make it an unforgettable event."<SEP>"MalfurionStormrage agrees with Turalyon's suggestion of limiting noisy activities and proposes notifying residents in advance."<SEP>"MalfurionStormrage is a character expressing anticipation for the garden's completion and the potential for relaxing and gathering with others."<SEP>"MalfurionStormrage is a character who suggests adding benches or seating areas and consider...
+neighbors_shown: 8
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"ADAMSMITH"' (degree=46)
+  - '"ARTHASMENETHIL"' (degree=17)
+  - '"MURADINBRONZEBEARD"' (degree=17)
+  - '"I"' (degree=14)
+  - '"ILLIDANSTORMRAGE"' (degree=14)
+  - '"TIRIONFORDRING"' (degree=13)
+  - '"GROMHELLSCREAM"' (degree=11)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"MALFURION STORMRAGE"'
+norm_key: 'malfurionstormrage'
+degree: 0
+entity_type: '"PERSON"'
+source_id: chunk-df0fcc273a8afea7151630a00c2223e4
+description: "Malfurion Stormrage proposes covering basic first aid, emergency response protocols, and communication strategies in training sessions."<SEP>"Malfurion Stormrage suggests roles like team leader, medic, communication officer, and someone to manage logistics for the community emergency response team."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 12 | norm_key='tirionfordring' | total_degree=13
+----------------------------------------------------------------------------------------------------
+NODE 1: '"TIRIONFORDRING"'
+norm_key: 'tirionfordring'
+degree: 13
+entity_type: '"PERSON"'
+source_id: chunk-94081b25023f694b67c0e4a98e43df42<SEP>chunk-ab39590d11605e18bfeedc7879abc9d4<SEP>chunk-616ba5bd064062da19f710068e846b9a<SEP>chunk-7d29489ac60ba228b81f44616b9af327<SEP>chunk-13d736312db563e6f8583ce37dc4aa3b<SEP>chunk-a289c2efce3b65b6a78446ca24a633e8<SEP>chunk-90a64d64f88197ff0dba183e6ad5c4cc<...
+description: "Tirion Fordring emphasizes the importance of building community spirit and enjoying the garage sale as a community."<SEP>"Tirion Fordring is a person who initiates the garage sale suggestion and encourages others to participate."<SEP>"Tirion Fordring reiterates the importance of the garage sale and aims to make it the best one their community has seen."<SEP>"TirionFordring acknowledges the collaborative spirit and enthusiasm of the community, emphasizing the importance of involving everyone...
+neighbors_shown: 8
+  - '"LIHUA"' (degree=331)
+  - '"ARTHASMENETHIL"' (degree=17)
+  - '"MURADINBRONZEBEARD"' (degree=17)
+  - '"REXXARREMAR"' (degree=17)
+  - '"MALFURIONSTORMRAGE"' (degree=16)
+  - '"TURALYON"' (degree=16)
+  - '"GROMHELLSCREAM"' (degree=11)
+  - '"COMMUNITY GARDEN"' (degree=10)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"TIRION FORDRING"'
+norm_key: 'tirionfordring'
+degree: 0
+entity_type: '"PERSON"'
+source_id: chunk-df0fcc273a8afea7151630a00c2223e4<SEP>chunk-13d736312db563e6f8583ce37dc4aa3b
+description: "Tirion Fordring emphasizes the importance of collaboration and encourages everyone to participate in the emergency response team."<SEP>"Tirion Fordring initiates the formation of a community emergency response team, expressing enthusiasm and inviting volunteers."<SEP>"Tirion Fordring is a character involved in updating the construction schedule and discussing the garden renovation with the community."<SEP>"Tirion Fordring keeps the team on track by emphasizing the importance of prioritizing...
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 13 | norm_key='gromhellscream' | total_degree=11
+----------------------------------------------------------------------------------------------------
+NODE 1: '"GROMHELLSCREAM"'
+norm_key: 'gromhellscream'
+degree: 11
+entity_type: '"PERSON"'
+source_id: chunk-94081b25023f694b67c0e4a98e43df42<SEP>chunk-ab39590d11605e18bfeedc7879abc9d4<SEP>chunk-616ba5bd064062da19f710068e846b9a<SEP>chunk-a289c2efce3b65b6a78446ca24a633e8<SEP>chunk-90a64d64f88197ff0dba183e6ad5c4cc<SEP>chunk-c7ec35daa1b937efdeec1effd7d95ede<SEP>chunk-127a5f5c58d64ccaa31d0fb68b68b170<...
+description: "Grom Hellscream supports the garage sale idea and sees it as a chance to showcase community spirit during garden renovations."<SEP>"GromHellscream agrees with IllidanStormrage and suggests exploring cozy seating options for the garden."<SEP>"GromHellscream agrees with MuradinBronzebeard and suggests considering sustainability practices for the garden's long-term maintenance."<SEP>"GromHellscream endorses the idea of planting native flowers and herbs, highlighting the benefits of supporting l...
+neighbors_shown: 8
+  - '"CHAESONG-HWA"' (degree=71)
+  - '"ARTHASMENETHIL"' (degree=17)
+  - '"MURADINBRONZEBEARD"' (degree=17)
+  - '"REXXARREMAR"' (degree=17)
+  - '"MALFURIONSTORMRAGE"' (degree=16)
+  - '"I"' (degree=14)
+  - '"ILLIDANSTORMRAGE"' (degree=14)
+  - '"TIRIONFORDRING"' (degree=13)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"GROM HELLSCREAM"'
+norm_key: 'gromhellscream'
+degree: 0
+entity_type: '"PERSON"'
+source_id: chunk-df0fcc273a8afea7151630a00c2223e4
+description: "Grom Hellscream volunteers with experience in first aid and emergency preparedness for the community emergency response team."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 14 | norm_key='bloodandwine' | total_degree=4
+----------------------------------------------------------------------------------------------------
+NODE 1: '""BLOOD AND WINE"'
+norm_key: 'bloodandwine'
+degree: 2
+entity_type: '"QUEST"'
+source_id: chunk-f77bd5bebb76a222f06346fa64dae1e5
+description: ""Blood and Wine" is a specific quest in the game, highlighted for its rich lore and surprising ending."
+neighbors_shown: 2
+  - '"LIHUA"' (degree=331)
+  - '"THANECHAMBERS"' (degree=21)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"BLOOD AND WINE"'
+norm_key: 'bloodandwine'
+degree: 2
+entity_type: '"EXPANSION"'
+source_id: chunk-1a1c74fd1118b55e1992637a79b1440b
+description: "Blood and Wine is an expansion to The Witcher 3, offering a new setting and storyline."
+neighbors_shown: 2
+  - '"LI HUA"' (degree=62)
+  - '"THANE CHAMBERS"' (degree=18)
+
+====================================================================================================
+GROUP 15 | norm_key='herecomesthesun' | total_degree=3
+----------------------------------------------------------------------------------------------------
+NODE 1: '"HERE COMES THE SUN"'
+norm_key: 'herecomesthesun'
+degree: 2
+entity_type: '"EVENT"'
+source_id: chunk-b9a8500da7050d8775bda8dcde8ca5b2<SEP>chunk-cc1515d62efff0fa5880bd2608ddfd75
+description: "Here Comes the Sun is a song that WolfgangSchulz and LiHua plan to play during the Jam."<SEP>"Here Comes the Sun is mentioned as a Beatles song that YurikoYamamoto suggests playing at the jam session."
+neighbors_shown: 2
+  - '"LIHUA"' (degree=331)
+  - '"WOLFGANGSCHULZ"' (degree=122)
+----------------------------------------------------------------------------------------------------
+NODE 2: '""HERE COMES THE SUN""'
+norm_key: 'herecomesthesun'
+degree: 1
+entity_type: '"SONG"'
+source_id: chunk-b6bd518bddc4a404366febca950f73c0
+description: ""Here Comes the Sun" is suggested as a Beatles song for the jam."
+neighbors_shown: 1
+  - '"WOLFGANGSCHULZ"' (degree=122)
+
+====================================================================================================
+GROUP 16 | norm_key='setlist' | total_degree=3
+----------------------------------------------------------------------------------------------------
+NODE 1: '"SET LIST"'
+norm_key: 'setlist'
+degree: 3
+entity_type: '"EVENT"'
+source_id: chunk-ff4ec3e9c95b2b62feba5f227f0716cf
+description: "Set List is the list of songs planned for a music session, reflecting the coordination among participants."
+neighbors_shown: 3
+  - '"LIHUA"' (degree=331)
+  - '"WOLFGANGSCHULZ"' (degree=122)
+  - '"YURIKOYAMAMOTO"' (degree=63)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"SETLIST"'
+norm_key: 'setlist'
+degree: 0
+entity_type: '"CONCEPT"'
+source_id: chunk-7a07436d4991d1b9d4340f981156c8f7
+description: "Setlist is the final list of songs decided upon for the band's performances."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 17 | norm_key='mainst' | total_degree=2
+----------------------------------------------------------------------------------------------------
+NODE 1: '"MAIN ST"'
+norm_key: 'mainst'
+degree: 2
+entity_type: '"LOCATION"'
+source_id: chunk-35f1918cb3ff0c1faf2149b9d9f67acc
+description: "Main St is the location of a restaurant that WolfgangSchulz suggests for a pre-concert meal."
+neighbors_shown: 2
+  - '"LIHUA"' (degree=331)
+  - '"WOLFGANGSCHULZ"' (degree=122)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"MAIN ST."'
+norm_key: 'mainst'
+degree: 0
+entity_type: '"LOCATION"'
+source_id: chunk-1408e47e41890cc1c7e6b410c551ced6
+description: "Main St. is the location suggested for WolfgangSchulz and LiHua to meet up for dinner."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 18 | norm_key='1000am' | total_degree=0
+----------------------------------------------------------------------------------------------------
+NODE 1: '"10:00 AM"'
+norm_key: '1000am'
+degree: 0
+entity_type: '"TIME"'
+source_id: chunk-8e12d18c662f8f655a9dad0a38c3bdc4
+description: "10:00 am is a specific time suggested for the training session."
+neighbors_shown: 0
+  - (none)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"10:00AM"'
+norm_key: '1000am'
+degree: 0
+entity_type: '"TIME"'
+source_id: chunk-eff9f65e9b457052b40f3ec2eea27d3e
+description: "10:00am is the proposed start time for LiHua's class on Friday."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 19 | norm_key='awesome' | total_degree=0
+----------------------------------------------------------------------------------------------------
+NODE 1: '"AWESOME! 🎉"'
+norm_key: 'awesome'
+degree: 0
+entity_type: '"CONCEPT"'
+source_id: chunk-df99ac99b82585348fb223532ab7617c
+description: "Shows approval and enthusiasm for the upcoming celebration."
+neighbors_shown: 0
+  - (none)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"AWESOME"'
+norm_key: 'awesome'
+degree: 0
+entity_type: '"CONCEPT"'
+source_id: chunk-9d64fa2e1a11c4b4de5d8d9c66052d1a
+description: "awesome is an expression of positive sentiment or enthusiasm."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 20 | norm_key='kids' | total_degree=0
+----------------------------------------------------------------------------------------------------
+NODE 1: '"KIDS"'
+norm_key: 'kids'
+degree: 0
+entity_type: '"LOCATION"'
+source_id: chunk-becd17bd62d8678ed6d30b476ae3e8e3<SEP>chunk-b3b54af9b9b5eaba3811ddb8f4ecdb7e
+description: "Kids are the beneficiaries and users of the playground project."|<SEP>"Kids are the participants in the tree planting activity, representing the future generation learning about nature and the environment."
+neighbors_shown: 0
+  - (none)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"KIDS\''
+norm_key: 'kids'
+degree: 0
+entity_type: '"PERSON"'
+source_id: chunk-6fc4c86f59ba3ca58bfdd8a32c2032b3
+description: "Kids are mentioned as a group that could participate in games or activities at the garden, adding a family-friendly aspect to the community gathering."
+neighbors_shown: 0
+  - (none)
+
+====================================================================================================
+GROUP 21 | norm_key='airconditioner' | total_degree=0
+----------------------------------------------------------------------------------------------------
+NODE 1: '"AIR CONDITIONER"'
+norm_key: 'airconditioner'
+degree: 0
+entity_type: '"TECHNOLOGY"'
+source_id: chunk-a46b151a8b48ca747c4cfdaf44e08b97
+description: "Air Conditioner is the object for which warranty and maintenance plans are discussed."
+neighbors_shown: 0
+  - (none)
+----------------------------------------------------------------------------------------------------
+NODE 2: '"AIR-CONDITIONER"'
+norm_key: 'airconditioner'
+degree: 0
+entity_type: '"TECHNOLOGY"'
+source_id: chunk-a8a5e5aa414b3802d6d9a28a3dde8193<SEP>chunk-9621e81dd33152d8a9d918fa3a1e7d61
+description: "Air-Conditioner is a piece of equipment discussed for the basement installation."<SEP>"Air-Conditioner refers to the equipment being requested to be added to the basement."
+neighbors_shown: 0
+  - (none)

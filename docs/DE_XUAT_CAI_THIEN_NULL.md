@@ -168,7 +168,7 @@ chấm `accurate`, tức cộng điểm oan cho cấu hình ít chịu trả l�
 
 **Công:** khoảng 3–4 giờ mỗi người.
 
-### Đ4 — Xác nhận cổng Null của H2 bằng 3 seed mới · chỉ khi nhóm muốn nâng H2 lên ROBUST POSITIVE
+### Đ4 — Xác nhận cổng Null của H2 bằng 3 seed mới · ⛔ NHÓM QUYẾT ĐỊNH KHÔNG CHẠY (16/09/2026)
 
 **Vì sao.** H2 trượt E4 đúng 0,33 câu, và mức giảm dồn vào một lượt (−4, −7, +1). Với 45 câu và một lượt chấm, đây có thể là nhiễu
 lượt sinh.
@@ -227,13 +227,13 @@ tín hiệu đo độ khớp hay độ phủ đều thấy những câu này gi�
 
 | # | Việc | Công | Gọi API trả phí | Phụ thuộc |
 |---|---|---|---|---|
-| 1 | **Đ1** — người chấm lại 40 câu Null, dồn vào lớp `neither` | 1 giờ × 2 người | không | — |
+| 1 | **Đ1** — người chấm lại 40 câu Null, dồn vào lớp `neither` | 1 giờ, **giao thành viên 1** | không | [hướng dẫn](phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md) |
 | 2 | **Đ2** — chấm lại nhóm Null 3 lượt, độ nhạy | 30 phút máy | không (Gemini free tier) | khai báo trước |
 | 3 | **Đ3** — rà tay 65 nhãn Null | 3–4 giờ × 2 người | không | — |
-| 4 | **Đ4** — xác nhận cổng Null của H2 | 4,5 giờ GPU | không | nhóm duyệt |
+| ⛔ | ~~**Đ4** — xác nhận cổng Null của H2~~ | — | — | **bỏ 16/09**, lý do ở mục 4 |
 | 5 | **Đ5** — K2, K3, G2, G3 | 1–3 giờ mỗi việc | G3 **có** | — |
 
-Nếu chỉ làm được hai việc: **Đ1 rồi Đ2**. Hai việc này quyết định con số Null của B2 trong bài có tin được hay không.
+Đ2 đã xong. Đ1 đã giao cho thành viên 1 (một người chấm — xem bản sửa đăng ký lần 2). Đ3 hoãn. Đ4 bỏ.
 
 **Cách viết vào bài (dự thảo):** *"Cấu hình tốt nhất (B2) tăng accuracy tổng 13,0 điểm so với mốc, nhưng nhóm Null giảm 5,2 điểm.
 Phân tích lỗi cho thấy mức giảm này không phải do bịa thêm — tỉ lệ `error` của nhóm Null ở B2 là thấp nhất trong mọi cấu hình — mà do
@@ -251,7 +251,7 @@ nhãn nào. Phiếu và script đã sẵn sàng; phần còn lại là việc c�
 | **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md` (kèm bản sửa 16/09); phiếu **40 dòng** đã mù `logs/null_audit/d1_judge_audit/sheet_A.csv` và `sheet_B.csv`; `make_judge_audit_sheet.py`, `score_judge_audit.py` | hai người điền `phan_quyet`, `noi_ro_khong_co`, `khang_dinh_them` — **không mở** `key_KHONG_MO_TRUOC.csv` — rồi chạy `score_judge_audit.py` |
 | **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | **xong 16/09** — mức giảm Null không phải nhiễu giám khảo (mục 4); `logs/null_audit/d2_rejudge/ket_qua.txt` |
 | **Đ3** | `preregistration/D3_ra_nhan_65_null.md`; phiếu 65 câu kèm 10 chunk BM25 và chunk đã vào Sources, `logs/null_audit/d3_label_audit/sheet_{A,B}.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | hai người điền `nhan`, `doi_mot_chi_tiet`, `chunk_id`, `trich_dan`, rồi chạy `score_label_audit.py` |
-| **Đ4** | chưa chạy | cần nhóm duyệt: 6 lượt QA (B2 và vector thuần × 3 seed mới), khoảng 9 giờ GPU, giữ nguyên ngưỡng −3 |
+| **Đ4** | ⛔ **bỏ** (16/09) | không chạy: sau Đ2, lượt Null net dương duy nhất thành −1 và trung bình xa ngưỡng hơn. H2 giữ nguyên BORDERLINE |
 
 Mẫu phiếu dùng chung một bộ phân loại câu trả lời trong `reproduce/null_audit/answer_kind.py`, để phiếu, bảng thống kê và báo cáo
 nói cùng một ngôn ngữ.

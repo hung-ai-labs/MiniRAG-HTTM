@@ -9,6 +9,7 @@
 |---|---|
 | Kết quả hiện tại so với baseline (acc / err / neither / Null) | [`KET_QUA_HIEN_TAI.md`](KET_QUA_HIEN_TAI.md) |
 | Việc của **thành viên 1** — cắt tỉa và chấm lại đường đi | [`phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md`](phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md) |
+| Việc của **thành viên 1** — chấm tay 40 câu Null (Đ1, ~1 giờ) | [`phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md`](phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md) |
 | Việc của **thành viên 2** — hợp nhất thực thể trùng tên | [`phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md`](phan-cong/THANH_VIEN_2_HOP_NHAT_THUC_THE.md) |
 | Đề xuất cải thiện nhóm Null (chẩn đoán B2, kiểm nhãn, kiểm giám khảo) | [`DE_XUAT_CAI_THIEN_NULL.md`](DE_XUAT_CAI_THIEN_NULL.md) |
 | Chạy sàng lọc BM25 trên máy mình (Modal và khoá riêng) | [`../reproduce/screening/HUONG_DAN_CHAY.md`](../reproduce/screening/HUONG_DAN_CHAY.md) |
@@ -23,7 +24,7 @@
 | Người | Việc | Được sửa | Chỉ đọc |
 |---|---|---|---|
 | Hùng | Sàng lọc BM25: B1 = RRF(đồ thị, vector, BM25), B2 = RRF(vector, BM25) | khối trộn chunk và ghi log trong `_build_mini_query_context`; `_rrf_fuse`, `_bm25_index`, `_keyword_llm`, `minirag_query`; `minirag/bm25.py`; `reproduce/screening/`; `logs/screening/`; tầng D: `reproduce/stage_d/`, `logs/stage_d/` | — |
-| Thành viên 1 | Cắt tỉa và chấm lại đường đi | `minirag/path_rerank.py`; đoạn duyệt đường đi trong `_build_mini_query_context` (chỉ thêm hook, mặc định giống hệt); hàm mới trong `minirag/utils.py`; `reproduce/path/`; `logs/path/` | index chung; `logs/screening/cache/` |
+| Thành viên 1 | Cắt tỉa và chấm lại đường đi; **chấm tay 40 câu Null (Đ1)** | `logs/null_audit/d1_judge_audit/sheet_A.csv`; `minirag/path_rerank.py`; đoạn duyệt đường đi trong `_build_mini_query_context` (chỉ thêm hook, mặc định giống hệt); hàm mới trong `minirag/utils.py`; `reproduce/path/`; `logs/path/` | index chung; `logs/screening/cache/` |
 | Thành viên 2 | Hợp nhất thực thể trùng tên | `reproduce/entity_resolution/`; `logs/entity_resolution/`; index mới `LiHua-World-qwen-entres/` | index chung; toàn bộ `minirag/` |
 
 **Chung cho cả nhóm**

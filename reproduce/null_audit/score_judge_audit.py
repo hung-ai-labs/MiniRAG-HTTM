@@ -56,19 +56,25 @@ def main():
     rows_a, a = load(f"{IN}/sheet_A.csv")
     rows_b, b = load(f"{IN}/sheet_B.csv")
     print(f"Đ1 — phiếu {len(rows_a)} dòng · người A đã chấm {len(a)} · người B đã chấm {len(b)}")
-    if not a or not b:
-        sys.exit("Chưa đủ hai người chấm — chưa tính được gì. (Cột phan_quyet còn trống.)")
+    if not a:
+        sys.exit("Chưa ai chấm — cột phan_quyet còn trống.")
 
-    both = sorted(set(a) & set(b))
-    print(f"\n1. Độ khớp giữa hai người trên {len(both)} dòng cùng chấm")
-    pairs = [(a[i]["phan_quyet"].strip().upper(), b[i]["phan_quyet"].strip().upper()) for i in both]
-    print(f"   trùng nhau {100 * sum(x == y for x, y in pairs) / max(1, len(pairs)):.1f}% · Cohen κ = {kappa(pairs):.3f}")
-    for f in ("noi_ro_khong_co", "khang_dinh_them"):
-        p2 = [(a[i][f].strip().upper(), b[i][f].strip().upper()) for i in both]
-        print(f"   {f}: trùng {100 * sum(x == y for x, y in p2) / max(1, len(p2)):.1f}% · κ = {kappa(p2):.3f}")
-
-    agreed = [i for i in both if pairs[both.index(i)][0] == pairs[both.index(i)][1]]
-    print(f"\n2. Người (chỉ lấy {len(agreed)} dòng hai người đồng thuận) so với Gemini")
+    if b:
+        both = sorted(set(a) & set(b))
+        print(f"\n1. Độ khớp giữa hai người trên {len(both)} dòng cùng chấm")
+        pr = [(a[i]["phan_quyet"].strip().upper(), b[i]["phan_quyet"].strip().upper()) for i in both]
+        print(f"   trùng nhau {100 * sum(x == y for x, y in pr) / max(1, len(pr)):.1f}% · Cohen κ = {kappa(pr):.3f}")
+        for f in ("noi_ro_khong_co", "khang_dinh_them"):
+            p2 = [(a[i][f].strip().upper(), b[i][f].strip().upper()) for i in both]
+            print(f"   {f}: trùng {100 * sum(x == y for x, y in p2) / max(1, len(p2)):.1f}% · κ = {kappa(p2):.3f}")
+        agreed = [i for i, pair in zip(both, pr) if pair[0] == pair[1]]
+        scope = f"chỉ lấy {len(agreed)} dòng hai người đồng thuận"
+    else:
+        agreed = sorted(a)
+        scope = f"{len(agreed)} dòng của một người chấm"
+        print("\n1. CHỈ MỘT NGƯỜI CHẤM (sửa đăng ký 16/09) — không tính được κ giữa hai người.")
+        print("   Mọi con số dưới đây là cách đọc của một người. Phải ghi đúng như vậy trong Limitations.")
+    print(f"\n2. Người ({scope}) so với Gemini")
     print("   ⚠ Mẫu cố ý lệch về lớp `neither` (6/2/2 mỗi nhánh), nên κ tổng ở đây KHÔNG đại diện cho toàn bộ.")
     print("   Chỉ dùng các tỉ lệ có điều kiện ở mục 3 và 4, rồi nhân với phân bố thật của từng nhánh.")
     for name, reader in (("đọc chặt", lambda i: a[i]["phan_quyet"].strip().upper()), ("đọc rộng", lambda i: lenient(a[i]))):

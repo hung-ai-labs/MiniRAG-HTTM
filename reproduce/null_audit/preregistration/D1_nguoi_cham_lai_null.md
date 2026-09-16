@@ -33,6 +33,18 @@ không có — phải chấm thế nào. Đ1 đo xem người và Gemini lệch 
   thật của từng nhánh.
 - Lệnh sinh: `make_judge_audit_sheet.py --focused`.
 
+## Sửa đăng ký lần 2, 16/09/2026 — một người chấm thay vì hai
+
+**Vẫn chốt trước khi có bất kỳ nhãn nào.** Nhóm quyết định giao Đ1 cho **một thành viên** (hướng dẫn:
+[`docs/phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md`](../../../docs/phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md)).
+
+- **Cái mất:** không tính được Cohen's κ giữa hai người, nên không có thước đo độ tin cậy của việc gán nhãn.
+- **Hệ quả bắt buộc khi báo cáo:** mọi con số của Đ1 phải ghi rõ là **cách đọc của một người**, không được trình bày như
+  đồng thuận của nhóm. Đây là điểm yếu phải nêu trong Limitations.
+- **Giảm nhẹ:** người chấm ghi bằng chứng vào cột `ghi_chu` cho mọi dòng mà họ thấy khó xử, để người khác kiểm lại được.
+- **Nếu sau này có người thứ hai rảnh:** chấm lại **10 dòng bất kỳ** trong `sheet_B.csv` là đủ để ước lượng thô độ đồng thuận;
+  script tự nhận ra và tính κ trên phần chồng lấn.
+
 ## Người gán nhãn và cách làm mù
 
 Hai người, mỗi người một file (`sheet_A.csv`, `sheet_B.csv`), làm **độc lập**, không trao đổi trong lúc chấm và **không mở**

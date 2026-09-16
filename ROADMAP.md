@@ -843,7 +843,10 @@ cổng (H1); phép so duy nhất vướng cổng là H2, và chỉ vướng E4. 
 - H2 vẫn báo **BORDERLINE**; **không** được viết "BM25 cộng thêm giá trị so với vector thuần" như thể đã chứng minh.
 - **Không nới E4.** Nhóm Null của B2 đi vào Limitations.
 - Muốn nâng H2 lên ROBUST POSITIVE thì phải đăng ký trước 3 seed mới cho **cả** B2 và vector thuần, giữ nguyên ngưỡng −3
-  (đề xuất Đ4 trong `docs/DE_XUAT_CAI_THIEN_NULL.md`).
+  (đề xuất Đ4 trong `docs/DE_XUAT_CAI_THIEN_NULL.md`). **16/09 nhóm quyết định KHÔNG chạy Đ4:** sau Đ2, cặp lượt Null net dương
+  duy nhất (+1) thành −1 và trung bình đi từ −3,33 xuống −4,67, nên thêm seed gần như chỉ xác nhận BORDERLINE, với giá khoảng 9
+  giờ GPU; ngoài ra chạy thêm seed chỉ cho phép so vừa trượt cổng dễ bị phản biện là "chạy tới khi đạt". **H2 giữ nguyên
+  BORDERLINE trong bài.**
 
 **Nhóm Null của B2 — chẩn đoán sau khi phân tích chính thức đã chạy** (`reproduce/null_audit/b2_null_stage_d.py`,
 `logs/null_audit/b2_null_stage_d.txt`; mô tả, không thay số chính thức). B2 **không** bịa nhiều hơn: err của nhóm Null là 22,96,

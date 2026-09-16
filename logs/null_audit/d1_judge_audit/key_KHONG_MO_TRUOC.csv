@@ -1,101 +1,41 @@
 id,nhanh,luot,kieu_cau_tra_loi,phan_quyet_gemini,cau_hoi
-N001,VEC,vec,khẳng định,error,What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?
-N002,VEC,vec_s303,từ chối rồi suy đoán,accurate,What color did Li Hua paint his house before the community garden renovation began?
-N003,B1,b1_s202,từ chối thuần,accurate,What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?
-N004,V3,v3_r2,khẳng định,error,What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?
-N005,B1,b1_s101,khẳng định,error,What is the favorite type of music that Li Hua and Yuriko plan to play together?
-N006,B2,b2_s202,khẳng định,error,What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?
-N007,B1,b1_s303,từ chối thuần,accurate,What color did Li Hua paint his house before the community garden renovation began?
-N008,B2,b2_s202,từ chối rồi suy đoán,neither,What is the nutritional value of the new line of high-protein breads compared to traditional white bread?
-N009,B2,b2_s101,từ chối thuần,accurate,"What did Li Hua eat for dinner on January 20, 2026?"
-N010,V3,v3_r3,từ chối thuần,accurate,What strategy did Li Hua use to score a goal in the championship match against their rival team?
-N011,B1,b1_s101,khẳng định,error,"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?"
-N012,V3,v3_r3,khẳng định,neither,What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?
-N013,B2,b2_s101,khẳng định,neither,What is the nutritional value of the new line of high-protein breads compared to traditional white bread?
-N014,B1,b1_s101,từ chối thuần,accurate,What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?
-N015,V3,v3_r2,từ chối rồi suy đoán,accurate,What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?
-N016,VEC,vec_s202,khẳng định,accurate,What is the name of the last song Wolfgang played using the new drum practice app?
-N017,VEC,vec,khẳng định,neither,"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?"
-N018,B1,b1_s202,khẳng định,neither,What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?
-N019,VEC,vec_s202,từ chối rồi suy đoán,accurate,What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?
-N020,VEC,vec_s202,từ chối thuần,accurate,"What did Li Hua eat for dinner on January 20, 2026?"
-N021,B1,b1_s101,từ chối rồi suy đoán,neither,What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?
-N022,VEC,vec_s202,khẳng định,error,What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?
-N023,VEC,vec,từ chối thuần,accurate,"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?"
-N024,B2,b2_s101,khẳng định,neither,What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?
-N025,B1,b1_s202,từ chối rồi suy đoán,accurate,What type of protein shake does Li Hua prefer to drink before his workout sessions?
-N026,B2,b2_s303,từ chối rồi suy đoán,accurate,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
-N027,VEC,vec_s202,từ chối thuần,accurate,What did Jennifer say to Li Hua about their plan for a team swimming competition in December?
-N028,B1,b1_s202,từ chối thuần,accurate,What is the exact reason for Li Hua's unexpected work meeting on Thursday?
-N029,VEC,vec,từ chối thuần,accurate,What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?
-N030,B1,b1_s303,khẳng định,error,What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?
-N031,B1,b1_s202,từ chối rồi suy đoán,neither,What type of diet is Li Hua following to support his training regimen and sleep schedule?
-N032,V3,v3_r3,từ chối thuần,accurate,What did Jennifer say to Li Hua about their plan for a team swimming competition in December?
-N033,B2,b2_s303,khẳng định,accurate,What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?
-N034,VEC,vec_s303,từ chối rồi suy đoán,error,"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?"
-N035,VEC,vec_s303,từ chối rồi suy đoán,accurate,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
-N036,B2,b2_s202,khẳng định,error,What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?
-N037,B1,b1_s101,từ chối thuần,accurate,What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?
-N038,V3,v3,từ chối rồi suy đoán,neither,What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?
-N039,VEC,vec,từ chối rồi suy đoán,accurate,What type of special dietary restrictions does Li Hua follow when preparing meals for his family?
-N040,B1,b1_s303,từ chối thuần,accurate,What type of special dietary restrictions does Li Hua follow when preparing meals for his family?
-N041,VEC,vec,từ chối thuần,accurate,What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?
-N042,B2,b2_s101,từ chối thuần,accurate,"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?"
-N043,B1,b1_s101,từ chối thuần,accurate,What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?
-N044,V3,v3_r2,từ chối rồi suy đoán,neither,What type of diet is Li Hua following to support his training regimen and sleep schedule?
-N045,VEC,vec_s303,khẳng định,error,What type of diet is Li Hua following to support his training regimen and sleep schedule?
-N046,B1,b1_s101,từ chối rồi suy đoán,accurate,What color did Li Hua paint his house before the community garden renovation began?
-N047,VEC,vec_s303,từ chối rồi suy đoán,accurate,"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?"
-N048,B2,b2_s303,từ chối rồi suy đoán,neither,What type of diet is Li Hua following to support his training regimen and sleep schedule?
-N049,B2,b2_s202,từ chối rồi suy đoán,accurate,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
-N050,B2,b2_s202,khẳng định,error,What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?
-N051,VEC,vec_s303,từ chối rồi suy đoán,accurate,"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?"
-N052,V3,v3_r3,khẳng định,accurate,What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?
-N053,VEC,vec_s303,khẳng định,error,"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?"
-N054,B1,b1_s101,khẳng định,accurate,What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?
-N055,VEC,vec_s303,khẳng định,accurate,What is the name of the last song Wolfgang played using the new drum practice app?
-N056,B2,b2_s303,từ chối thuần,accurate,What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?
-N057,V3,v3_r3,từ chối thuần,accurate,What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?
-N058,V3,v3_r3,khẳng định,error,What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?
-N059,VEC,vec_s202,từ chối rồi suy đoán,neither,"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?"
-N060,B1,b1_s303,từ chối thuần,accurate,What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?
-N061,B1,b1_s303,từ chối rồi suy đoán,accurate,What time did Chae first suggest they visit the music festival in the morning?
-N062,B1,b1_s303,từ chối rồi suy đoán,accurate,What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?
-N063,V3,v3,khẳng định,accurate,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
-N064,B2,b2_s202,từ chối rồi suy đoán,accurate,What type of diet is Li Hua following to support his training regimen and sleep schedule?
-N065,B2,b2_s101,từ chối thuần,accurate,What is the exact reason for Li Hua's unexpected work meeting on Thursday?
-N066,B1,b1_s303,khẳng định,error,"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?"
-N067,B2,b2_s202,khẳng định,error,"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?"
-N068,B2,b2_s101,từ chối rồi suy đoán,accurate,What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?
-N069,VEC,vec_s202,từ chối thuần,accurate,What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?
-N070,B2,b2_s202,từ chối thuần,accurate,What is Li Hua's favorite type of exercise outside of pull-ups?
-N071,V3,v3_r3,từ chối rồi suy đoán,neither,What type of protein shake does Li Hua prefer to drink before his workout sessions?
-N072,VEC,vec,khẳng định,accurate,What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?
-N073,VEC,vec_s202,từ chối thuần,accurate,"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?"
-N074,VEC,vec_s202,khẳng định,accurate,What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?
-N075,B2,b2_s303,từ chối rồi suy đoán,accurate,What type of special dietary restrictions does Li Hua follow when preparing meals for his family?
-N076,VEC,vec_s303,từ chối thuần,accurate,What did Jennifer say to Li Hua about their plan for a team swimming competition in December?
-N077,B2,b2_s303,từ chối rồi suy đoán,neither,What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?
-N078,V3,v3_r2,từ chối rồi suy đoán,accurate,What type of protein shake does Li Hua prefer to drink before his workout sessions?
-N079,V3,v3_r2,từ chối thuần,accurate,What did Jennifer say to Li Hua about their plan for a team swimming competition in December?
-N080,B1,b1_s303,khẳng định,error,What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?
-N081,V3,v3_r2,từ chối thuần,accurate,What is the name of the last song Wolfgang played using the new drum practice app?
-N082,B2,b2_s303,từ chối thuần,accurate,"What did Li Hua eat for dinner on January 20, 2026?"
-N083,B1,b1_s303,từ chối rồi suy đoán,error,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
-N084,V3,v3,khẳng định,accurate,What strategy did Li Hua use to score a goal in the championship match against their rival team?
-N085,V3,v3_r2,từ chối thuần,accurate,What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?
-N086,V3,v3_r2,từ chối thuần,accurate,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
-N087,B2,b2_s101,khẳng định,error,What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?
-N088,V3,v3,khẳng định,neither,What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?
-N089,V3,v3_r2,khẳng định,accurate,What song did Li Hua perform at the local music festival in 2026?
-N090,B1,b1_s101,từ chối rồi suy đoán,neither,"What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?"
-N091,V3,v3,từ chối rồi suy đoán,accurate,What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?
-N092,V3,v3_r3,từ chối rồi suy đoán,accurate,What color did Li Hua paint his house before the community garden renovation began?
-N093,V3,v3_r2,khẳng định,error,What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?
-N094,V3,v3,từ chối rồi suy đoán,accurate,What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?
-N095,B2,b2_s202,từ chối thuần,accurate,"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?"
-N096,B1,b1_s202,khẳng định,error,What is Li Hua's favorite type of exercise outside of pull-ups?
-N097,B2,b2_s202,khẳng định,neither,What time did Chae first suggest they visit the music festival in the morning?
-N098,V3,v3_r2,từ chối thuần,accurate,What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?
-N099,B1,b1_s101,khẳng định,error,What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?
-N100,B2,b2_s202,từ chối thuần,accurate,What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?
+N001,B1,b1_s202,từ chối rồi suy đoán,accurate,What song did Li Hua perform at the local music festival in 2026?
+N002,B2,b2_s101,khẳng định,accurate,What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?
+N003,V3,v3_r2,từ chối rồi suy đoán,accurate,What type of protein shake does Li Hua prefer to drink before his workout sessions?
+N004,B1,b1_s303,khẳng định,neither,What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?
+N005,B1,b1_s202,từ chối rồi suy đoán,neither,What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?
+N006,V3,v3_r3,khẳng định,error,What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?
+N007,B2,b2_s101,từ chối rồi suy đoán,neither,What type of diet is Li Hua following to support his training regimen and sleep schedule?
+N008,V3,v3,khẳng định,neither,What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?
+N009,VEC,vec_s202,từ chối rồi suy đoán,neither,"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?"
+N010,VEC,vec_s303,khẳng định,neither,What is Li Hua's favorite type of exercise outside of pull-ups?
+N011,VEC,vec_s202,khẳng định,error,What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?
+N012,V3,v3_r3,khẳng định,neither,What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?
+N013,VEC,vec_s202,khẳng định,error,What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?
+N014,V3,v3_r3,từ chối rồi suy đoán,neither,What type of protein shake does Li Hua prefer to drink before his workout sessions?
+N015,VEC,vec_s303,khẳng định,neither,What time did Chae first suggest they visit the music festival in the morning?
+N016,B2,b2_s101,khẳng định,neither,What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?
+N017,B1,b1_s101,từ chối rồi suy đoán,neither,What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?
+N018,B2,b2_s101,từ chối rồi suy đoán,neither,What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?
+N019,V3,v3,từ chối rồi suy đoán,neither,What type of protein shake does Li Hua prefer to drink before his workout sessions?
+N020,V3,v3_r3,khẳng định,neither,What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?
+N021,B1,b1_s202,từ chối thuần,accurate,What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?
+N022,B1,b1_s101,khẳng định,error,What time did Chae first suggest they visit the music festival in the morning?
+N023,B1,b1_s101,từ chối rồi suy đoán,neither,What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?
+N024,V3,v3_r2,từ chối rồi suy đoán,neither,What type of diet is Li Hua following to support his training regimen and sleep schedule?
+N025,VEC,vec_s303,khẳng định,neither,What is the nutritional value of the new line of high-protein breads compared to traditional white bread?
+N026,B1,b1_s202,khẳng định,neither,What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?
+N027,B2,b2_s202,từ chối thuần,neither,What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?
+N028,VEC,vec_s202,khẳng định,accurate,What is the name of the last song Wolfgang played using the new drum practice app?
+N029,B2,b2_s202,từ chối rồi suy đoán,neither,What is the nutritional value of the new line of high-protein breads compared to traditional white bread?
+N030,VEC,vec_s303,khẳng định,neither,What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?
+N031,V3,v3_r3,khẳng định,error,What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?
+N032,B2,b2_s101,khẳng định,error,"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?"
+N033,VEC,vec_s303,khẳng định,neither,What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?
+N034,B2,b2_s303,từ chối rồi suy đoán,neither,What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?
+N035,V3,v3_r3,khẳng định,accurate,What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?
+N036,VEC,vec,khẳng định,accurate,"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?"
+N037,B2,b2_s202,khẳng định,error,"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?"
+N038,B1,b1_s101,khẳng định,error,What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?
+N039,B2,b2_s202,khẳng định,accurate,What type of protein shake does Li Hua prefer to drink before his workout sessions?
+N040,B1,b1_s303,khẳng định,neither,What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?

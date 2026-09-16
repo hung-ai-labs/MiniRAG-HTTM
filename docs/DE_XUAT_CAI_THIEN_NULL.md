@@ -104,8 +104,10 @@ mức giảm nằm ở ranh giới `accurate` / `neither` (mục 2).
 thấy chồng lấn này không ảnh hưởng lời từ chối thuần (97–100% phiếu `accurate`), mà dồn hết vào câu pha trộn.
 
 **Cách làm.**
-1. Rút 80–100 câu trả lời cho câu Null, phân tầng theo **kiểu câu trả lời** (từ chối thuần / từ chối rồi suy đoán / khẳng định có
-   rào đón / khẳng định không rào đón) × cấu hình (V3, vector thuần, B1, B2), ưu tiên lấy đủ các câu B2 bị `neither`.
+1. Rút **40 câu trả lời** (sửa đăng ký 16/09 sau khi có kết quả Đ2, chốt trước khi ai chấm dòng nào): mỗi nhánh 10 câu, phân
+   tầng theo **phán quyết của Gemini** — 6 `neither` là lớp đang tranh chấp, cộng 2 `accurate` và 2 `error` làm **đối chứng hai
+   chiều**, để còn đo được cả trường hợp Gemini chấm đúng mà người thấy sai. Lệnh: `make_judge_audit_sheet.py --focused`.
+   Vì mẫu cố ý lệch, chỉ được báo tỉ lệ **có điều kiện** p(người chấm đúng | Gemini chấm X), không báo κ tổng như thể đại diện.
 2. **Chốt trước** quy tắc cho câu pha trộn. Hai cách đọc phải nêu rõ ngay trong giao thức:
    - *đọc chặt*: chỉ tính `accurate` khi câu trả lời không khẳng định gì thêm;
    - *đọc rộng*: tính `accurate` nếu câu trả lời có nói rõ chi tiết được hỏi không có trong dữ liệu, dù có kể thêm bối cảnh.
@@ -115,7 +117,7 @@ thấy chồng lấn này không ảnh hưởng lời từ chối thuần (97–
 **Dùng kết quả thế nào.** Báo cả hai cách đọc cho **mọi cấu hình cùng lúc**, dạng phân tích độ nhạy. Không đổi số chính thức, không
 đụng cổng E4 của tầng D.
 
-**Công:** khoảng 2–3 giờ mỗi người.
+**Công:** khoảng **1 giờ mỗi người** (40 dòng).
 
 ### Đ2 — Chấm lại nhóm Null 3 lượt, làm phân tích độ nhạy
 
@@ -177,6 +179,13 @@ ngưỡng vẫn là −3. Khoảng 4,5 giờ GPU, không tốn API trả phí.
 **Điều cấm.** Không được đổi ngưỡng, không được chỉ chạy thêm seed cho B2 mà bỏ vector thuần, và không được dừng giữa chừng khi
 thấy số có lợi.
 
+**Cập nhật 16/09 sau khi có Đ2 — khuyến nghị: KHÔNG chạy Đ4.** Lý do Đ4 tồn tại là nghi mức trượt cổng Null đến từ một lượt sinh
+xấu (Null net 1 lượt chấm: −4, −7, **+1**). Chấm 3 lượt thì lượt dương duy nhất đó thành **−1**, và trung bình đi từ −3,33 xuống
+−4,67 — tức xa ngưỡng hơn, không xích lại. Thêm 3 seed nhiều khả năng chỉ xác nhận H2 vẫn BORDERLINE, mà tốn khoảng 9 giờ GPU và
+credit Modal. Ngoài ra, việc chạy thêm seed chỉ cho đúng phép so vừa trượt cổng — dù có đăng ký trước — vẫn dễ bị phản biện là
+"chạy tới khi đạt". Nếu sau này vẫn muốn làm, điều kiện nên là: Đ1 cho thấy cách đọc rubric đổi chiều kết luận, hoặc nhóm cần H2
+làm kết quả chính chứ không phải H3.
+
 ### Đ5 — Các kiểm tra phụ
 
 | Id | Việc | Cách làm | Công |
@@ -218,7 +227,7 @@ tín hiệu đo độ khớp hay độ phủ đều thấy những câu này gi�
 
 | # | Việc | Công | Gọi API trả phí | Phụ thuộc |
 |---|---|---|---|---|
-| 1 | **Đ1** — người chấm lại câu Null theo kiểu câu trả lời | 2–3 giờ × 2 người | không | — |
+| 1 | **Đ1** — người chấm lại 40 câu Null, dồn vào lớp `neither` | 1 giờ × 2 người | không | — |
 | 2 | **Đ2** — chấm lại nhóm Null 3 lượt, độ nhạy | 30 phút máy | không (Gemini free tier) | khai báo trước |
 | 3 | **Đ3** — rà tay 65 nhãn Null | 3–4 giờ × 2 người | không | — |
 | 4 | **Đ4** — xác nhận cổng Null của H2 | 4,5 giờ GPU | không | nhóm duyệt |
@@ -239,7 +248,7 @@ nhãn nào. Phiếu và script đã sẵn sàng; phần còn lại là việc c�
 
 | Việc | Đã có trong repo | Người phải làm gì |
 |---|---|---|
-| **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md`; phiếu 100 dòng đã mù `logs/null_audit/d1_judge_audit/sheet_A.csv` và `sheet_B.csv`; `make_judge_audit_sheet.py`, `score_judge_audit.py` | hai người điền `phan_quyet`, `noi_ro_khong_co`, `khang_dinh_them` — **không mở** `key_KHONG_MO_TRUOC.csv` — rồi chạy `score_judge_audit.py` |
+| **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md` (kèm bản sửa 16/09); phiếu **40 dòng** đã mù `logs/null_audit/d1_judge_audit/sheet_A.csv` và `sheet_B.csv`; `make_judge_audit_sheet.py`, `score_judge_audit.py` | hai người điền `phan_quyet`, `noi_ro_khong_co`, `khang_dinh_them` — **không mở** `key_KHONG_MO_TRUOC.csv` — rồi chạy `score_judge_audit.py` |
 | **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | **xong 16/09** — mức giảm Null không phải nhiễu giám khảo (mục 4); `logs/null_audit/d2_rejudge/ket_qua.txt` |
 | **Đ3** | `preregistration/D3_ra_nhan_65_null.md`; phiếu 65 câu kèm 10 chunk BM25 và chunk đã vào Sources, `logs/null_audit/d3_label_audit/sheet_{A,B}.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | hai người điền `nhan`, `doi_mot_chi_tiet`, `chunk_id`, `trich_dan`, rồi chạy `score_label_audit.py` |
 | **Đ4** | chưa chạy | cần nhóm duyệt: 6 lượt QA (B2 và vector thuần × 3 seed mới), khoảng 9 giờ GPU, giữ nguyên ngưỡng −3 |

@@ -17,6 +17,22 @@ không có — phải chấm thế nào. Đ1 đo xem người và Gemini lệch 
 - Seed: `random.Random(16092026)`. Sinh bằng `reproduce/null_audit/make_judge_audit_sheet.py`.
 - Phiếu xáo thứ tự; **không** ghi nhánh, lượt, kiểu câu trả lời hay phán quyết của Gemini.
 
+## Sửa đăng ký, 16/09/2026 — rút phiếu xuống 40 dòng
+
+**Chốt trước khi có bất kỳ nhãn nào của người** (phiếu 100 dòng chưa ai chấm), nên đây là đổi thiết kế, không phải chọn số liệu.
+
+- **Lý do 1 — công sức.** 100 dòng tốn 2–3 giờ mỗi người, quá nặng cho một nhóm 3 người đang viết bài.
+- **Lý do 2 — Đ2 đã thu hẹp câu hỏi.** Chấm lại 3 lượt cho thấy mức giảm Null của B2 không phải nhiễu giám khảo
+  (`logs/null_audit/d2_rejudge/ket_qua.txt`). Thứ còn phải hỏi người chỉ là **lớp câu Gemini chấm `neither`**.
+- **Thiết kế mới:** 40 dòng, mỗi nhánh 10 câu, phân tầng theo **phán quyết của Gemini** thay vì theo kiểu câu trả lời:
+  6 `neither`, 2 `accurate`, 2 `error`. Hai lớp sau là **đối chứng hai chiều**, để đo cả trường hợp Gemini chấm đúng mà người
+  thấy sai — nếu chỉ rà lớp `neither` thì mọi hiệu chỉnh sẽ một chiều.
+- Vẫn giữ seed `16092026`, vẫn mù nhánh và mù phán quyết, vẫn hai người độc lập.
+- **Hệ quả bắt buộc khi báo cáo:** mẫu này **cố ý lệch** về lớp `neither`, nên κ tổng giữa người và Gemini trên mẫu **không**
+  đại diện cho toàn bộ. Chỉ được báo các tỉ lệ **có điều kiện** — p(người chấm đúng | Gemini chấm X) — rồi mới nhân với phân bố
+  thật của từng nhánh.
+- Lệnh sinh: `make_judge_audit_sheet.py --focused`.
+
 ## Người gán nhãn và cách làm mù
 
 Hai người, mỗi người một file (`sheet_A.csv`, `sheet_B.csv`), làm **độc lập**, không trao đổi trong lúc chấm và **không mở**

@@ -69,6 +69,8 @@ def main():
 
     agreed = [i for i in both if pairs[both.index(i)][0] == pairs[both.index(i)][1]]
     print(f"\n2. Người (chỉ lấy {len(agreed)} dòng hai người đồng thuận) so với Gemini")
+    print("   ⚠ Mẫu cố ý lệch về lớp `neither` (6/2/2 mỗi nhánh), nên κ tổng ở đây KHÔNG đại diện cho toàn bộ.")
+    print("   Chỉ dùng các tỉ lệ có điều kiện ở mục 3 và 4, rồi nhân với phân bố thật của từng nhánh.")
     for name, reader in (("đọc chặt", lambda i: a[i]["phan_quyet"].strip().upper()), ("đọc rộng", lambda i: lenient(a[i]))):
         pr = [(HUMAN2GEMINI.get(reader(i), "?"), key[i]["phan_quyet_gemini"]) for i in agreed]
         print(f"   {name}: trùng {100 * sum(x == y for x, y in pr) / max(1, len(pr)):.1f}% · κ = {kappa(pr):.3f}")

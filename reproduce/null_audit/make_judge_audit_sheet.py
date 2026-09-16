@@ -7,6 +7,7 @@
 Ra: logs/null_audit/d1_judge_audit/{sheet_A.csv, sheet_B.csv, key_KHONG_MO_TRUOC.csv}
 Hai người chấm điền sheet_A / sheet_B, KHÔNG mở file key.
 """
+import argparse
 import collections
 import csv
 import os
@@ -17,7 +18,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from answer_kind import ASSERT, MIXED, PURE, kind  # noqa: E402
 
 SEED = 16092026
-QUOTA = {PURE: 8, MIXED: 8, ASSERT: 9}
+QUOTA_KIND = {PURE: 8, MIXED: 8, ASSERT: 9}                    # bản đầy đủ: 25 câu mỗi nhánh
+QUOTA_VERDICT = {"neither": 6, "accurate": 2, "error": 2}      # bản rút gọn: 10 câu mỗi nhánh, dồn vào lớp tranh chấp
 OUT = "logs/null_audit/d1_judge_audit"
 SHEET_COLS = ["id", "cau_hoi", "cau_tra_loi", "phan_quyet", "noi_ro_khong_co", "khang_dinh_them", "ghi_chu"]
 ARMS = {
@@ -59,30 +61,37 @@ def pool(keep):
     return items
 
 
-def sample(items, rng):
+def sample(items, rng, quota, field):
+    """Rút mẫu phân tầng theo `field` ('kind' hoặc 'gemini'), mỗi nhánh theo hạn ngạch `quota`."""
     chosen = []
     for arm in ARMS:
-        by_kind = collections.defaultdict(list)
+        groups = collections.defaultdict(list)
         for it in items[arm]:
-            by_kind[it["kind"]].append(it)
-        for v in by_kind.values():
+            groups[it[field]].append(it)
+        for v in groups.values():
             rng.shuffle(v)
         picked, leftover = [], []
-        for k, quota in QUOTA.items():
-            picked += by_kind[k][:quota]
-            leftover += by_kind[k][quota:]
+        for k, n in quota.items():
+            picked += groups[k][:n]
+            leftover += groups[k][n:]
         rng.shuffle(leftover)
-        picked += leftover[:sum(QUOTA.values()) - len(picked)]     # lớp thiếu thì bù từ lớp còn lại
+        picked += leftover[:sum(quota.values()) - len(picked)]     # lớp thiếu thì bù từ lớp còn lại
         chosen += picked
-        print(f"  {arm}: {len(picked)} câu · " + " · ".join(f"{k} {sum(1 for x in picked if x['kind'] == k)}" for k in QUOTA))
+        print(f"  {arm}: {len(picked)} câu · " + " · ".join(f"{k} {sum(1 for x in picked if x[field] == k)}" for k in quota))
     return chosen
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--focused", action="store_true",
+                    help="bản rút gọn 40 dòng, phân tầng theo phán quyết Gemini (sửa đăng ký 16/09, xem D1)")
+    args = ap.parse_args()
+    quota, field = (QUOTA_VERDICT, "gemini") if args.focused else (QUOTA_KIND, "kind")
     keep = null_questions()
     rng = random.Random(SEED)
-    print(f"Đ1 — rút mẫu từ {len(keep)} câu Null ngoài dev × 4 nhánh × 3 lượt sinh (seed {SEED}):")
-    chosen = sample(pool(keep), rng)
+    print(f"Đ1 — rút mẫu từ {len(keep)} câu Null ngoài dev × 4 nhánh × 3 lượt sinh (seed {SEED}, "
+          f"phân tầng theo {'phán quyết Gemini' if args.focused else 'kiểu câu trả lời'}):")
+    chosen = sample(pool(keep), rng, quota, field)
     rng.shuffle(chosen)
     os.makedirs(OUT, exist_ok=True)
     for name in ("A", "B"):

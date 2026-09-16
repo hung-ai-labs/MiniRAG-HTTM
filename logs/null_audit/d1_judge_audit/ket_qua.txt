@@ -1,0 +1,27 @@
+﻿Đ1 — phiếu 40 dòng · người A đã chấm 40 · người B đã chấm 0
+
+1. CHỈ MỘT NGƯỜI CHẤM (sửa đăng ký 16/09) — không tính được κ giữa hai người.
+   Mọi con số dưới đây là cách đọc của một người. Phải ghi đúng như vậy trong Limitations.
+
+2. Người (40 dòng của một người chấm) so với Gemini
+   ⚠ Mẫu cố ý lệch về lớp `neither` (6/2/2 mỗi nhánh), nên κ tổng ở đây KHÔNG đại diện cho toàn bộ.
+   Chỉ dùng các tỉ lệ có điều kiện ở mục 3 và 4, rồi nhân với phân bố thật của từng nhánh.
+   đọc chặt: trùng 37.5% · κ = 0.199
+      người \ gemini |  accurate |     error |   neither
+            accurate |         8 |         1 |        22
+               error |         0 |         6 |         1
+             neither |         0 |         1 |         1
+   đọc rộng: trùng 35.0% · κ = 0.177
+      người \ gemini |  accurate |     error |   neither
+            accurate |         8 |         1 |        23
+               error |         0 |         6 |         1
+             neither |         0 |         1 |         0
+
+3. Câu Gemini chấm `neither`: người đọc ra sao
+   đọc chặt: 22/24 được người chấm là đúng (92%, KTC 95% 74–98%)
+   đọc rộng: 23/24 được người chấm là đúng (96%, KTC 95% 80–99%)
+
+4. Chiếu sang Null acc từng nhánh (ước lượng, không thay số chính thức)
+   Dùng tỉ lệ chuyển nhãn đo trên mẫu, áp cho phân bố phán quyết Gemini của từng nhánh.
+   p(người chấm đúng | Gemini chấm X): accurate 100% · error 12% · neither 92%
+   → nhân với phân bố trong logs/null_audit/b2_null_stage_d.txt để ra Null acc hiệu chỉnh từng nhánh.

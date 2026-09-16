@@ -4,7 +4,7 @@
 > Kết quả tầng D: `logs/stage_d/stage_d_report.txt`. Bối cảnh: [`ROADMAP.md`](../ROADMAP.md) (Limitations của V3 mục 8, kết quả
 > tầng D) và [`KET_QUA_HIEN_TAI.md`](KET_QUA_HIEN_TAI.md).
 >
-> Đây là **đề xuất**. Việc nào muốn chạy phải được nhóm duyệt và **đăng ký trước giao thức** (mẫu ở mục 8) trước khi đọc dữ liệu.
+> Đây là **đề xuất**. Việc nào muốn chạy phải được nhóm duyệt và **đăng ký trước giao thức** (mẫu ở mục 9; giao thức đã chốt của Đ1–Đ3 nằm trong `reproduce/null_audit/preregistration/`) trước khi đọc dữ liệu.
 
 ## 1. Vấn đề còn lại sau khi chốt B2
 
@@ -106,7 +106,7 @@ thấy chồng lấn này không ảnh hưởng lời từ chối thuần (97–
    - *đọc chặt*: chỉ tính `accurate` khi câu trả lời không khẳng định gì thêm;
    - *đọc rộng*: tính `accurate` nếu câu trả lời có nói rõ chi tiết được hỏi không có trong dữ liệu, dù có kể thêm bối cảnh.
 3. Hai người chấm **độc lập**, **mù cấu hình và mù phán quyết Gemini**. Lập bảng nhầm lẫn người × Gemini, tính Cohen's κ.
-4. Ghi `logs/null_audit/judge_audit_null.csv`.
+4. Ghi `logs/null_audit/d1_judge_audit/` (phiếu và báo cáo).
 
 **Dùng kết quả thế nào.** Báo cả hai cách đọc cho **mọi cấu hình cùng lúc**, dạng phân tích độ nhạy. Không đổi số chính thức, không
 đụng cổng E4 của tầng D.
@@ -206,7 +206,22 @@ câu trả lời chuyển sang dạng pha trộn: nêu sự kiện gần giống
 chấm `neither` có nói rõ điều đó; nếu tính chúng là đúng, chênh lệch Null giữa B2 và ablation vector thuần rơi từ 7,4 xuống 0,7 điểm.
 Kiểm toán nhãn tìm thấy một câu Null có đáp án rõ ràng trong corpus và hai câu có nhãn đáng tranh luận."*
 
-## 8. Mẫu đăng ký trước giao thức
+## 8. Trạng thái triển khai (16/09/2026)
+
+Giao thức của Đ1, Đ2, Đ3 đã được **đăng ký trước** và commit trong `reproduce/null_audit/preregistration/` trước khi đọc bất kỳ
+nhãn nào. Phiếu và script đã sẵn sàng; phần còn lại là việc của người chấm.
+
+| Việc | Đã có trong repo | Người phải làm gì |
+|---|---|---|
+| **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md`; phiếu 100 dòng đã mù `logs/null_audit/d1_judge_audit/sheet_A.csv` và `sheet_B.csv`; `make_judge_audit_sheet.py`, `score_judge_audit.py` | hai người điền `phan_quyet`, `noi_ro_khong_co`, `khang_dinh_them` — **không mở** `key_KHONG_MO_TRUOC.csv` — rồi chạy `score_judge_audit.py` |
+| **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | đã chạy 16/09; kết quả ở `logs/null_audit/d2_rejudge/ket_qua.txt` |
+| **Đ3** | `preregistration/D3_ra_nhan_65_null.md`; phiếu 65 câu kèm 10 chunk BM25 và chunk đã vào Sources, `logs/null_audit/d3_label_audit/sheet_{A,B}.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | hai người điền `nhan`, `doi_mot_chi_tiet`, `chunk_id`, `trich_dan`, rồi chạy `score_label_audit.py` |
+| **Đ4** | chưa chạy | cần nhóm duyệt: 6 lượt QA (B2 và vector thuần × 3 seed mới), khoảng 9 giờ GPU, giữ nguyên ngưỡng −3 |
+
+Mẫu phiếu dùng chung một bộ phân loại câu trả lời trong `reproduce/null_audit/answer_kind.py`, để phiếu, bảng thống kê và báo cáo
+nói cùng một ngôn ngữ.
+
+## 9. Mẫu đăng ký trước giao thức
 
 ```
 Việc: Đ1 / Đ2 / Đ3 / Đ4 / K2 / K3 / G2 / G3

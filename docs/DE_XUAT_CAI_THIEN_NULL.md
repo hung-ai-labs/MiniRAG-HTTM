@@ -62,6 +62,10 @@ Theo cách đọc rộng, bốn nhánh nằm trong khoảng 2,2 điểm của nh
 **Đây là cận trên lạc quan, không phải số đã sửa:** phân loại bằng regex, và 11 câu `neither` còn lại của B2 đúng là khẳng định
 sai thật. Muốn biết chắc phải có người rà — đề xuất Đ1.
 
+**Một cách giải thích đã bị loại.** Đ2 (chấm lại 3 lượt) cho thấy mức giảm Null của B2 **không** phải do một lượt chấm duy nhất:
+chấm kỹ hơn thì Null acc của B2 còn xuống 55,6 và Null net của H2 xuống −4,67. Vậy câu hỏi còn lại thuần tuý là **rubric**: câu
+"không có thông tin, kèm bối cảnh" nên tính là gì. Xem mục 4, Đ1 và kết quả Đ2.
+
 ## 3. Nhãn của nhóm Null
 
 Đọc chunk gốc (`logs/null_audit/verify_labels.txt`): **1 câu nhãn sai rõ ràng, 2 câu đáng tranh luận**.
@@ -122,6 +126,28 @@ thấy chồng lấn này không ảnh hưởng lời từ chối thuần (97–
 theo phán quyết đa số 3 lượt, **song song** với số chính thức một lượt.
 
 **Ràng buộc bắt buộc.** Khai báo trước rằng đây là **độ nhạy**, không thay số chính thức và **không dùng để xét lại cổng E4**.
+
+**Kết quả Đ2 (chạy 16/09, `logs/null_audit/d2_rejudge/ket_qua.txt`).** Chấm thêm 2 lượt cho 45 câu Null × 8 lượt sinh của tầng D
+(lượt vector thuần chính thức đã có sẵn 3 lượt chấm), rồi lấy phán quyết đa số 3 lượt:
+
+| Nhánh | Null acc 1 lượt | Null acc 3 lượt | err 1 → 3 | neither 1 → 3 |
+|---|---:|---:|---|---|
+| B1 | 62,2 | 60,7 | 25,2 → 26,7 | 12,6 → 12,6 |
+| **B2** | **57,8** | **55,6** | 23,0 → 22,2 | 19,3 → 22,2 |
+| Vector thuần | 65,2 | 65,9 | 27,4 → 26,7 | 7,4 → 7,4 |
+
+| Null net từng cặp lượt | 1 lượt chấm | 3 lượt chấm |
+|---|---|---|
+| H2 = B2 với vector thuần | −4, −7, +1 · **−3,33** | −5, −8, −1 · **−4,67** |
+| H3 = B2 với B1 | 0, −4, −2 · **−2,00** | −1, −4, −2 · **−2,33** |
+
+**Kết luận của Đ2: mức giảm Null của B2 KHÔNG phải nhiễu giám khảo.** Chấm kỹ hơn thì nó còn hơi nặng thêm, và cổng E4 của H2
+càng xa ngưỡng. Chỉ 4 câu-lượt có 3 phiếu chia đều (bị tính là `neither` theo luật đã khoá), nên hiệu ứng đó không đáng kể.
+Số chính thức của tầng D **không đổi**; cổng E4 **không** xét lại.
+
+Việc này thu hẹp câu hỏi còn lại: phần "58% câu `neither` có nói rõ không tìm thấy" là chuyện **rubric**, không phải chuyện nhiễu
+— và chỉ Đ1 mới trả lời được.
+
 
 **Công:** khoảng 30 phút máy.
 
@@ -214,7 +240,7 @@ nhãn nào. Phiếu và script đã sẵn sàng; phần còn lại là việc c�
 | Việc | Đã có trong repo | Người phải làm gì |
 |---|---|---|
 | **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md`; phiếu 100 dòng đã mù `logs/null_audit/d1_judge_audit/sheet_A.csv` và `sheet_B.csv`; `make_judge_audit_sheet.py`, `score_judge_audit.py` | hai người điền `phan_quyet`, `noi_ro_khong_co`, `khang_dinh_them` — **không mở** `key_KHONG_MO_TRUOC.csv` — rồi chạy `score_judge_audit.py` |
-| **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | đã chạy 16/09; kết quả ở `logs/null_audit/d2_rejudge/ket_qua.txt` |
+| **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | **xong 16/09** — mức giảm Null không phải nhiễu giám khảo (mục 4); `logs/null_audit/d2_rejudge/ket_qua.txt` |
 | **Đ3** | `preregistration/D3_ra_nhan_65_null.md`; phiếu 65 câu kèm 10 chunk BM25 và chunk đã vào Sources, `logs/null_audit/d3_label_audit/sheet_{A,B}.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | hai người điền `nhan`, `doi_mot_chi_tiet`, `chunk_id`, `trich_dan`, rồi chạy `score_label_audit.py` |
 | **Đ4** | chưa chạy | cần nhóm duyệt: 6 lượt QA (B2 và vector thuần × 3 seed mới), khoảng 9 giờ GPU, giữ nguyên ngưỡng −3 |
 

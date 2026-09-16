@@ -17,7 +17,10 @@ import sys
 OUT = "logs/null_audit/d2_rejudge"
 PY = os.environ.get("PYTHON", ".venv/bin/python")
 TAGS = [f"{v}_s{s}" for s in (101, 202, 303) for v in ("b1", "b2")] + ["vec_s202", "vec_s303"]
-ARMS = {"B1": ["b1_s101", "b1_s202", "b1_s303"], "B2": ["b2_s101", "b2_s202", "b2_s303"], "VEC": ["vec_s202", "vec_s303"]}
+ARMS = {"B1": ["b1_s101", "b1_s202", "b1_s303"], "B2": ["b2_s101", "b2_s202", "b2_s303"],
+        "VEC": ["vec_official", "vec_s202", "vec_s303"]}
+# Lượt vector thuần chính thức nằm ở file 637 câu và ĐÃ có sẵn 3 lượt chấm — không phải chấm lại.
+OFFICIAL_VEC = "logs/qwen637_vec_judged.csv"
 LABELS = ("accurate", "error", "neither")
 
 
@@ -38,16 +41,23 @@ def filter_answers(tag, keep):
 
 
 def official(tag, keep):
-    """Lượt chấm chính thức của tầng D (run = 1)."""
+    """Lượt chấm chính thức (run = 1) — cùng lượt mà analyze_stage_d.py dùng."""
+    path = OFFICIAL_VEC if tag == "vec_official" else f"logs/stage_d/{tag}_judged.csv"
     out = {}
-    for r in csv.DictReader(open(f"logs/stage_d/{tag}_judged.csv", encoding="utf-8")):
+    for r in csv.DictReader(open(path, encoding="utf-8")):
         if r["run"] == "1" and r["question"] in keep:
             out[r["question"]] = r["verdict"]
     return out
 
 
 def extra(tag, keep):
-    """Hai lượt chấm mới: {câu: [phán quyết lượt 1, lượt 2]}."""
+    """Hai lượt chấm bổ sung: {câu: [phán quyết, phán quyết]}. Với vector thuần chính thức là lượt 2 và 3 sẵn có."""
+    if tag == "vec_official":
+        votes = collections.defaultdict(dict)
+        for r in csv.DictReader(open(OFFICIAL_VEC, encoding="utf-8")):
+            if r["run"] in ("2", "3") and r["question"] in keep:
+                votes[r["question"]][r["run"]] = r["verdict"]
+        return {q: list(v.values()) for q, v in votes.items()}
     path = f"{OUT}/{tag}_judged2.csv"
     votes = collections.defaultdict(dict)
     if os.path.exists(path):
@@ -57,10 +67,16 @@ def extra(tag, keep):
     return {q: list(v.values()) for q, v in votes.items()}
 
 
-def majority(verdicts):
+TIES = collections.Counter()
+
+
+def majority(verdicts, tag=""):
     c = collections.Counter(verdicts)
     top, n = c.most_common(1)[0]
-    return top if n > len(verdicts) / 2 else "neither"      # chia đều -> không tính là đúng
+    if n > len(verdicts) / 2:
+        return top
+    TIES[tag] += 1
+    return "neither"      # chia đều -> không tính là đúng, cùng luật với analyze_stage_d.py
 
 
 def rates(verdict_of_q):
@@ -71,11 +87,11 @@ def rates(verdict_of_q):
 
 def summarize(keep):
     one, three = {}, {}
-    for tag in TAGS:
+    for tag in TAGS + ["vec_official"]:
         off, ex = official(tag, keep), extra(tag, keep)
         one[tag] = off
         if len(ex) == len(keep) and all(len(v) == 2 for v in ex.values()):
-            three[tag] = {q: majority([off[q]] + ex[q]) for q in off}
+            three[tag] = {q: majority([off[q]] + ex[q], tag) for q in off}
     print("Đ2 — ĐỘ NHẠY nhóm Null của tầng D: 1 lượt chấm (chính thức) so với đa số 3 lượt")
     print(f"Số câu Null: {len(keep)} · lượt đã chấm đủ 3: {len(three)}/{len(TAGS)}\n")
     print(f"{'nhánh':5s} {'acc 1 lượt':>12s} {'acc 3 lượt':>12s} {'err 1':>8s} {'err 3':>8s} {'nei 1':>8s} {'nei 3':>8s}")
@@ -84,7 +100,9 @@ def summarize(keep):
         f = lambda src, l, ts: st.mean(rates(src[t])[l] for t in ts) if ts else float("nan")  # noqa: E731
         print(f"{arm:5s} {f(one, 'accurate', tags):12.1f} {f(three, 'accurate', got):12.1f} "
               f"{f(one, 'error', tags):8.1f} {f(three, 'error', got):8.1f} {f(one, 'neither', tags):8.1f} {f(three, 'neither', got):8.1f}")
-    pairs = [("H2 = B2 với vector thuần", [("b2_s202", "vec_s202"), ("b2_s303", "vec_s303")]),
+    if TIES:
+        print(f"\nCâu có 3 phiếu chia đều (bị tính là `neither` theo luật): {dict(TIES)} — tổng {sum(TIES.values())}")
+    pairs = [("H2 = B2 với vector thuần", [("b2_s101", "vec_official"), ("b2_s202", "vec_s202"), ("b2_s303", "vec_s303")]),
              ("H3 = B2 với B1", [("b2_s101", "b1_s101"), ("b2_s202", "b1_s202"), ("b2_s303", "b1_s303")])]
     print("\nNull net từng cặp lượt (dương = biến thể tốt hơn); cổng E4 đăng ký trước là trung bình ≥ −3")
     for name, ps in pairs:

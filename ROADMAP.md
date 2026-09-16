@@ -851,7 +851,13 @@ thấp nhất trong bốn nhánh, và B2 từ chối thuần nhiều hơn B1 (45
 khẳng định (18 so với 10 câu-lượt). Trong 26 câu-lượt `neither` của B2, 15 (58%) có nói rõ chi tiết được hỏi không có trong dữ
 liệu; nếu tính là `accurate` thì Null acc bốn nhánh còn cách nhau 2,2 điểm (V3 71,1 · vector thuần 69,6 · B1 69,6 · B2 68,9) và
 chênh B2 với vector thuần rơi từ 7,4 xuống 0,7 điểm. Phân loại bằng regex, **chưa có người rà** — đề xuất Đ1 (người chấm lại theo
-kiểu câu trả lời) và Đ2 (chấm lại nhóm Null 3 lượt làm độ nhạy).
+kiểu câu trả lời).
+
+**Đ2 — chấm lại nhóm Null 3 lượt (16/09, đăng ký trước `reproduce/null_audit/preregistration/D2_cham_lai_null_3_luot.md`; ĐỘ
+NHẠY, không thay số chính thức, không xét lại E4).** Chấm thêm 2 lượt cho 45 câu Null × 8 lượt sinh của tầng D, lấy đa số 3 lượt:
+Null acc B1 62,2 → 60,7 · B2 57,8 → 55,6 · vector thuần 65,2 → 65,9; Null net H2 −3,33 → −4,67 và H3 −2,00 → −2,33. **Mức giảm
+Null của B2 không phải nhiễu giám khảo** — chấm kỹ hơn thì nó nặng thêm. 4 câu-lượt có 3 phiếu chia đều, tính là `neither` theo
+luật đã khoá. Câu hỏi còn lại thuần tuý là rubric cho câu trả lời pha trộn (Đ1).
 
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 

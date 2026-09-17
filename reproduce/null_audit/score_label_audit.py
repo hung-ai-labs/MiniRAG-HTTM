@@ -46,7 +46,15 @@ def verdicts_637(tag, keep):
     return {q: c.most_common(1)[0][0] for q, c in votes.items()}
 
 
+def nondev_null():
+    rows = csv.DictReader(open("reproduce/stage_d/nondev435.csv", encoding="utf-8"))
+    return {r["Question"] for r in rows if r["Type"] == "Null"}
+
+
 def verdicts_stage_d(tag, keep):
+    # Tầng D chỉ có 45 câu Null ngoài dev. Lượt vector thuần chính thức nằm ở file 637 câu, nên phải lọc về đúng 45 câu đó,
+    # nếu không nhánh này bị trộn 65 câu với 45 câu.
+    keep = keep & nondev_null()
     path = "logs/qwen637_vec_judged.csv" if tag == "vec_official" else f"logs/stage_d/{tag}_judged.csv"
     return {r["question"]: r["verdict"] for r in csv.DictReader(open(path, encoding="utf-8"))
             if r["run"] == "1" and r["question"] in keep}

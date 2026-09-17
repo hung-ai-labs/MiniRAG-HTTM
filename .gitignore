@@ -46,6 +46,16 @@ logs/*.jsonl
 # Sàng lọc BM25 cần nhãn chunk đáp án (gold) và lượt vector thuần chính thức (so phụ của B2).
 !logs/diag_path2chunk.jsonl
 !logs/qwen637_vec_judged.csv
+# Kết quả 637 câu chính thức (câu trả lời + phán quyết): cần cho script kiểm toán Null và để cả nhóm tái lập (17/09/2026)
+!logs/qwen637_fix.csv
+!logs/qwen637_fix_judged.csv
+!logs/qwen637_v3.csv
+!logs/qwen637_v3_judged.csv
+!logs/qwen637_v3_r2.csv
+!logs/qwen637_v3_r2_judged.csv
+!logs/qwen637_v3_r3.csv
+!logs/qwen637_v3_r3_judged.csv
+!logs/qwen637_vec.csv
 
 uploads/
 playground-index/

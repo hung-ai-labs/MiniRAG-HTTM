@@ -197,6 +197,50 @@ làm kết quả chính chứ không phải H3.
 | G2 | Giám khảo dễ dãi với chi tiết sai | 60 câu `accurate` của V3 và B2 trên dev; pilot V5e thấy 13/40 | 3 giờ |
 | G3 | Giám khảo thứ hai | chấm lại một mẫu cố định bằng model khác — **gọi API trả phí, phải hỏi nhóm** ([`CLAUDE.md`](../CLAUDE.md) §1) | tuỳ mẫu |
 
+### Đ6 — Chấm lại toàn bộ nhóm Null bằng rubric làm rõ · ✅ XONG 18/09/2026 (độ nhạy)
+
+**Vì sao.** Đ1 chỉ là 40 câu và con số cho toàn bộ chỉ là **phép chiếu**. Đ6 đo trực tiếp: thêm vào prompt giám khảo đúng một đoạn
+nói rõ cách chấm câu trả lời pha trộn khi đáp án vàng là "Insufficient information", kiểm đoạn đó với người, rồi chấm lại mọi câu
+Null của cả bốn nhánh.
+
+**Cách làm** (đăng ký trước `reproduce/null_audit/preregistration/D6_cham_lai_null_rubric_lam_ro.md`, khoá prompt bằng sha256):
+1. **Cổng kiểm** trên 40 dòng Đ1 — **QUA**: khớp người 38/40 (rubric gốc 15/40), 23/24 dòng tranh chấp, bắt được 7/7 câu người
+   chấm `SAI`. `logs/null_audit/d6_clarified/gate_ket_qua.txt`.
+2. **Chấm toàn bộ:** 45 câu Null ngoài dev × 4 nhánh × 3 lượt sinh = 540 câu trả lời × 3 lượt chấm = 1.620 phiếu, đủ cả, 0 lượt
+   hỏng, 529/540 câu ba lượt trùng nhau. `logs/null_audit/d6_clarified/full_ket_qua.txt`.
+
+**Kết quả.**
+
+| Nhánh | Rubric gốc (chính thức) acc / err / neither | Rubric làm rõ acc / err / neither |
+|---|---:|---:|
+| V3 | 63,0 / 24,4 / 12,6 | 74,8 / 25,2 / 0,0 |
+| Vector thuần | 65,2 / 27,4 / 7,4 | 74,1 / 25,9 / 0,0 |
+| B1 | 62,2 / 25,2 / 12,6 | 73,3 / 26,7 / 0,0 |
+| **B2** | **57,8** / 23,0 / 19,3 | **74,1** / 25,9 / 0,0 |
+
+| Null net, trung bình 3 cặp lượt | Rubric gốc | Rubric làm rõ |
+|---|---:|---:|
+| H1 = B1 với V3 | −0,33 | −0,67 |
+| H2 = B2 với vector thuần | **−3,33** | **+0,00** |
+| H3 = B2 với B1 | −2,00 | +0,33 |
+
+**Đọc thế nào.**
+- **Khoảng cách Null của B2 là do rubric, không phải do hệ thống.** Khi rubric nói rõ cách chấm câu pha trộn, bốn nhánh nằm trong 1,5
+  điểm (dưới 2 câu mỗi lượt) — không có thứ hạng. B2 vẫn không bịa nhiều hơn: 26 câu-lượt `neither` của B2 chuyển thành 23
+  `accurate` và 3 `error`.
+- Rubric làm rõ gần như bỏ hẳn nhãn `neither` cho câu Null (1/1.620 phiếu), nên cột `neither` của hai rubric **không so được** —
+  so acc và err.
+- Lời từ chối thuần không bị chấm `error` lần nào (175/175 `accurate`): rubric không biến "không biết" thành sai.
+- **Phép chiếu Đ1 cao hơn thực đo 2,8–4,3 điểm**, và thứ hạng chiếu (B2 cao nhất) không giữ. Phép chiếu lấy p(đúng | Gemini chấm
+  `error`) = 12% từ 8 dòng của một người; thực đo chỉ 7%, cộng thêm 8/335 câu `accurate` đổi sang `error`. Bài học: con số chiếu từ
+  mẫu nhỏ không thay được phép đo.
+
+**Dùng kết quả thế nào — ĐỘ NHẠY.** Không thay số chính thức tầng D, **không** xét lại E4 hay phân loại H1–H3 (H2 vẫn BORDERLINE),
+không dùng để chọn biến thể. Trong bài luôn đặt số của hai rubric cạnh nhau.
+
+**Giới hạn.** Rubric được hiệu chuẩn trên nhãn của **một** người (40 dòng, cũng nằm trong 540 câu đã chấm); cùng một giám khảo
+Gemini; 45 câu mỗi nhánh nên không kiểm định ý nghĩa.
+
 ## 5. Các hướng sửa Null đã đánh giá
 
 | Hướng | Kết quả | Trạng thái |
@@ -233,25 +277,28 @@ tín hiệu đo độ khớp hay độ phủ đều thấy những câu này gi�
 | 3 | **Đ3** — rà tay 65 nhãn Null | 3 giờ, **giao Anh Tài** | không | [hướng dẫn](phan-cong/THANH_VIEN_2_RA_NHAN_NULL.md) |
 | ⛔ | ~~**Đ4** — xác nhận cổng Null của H2~~ | — | — | **bỏ 16/09**, lý do ở mục 4 |
 | 5 | **Đ5** — K2, K3, G2, G3 | 1–3 giờ mỗi việc | G3 **có** | — |
+| 6 | **Đ6** — chấm lại toàn bộ Null bằng rubric làm rõ | 30 phút máy | không (Gemini free tier) | Đ1 (nhãn người làm cổng) |
 
-Đ2 đã xong. Đ1 giao thành viên 1, Đ3 giao thành viên 2 (Anh Tài) — mỗi việc một người rà, đã ghi vào đăng ký. Đ4 bỏ.
+**Cập nhật 18/09:** Đ2 xong (16/09), Đ1 xong (17/09, Djicz), Đ6 xong (18/09). Đ3 Anh Tài đã nộp trên nhánh `tv2/d3-ra-nhan`, **chưa merge** — đang rà lại cách làm trước khi dùng số. Đ4 bỏ.
 
-**Cách viết vào bài (dự thảo):** *"Cấu hình tốt nhất (B2) tăng accuracy tổng 13,0 điểm so với mốc, nhưng nhóm Null giảm 5,2 điểm.
-Phân tích lỗi cho thấy mức giảm này không phải do bịa thêm — tỉ lệ `error` của nhóm Null ở B2 là thấp nhất trong mọi cấu hình — mà do
-câu trả lời chuyển sang dạng pha trộn: nêu sự kiện gần giống rồi mới nói rằng chi tiết được hỏi không có trong dữ liệu. 58% số câu bị
-chấm `neither` có nói rõ điều đó; nếu tính chúng là đúng, chênh lệch Null giữa B2 và ablation vector thuần rơi từ 7,4 xuống 0,7 điểm.
-Kiểm toán nhãn tìm thấy một câu Null có đáp án rõ ràng trong corpus và hai câu có nhãn đáng tranh luận."*
+**Cách viết vào bài (dự thảo, cập nhật 18/09 sau Đ6):** *"Cấu hình tốt nhất (B2) tăng accuracy tổng so với mốc, nhưng nhóm Null
+theo rubric gốc giảm (57,8 so với 65,2 của vector thuần trên 45 câu ngoài dev). Mức giảm không phải do bịa thêm — tỉ lệ `error` nhóm
+Null của B2 thấp nhất — mà do câu trả lời pha trộn: nêu sự kiện gần giống rồi nói chi tiết được hỏi không có trong dữ liệu, loại câu
+mà rubric gốc không quy định. Một người chấm 40 câu thấy 22/24 câu bị chấm `neither` là đúng. Chấm lại toàn bộ nhóm Null bằng một
+rubric nói rõ quy tắc này (khớp người 38/40, rubric gốc 15/40), bốn cấu hình nằm trong 1,5 điểm (73,3–74,8) và chênh Null giữa B2 và
+vector thuần là 0. Chúng tôi báo số chính thức theo rubric gốc và đặt kết quả này cạnh đó như phân tích độ nhạy."*
 
-## 8. Trạng thái triển khai (16/09/2026)
+## 8. Trạng thái triển khai (cập nhật 18/09/2026)
 
 Giao thức của Đ1, Đ2, Đ3 đã được **đăng ký trước** và commit trong `reproduce/null_audit/preregistration/` trước khi đọc bất kỳ
 nhãn nào. Phiếu và script đã sẵn sàng; phần còn lại là việc của người chấm.
 
 | Việc | Đã có trong repo | Người phải làm gì |
 |---|---|---|
-| **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md` (kèm bản sửa 16/09); phiếu **40 dòng** đã mù `logs/null_audit/d1_judge_audit/sheet_A.csv` và `sheet_B.csv`; `make_judge_audit_sheet.py`, `score_judge_audit.py` | hai người điền `phan_quyet`, `noi_ro_khong_co`, `khang_dinh_them` — **không mở** `key_KHONG_MO_TRUOC.csv` — rồi chạy `score_judge_audit.py` |
+| **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md` (kèm hai bản sửa 16/09: 40 dòng, một người chấm); `make_judge_audit_sheet.py`, `score_judge_audit.py` | **xong 17/09** (Djicz) — 22/24 câu Gemini chấm `neither` được người chấm đúng (92%, KTC 74–98%); `logs/null_audit/d1_judge_audit/ket_qua.txt` |
 | **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | **xong 16/09** — mức giảm Null không phải nhiễu giám khảo (mục 4); `logs/null_audit/d2_rejudge/ket_qua.txt` |
-| **Đ3** | `preregistration/D3_ra_nhan_65_null.md` (kèm bản sửa 16/09); phiếu 65 câu, mỗi câu ~17 chunk từ 4 nguồn, `logs/null_audit/d3_label_audit/sheet_A.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | **thành viên 2 (Anh Tài)** điền `nhan`, `doi_mot_chi_tiet`, `chunk_id`, `trich_dan`, rồi chạy `score_label_audit.py` — [hướng dẫn](phan-cong/THANH_VIEN_2_RA_NHAN_NULL.md) |
+| **Đ3** | `preregistration/D3_ra_nhan_65_null.md` (kèm bản sửa 16/09); phiếu 65 câu, mỗi câu ~17 chunk từ 4 nguồn, `logs/null_audit/d3_label_audit/sheet_A.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | Anh Tài **đã nộp** trên nhánh `tv2/d3-ra-nhan`; **chưa merge**, đang rà lại cách làm trước khi dùng số |
+| **Đ6** | `preregistration/D6_cham_lai_null_rubric_lam_ro.md`; `rejudge_null_clarified.py`, `run_d6_full.sh` | **xong 18/09** — cổng QUA 38/40; Null bốn nhánh 73,3–74,8, Null net H2 +0,00 (mục 4) |
 | **Đ4** | ⛔ **bỏ** (16/09) | không chạy: sau Đ2, lượt Null net dương duy nhất thành −1 và trung bình xa ngưỡng hơn. H2 giữ nguyên BORDERLINE |
 
 Mẫu phiếu dùng chung một bộ phân loại câu trả lời trong `reproduce/null_audit/answer_kind.py`, để phiếu, bảng thống kê và báo cáo

@@ -176,6 +176,23 @@ trong bốn nhánh. Điểm mất chạy vào `neither` (19,26 so với 12,59 c�
 chi tiết được hỏi không có trong dữ liệu; tính những câu đó là `accurate` thì Null acc của B2 lên 68,9 và chênh so với vector thuần
 rơi từ 7,4 xuống 0,7 điểm. Đây là cận đo bằng regex, chưa có người rà — xem [`DE_XUAT_CAI_THIEN_NULL.md`](DE_XUAT_CAI_THIEN_NULL.md).
 
+**Nhóm Null dưới rubric làm rõ — Đ1 và Đ6 (17–18/09, ĐỘ NHẠY, không thay số chính thức).** Một người (Djicz) chấm 40 câu: 22/24 câu
+Gemini chấm `neither` là đúng. Đ6 thêm vào prompt giám khảo một đoạn nói rõ cách chấm câu pha trộn khi đáp án vàng là "Insufficient
+information", qua cổng kiểm với người (38/40, rubric gốc 15/40), rồi chấm lại 45 câu Null × 4 nhánh × 3 lượt sinh × 3 lượt chấm
+(`logs/null_audit/d6_clarified/full_ket_qua.txt`):
+
+| Nhánh | Null acc / err / neither — rubric gốc (chính thức) | rubric làm rõ |
+|---|---:|---:|
+| V3 | 63,0 / 24,4 / 12,6 | 74,8 / 25,2 / 0,0 |
+| Vector thuần | 65,2 / 27,4 / 7,4 | 74,1 / 25,9 / 0,0 |
+| B1 | 62,2 / 25,2 / 12,6 | 73,3 / 26,7 / 0,0 |
+| B2 | 57,8 / 23,0 / 19,3 | 74,1 / 25,9 / 0,0 |
+
+Null net trung bình 3 cặp lượt, rubric gốc → làm rõ: H1 −0,33 → −0,67 · **H2 −3,33 → +0,00** · H3 −2,00 → +0,33. Khoảng cách Null của
+B2 nằm ở rubric; theo rubric làm rõ bốn nhánh cách nhau dưới 2 câu mỗi lượt. **E4 và phân loại H1–H3 không xét lại — H2 vẫn
+BORDERLINE.** Rubric làm rõ gần như không dùng `neither` cho câu Null, nên chỉ so acc và err giữa hai rubric. Giới hạn: hiệu chuẩn
+trên nhãn một người; cùng giám khảo Gemini.
+
 ## 6. Điều kiện bắt buộc khi trích dẫn
 
 - **So với bài báo là tham chiếu, không phải đối chứng:** khác giám khảo (Gemini thay GPT), khác đồ thị (Qwen dựng 1.556 node,

@@ -1,0 +1,47 @@
+Đ6 — BƯỚC 3: nhóm Null ngoài dev (45 câu) × 4 nhánh × 3 lượt sinh, rubric làm rõ, 3 lượt chấm
+ĐỘ NHẠY — số chính thức của tầng D, cổng E4 và H1–H3 KHÔNG đổi
+
+   nhánh |    rubric gốc (chính thức) |          rubric làm rõ
+         |        acc / err / neither |    acc / err / neither
+   V3    |         63.0 / 24.4 / 12.6 |     74.8 / 25.2 /  0.0
+   VEC   |         65.2 / 27.4 /  7.4 |     74.1 / 25.9 /  0.0
+   B1    |         62.2 / 25.2 / 12.6 |     73.3 / 26.7 /  0.0
+   B2    |         57.8 / 23.0 / 19.3 |     74.1 / 25.9 /  0.0
+
+Null net từng cặp lượt (dương = biến thể tốt hơn); cổng E4 gốc là trung bình ≥ −3
+   H1 = B1 với V3             · rubric gốc   : [-2, -1, 2] · trung bình -0.33
+   H1 = B1 với V3             · rubric làm rõ: [-3, 0, 1] · trung bình -0.67
+   H2 = B2 với vector thuần   · rubric gốc   : [-4, -7, 1] · trung bình -3.33
+   H2 = B2 với vector thuần   · rubric làm rõ: [0, -2, 2] · trung bình +0.00
+   H3 = B2 với B1             · rubric gốc   : [0, -4, -2] · trung bình -2.00
+   H3 = B2 với B1             · rubric làm rõ: [1, 0, 0] · trung bình +0.33
+
+KIỂM ĐỦ DỮ LIỆU (18/09, sau khi chạy)
+   1.620 phiếu = 540 câu trả lời × 3 lượt chấm, mọi câu đủ 3 lượt, 0 lượt hỏng
+   phiếu thô: accurate 1.200 · error 419 · neither 1
+   3 lượt trùng nhau hoàn toàn: 529/540 câu (98%)
+   chạy 17/09 23:45 → 18/09 00:13, một lần, không hết hạn mức
+
+ĐỌC KẾT QUẢ
+   1. Rubric làm rõ gần như không dùng nhãn `neither` cho câu Null (1/1.620 phiếu): nó buộc chọn accurate hoặc error.
+      Vì vậy cột `neither` của hai rubric không so được với nhau — so acc và err.
+   2. Bốn nhánh cách nhau 1,5 điểm Null acc (73,3–74,8). Với 45 câu, 1 câu = 2,2 điểm một lượt, 0,74 điểm trung bình 3 lượt:
+      chênh lệch dưới 2 câu mỗi lượt. Không có thứ hạng; theo đăng ký không kiểm định.
+   3. Null net trung bình theo rubric làm rõ: H1 −0,67 · H2 +0,00 · H3 +0,33 (rubric gốc −0,33 · −3,33 · −2,00).
+      Khoảng cách Null của B2 so với B1 và vector thuần biến mất. E4 và phân loại H1–H3 KHÔNG xét lại (đăng ký trước).
+   4. Lời từ chối thuần: 0 câu bị chấm error ở mọi nhánh (175/175 accurate). Rubric không biến lời từ chối thành sai.
+   5. Phép chiếu Đ1 (V3 77,6 · VEC 75,4 · B1 76,9 · B2 78,4) cao hơn thực đo 2,8–4,3 điểm và thứ hạng chiếu (B2 cao nhất) không
+      giữ. Lý do: phép chiếu dùng p(đúng | Gemini chấm error) = 12% từ 8 dòng của một người, thực đo chỉ 10/135 câu error (7%) đổi
+      sang accurate (rubric làm rõ); thêm 8/335 câu accurate đổi sang error, và neither → accurate là 63/70 (90%) so với 92%.
+
+   Chuyển phán quyết, rubric gốc → rubric làm rõ (135 câu-lượt mỗi nhánh):
+      nhánh  acc→acc acc→err err→acc err→err nei→acc nei→err
+      V3        83      2       3      30      15       2
+      VEC       87      1       3      34      10       0
+      B1        81      3       3      31      15       2
+      B2        76      2       1      30      23       3
+
+GIỚI HẠN
+   - Rubric được hiệu chuẩn trên 40 dòng của MỘT người chấm; 40 dòng đó cũng nằm trong 540 câu ở đây.
+   - Cùng một giám khảo (gemini-flash-lite-latest) cho mọi nhánh; đổi cách đo, không đổi hệ thống.
+   - ĐỘ NHẠY: không thay số chính thức tầng D, không đổi E4, không đổi phân loại H1–H3, không dùng để chọn biến thể.

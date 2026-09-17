@@ -862,6 +862,14 @@ Null acc B1 62,2 → 60,7 · B2 57,8 → 55,6 · vector thuần 65,2 → 65,9; N
 Null của B2 không phải nhiễu giám khảo** — chấm kỹ hơn thì nó nặng thêm. 4 câu-lượt có 3 phiếu chia đều, tính là `neither` theo
 luật đã khoá. Câu hỏi còn lại thuần tuý là rubric cho câu trả lời pha trộn (Đ1).
 
+**Đ1 → Đ6 — rubric cho câu trả lời pha trộn (17–18/09, đăng ký trước `D1_…`, `D6_cham_lai_null_rubric_lam_ro.md`; ĐỘ NHẠY, không
+thay số chính thức, không xét lại E4).** Đ1: một người chấm 40 câu, 22/24 câu Gemini chấm `neither` là đúng. Đ6: prompt giám khảo
+cộng một đoạn quy tắc cho đáp án vàng "Insufficient information" (khoá sha256), cổng kiểm với người QUA 38/40 (rubric gốc 15/40),
+rồi chấm lại 540 câu trả lời × 3 lượt. Null acc rubric làm rõ: V3 74,8 · vector thuần 74,1 · B1 73,3 · B2 74,1 (rubric gốc 63,0 ·
+65,2 · 62,2 · 57,8). Null net H1 −0,67 · H2 +0,00 · H3 +0,33 (gốc −0,33 · −3,33 · −2,00). **Khoảng cách Null của B2 là do rubric,
+không phải do hệ thống.** H2 vẫn báo BORDERLINE theo cổng đã đăng ký; trong bài đặt hai rubric cạnh nhau. Phép chiếu từ Đ1 (B2 78,4
+cao nhất) cao hơn thực đo 2,8–4,3 điểm và sai thứ hạng. Chi tiết: `logs/null_audit/d6_clarified/full_ket_qua.txt`.
+
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**
 
 Đặc tả A3 trong kế hoạch: *từ chối nếu chunk tốt nhất dưới ngưỡng cosine*. Đo khả năng tách

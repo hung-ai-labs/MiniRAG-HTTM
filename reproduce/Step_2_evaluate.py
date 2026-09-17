@@ -235,4 +235,5 @@ async def main():
         sys.exit(1)
 
 
-asyncio.run(main())
+if __name__ == "__main__":      # import được (Đ6 dùng lại judge()) mà không tự chạy
+    asyncio.run(main())

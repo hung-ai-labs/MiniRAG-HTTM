@@ -1,0 +1,18 @@
+=== BÁO CÁO OFFLINE: P2 ===
+Thời gian tạo: 2026-09-17 16:33:12
+Số câu đánh giá: 180 (180 câu dev có Evidence)
+
+1. HIỆU NĂNG (EFFICIENCY):
+  - Thời gian truy hồi (retrieval_ms): Trung vị 3105,7 ms | p90 5188,1 ms
+  - Số thực thể khởi đầu (seeds):      Trung vị 96 | p90 137
+  - Số đường 2-hop sinh ra (paths):    Trung vị 19994 | p90 28383
+
+2. CHẤT LƯỢNG TRUY HỒI (QUALITY):
+  - Chunk đáp án trong top-30 đồ thị:          62,3%
+  - Chunk đáp án giữ lại sau cắt A1@4000:       46,4%
+  - Tỉ lệ câu giữ ĐỦ mọi chunk đáp án:        41,7% (75/180 câu)
+
+3. PHÂN TÁCH THEO LOẠI CÂU HỎI:
+  - Single (159 câu): Retention 43,4% | Đủ đáp án 43,4%
+  - Multi  (21 câu): Retention 56,2% | Đủ đáp án 28,6%
+========================================================

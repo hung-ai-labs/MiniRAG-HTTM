@@ -1,0 +1,17 @@
+Đ6 — BƯỚC 2: CỔNG KIỂM trên 40 dòng Đ1 (nhãn người: Djicz, một người chấm)
+   prompt sha256 78e5a15278535b89… · 3 lượt chấm · đa số tuyệt đối
+
+   (a) khớp với người trên 40 dòng        : 38/40  (cần ≥ 32) → ĐẠT
+   (b) khớp trên 24 câu gốc chấm `neither` : 23/24  (cần ≥ 20) → ĐẠT
+   (c) bắt được câu người chấm SAI        : 7/7  (cần ≥ 5) → ĐẠT
+
+   Đối chiếu: rubric GỐC (1 lượt chính thức) khớp với người 15/40
+
+   người \ rubric mới |  accurate |     error |   neither
+             accurate |        31 |         0 |         0
+                error |         0 |         7 |         0
+              neither |         1 |         1 |         0
+
+   Rubric gốc → rubric mới, các dòng đổi phán quyết: {('neither', 'accurate'): 23, ('neither', 'error'): 1, ('error', 'accurate'): 1}
+
+   KẾT LUẬN CỔNG: QUA

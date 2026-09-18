@@ -1,0 +1,185 @@
+{
+  "timestamp": "2026-09-17 23:13:18",
+  "overall_status": "INVALID",
+  "check_summary": {
+    "total": 21,
+    "required": 20,
+    "pass": 4,
+    "fail": 8,
+    "unverified": 8,
+    "optional": 1
+  },
+  "checks": [
+    {
+      "name": "nap raw log: thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\control_graph.jsonl",
+      "status": "FAIL",
+      "detail": "thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\control_graph.jsonl",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "nap raw log: thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\treatment_graph.jsonl",
+      "status": "FAIL",
+      "detail": "thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\treatment_graph.jsonl",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "nap raw log: thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\control_rrf.jsonl",
+      "status": "FAIL",
+      "detail": "thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\control_rrf.jsonl",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "nap raw log: thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\treatment_rrf.jsonl",
+      "status": "FAIL",
+      "detail": "thieu raw log: E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\treatment_rrf.jsonl",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: co raw log",
+      "status": "FAIL",
+      "detail": "thieu file",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: co raw log",
+      "status": "FAIL",
+      "detail": "thieu file",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: co raw log",
+      "status": "FAIL",
+      "detail": "thieu file",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: co raw log",
+      "status": "FAIL",
+      "detail": "thieu file",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control: graph_ids bat bien giua hai mode",
+      "status": "UNVERIFIED",
+      "detail": "thieu raw log",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment: graph_ids bat bien giua hai mode",
+      "status": "UNVERIFIED",
+      "detail": "thieu raw log",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "tap do = 180 (159 Single + 21 Multi + 0 Null)",
+      "status": "PASS",
+      "detail": "{'Single': 159, 'Multi': 21}",
+      "source": "eval_set.py",
+      "required": true
+    },
+    {
+      "name": "moi cau deu co gold_chunk_ids khong rong",
+      "status": "PASS",
+      "detail": "0 cau rong",
+      "source": "diag_path2chunk.jsonl",
+      "required": true
+    },
+    {
+      "name": "moi gold chunk deu thuoc corpus",
+      "status": "PASS",
+      "detail": "0 id la, vi du []",
+      "source": "kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "TYPE_POOL control == treatment",
+      "status": "PASS",
+      "detail": "47 gia tri",
+      "source": "trang thai hien tai cua hai nhanh",
+      "required": true
+    },
+    {
+      "name": "khong co loi goi LLM trong lan chay truy hoi",
+      "status": "UNVERIFIED",
+      "detail": "khong co manifest va khong co bao cao cua lan chay",
+      "source": "thieu",
+      "required": true
+    },
+    {
+      "name": "cache parser khong bi ghi them trong lan chay",
+      "status": "UNVERIFIED",
+      "detail": "thieu bang chung tu lan chay",
+      "source": "thieu",
+      "required": true
+    },
+    {
+      "name": "control: hash index truoc/sau lan chay khong doi",
+      "status": "UNVERIFIED",
+      "detail": "runner cua lan chay khong luu lai hash truoc/sau",
+      "source": "thieu",
+      "required": true
+    },
+    {
+      "name": "treatment: hash index truoc/sau lan chay khong doi",
+      "status": "UNVERIFIED",
+      "detail": "runner cua lan chay khong luu lai hash truoc/sau",
+      "source": "thieu",
+      "required": true
+    },
+    {
+      "name": "cau hinh hai nhanh giong nhau tru working_dir",
+      "status": "UNVERIFIED",
+      "detail": "thieu bang chung tu lan chay",
+      "source": "thieu",
+      "required": true
+    },
+    {
+      "name": "ngan sach context 4000 va cach cat Sources dung thiet lap da dang ky",
+      "status": "UNVERIFIED",
+      "detail": "thieu bang chung tu lan chay",
+      "source": "thieu",
+      "required": true
+    },
+    {
+      "name": "trang thai hien tai: hai nhanh van ton tai va doc duoc",
+      "status": "PASS",
+      "detail": "['E:\\\\Sv clone\\\\MiniRAG\\\\logs\\\\entity_resolution\\\\pair\\\\control', 'E:\\\\Sv clone\\\\MiniRAG\\\\logs\\\\entity_resolution\\\\pair\\\\entres']",
+      "source": "trang thai hien tai",
+      "required": false
+    }
+  ],
+  "evidence_notes": [
+    "khong co run manifest tai E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval\\run_manifest.json -- lan chay dien ra truoc khi runner duoc bo sung tinh nang ghi manifest"
+  ],
+  "manifest_present": false,
+  "prior_reports_used": [],
+  "superseded_archived": [],
+  "audit_notes": [
+    "3-query engineering smoke test was observed before the full run; no merge decision, metric definition or numerical threshold was changed based on it.",
+    "The RRF gate was corrected at the ANALYSIS layer from graph_top30 to final_chunks because graph_ids is captured before chunk fusion (minirag/operate.py:1489). This is a correction made AFTER the retrieval run was launched; it is NOT a preregistration made before measurement. Preregistered thresholds (+9 / p<0.01; >=0) are unchanged.",
+    "Control arm is NOT the byte-identical committed retrieval index: both arms had their relationship VDB re-embedded with hf_embed at batch=1 per the 17/09/2026 amendment.",
+    "The headline result describes the effect of E1 entity resolution under the deterministic relationship-embedding correction, not the effect of E1 on the originally committed index."
+  ],
+  "gate": {
+    "status": "NOT_EVALUATED",
+    "blocking_checks": [
+      "raw log chua day du"
+    ],
+    "graph_only": {
+      "passed": null
+    },
+    "rrf": {
+      "passed": null
+    }
+  }
+}

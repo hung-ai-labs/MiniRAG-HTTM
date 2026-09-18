@@ -1,0 +1,641 @@
+{
+  "source_index": "E:\\Sv clone\\MiniRAG\\LiHua-World-qwen-modal",
+  "destination_index": "E:\\Sv clone\\MiniRAG\\LiHua-World-qwen-entres",
+  "timestamp": "2026-09-17 20:55:26",
+  "git_commit": "8ee861df81c00f1dc9f44968ecc89cf16b54375c",
+  "merge_groups_requested": [
+    {
+      "group": "1",
+      "norm_key": "lihua",
+      "keep": "\"LIHUA\"",
+      "merge": "\"LI HUA\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều là Li Hua và chia sẻ nhiều neighbor chính gồm Wolfgang, Chae, Jennifer, Adam, Emily và Jake."
+    },
+    {
+      "group": "2",
+      "norm_key": "wolfgangschulz",
+      "keep": "\"WOLFGANGSCHULZ\"",
+      "merge": "\"WOLFGANG SCHULZ\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều là Wolfgang Schulz trong nhóm nhạc và cùng nối tới Li Hua cùng Jam Session."
+    },
+    {
+      "group": "3",
+      "norm_key": "jennifermoore",
+      "keep": "\"JENNIFER MOORE\"",
+      "merge": "\"JENNIFERMOORE\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON và fitness coach; mô tả trùng vai trò, source_id có phần giao nhau và nhiều neighbor chung."
+    },
+    {
+      "group": "4",
+      "norm_key": "chaesonghwa",
+      "keep": "\"CHAESONG-HWA\"",
+      "merge": "\"CHAE SONG-HWA\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều nói Chae Song-hwa tham gia jam/band và neighbor của node nhỏ là các bản viết cách của cùng nhóm người."
+    },
+    {
+      "group": "5",
+      "norm_key": "yurikoyamamoto",
+      "keep": "\"YURIKOYAMAMOTO\"",
+      "merge": "\"YURIKO YAMAMOTO\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều bao phủ âm nhạc và studio, đồng thời cùng nối tới Li Hua, Wolfgang và Jam Session."
+    },
+    {
+      "group": "6",
+      "norm_key": "adamsmith",
+      "keep": "\"ADAMSMITH\"",
+      "merge": "\"ADAM SMITH\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; cả hai mô tả Adam Smith trong các hoạt động cộng đồng, khác biệt chỉ là cách viết tên và các source bổ sung."
+    },
+    {
+      "group": "7",
+      "norm_key": "emilyburnett",
+      "keep": "\"EMILY BURNETT\"",
+      "merge": "\"EMILYBURNETT\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; có mô tả resilience/peacekeepers gần như trùng nguyên văn và cùng neighbor Quillan."
+    },
+    {
+      "group": "8",
+      "norm_key": "thanechambers",
+      "keep": "\"THANECHAMBERS\"",
+      "merge": "\"THANE CHAMBERS\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; cả hai mô tả Thane Chambers thảo luận trò chơi, với các source và neighbor bổ sung cho cùng hồ sơ nhân vật."
+    },
+    {
+      "group": "9",
+      "norm_key": "jakewatson",
+      "keep": "\"JAKEWATSON\"",
+      "merge": "\"JAKE WATSON\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều về Jake Watson và bóng đá, node nhỏ nói Barca/Bayern phù hợp chủ đề của node lớn."
+    },
+    {
+      "group": "10",
+      "norm_key": "rexxarremar",
+      "keep": "\"REXXARREMAR\"",
+      "merge": "\"REXXAR REMAR\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều là Rexxar Remar tham gia hoạt động cộng đồng, node cách chữ chỉ bổ sung source emergency-response."
+    },
+    {
+      "group": "11",
+      "norm_key": "malfurionstormrage",
+      "keep": "\"MALFURIONSTORMRAGE\"",
+      "merge": "\"MALFURION STORMRAGE\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều là Malfurion Stormrage trong các hoạt động cộng đồng, node cách chữ chỉ bổ sung source emergency-response."
+    },
+    {
+      "group": "12",
+      "norm_key": "tirionfordring",
+      "keep": "\"TIRIONFORDRING\"",
+      "merge": "\"TIRION FORDRING\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều về Tirion Fordring điều phối hoạt động cộng đồng và source_id có chunk chung."
+    },
+    {
+      "group": "13",
+      "norm_key": "gromhellscream",
+      "keep": "\"GROMHELLSCREAM\"",
+      "merge": "\"GROM HELLSCREAM\"",
+      "decision": "MERGE",
+      "reason": "Cùng PERSON; mô tả đều là Grom Hellscream tham gia hoạt động cộng đồng, node cách chữ bổ sung vai trò first-aid."
+    },
+    {
+      "group": "15",
+      "norm_key": "herecomesthesun",
+      "keep": "\"HERE COMES THE SUN\"",
+      "merge": "\"\"HERE COMES THE SUN\"\"",
+      "decision": "MERGE",
+      "reason": "Cả hai mô tả đúng cùng bài hát Beatles và cùng nối Wolfgang; EVENT ở node giữ lại có vẻ là type extraction không nhất quán."
+    },
+    {
+      "group": "16",
+      "norm_key": "setlist",
+      "keep": "\"SET LIST\"",
+      "merge": "\"SETLIST\"",
+      "decision": "MERGE",
+      "reason": "Mô tả của cả hai đều là danh sách bài hát cho buổi biểu diễn; khác nhau ở khoảng trắng và type EVENT/CONCEPT."
+    },
+    {
+      "group": "17",
+      "norm_key": "mainst",
+      "keep": "\"MAIN ST\"",
+      "merge": "\"MAIN ST.\"",
+      "decision": "MERGE",
+      "reason": "Cùng LOCATION; mô tả đều chỉ Main St là địa điểm gặp để ăn tối, khác nhau duy nhất ở dấu chấm."
+    },
+    {
+      "group": "19",
+      "norm_key": "awesome",
+      "keep": "\"AWESOME\"",
+      "merge": "\"AWESOME! 🎉\"",
+      "decision": "MERGE",
+      "reason": "Cùng CONCEPT; hai mô tả đều là biểu đạt đồng tình/hào hứng, khác biệt chỉ là dấu câu và emoji; cả hai đều cô lập."
+    },
+    {
+      "group": "21",
+      "norm_key": "airconditioner",
+      "keep": "\"AIR CONDITIONER\"",
+      "merge": "\"AIR-CONDITIONER\"",
+      "decision": "MERGE",
+      "reason": "Cùng TECHNOLOGY; mô tả đều chỉ cùng thiết bị điều hòa, khác biệt chỉ là dấu gạch nối và các source bổ sung."
+    }
+  ],
+  "merge_groups_completed": [
+    {
+      "group": "1",
+      "keep": "\"LIHUA\"",
+      "alias": "\"LI HUA\""
+    },
+    {
+      "group": "2",
+      "keep": "\"WOLFGANGSCHULZ\"",
+      "alias": "\"WOLFGANG SCHULZ\""
+    },
+    {
+      "group": "3",
+      "keep": "\"JENNIFER MOORE\"",
+      "alias": "\"JENNIFERMOORE\""
+    },
+    {
+      "group": "4",
+      "keep": "\"CHAESONG-HWA\"",
+      "alias": "\"CHAE SONG-HWA\""
+    },
+    {
+      "group": "5",
+      "keep": "\"YURIKOYAMAMOTO\"",
+      "alias": "\"YURIKO YAMAMOTO\""
+    },
+    {
+      "group": "6",
+      "keep": "\"ADAMSMITH\"",
+      "alias": "\"ADAM SMITH\""
+    },
+    {
+      "group": "7",
+      "keep": "\"EMILY BURNETT\"",
+      "alias": "\"EMILYBURNETT\""
+    },
+    {
+      "group": "8",
+      "keep": "\"THANECHAMBERS\"",
+      "alias": "\"THANE CHAMBERS\""
+    },
+    {
+      "group": "9",
+      "keep": "\"JAKEWATSON\"",
+      "alias": "\"JAKE WATSON\""
+    },
+    {
+      "group": "10",
+      "keep": "\"REXXARREMAR\"",
+      "alias": "\"REXXAR REMAR\""
+    },
+    {
+      "group": "11",
+      "keep": "\"MALFURIONSTORMRAGE\"",
+      "alias": "\"MALFURION STORMRAGE\""
+    },
+    {
+      "group": "12",
+      "keep": "\"TIRIONFORDRING\"",
+      "alias": "\"TIRION FORDRING\""
+    },
+    {
+      "group": "13",
+      "keep": "\"GROMHELLSCREAM\"",
+      "alias": "\"GROM HELLSCREAM\""
+    },
+    {
+      "group": "15",
+      "keep": "\"HERE COMES THE SUN\"",
+      "alias": "\"\"HERE COMES THE SUN\"\""
+    },
+    {
+      "group": "16",
+      "keep": "\"SET LIST\"",
+      "alias": "\"SETLIST\""
+    },
+    {
+      "group": "17",
+      "keep": "\"MAIN ST\"",
+      "alias": "\"MAIN ST.\""
+    },
+    {
+      "group": "19",
+      "keep": "\"AWESOME\"",
+      "alias": "\"AWESOME! 🎉\""
+    },
+    {
+      "group": "21",
+      "keep": "\"AIR CONDITIONER\"",
+      "alias": "\"AIR-CONDITIONER\""
+    }
+  ],
+  "rejected_groups_untouched": [
+    {
+      "group": "14",
+      "norm_key": "bloodandwine",
+      "keep": "\"BLOOD AND WINE\"",
+      "merge": "\"\"BLOOD AND WINE\"",
+      "decision": "REJECT",
+      "reason": "Same normalized name but conflicting semantic roles/types QUEST vs EXPANSION and conflicting descriptions; identity not established."
+    },
+    {
+      "group": "18",
+      "norm_key": "1000am",
+      "keep": "\"10:00 AM\"",
+      "merge": "\"10:00AM\"",
+      "decision": "REJECT",
+      "reason": "Same literal time value but sourced from different events; merging would connect unrelated event contexts."
+    },
+    {
+      "group": "20",
+      "norm_key": "kids",
+      "keep": "\"KIDS\"",
+      "merge": "\"KIDS'",
+      "decision": "REJECT",
+      "reason": "Conflicting entity types LOCATION/PERSON and KIDS' may be a truncated possessive; identity not established."
+    }
+  ],
+  "nodes_before": 1556,
+  "nodes_after": 1538,
+  "edges_before": 1509,
+  "edges_after": 1463,
+  "self_loops_removed": 0,
+  "collapsed_edges": 46,
+  "type_ties": [
+    {
+      "group": "15",
+      "keep": "\"HERE COMES THE SUN\"",
+      "alias": "\"\"HERE COMES THE SUN\"\"",
+      "keep_type": "\"EVENT\"",
+      "alias_type": "\"SONG\""
+    },
+    {
+      "group": "16",
+      "keep": "\"SET LIST\"",
+      "alias": "\"SETLIST\"",
+      "keep_type": "\"EVENT\"",
+      "alias_type": "\"CONCEPT\""
+    }
+  ],
+  "vdb_deletes": {
+    "entities": 18,
+    "entities_name": 18,
+    "relationships": 189
+  },
+  "vdb_upserts": {
+    "entities": 18,
+    "entities_name": 0,
+    "relationships": 143
+  },
+  "orientation_provenance": {
+    "canonical_existing": 40,
+    "alias_inherited": 103,
+    "fallback": 0
+  },
+  "orientation_fallbacks": [],
+  "orientation_not_sorted": 0,
+  "chunk_count_before": 514,
+  "chunk_count_after": 514,
+  "chunk_ids_equal": true,
+  "type_pool_equal": true,
+  "checks": [
+    {
+      "name": "CHECK1 get_types() lower giong het truoc/sau",
+      "passed": true,
+      "detail": "before=47 after=47"
+    },
+    {
+      "name": "CHECK1b get_types() with-case giong het truoc/sau",
+      "passed": true,
+      "detail": "before=47 after=47"
+    },
+    {
+      "name": "CHECK2 nhom 1: alias '\"LI HUA\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 1: keep '\"LIHUA\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 2: alias '\"WOLFGANG SCHULZ\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 2: keep '\"WOLFGANGSCHULZ\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 3: alias '\"JENNIFERMOORE\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 3: keep '\"JENNIFER MOORE\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 4: alias '\"CHAE SONG-HWA\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 4: keep '\"CHAESONG-HWA\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 5: alias '\"YURIKO YAMAMOTO\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 5: keep '\"YURIKOYAMAMOTO\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 6: alias '\"ADAM SMITH\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 6: keep '\"ADAMSMITH\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 7: alias '\"EMILYBURNETT\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 7: keep '\"EMILY BURNETT\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 8: alias '\"THANE CHAMBERS\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 8: keep '\"THANECHAMBERS\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 9: alias '\"JAKE WATSON\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 9: keep '\"JAKEWATSON\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 10: alias '\"REXXAR REMAR\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 10: keep '\"REXXARREMAR\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 11: alias '\"MALFURION STORMRAGE\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 11: keep '\"MALFURIONSTORMRAGE\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 12: alias '\"TIRION FORDRING\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 12: keep '\"TIRIONFORDRING\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 13: alias '\"GROM HELLSCREAM\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 13: keep '\"GROMHELLSCREAM\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 15: alias '\"\"HERE COMES THE SUN\"\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 15: keep '\"HERE COMES THE SUN\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 16: alias '\"SETLIST\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 16: keep '\"SET LIST\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 17: alias '\"MAIN ST.\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 17: keep '\"MAIN ST\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 19: alias '\"AWESOME! 🎉\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 19: keep '\"AWESOME\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 21: alias '\"AIR-CONDITIONER\"' da bi xoa khoi graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK2 nhom 21: keep '\"AIR CONDITIONER\"' con ton tai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK3/12 nhom REJECT 14: ca hai node con ton tai (khong bi merge)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK3/12 nhom REJECT 18: ca hai node con ton tai (khong bi merge)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK3/12 nhom REJECT 20: ca hai node con ton tai (khong bi merge)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK11 approved duplicate groups remaining = 0",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK12 rejected duplicate groups remaining = 3 (whitelist, hop le)",
+      "passed": true,
+      "detail": "3: ['1000am', 'bloodandwine', 'kids']"
+    },
+    {
+      "name": "CHECK12b khong phat sinh duplicate ngoai whitelist",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK9 chunk count giong het",
+      "passed": true,
+      "detail": "514 vs 514"
+    },
+    {
+      "name": "CHECK10 chunk id list (sorted) giong het",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "file bat bien giong het source: kv_store_text_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "file bat bien giong het source: vdb_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "file bat bien giong het source: kv_store_full_docs.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "file bat bien giong het source: kv_store_doc_status.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "file bat bien giong het source: extracted_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK15 source index khong doi (hash cay thu muc)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CHECK13 khong con dangling graph edge",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK4 khong con ent- record tro toi alias",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK4b khong con Ename- record tro toi alias",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK5 khong con rel- record co src_id/tgt_id la alias",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK14 khong con rel- record tro toi node khong ton tai trong graph",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK6 moi keep van co Ename- record",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK7 moi keep van co ent- record",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK8 moi canh bi doi (con ton tai) deu co rel- record",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "CHECK8b moi canh trong graph cuoi deu co rel- record",
+      "passed": true,
+      "detail": "0 canh thieu: []"
+    },
+    {
+      "name": "CHECK8c khong co rel- record mo coi (khong ung voi canh nao)",
+      "passed": true,
+      "detail": "0 record thua: []"
+    },
+    {
+      "name": "CHECK8d so rel- record == so canh",
+      "passed": true,
+      "detail": "1463 record vs 1463 canh"
+    }
+  ],
+  "status": "PASS",
+  "embedding_parity": {
+    "status": "BLOCKER_PADDING_REGIME",
+    "message": "ham + model + content DUNG TUYET DOI, nhung vector da commit bi nhiem pad-token (hf.py mean qua ca vi tri pad, khong dung attention_mask) nen khong tai tao duoc tu van ban. Quyet dinh che do nhung lai phai duoc nhom chot truoc khi do retrieval.",
+    "function_parity": {
+      "median_cosine": 0.9999999999997752,
+      "min_cosine": 0.9795625677550306,
+      "ok": true
+    },
+    "asis_parity_ok": false
+  }
+}

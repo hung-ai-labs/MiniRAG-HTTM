@@ -1,0 +1,301 @@
+{
+  "mode": "graph",
+  "fusion": "",
+  "arms": {
+    "control": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\control",
+    "treatment": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\entres"
+  },
+  "valid": true,
+  "checks": [
+    {
+      "name": "control/graph: dung 180 ban ghi",
+      "passed": true,
+      "detail": "180"
+    },
+    {
+      "name": "control/graph: khong trung cau hoi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "control/graph: dung bo cau hoi cua tap do",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "control/graph: schema context log hop le",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "control/graph: fusion dung '', khong lan mode khac",
+      "passed": true,
+      "detail": "{''}"
+    },
+    {
+      "name": "control/graph: ranked_ids == graph_ids (khong co tron RRF)",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "treatment/graph: dung 180 ban ghi",
+      "passed": true,
+      "detail": "180"
+    },
+    {
+      "name": "treatment/graph: khong trung cau hoi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment/graph: dung bo cau hoi cua tap do",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment/graph: schema context log hop le",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment/graph: fusion dung '', khong lan mode khac",
+      "passed": true,
+      "detail": "{''}"
+    },
+    {
+      "name": "treatment/graph: ranked_ids == graph_ids (khong co tron RRF)",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "control/rrf: dung 180 ban ghi",
+      "passed": true,
+      "detail": "180"
+    },
+    {
+      "name": "control/rrf: khong trung cau hoi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "control/rrf: dung bo cau hoi cua tap do",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "control/rrf: schema context log hop le",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "control/rrf: fusion dung 'rrf', khong lan mode khac",
+      "passed": true,
+      "detail": "{'rrf'}"
+    },
+    {
+      "name": "treatment/rrf: dung 180 ban ghi",
+      "passed": true,
+      "detail": "180"
+    },
+    {
+      "name": "treatment/rrf: khong trung cau hoi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment/rrf: dung bo cau hoi cua tap do",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment/rrf: schema context log hop le",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment/rrf: fusion dung 'rrf', khong lan mode khac",
+      "passed": true,
+      "detail": "{'rrf'}"
+    },
+    {
+      "name": "tap do: 180 = 159 Single + 21 Multi + 0 Null",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "gold map phu du 180 cau",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "khong co loi goi LLM nao",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "cache parser khong bi ghi them (KW_CACHE_ONLY=1)",
+      "passed": true,
+      "detail": "200 -> 200"
+    },
+    {
+      "name": "cau hinh hai nhanh giong nhau tru working_dir",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "max_token_for_text_unit = 4000",
+      "passed": true,
+      "detail": "4000"
+    },
+    {
+      "name": "cat Sources dung thiet lap da dang ky (TRUNCATE_SOURCES bat, khong de-doi ngan sach)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "top_k = 60 (graph top-30 = top_k/2)",
+      "passed": true,
+      "detail": "60"
+    },
+    {
+      "name": "control: file index khong doi sau khi chay",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "treatment: file index khong doi sau khi chay",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "graph_top30": {
+    "ALL": {
+      "n": 180,
+      "control_pass": 103,
+      "control_rate": 57.22222222222222,
+      "treatment_pass": 102,
+      "treatment_rate": 56.666666666666664,
+      "wins": 2,
+      "losses": 3,
+      "tie_pass": 100,
+      "tie_fail": 75,
+      "net": -1,
+      "mcnemar_p": 1.0
+    },
+    "Single": {
+      "n": 159,
+      "control_pass": 95,
+      "control_rate": 59.74842767295598,
+      "treatment_pass": 94,
+      "treatment_rate": 59.119496855345915,
+      "wins": 1,
+      "losses": 2,
+      "tie_pass": 93,
+      "tie_fail": 63,
+      "net": -1,
+      "mcnemar_p": 1.0
+    },
+    "Multi": {
+      "n": 21,
+      "control_pass": 8,
+      "control_rate": 38.095238095238095,
+      "treatment_pass": 8,
+      "treatment_rate": 38.095238095238095,
+      "wins": 1,
+      "losses": 1,
+      "tie_pass": 7,
+      "tie_fail": 12,
+      "net": 0,
+      "mcnemar_p": 1.0
+    }
+  },
+  "final_chunks": {
+    "ALL": {
+      "n": 180,
+      "control_pass": 74,
+      "control_rate": 41.111111111111114,
+      "treatment_pass": 77,
+      "treatment_rate": 42.77777777777778,
+      "wins": 6,
+      "losses": 3,
+      "tie_pass": 71,
+      "tie_fail": 100,
+      "net": 3,
+      "mcnemar_p": 0.5078125
+    },
+    "Single": {
+      "n": 159,
+      "control_pass": 69,
+      "control_rate": 43.39622641509434,
+      "treatment_pass": 71,
+      "treatment_rate": 44.65408805031446,
+      "wins": 5,
+      "losses": 3,
+      "tie_pass": 66,
+      "tie_fail": 85,
+      "net": 2,
+      "mcnemar_p": 0.7265625
+    },
+    "Multi": {
+      "n": 21,
+      "control_pass": 5,
+      "control_rate": 23.80952380952381,
+      "treatment_pass": 6,
+      "treatment_rate": 28.571428571428573,
+      "wins": 1,
+      "losses": 0,
+      "tie_pass": 5,
+      "tie_fail": 15,
+      "net": 1,
+      "mcnemar_p": 1.0
+    }
+  },
+  "workload": {
+    "control": {
+      "graph_seeds": {
+        "n": 180,
+        "mean": 96.08,
+        "median": 96.5,
+        "p95": 149,
+        "max": 176
+      },
+      "graph_paths": {
+        "n": 180,
+        "mean": 19631.98,
+        "median": 19994.5,
+        "p95": 31566,
+        "max": 36741
+      },
+      "retrieval_ms": {
+        "n": 180,
+        "mean": 13967.57,
+        "median": 12158.42,
+        "p95": 28421.82,
+        "max": 47936.26
+      }
+    },
+    "treatment": {
+      "graph_seeds": {
+        "n": 180,
+        "mean": 95.39,
+        "median": 96.0,
+        "p95": 148,
+        "max": 174
+      },
+      "graph_paths": {
+        "n": 180,
+        "mean": 21909.57,
+        "median": 22307.0,
+        "p95": 35154,
+        "max": 40612
+      },
+      "retrieval_ms": {
+        "n": 180,
+        "mean": 14342.58,
+        "median": 11721.49,
+        "p95": 35847.86,
+        "max": 49603.5
+      }
+    }
+  }
+}

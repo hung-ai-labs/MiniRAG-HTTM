@@ -1,0 +1,577 @@
+{
+  "timestamp": "2026-09-18 07:12:59",
+  "overall_status": "VALID",
+  "check_summary": {
+    "required": 68,
+    "pass": 68,
+    "fail": 0,
+    "unverified": 0
+  },
+  "gate": {
+    "status": "EVALUATED",
+    "blocking_checks": [],
+    "graph_only": {
+      "metric": "mode=graph -> graph_top30 (ALL)",
+      "rule": "full-evidence net >= +9 VA McNemar exact p < 0,01",
+      "net": -1,
+      "mcnemar_p": 1.0,
+      "passed": false
+    },
+    "rrf": {
+      "metric": "mode=rrf -> final_chunks (ALL)",
+      "rule": "full-evidence net >= 0",
+      "net": 0,
+      "mcnemar_p": 1.0,
+      "passed": true
+    }
+  },
+  "checks": [
+    {
+      "name": "control/graph: dung 180 ban ghi",
+      "status": "PASS",
+      "detail": "180",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: khong trung cau hoi",
+      "status": "PASS",
+      "detail": "180 dong / 180 cau",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: dung va du bo cau hoi cua tap do",
+      "status": "PASS",
+      "detail": "khop",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: schema log du truong",
+      "status": "PASS",
+      "detail": "0 ban ghi thieu",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: type moi cau khop tap do",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: raw log khong chua nhan gold",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: fusion dung '', khong tron mode",
+      "status": "PASS",
+      "detail": "['']",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: graph_ids <= 30 (kwd2chunk chunk_nums = top_k/2)",
+      "status": "PASS",
+      "detail": "0 vuot",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: ranked_ids == graph_ids (khong tron o mode graph)",
+      "status": "PASS",
+      "detail": "0 lech",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: moi chunk id trong chunk_ids/vector_ids thuoc corpus",
+      "status": "PASS",
+      "detail": "0 id la",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "control/graph: graph_ids tham chieu chunk khong con trong kho (dac tinh co san cua do thi)",
+      "status": "PASS",
+      "detail": "16 lan, 1 id: ['chunk-c7ec35daa1b937efdeec1effd7d95ede']",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": false
+    },
+    {
+      "name": "control/graph: khong co id la ngoai tap chunk treo thua ke tu do thi",
+      "status": "PASS",
+      "detail": "treo thua ke 2 id; ngoai danh sach: []",
+      "source": "raw_log + source_id cua do thi nhanh + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: dung 180 ban ghi",
+      "status": "PASS",
+      "detail": "180",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: khong trung cau hoi",
+      "status": "PASS",
+      "detail": "180 dong / 180 cau",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: dung va du bo cau hoi cua tap do",
+      "status": "PASS",
+      "detail": "khop",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: schema log du truong",
+      "status": "PASS",
+      "detail": "0 ban ghi thieu",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: type moi cau khop tap do",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: raw log khong chua nhan gold",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: fusion dung '', khong tron mode",
+      "status": "PASS",
+      "detail": "['']",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: graph_ids <= 30 (kwd2chunk chunk_nums = top_k/2)",
+      "status": "PASS",
+      "detail": "0 vuot",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: ranked_ids == graph_ids (khong tron o mode graph)",
+      "status": "PASS",
+      "detail": "0 lech",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: moi chunk id trong chunk_ids/vector_ids thuoc corpus",
+      "status": "PASS",
+      "detail": "0 id la",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: graph_ids tham chieu chunk khong con trong kho (dac tinh co san cua do thi)",
+      "status": "PASS",
+      "detail": "13 lan, 1 id: ['chunk-c7ec35daa1b937efdeec1effd7d95ede']",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": false
+    },
+    {
+      "name": "treatment/graph: khong co id la ngoai tap chunk treo thua ke tu do thi",
+      "status": "PASS",
+      "detail": "treo thua ke 2 id; ngoai danh sach: []",
+      "source": "raw_log + source_id cua do thi nhanh + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "control/rrf: dung 180 ban ghi",
+      "status": "PASS",
+      "detail": "180",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: khong trung cau hoi",
+      "status": "PASS",
+      "detail": "180 dong / 180 cau",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: dung va du bo cau hoi cua tap do",
+      "status": "PASS",
+      "detail": "khop",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: schema log du truong",
+      "status": "PASS",
+      "detail": "0 ban ghi thieu",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: type moi cau khop tap do",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: raw log khong chua nhan gold",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: fusion dung 'rrf', khong tron mode",
+      "status": "PASS",
+      "detail": "['rrf']",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: graph_ids <= 30 (kwd2chunk chunk_nums = top_k/2)",
+      "status": "PASS",
+      "detail": "0 vuot",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/rrf: moi chunk id trong chunk_ids/vector_ids thuoc corpus",
+      "status": "PASS",
+      "detail": "0 id la",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "control/rrf: graph_ids tham chieu chunk khong con trong kho (dac tinh co san cua do thi)",
+      "status": "PASS",
+      "detail": "16 lan, 1 id: ['chunk-c7ec35daa1b937efdeec1effd7d95ede']",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": false
+    },
+    {
+      "name": "control/rrf: khong co id la ngoai tap chunk treo thua ke tu do thi",
+      "status": "PASS",
+      "detail": "treo thua ke 2 id; ngoai danh sach: []",
+      "source": "raw_log + source_id cua do thi nhanh + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: dung 180 ban ghi",
+      "status": "PASS",
+      "detail": "180",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: khong trung cau hoi",
+      "status": "PASS",
+      "detail": "180 dong / 180 cau",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: dung va du bo cau hoi cua tap do",
+      "status": "PASS",
+      "detail": "khop",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: schema log du truong",
+      "status": "PASS",
+      "detail": "0 ban ghi thieu",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: type moi cau khop tap do",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: raw log khong chua nhan gold",
+      "status": "PASS",
+      "detail": "0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: fusion dung 'rrf', khong tron mode",
+      "status": "PASS",
+      "detail": "['rrf']",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: graph_ids <= 30 (kwd2chunk chunk_nums = top_k/2)",
+      "status": "PASS",
+      "detail": "0 vuot",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: moi chunk id trong chunk_ids/vector_ids thuoc corpus",
+      "status": "PASS",
+      "detail": "0 id la",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: graph_ids tham chieu chunk khong con trong kho (dac tinh co san cua do thi)",
+      "status": "PASS",
+      "detail": "13 lan, 1 id: ['chunk-c7ec35daa1b937efdeec1effd7d95ede']",
+      "source": "raw_log + kv_store_text_chunks.json",
+      "required": false
+    },
+    {
+      "name": "treatment/rrf: khong co id la ngoai tap chunk treo thua ke tu do thi",
+      "status": "PASS",
+      "detail": "treo thua ke 2 id; ngoai danh sach: []",
+      "source": "raw_log + source_id cua do thi nhanh + kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "graph: vector_ids giong het giua hai nhanh (cung embedding, top_k, kho chunk)",
+      "status": "PASS",
+      "detail": "0 cau lech",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "rrf: vector_ids giong het giua hai nhanh (cung embedding, top_k, kho chunk)",
+      "status": "PASS",
+      "detail": "0 cau lech",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control: graph_ids va vector_ids bat bien giua hai mode (chi fusion khac; operate.py:1489)",
+      "status": "PASS",
+      "detail": "graph_ids lech 0, vector_ids lech 0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "treatment: graph_ids va vector_ids bat bien giua hai mode (chi fusion khac; operate.py:1489)",
+      "status": "PASS",
+      "detail": "graph_ids lech 0, vector_ids lech 0",
+      "source": "raw_log",
+      "required": true
+    },
+    {
+      "name": "control/graph: chunk_ids = tien to dai nhat cua ranked_ids co <= 4000 token (A1@4000)",
+      "status": "PASS",
+      "detail": "0 cau lech",
+      "source": "tinh lai tu raw log + tiktoken gpt-4o",
+      "required": true
+    },
+    {
+      "name": "treatment/graph: chunk_ids = tien to dai nhat cua ranked_ids co <= 4000 token (A1@4000)",
+      "status": "PASS",
+      "detail": "0 cau lech",
+      "source": "tinh lai tu raw log + tiktoken gpt-4o",
+      "required": true
+    },
+    {
+      "name": "control/rrf: chunk_ids = tien to dai nhat cua ranked_ids co <= 4000 token (A1@4000)",
+      "status": "PASS",
+      "detail": "0 cau lech",
+      "source": "tinh lai tu raw log + tiktoken gpt-4o",
+      "required": true
+    },
+    {
+      "name": "treatment/rrf: chunk_ids = tien to dai nhat cua ranked_ids co <= 4000 token (A1@4000)",
+      "status": "PASS",
+      "detail": "0 cau lech",
+      "source": "tinh lai tu raw log + tiktoken gpt-4o",
+      "required": true
+    },
+    {
+      "name": "tap do = 180 (159 Single + 21 Multi + 0 Null)",
+      "status": "PASS",
+      "detail": "{'Single': 159, 'Multi': 21}",
+      "source": "eval_set.py",
+      "required": true
+    },
+    {
+      "name": "moi cau co gold_chunk_ids khong rong",
+      "status": "PASS",
+      "detail": "0 rong",
+      "source": "diag_path2chunk.jsonl",
+      "required": true
+    },
+    {
+      "name": "moi gold chunk thuoc corpus",
+      "status": "PASS",
+      "detail": "0 id la",
+      "source": "kv_store_text_chunks.json",
+      "required": true
+    },
+    {
+      "name": "TYPE_POOL control == treatment",
+      "status": "PASS",
+      "detail": "47 gia tri",
+      "source": "graphml hai nhanh (hien tai)",
+      "required": true
+    },
+    {
+      "name": "nguon report cua runner duoc xac minh",
+      "status": "PASS",
+      "detail": "report goc: dung dau van tay runner v1, cung bo check, dung khung thoi gian, so lieu tinh lai khop raw log; stdout goc cho thay ca bon luot duoc chay",
+      "source": "provenance/runner_original",
+      "required": true
+    },
+    {
+      "name": "ca bon luot duoc CHAY trong cung mot tien trinh, dung thu tu (khong luot nao dung lai)",
+      "status": "PASS",
+      "detail": "stdout goc cho thay ca bon luot duoc chay",
+      "source": "provenance/runner_original (stdout hoac minirag.log ghi trong lan chay)",
+      "required": true
+    },
+    {
+      "name": "khong co loi goi LLM trong lan chay truy hoi (ca bon luot)",
+      "status": "PASS",
+      "detail": "runner: 0",
+      "source": "provenance/runner_original",
+      "required": true
+    },
+    {
+      "name": "cache parser: so key khong doi (runner) va file khong bi ghi trong lan chay (filesystem)",
+      "status": "PASS",
+      "detail": "runner: 200 -> 200; cache mtime 2026-09-17 22:35:28 <= khoi chay 2026-09-17 22:43:00; noi dung == nguon screening",
+      "source": "provenance/runner_original + filesystem",
+      "required": true
+    },
+    {
+      "name": "control: index khong doi trong ca hai luot (hash truoc/sau cua runner AND 2 mode)",
+      "status": "PASS",
+      "detail": "runner: ; moi file index mtime <= moc dong bang 2026-09-17 22:25:55",
+      "source": "provenance/runner_original + filesystem",
+      "required": true
+    },
+    {
+      "name": "treatment: index khong doi trong ca hai luot (hash truoc/sau cua runner AND 2 mode)",
+      "status": "PASS",
+      "detail": "runner: ; moi file index mtime <= moc dong bang 2026-09-17 22:25:55",
+      "source": "provenance/runner_original + filesystem",
+      "required": true
+    },
+    {
+      "name": "ma runner luc khoi chay duoc dung lai va xac minh",
+      "status": "PASS",
+      "detail": "patch(ban_dung_lai) == runner hien tai (11 phep thay the)",
+      "source": "provenance/eval_offline_AT_LAUNCH_reconstructed.py",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: stub LLM cam duoc noi vao MiniRAG",
+      "status": "PASS",
+      "detail": "llm_model_func=forbidden_llm",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: cache parser chi-doc cho moi luot",
+      "status": "PASS",
+      "detail": "os.environ[\"MINIRAG_KW_CACHE_ONLY\"] = \"1\"",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: BASE_ENV dat lai truoc moi truy van",
+      "status": "PASS",
+      "detail": "os.environ.update(BASE_ENV)",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: BASE_ENV dung thiet lap da dang ky",
+      "status": "PASS",
+      "detail": "BASE_ENV = {\"MINIRAG_ANSWER_TYPE_FIX\": \"1\", \"MINIRAG_PATH2CHUNK_FIX\": \"0\", \"MINIRAG_CHUNK_CUT\": \"\"}",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: bo TRUNCATE_SOURCES / MAX_TOKEN_TEXT_UNIT",
+      "status": "PASS",
+      "detail": "UNSET_ENV = (\"MINIRAG_TRUNCATE_SOURCES\", \"MINIRAG_MAX_TOKEN_TEXT_UNIT\")",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: only_need_context=True",
+      "status": "PASS",
+      "detail": "only_need_context=True",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "ma luc khoi chay: khong ghi llm cache vao nhanh",
+      "status": "PASS",
+      "detail": "enable_llm_cache=False",
+      "source": "ban dung lai da xac minh",
+      "required": true
+    },
+    {
+      "name": "runner: cau hinh hai nhanh giong nhau (CHI phu mode rrf vi cfg bi ghi de -- bo tro)",
+      "status": "PASS",
+      "detail": "",
+      "source": "provenance/runner_original",
+      "required": false
+    },
+    {
+      "name": "hien tai: hai nhanh ton tai",
+      "status": "PASS",
+      "detail": "['E:\\\\Sv clone\\\\MiniRAG\\\\logs\\\\entity_resolution\\\\pair\\\\control', 'E:\\\\Sv clone\\\\MiniRAG\\\\logs\\\\entity_resolution\\\\pair\\\\entres']",
+      "source": "trang thai hien tai (khong phai bang chung ve lan chay)",
+      "required": false
+    }
+  ],
+  "preservation": {
+    "newly_preserved": [],
+    "skipped": [
+      "eval_graph_report.json: khong luu -- co dau hieu cua report_e1 (['audit_notes', 'check_summary', 'gate', 'overall_status', 'timestamp'])",
+      "eval_rrf_report.json: khong luu -- co dau hieu cua report_e1 (['audit_notes', 'check_summary', 'gate', 'overall_status', 'timestamp'])",
+      "eval_summary.md: khong luu -- hai report JSON cung luc chua xac nhan la cua runner",
+      "per_query_graph.jsonl: khong luu -- hai report JSON cung luc chua xac nhan la cua runner",
+      "per_query_rrf.jsonl: khong luu -- hai report JSON cung luc chua xac nhan la cua runner"
+    ]
+  },
+  "audit_notes": [
+    "3-query engineering smoke test was observed before the full run; no merge decision, metric definition or numerical threshold was changed based on it. Its n=3 pass counts for mode=graph were printed to the operator.",
+    "The RRF gate was corrected at the ANALYSIS layer from graph_top30 to final_chunks because graph_ids is captured before chunk fusion (minirag/operate.py:1489). The correction was applied to eval_offline.py at 2026-09-17 22:52:08 (file mtime), after the full run was launched at 22:43:00 (process output file ctime) and before the first full-run raw log existed (control_graph.jsonl ctime 23:25:45). It is NOT a preregistration made before measurement. Preregistered thresholds (+9 / p<0.01; >=0) are unchanged.",
+    "The running retrieval process keeps the launch-time code in memory, so it still writes reports with the uncorrected RRF gate. Those reports are preserved under provenance/runner_original/ as run evidence and are superseded by this report for gate conclusions.",
+    "Report-layer changes (fail-closed gating, provenance verification) do not change the merge list, the retrieval implementation, the sample, the metric definitions or the numerical thresholds.",
+    "Control arm is NOT the byte-identical committed retrieval index: both arms had their relationship VDB re-embedded with hf_embed at batch=1 per the 17/09/2026 amendment.",
+    "Headline result: effect of E1 entity resolution under the deterministic relationship-embedding correction."
+  ],
+  "runner_evidence": {
+    "status": "PASS",
+    "reasons": [
+      "report goc: dung dau van tay runner v1, cung bo check, dung khung thoi gian, so lieu tinh lai khop raw log; stdout goc cho thay ca bon luot duoc chay"
+    ]
+  },
+  "manifest_present": false,
+  "anchors": {
+    "freeze": "2026-09-17 22:25:55",
+    "launch": "2026-09-17 22:43:00"
+  }
+}

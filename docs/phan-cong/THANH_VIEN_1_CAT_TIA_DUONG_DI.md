@@ -96,14 +96,32 @@ SCREEN_SCRIPT=reproduce/path/eval_offline.py reproduce/screening/run_screen.sh
 ## 6. Đăng ký trước — điền và commit TRƯỚC khi chạy P1 / P2
 
 ```
-Ngày chốt:
+Ngày chốt: 2026-09-17
 Kết quả bước 0 (3 số chính):
+- Thời gian truy hồi trung vị: 4109,1 ms (p90: 8904,8 ms)
+- Khối lượng đường đi 2-hop: trung vị 19.994 đường (p90: 28.383 đường) từ 96 thực thể khởi đầu
+- Tỉ lệ giữ chunk đáp án: top-30 đồ thị đạt 62,3%, sau cắt A1@4000 còn 46,4% (Multi: 28,6% đủ đáp án)
+
 P1 — quy tắc cắt tỉa (mô tả đủ để người khác cài lại):
+- Bỏ các đường 2-hop đi qua hub bậc cao (>100) nếu đường đó không chứa node thuộc maybe_answer_list hoặc không nằm trong danh sách cạnh có phiếu (edge_vote).
+- Với mỗi seed entity, chỉ giữ tối đa K đường có liên quan ngữ cảnh cao nhất thay vì bung toàn bộ 2-hop.
+
 P2 — công thức điểm:
+- Score(Path) = (1 + count(maybe_answer_nodes)) * (1 + edge_votes) * Sim(seed_entity, query)
+
 Chỉ số chính của P1 / P2:
+- P1: Thời gian dựng context (retrieval_ms), số đường duyệt (paths), tỉ lệ giữ chunk đáp án sau A1@4000.
+- P2: Tỉ lệ câu giữ đủ đáp án (full_answer_pct) và McNemar p-value.
+
 Cổng P1 / P2 (số cụ thể):
-Dự báo (con số mong đợi, viết trước khi đo):
+- Cổng P1: retrieval_ms trung vị giảm ≥ 30% (từ 4109 ms xuống ≤ 2876 ms); chunk đáp án sau A1@4000 không giảm quá 1,0% (≥ 45,4%); Multi không mất quá 1 câu (giữ ≥ 5 câu đủ).
+- Cổng P2: Câu đủ đáp án (đồ thị thuần) net ≥ +9 câu và McNemar p < 0,01 so với baseline.
+
+Dự báo:
+- P1: Số đường giảm từ ~20.000 xuống < 5.000 đường, thời gian giảm ~40-50%, độ giữ chunk đáp án giữ nguyên hoặc nhích nhẹ do giảm nhiễu.
+
 Trượt cổng thì ghi gì vào ROADMAP:
+- "P1/P2 không vượt qua baseline: việc cắt tỉa đường đi đồ thị làm mất ngữ cảnh kết nối gián tiếp (Multi-hop)".
 ```
 
 ## 7. Ranh giới — để không đụng Hùng và thành viên 2

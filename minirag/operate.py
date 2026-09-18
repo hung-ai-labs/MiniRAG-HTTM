@@ -1396,6 +1396,13 @@ async def _build_mini_query_context(
         if len(entry["Path"]) >= 1
     }
     candidate_reasoning_path = {**long_path_entries, **top_short_path_dict}
+    
+    # TV1 Hook: Cắt tỉa đường đi (P1)
+    _path_prune = os.environ.get("MINIRAG_PATH_PRUNE", "").strip()
+    if _path_prune:
+        from minirag.path_rerank import prune_reasoning_paths
+        candidate_reasoning_path = prune_reasoning_paths(candidate_reasoning_path, mode=_path_prune)
+        
     _n_seeds = len(candidate_reasoning_path)
     _n_paths = sum(len(e["Path"]) for e in candidate_reasoning_path.values())
     node_datas_from_type = await knowledge_graph_inst.get_node_from_types(
@@ -1404,9 +1411,18 @@ async def _build_mini_query_context(
 
     maybe_answer_list = [n["entity_name"] for n in node_datas_from_type]
     imp_ents = imp_ents + maybe_answer_list
-    scored_reasoning_path = cal_path_score_list(
-        candidate_reasoning_path, maybe_answer_list
-    )
+    
+    # TV1 Hook: Chấm điểm đường đi có trọng số (P2)
+    _path_score = os.environ.get("MINIRAG_PATH_SCORE", "").strip()
+    if _path_score:
+        from minirag.path_rerank import score_reasoning_paths_weighted
+        scored_reasoning_path = score_reasoning_paths_weighted(
+            candidate_reasoning_path, maybe_answer_list, mode=_path_score
+        )
+    else:
+        scored_reasoning_path = cal_path_score_list(
+            candidate_reasoning_path, maybe_answer_list
+        )
 
     results_edge = await relationships_vdb.query(
         originalquery, top_k=len(ent_from_query) * query_param.top_k

@@ -1,0 +1,27 @@
+{
+  "n_questions": 180,
+  "retrieval_ms_med": 4109.075,
+  "retrieval_ms_p90": 8904.8,
+  "seeds_med": 96.5,
+  "seeds_p90": 137,
+  "paths_med": 19994.5,
+  "paths_p90": 28383,
+  "graph_top30_retention": 62.31884057971015,
+  "a1_retention": 46.3768115942029,
+  "full_answer_pct": 41.666666666666664,
+  "full_answer_count": 75,
+  "by_type": {
+    "Single": {
+      "questions": 159,
+      "gold_chunks": 159,
+      "retention": 43.39622641509434,
+      "full": 43.39622641509434
+    },
+    "Multi": {
+      "questions": 21,
+      "gold_chunks": 48,
+      "retention": 56.25,
+      "full": 28.571428571428573
+    }
+  }
+}

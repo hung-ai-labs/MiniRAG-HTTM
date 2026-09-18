@@ -8,10 +8,11 @@
 - **Chốt cấu hình B2 = RRF(vector, BM25)** (16/09). Trên 435 câu ngoài dev, trung bình 3 lượt sinh: acc **73,95** so với B1 67,36,
   vector thuần 65,82, V3 60,92.
 - **H2 vẫn là BORDERLINE** vì vướng cổng Null E4. Đây là sai lệch so với đăng ký trước, nhóm đã khai báo, **không nới cổng**.
-- Điểm yếu duy nhất của B2 là nhóm Null (57,8 so với 65,2 của vector thuần theo rubric gốc). Bốn việc kiểm đã truy ra nguyên nhân:
-  **cách chấm, không phải hệ thống**.
+- Điểm yếu duy nhất của B2 là nhóm Null. **So với các nhánh RRF khác** (57,8 so với 65,2 của vector thuần) khoảng cách là do
+  **cách chấm**. **So với baseline MiniRAG gốc** thì khoảng cách là **thật**: theo rubric làm rõ B2 74,1, baseline 86,7.
 - **Đ6 (18/09)** chấm lại toàn bộ nhóm Null bằng rubric nói rõ cách xử lý câu trả lời pha trộn: bốn cấu hình nằm trong 1,5 điểm
-  (73,3–74,8) và chênh Null giữa B2 với vector thuần về 0. Đây là **phân tích độ nhạy**, không thay số chính thức.
+  (73,3–74,8) và chênh Null giữa B2 với vector thuần về 0 — nhưng baseline gốc vẫn hơn cả bốn khoảng 12 điểm. Đây là **phân tích độ nhạy**, không
+  thay số chính thức.
 - **Hai việc của thành viên đều cho kết quả phủ định:** E1 hợp nhất thực thể (Tài) không cải thiện truy hồi bằng chứng; P1 cắt tỉa
   đường đi (Huy Đức) nhanh hơn 82% nhưng thiếu 0,5 điểm so với cổng chất lượng, P2 không dịch chuyển chỉ số nào. Cả hai đã merge,
   không đổi hành vi mặc định của hệ thống.
@@ -70,12 +71,17 @@ Sau đó chấm 45 câu Null × 4 nhánh × 3 lượt sinh × 3 lượt chấm =
 | Vector thuần | 65,2 / 27,4 / 7,4 | 74,1 / 25,9 / 0,0 |
 | B1 | 62,2 / 25,2 / 12,6 | 73,3 / 26,7 / 0,0 |
 | **B2** | **57,8** / 23,0 / 19,3 | **74,1** / 25,9 / 0,0 |
+| *Baseline MiniRAG gốc (1 lượt sinh, thêm 18/09)* | *71,1 / 15,6 / 13,3* | ***86,7** / 13,3 / 0,0* |
 
 | Null net, trung bình 3 cặp lượt | rubric gốc | rubric làm rõ |
 |---|---:|---:|
 | H1 = B1 với V3 | −0,33 | −0,67 |
 | H2 = B2 với vector thuần | **−3,33** | **+0,00** |
 | H3 = B2 với B1 | −2,00 | +0,33 |
+| *B2 với baseline* | *−6,00* | ***−5,67*** |
+| *V3 với baseline* | *−3,67* | *−5,33* |
+
+**Bổ sung 18/09 — chấm lại cả baseline (sửa đăng ký, push trước khi gọi).** Baseline MiniRAG gốc theo rubric làm rõ: **86,7 / 13,3 / 0,0** (rubric gốc 71,1 / 15,6 / 13,3). Rubric làm rõ xoá khoảng cách **giữa các nhánh RRF**, nhưng **không** xoá khoảng cách với baseline: B2 74,1 so với 86,7, Null net B2 − baseline trung bình **−5,67 câu mỗi lượt** (rubric gốc −6,00). Phần chênh này là của hệ thống: err nhóm Null của baseline 13,3 so với 25–27 ở mọi nhánh RRF. Đưa chunk vector vào context làm Qwen khẳng định sai trên câu Null nhiều hơn. `logs/null_audit/d6_clarified/baseline_ket_qua.txt`.
 
 **Đọc thế nào.** B2 không bịa nhiều hơn — tỉ lệ `error` nhóm Null của nó thấp nhất trong bốn nhánh ngay từ rubric gốc. 26 câu-lượt
 `neither` của B2 chuyển thành 23 `accurate` và 3 `error`. Lời từ chối thuần không bị chấm sai lần nào (175/175 `accurate`), nên
@@ -102,7 +108,9 @@ err giữa hai rubric**, không so cột `neither`.
 - "BM25 cộng thêm giá trị so với vector thuần" như thể đã chứng minh — H2 vẫn BORDERLINE.
 - "Trộn giữ lợi thế của đồ thị" hay "đồ thị đóng góp vào mức tăng" — ablation vector thuần tái hiện gần hết mức tăng của V3.
 - "Cải thiện Multi-hop" — Multi không lặp lại được qua các lượt sinh.
-- "B2 thắng cả ở nhóm Null" — theo rubric làm rõ B2 chỉ **hoà**, không dẫn đầu.
+- "B2 thắng cả ở nhóm Null" — theo rubric làm rõ B2 chỉ **hoà** các nhánh RRF, không dẫn đầu.
+- "Khoảng cách Null của B2 hoàn toàn do rubric" — chỉ đúng khi so với các nhánh RRF. So với baseline gốc, B2 khẳng định sai trên
+  câu Null nhiều hơn thật (err 25,9 so với 13,3 theo rubric làm rõ).
 
 **Hướng đã đóng, đừng mở lại:** verifier / cơ chế từ chối (A3, V5a–V5e đều phủ định); tinh chỉnh tham số đơn thuần
 ([`../CLAUDE.md`](../CLAUDE.md) §1b).

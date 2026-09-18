@@ -189,7 +189,7 @@ information", qua cổng kiểm với người (38/40, rubric gốc 15/40), rồ
 | B2 | 57,8 / 23,0 / 19,3 | 74,1 / 25,9 / 0,0 |
 
 Null net trung bình 3 cặp lượt, rubric gốc → làm rõ: H1 −0,33 → −0,67 · **H2 −3,33 → +0,00** · H3 −2,00 → +0,33. Khoảng cách Null của
-B2 nằm ở rubric; theo rubric làm rõ bốn nhánh cách nhau dưới 2 câu mỗi lượt. **E4 và phân loại H1–H3 không xét lại — H2 vẫn
+B2 **so với các nhánh RRF khác** nằm ở rubric; theo rubric làm rõ bốn nhánh cách nhau dưới 2 câu mỗi lượt. **Nhưng baseline gốc chấm lại (18/09) được 86,7 / 13,3 / 0,0 — hơn B2 12,6 điểm, Null net −5,67 câu mỗi lượt: khoảng cách với baseline là thật**, do err nhóm Null tăng từ 13,3 lên 25–27 ở mọi nhánh RRF. **E4 và phân loại H1–H3 không xét lại — H2 vẫn
 BORDERLINE.** Rubric làm rõ gần như không dùng `neither` cho câu Null, nên chỉ so acc và err giữa hai rubric. Giới hạn: hiệu chuẩn
 trên nhãn một người; cùng giám khảo Gemini.
 

@@ -872,8 +872,9 @@ không đổi. Chi tiết: `reproduce/null_audit/preregistration/D3_ra_nhan_65_n
 thay số chính thức, không xét lại E4).** Đ1: một người chấm 40 câu, 22/24 câu Gemini chấm `neither` là đúng. Đ6: prompt giám khảo
 cộng một đoạn quy tắc cho đáp án vàng "Insufficient information" (khoá sha256), cổng kiểm với người QUA 38/40 (rubric gốc 15/40),
 rồi chấm lại 540 câu trả lời × 3 lượt. Null acc rubric làm rõ: V3 74,8 · vector thuần 74,1 · B1 73,3 · B2 74,1 (rubric gốc 63,0 ·
-65,2 · 62,2 · 57,8). Null net H1 −0,67 · H2 +0,00 · H3 +0,33 (gốc −0,33 · −3,33 · −2,00). **Khoảng cách Null của B2 là do rubric,
-không phải do hệ thống.** H2 vẫn báo BORDERLINE theo cổng đã đăng ký; trong bài đặt hai rubric cạnh nhau. Phép chiếu từ Đ1 (B2 78,4
+65,2 · 62,2 · 57,8). Null net H1 −0,67 · H2 +0,00 · H3 +0,33 (gốc −0,33 · −3,33 · −2,00). **Khoảng cách Null của B2 so với các nhánh RRF là do rubric,
+không phải do hệ thống.** Bổ sung 18/09 (sửa đăng ký D6): baseline gốc theo rubric làm rõ 86,7 / 13,3 / 0,0 — hơn B2 12,6 điểm, Null net
+−5,67 câu mỗi lượt; **khoảng cách với baseline là thật** (err Null 13,3 → 25–27 ở mọi nhánh RRF). H2 vẫn báo BORDERLINE theo cổng đã đăng ký; trong bài đặt hai rubric cạnh nhau. Phép chiếu từ Đ1 (B2 78,4
 cao nhất) cao hơn thực đo 2,8–4,3 điểm và sai thứ hạng. Chi tiết: `logs/null_audit/d6_clarified/full_ket_qua.txt`.
 
 **⛔ A3 dạng "ngưỡng tín hiệu truy hồi" không khả thi (14/09 — offline, 0 API)**

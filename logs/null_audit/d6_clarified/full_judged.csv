@@ -1619,3 +1619,138 @@ b1_s101|What flavor of new bread products did Li Hua really enjoy at the bakery'
 b2_s202|What time did Chae first suggest they visit the music festival in the morning?,3,error
 b2_s202|What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,3,accurate
 b1_s303|What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,3,accurate
+fix|What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,1,accurate
+fix|What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,1,accurate
+fix|What strategy did Li Hua use to score a goal in the championship match against their rival team?,1,accurate
+"fix|What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",1,error
+fix|What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,1,accurate
+"fix|What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",1,accurate
+fix|What is the favorite type of music that Li Hua and Yuriko plan to play together?,1,accurate
+"fix|What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",1,accurate
+"fix|What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",1,accurate
+fix|What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,1,accurate
+fix|What time did Chae first suggest they visit the music festival in the morning?,1,accurate
+fix|What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,1,accurate
+fix|What is the name of the last song Wolfgang played using the new drum practice app?,1,accurate
+fix|What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,1,accurate
+fix|What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,1,accurate
+fix|What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,1,accurate
+fix|What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,1,accurate
+fix|What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,1,accurate
+fix|What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,1,accurate
+fix|What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,1,accurate
+fix|What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,1,error
+fix|What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,1,accurate
+fix|What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,1,accurate
+fix|What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,1,accurate
+fix|What color did Li Hua paint his house before the community garden renovation began?,1,accurate
+"fix|What did Li Hua eat for dinner on January 20, 2026?",1,accurate
+fix|What is Li Hua's favorite type of exercise outside of pull-ups?,1,accurate
+fix|What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,1,accurate
+fix|What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,1,accurate
+"fix|What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",1,accurate
+fix|What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,1,accurate
+fix|What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,1,accurate
+fix|What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,1,accurate
+fix|What type of diet is Li Hua following to support his training regimen and sleep schedule?,1,accurate
+fix|What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,1,accurate
+fix|What song did Li Hua perform at the local music festival in 2026?,1,accurate
+fix|What is the exact reason for Li Hua's unexpected work meeting on Thursday?,1,accurate
+fix|What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,1,accurate
+fix|What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,1,error
+"fix|What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",1,error
+fix|What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,1,error
+fix|What type of protein shake does Li Hua prefer to drink before his workout sessions?,1,accurate
+fix|What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,1,error
+"fix|What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",1,accurate
+fix|What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,1,accurate
+fix|What is the name of the last song Wolfgang played using the new drum practice app?,2,accurate
+fix|What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,2,accurate
+fix|What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,2,accurate
+"fix|What did Li Hua eat for dinner on January 20, 2026?",2,accurate
+fix|What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,2,accurate
+fix|What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,2,accurate
+fix|What type of diet is Li Hua following to support his training regimen and sleep schedule?,2,accurate
+fix|What song did Li Hua perform at the local music festival in 2026?,2,accurate
+fix|What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,2,error
+fix|What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,2,accurate
+fix|What strategy did Li Hua use to score a goal in the championship match against their rival team?,2,accurate
+fix|What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,2,accurate
+fix|What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,2,accurate
+fix|What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,2,accurate
+fix|What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,2,accurate
+fix|What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,2,accurate
+fix|What time did Chae first suggest they visit the music festival in the morning?,2,accurate
+fix|What is the exact reason for Li Hua's unexpected work meeting on Thursday?,2,accurate
+fix|What type of protein shake does Li Hua prefer to drink before his workout sessions?,2,accurate
+fix|What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,2,accurate
+fix|What is the favorite type of music that Li Hua and Yuriko plan to play together?,2,accurate
+fix|What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,2,accurate
+fix|What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,2,accurate
+fix|What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,2,error
+"fix|What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",2,accurate
+fix|What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,2,accurate
+fix|What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,2,error
+fix|What color did Li Hua paint his house before the community garden renovation began?,2,accurate
+fix|What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,2,accurate
+"fix|What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",2,accurate
+fix|What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,2,accurate
+"fix|What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",2,accurate
+fix|What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,2,accurate
+fix|What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,2,accurate
+fix|What is Li Hua's favorite type of exercise outside of pull-ups?,2,accurate
+fix|What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,2,accurate
+fix|What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,2,accurate
+fix|What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,2,accurate
+fix|What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,2,error
+"fix|What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",2,accurate
+fix|What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,2,accurate
+fix|What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,2,accurate
+"fix|What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",2,accurate
+"fix|What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",2,accurate
+"fix|What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",2,error
+"fix|What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",3,error
+fix|What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,3,accurate
+fix|What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,3,error
+"fix|What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",3,accurate
+fix|What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,3,accurate
+fix|What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,3,error
+fix|What is the favorite type of music that Li Hua and Yuriko plan to play together?,3,accurate
+fix|What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,3,error
+fix|What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,3,error
+fix|What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,3,accurate
+fix|What song did Li Hua perform at the local music festival in 2026?,3,accurate
+"fix|What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",3,accurate
+"fix|What did Li Hua eat for dinner on January 20, 2026?",3,accurate
+fix|What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,3,accurate
+"fix|What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",3,accurate
+"fix|What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",3,accurate
+fix|What time did Chae first suggest they visit the music festival in the morning?,3,accurate
+fix|What type of protein shake does Li Hua prefer to drink before his workout sessions?,3,accurate
+fix|What type of diet is Li Hua following to support his training regimen and sleep schedule?,3,accurate
+fix|What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,3,error
+fix|What is the exact reason for Li Hua's unexpected work meeting on Thursday?,3,error
+fix|What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,3,accurate
+fix|What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,3,accurate
+fix|What is Li Hua's favorite type of exercise outside of pull-ups?,3,accurate
+fix|What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,3,accurate
+fix|What strategy did Li Hua use to score a goal in the championship match against their rival team?,3,accurate
+fix|What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,3,accurate
+"fix|What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",3,error
+fix|What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,3,accurate
+fix|What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,3,accurate
+fix|What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,3,accurate
+fix|What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,3,accurate
+fix|What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,3,accurate
+fix|What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,3,accurate
+fix|What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,3,accurate
+fix|What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,3,accurate
+fix|What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,3,accurate
+fix|What color did Li Hua paint his house before the community garden renovation began?,3,accurate
+fix|What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,3,accurate
+fix|What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,3,accurate
+"fix|What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",3,accurate
+fix|What is the name of the last song Wolfgang played using the new drum practice app?,3,accurate
+fix|What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,3,accurate
+fix|What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,3,accurate
+fix|What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,3,accurate

@@ -236,7 +236,7 @@ Null của cả bốn nhánh.
 | H3 = B2 với B1 | −2,00 | +0,33 |
 
 **Đọc thế nào.**
-- **Khoảng cách Null của B2 là do rubric, không phải do hệ thống.** Khi rubric nói rõ cách chấm câu pha trộn, bốn nhánh nằm trong 1,5
+- **Khoảng cách Null của B2 so với các nhánh RRF khác là do rubric, không phải do hệ thống** (so với baseline gốc thì không — xem đoạn bổ sung bên dưới). Khi rubric nói rõ cách chấm câu pha trộn, bốn nhánh nằm trong 1,5
   điểm (dưới 2 câu mỗi lượt) — không có thứ hạng. B2 vẫn không bịa nhiều hơn: 26 câu-lượt `neither` của B2 chuyển thành 23
   `accurate` và 3 `error`.
 - Rubric làm rõ gần như bỏ hẳn nhãn `neither` cho câu Null (1/1.620 phiếu), nên cột `neither` của hai rubric **không so được** —
@@ -245,6 +245,8 @@ Null của cả bốn nhánh.
 - **Phép chiếu Đ1 cao hơn thực đo 2,8–4,3 điểm**, và thứ hạng chiếu (B2 cao nhất) không giữ. Phép chiếu lấy p(đúng | Gemini chấm
   `error`) = 12% từ 8 dòng của một người; thực đo chỉ 7%, cộng thêm 8/335 câu `accurate` đổi sang `error`. Bài học: con số chiếu từ
   mẫu nhỏ không thay được phép đo.
+
+**Bổ sung 18/09 — chấm lại cả baseline (sửa đăng ký, push trước khi gọi).** Baseline MiniRAG gốc theo rubric làm rõ: **86,7 / 13,3 / 0,0** (rubric gốc 71,1 / 15,6 / 13,3). Rubric làm rõ xoá khoảng cách **giữa các nhánh RRF**, nhưng **không** xoá khoảng cách với baseline: B2 74,1 so với 86,7, Null net B2 − baseline trung bình **−5,67 câu mỗi lượt** (rubric gốc −6,00). Phần chênh này là của hệ thống: err nhóm Null của baseline 13,3 so với 25–27 ở mọi nhánh RRF. Đưa chunk vector vào context làm Qwen khẳng định sai trên câu Null nhiều hơn. `logs/null_audit/d6_clarified/baseline_ket_qua.txt`.
 
 **Dùng kết quả thế nào — ĐỘ NHẠY.** Không thay số chính thức tầng D, **không** xét lại E4 hay phân loại H1–H3 (H2 vẫn BORDERLINE),
 không dùng để chọn biến thể. Trong bài luôn đặt số của hai rubric cạnh nhau.

@@ -1,0 +1,36 @@
+Đ6 — BƯỚC 3: nhóm Null ngoài dev (45 câu) × baseline + 4 nhánh, rubric làm rõ, 3 lượt chấm
+ĐỘ NHẠY — số chính thức của tầng D, cổng E4 và H1–H3 KHÔNG đổi
+
+   nhánh |    rubric gốc (chính thức) |          rubric làm rõ
+         |        acc / err / neither |    acc / err / neither
+   BASE  |         71.1 / 15.6 / 13.3 |     86.7 / 13.3 /  0.0
+   V3    |         63.0 / 24.4 / 12.6 |     74.8 / 25.2 /  0.0
+   VEC   |         65.2 / 27.4 /  7.4 |     74.1 / 25.9 /  0.0
+   B1    |         62.2 / 25.2 / 12.6 |     73.3 / 26.7 /  0.0
+   B2    |         57.8 / 23.0 / 19.3 |     74.1 / 25.9 /  0.0
+
+Null net từng cặp lượt (dương = biến thể tốt hơn); cổng E4 gốc là trung bình ≥ −3
+   H1 = B1 với V3             · rubric gốc   : [-2, -1, 2] · trung bình -0.33
+   H1 = B1 với V3             · rubric làm rõ: [-3, 0, 1] · trung bình -0.67
+   H2 = B2 với vector thuần   · rubric gốc   : [-4, -7, 1] · trung bình -3.33
+   H2 = B2 với vector thuần   · rubric làm rõ: [0, -2, 2] · trung bình +0.00
+   H3 = B2 với B1             · rubric gốc   : [0, -4, -2] · trung bình -2.00
+   H3 = B2 với B1             · rubric làm rõ: [1, 0, 0] · trung bình +0.33
+   V3 với baseline            · rubric gốc   : [-3, -3, -5] · trung bình -3.67
+   V3 với baseline            · rubric làm rõ: [-4, -7, -5] · trung bình -5.33
+   B2 với baseline            · rubric gốc   : [-5, -8, -5] · trung bình -6.00
+   B2 với baseline            · rubric làm rõ: [-6, -7, -4] · trung bình -5.67
+
+BỔ SUNG 18/09 — BASELINE (sửa đăng ký trong preregistration/D6_cham_lai_null_rubric_lam_ro.md, push trước khi gọi)
+   135 phiếu mới = 45 câu × 3 lượt chấm, đủ cả; phiếu thô accurate 116 · error 19 · neither 0
+   Phiếu của bốn nhánh dùng lại từ lần chạy 17–18/09, không chấm lại.
+   Baseline chỉ có MỘT lượt sinh; số chính thức ở bảng trên lấy lượt chấm 1 (71,1), còn đa số 3 lượt chấm là 73,3.
+
+ĐỌC KẾT QUẢ
+   1. Rubric làm rõ xoá khoảng cách Null GIỮA các nhánh RRF (73,3–74,8) nhưng KHÔNG xoá khoảng cách với baseline:
+      baseline 86,7 so với B2 74,1 → chênh 12,6 điểm; Null net B2 − baseline = −5,67 câu mỗi lượt (rubric gốc −6,00).
+   2. Phần chênh này là của hệ thống, không phải của thước đo: err nhóm Null baseline 13,3 so với 25,2–26,7 ở mọi nhánh RRF.
+      Kiểu câu trả lời (regex): baseline khẳng định 19/45 (42%), V3 65/135 (48%), B2 71/135 (53%).
+   3. Đính chính: câu "khoảng cách Null của B2 là do rubric" chỉ đúng khi so với V3, vector thuần, B1. So với baseline gốc,
+      B2 — và mọi nhánh đưa chunk vector vào context — khẳng định sai trên câu Null nhiều hơn thật.
+   Baseline, rubric gốc → rubric làm rõ: accurate→accurate 32 · neither→accurate 6 · error→accurate 1 · error→error 6

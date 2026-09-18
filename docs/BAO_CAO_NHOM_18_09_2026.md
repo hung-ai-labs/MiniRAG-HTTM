@@ -12,6 +12,9 @@
   **cách chấm, không phải hệ thống**.
 - **Đ6 (18/09)** chấm lại toàn bộ nhóm Null bằng rubric nói rõ cách xử lý câu trả lời pha trộn: bốn cấu hình nằm trong 1,5 điểm
   (73,3–74,8) và chênh Null giữa B2 với vector thuần về 0. Đây là **phân tích độ nhạy**, không thay số chính thức.
+- **Hai việc của thành viên đều cho kết quả phủ định:** E1 hợp nhất thực thể (Tài) không cải thiện truy hồi bằng chứng; P1 cắt tỉa
+  đường đi (Huy Đức) nhanh hơn 82% nhưng thiếu 0,5 điểm so với cổng chất lượng, P2 không dịch chuyển chỉ số nào. Cả hai đã merge,
+  không đổi hành vi mặc định của hệ thống.
 - Có một lỗi quy trình phải khai báo trong bài: bản hướng dẫn việc Đ3 lỡ nêu sẵn nhãn của 4 câu trong phiếu. Đã ghi nhận, đã sửa,
   kết luận không đổi.
 

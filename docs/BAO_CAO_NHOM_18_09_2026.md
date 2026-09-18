@@ -127,14 +127,44 @@ hiện lớn hơn là đồ thị không đóng góp vào mức tăng (ablation 
 **Lưu ý kho:** hai bản sao index của cặp control/treatment (`logs/entity_resolution/pair/`) không đưa vào git vì nặng ~30 MB và
 dựng lại được; index `LiHua-World-qwen-entres/`, toàn bộ script và báo cáo vẫn nằm trong repo.
 
-## 6. Ai đang làm gì
+## 6. P1 / P2 — cắt tỉa và chấm lại đường đi: nhanh hơn nhiều, nhưng trượt cổng
+
+Huy Đức nộp 17/09, đã merge. Hai công tắc, **mặc định tắt**: `MINIRAG_PATH_PRUNE` (P1) và `MINIRAG_PATH_SCORE` (P2). Lượt kiểm
+chứng với công tắc tắt cho lại **đúng** số của bước 0, nên merge không đổi hành vi hệ thống. Đo offline trên 180 câu dev có
+evidence (`logs/path/`).
+
+| | Bước 0 (mốc) | P1 — cắt tỉa | P2 — chấm điểm có trọng số |
+|---|---:|---:|---:|
+| Thời gian truy hồi, trung vị | 4.109 ms | **715 ms (−82,6%)** | 3.106 ms |
+| Số đường 2-hop, trung vị | 19.994 | **3.880 (−80,6%)** | 19.994 |
+| Chunk đáp án trong top-30 đồ thị | 62,3% | 58,9% | 62,3% |
+| Chunk đáp án còn sau cắt A1@4000 | 46,4% | 44,9% | 46,4% |
+| Câu giữ đủ mọi chunk đáp án | 41,7% (75/180) | 40,6% (73/180) | 41,7% (75/180) |
+
+**P1 — trượt cổng, nhưng là kết quả Efficiency đáng báo.** Cổng đã đăng ký trước gồm hai vế: thời gian giảm ≥ 30% (**đạt rất rộng**)
+**và** chunk đáp án sau A1@4000 không giảm quá 1,0 điểm, tức ≥ 45,4% — thực đo 44,9%, **thiếu 0,5 điểm**. Multi không mất câu nào.
+Nên phát biểu đúng là: *cắt 80% số đường và 82% thời gian thì mất khoảng 1,5 điểm chunk đáp án và 2 câu trong 180* — đánh đổi rõ
+ràng, không phải cải thiện chất lượng.
+
+**P2 — không dịch chuyển chỉ số nào.** Cả ba chỉ số chất lượng và cả số câu đủ đáp án (75) **trùng khít** bước 0. Trước khi ai viết
+P2 vào bài, phải kiểm một việc: điểm mới có thực sự tác động tới thứ hạng cuối không, hay bị bước sau ghi đè — trùng khít đến từng
+con số thường là dấu hiệu công tắc không ăn, chứ không phải hai công thức khác nhau ra cùng kết quả.
+
+**Hai điều phải sửa trước khi trích dẫn P1.**
+1. **Cơ chế thực cài khác mô tả đã đăng ký.** Đăng ký ghi "bỏ đường đi qua hub bậc > 100 nếu không chứa node thuộc
+   `maybe_answer_list`"; code thực tế (`minirag/path_rerank.py`) là **giới hạn 60 đường mỗi thực thể khởi đầu, ưu tiên đường ngắn**,
+   không hề dùng bậc hub. Phải viết đúng cái đã cài, hoặc cài đúng cái đã đăng ký rồi đo lại.
+2. **Con số thời gian nhiễu.** Cùng một cấu hình đo hai lần cho 4.109 ms và 3.938 ms, còn P2 làm đúng khối lượng như bước 0 lại ra
+   3.106 ms. Số đáng tin là **số đường** (19.994 → 3.880) vì nó tất định; muốn công bố mức giảm thời gian thì phải lặp nhiều lượt.
+
+## 7. Ai đang làm gì
 
 | Người | Việc | Nhánh | Trạng thái |
 |---|---|---|---|
 | Hùng | Sàng lọc BM25, tầng D, chuỗi kiểm Null | `dev` | Tầng D xong, Đ6 xong |
 | Djicz | Đ1 — chấm tay 40 câu Null | `tv1/d1-cham-null` | **xong**, đã merge |
 | Tài | Đ3 — rà 65 nhãn Null | `tv2/d3-ra-nhan` | **xong**, đã merge 18/09 |
-| Huy Đức | Cắt tỉa và chấm lại đường đi | `tv1/path-pruning` | đang làm, chưa rà |
+| Huy Đức | Cắt tỉa và chấm lại đường đi (P1, P2) | `tv1/path-pruning` | **xong 17/09**, đã merge — P1 trượt cổng chất lượng, P2 không đổi gì |
 | Tài | Hợp nhất thực thể trùng tên (E1) | `tv2/entity-resolution` | **xong 18/09** — kết quả phủ định, đã merge |
 
 **Việc tiếp theo chưa ai nhận:** Đ5 gồm K2 (rà mẫu đáp án vàng của câu có đáp án, 3 giờ), K3 (kiểm nhãn Single/Multi, 1 giờ),
@@ -143,7 +173,7 @@ G2 (giám khảo dễ dãi với chi tiết sai, 3 giờ). G3 (giám khảo th�
 **Nhắc chung.** Index `LiHua-World-qwen-modal/` không ai ghi vào. Mọi công tắc cải tiến mặc định tắt. Chạy QA 200 / 435 / 637 câu
 phải được nhóm duyệt và mỗi lượt chỉ một người chạy.
 
-## 7. Tra ở đâu
+## 8. Tra ở đâu
 
 | Cần gì | File |
 |---|---|

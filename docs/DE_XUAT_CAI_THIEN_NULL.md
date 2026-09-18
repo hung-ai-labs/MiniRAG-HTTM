@@ -169,6 +169,17 @@ vào bản sửa đăng ký.
 
 **Công:** khoảng 3 giờ.
 
+**Kết quả (Anh Tài rà tay, nộp 17/09, merge vào `dev` 18/09; `logs/null_audit/d3_label_audit/ket_qua.txt`).** 65/65 câu:
+`KHONG_CO` 39 · `CO_MOT_PHAN` 22 · `CO_DU` 4 · `doi_mot_chi_tiet = CO` 12 câu. Bỏ 4 câu `CO_DU` thì Null acc mọi nhánh nhích lên
+2–4 điểm và **thứ hạng không đổi**; bỏ thêm `CO_MOT_PHAN` (n=27 ở tầng D) thì B2 vẫn thấp nhất. Chênh B2 với B1 là −4,4 điểm khi
+giữ hết, −3,8 khi bỏ `CO_DU`, −7,4 khi bỏ cả hai. **Nhãn không giải thích được khoảng cách Null của B2** — câu trả lời nằm ở rubric
+(Đ6).
+
+**⚠ 4 dòng nhiễm.** Bản hướng dẫn tôi phát cho người rà lấy đúng 4 câu trong phiếu (`L005`, `L023`, `L031`, `L054`) làm "ví dụ
+không nằm trong phiếu" và nêu luôn nhãn mong đợi; cả 4 dòng người rà điền trùng khớp gợi ý, nên không tính là phán đoán độc lập.
+Lỗi của người viết hướng dẫn. Đã ghi vào đăng ký trước, đã sửa ví dụ trong cả hai bản hướng dẫn, và `score_label_audit.py` in thêm
+một cột đã bỏ 4 dòng đó — bỏ rồi kết luận **không đổi** (B2 72,0 · B1 78,7 · vector thuần 82,7). Mọi chỗ trích dẫn Đ3 phải kèm cột này.
+
 ### Đ4 — Xác nhận cổng Null của H2 bằng 3 seed mới · ⛔ NHÓM QUYẾT ĐỊNH KHÔNG CHẠY (16/09/2026)
 
 **Vì sao.** H2 trượt E4 đúng 0,33 câu, và mức giảm dồn vào một lượt (−4, −7, +1). Với 45 câu và một lượt chấm, đây có thể là nhiễu
@@ -279,7 +290,7 @@ tín hiệu đo độ khớp hay độ phủ đều thấy những câu này gi�
 | 5 | **Đ5** — K2, K3, G2, G3 | 1–3 giờ mỗi việc | G3 **có** | — |
 | 6 | **Đ6** — chấm lại toàn bộ Null bằng rubric làm rõ | 30 phút máy | không (Gemini free tier) | Đ1 (nhãn người làm cổng) |
 
-**Cập nhật 18/09:** Đ2 xong (16/09), Đ1 xong (17/09, Djicz), Đ6 xong (18/09). Đ3 Anh Tài đã nộp trên nhánh `tv2/d3-ra-nhan`, **chưa merge** — đang rà lại cách làm trước khi dùng số. Đ4 bỏ.
+**Cập nhật 18/09:** Đ2 xong (16/09), Đ1 xong (17/09, Djicz), Đ6 xong (18/09). Đ3 xong (17/09, Anh Tài) và đã merge 18/09, kèm khai báo 4 dòng nhiễm do bản hướng dẫn. Đ4 bỏ.
 
 **Cách viết vào bài (dự thảo, cập nhật 18/09 sau Đ6):** *"Cấu hình tốt nhất (B2) tăng accuracy tổng so với mốc, nhưng nhóm Null
 theo rubric gốc giảm (57,8 so với 65,2 của vector thuần trên 45 câu ngoài dev). Mức giảm không phải do bịa thêm — tỉ lệ `error` nhóm
@@ -297,7 +308,7 @@ nhãn nào. Phiếu và script đã sẵn sàng; phần còn lại là việc c�
 |---|---|---|
 | **Đ1** | `preregistration/D1_nguoi_cham_lai_null.md` (kèm hai bản sửa 16/09: 40 dòng, một người chấm); `make_judge_audit_sheet.py`, `score_judge_audit.py` | **xong 17/09** (Djicz) — 22/24 câu Gemini chấm `neither` được người chấm đúng (92%, KTC 74–98%); `logs/null_audit/d1_judge_audit/ket_qua.txt` |
 | **Đ2** | `preregistration/D2_cham_lai_null_3_luot.md`; `rejudge_null_stage_d.py` | **xong 16/09** — mức giảm Null không phải nhiễu giám khảo (mục 4); `logs/null_audit/d2_rejudge/ket_qua.txt` |
-| **Đ3** | `preregistration/D3_ra_nhan_65_null.md` (kèm bản sửa 16/09); phiếu 65 câu, mỗi câu ~17 chunk từ 4 nguồn, `logs/null_audit/d3_label_audit/sheet_A.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | Anh Tài **đã nộp** trên nhánh `tv2/d3-ra-nhan`; **chưa merge**, đang rà lại cách làm trước khi dùng số |
+| **Đ3** | `preregistration/D3_ra_nhan_65_null.md` (kèm bản sửa 16/09); phiếu 65 câu, mỗi câu ~17 chunk từ 4 nguồn, `logs/null_audit/d3_label_audit/sheet_A.csv`; `make_label_audit_sheet.py`, `score_label_audit.py` | **xong 17/09** (Anh Tài, rà tay), merge 18/09 — `CO_DU` 4 · `CO_MOT_PHAN` 22; nhãn không giải thích được khoảng cách Null của B2; ⚠ 4 dòng nhiễm do hướng dẫn, đã khai báo |
 | **Đ6** | `preregistration/D6_cham_lai_null_rubric_lam_ro.md`; `rejudge_null_clarified.py`, `run_d6_full.sh` | **xong 18/09** — cổng QUA 38/40; Null bốn nhánh 73,3–74,8, Null net H2 +0,00 (mục 4) |
 | **Đ4** | ⛔ **bỏ** (16/09) | không chạy: sau Đ2, lượt Null net dương duy nhất thành −1 và trung bình xa ngưỡng hơn. H2 giữ nguyên BORDERLINE |
 

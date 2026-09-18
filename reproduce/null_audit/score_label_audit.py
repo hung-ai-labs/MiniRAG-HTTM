@@ -13,6 +13,9 @@ import sys
 
 IN = "logs/null_audit/d3_label_audit"
 LABELS = ("accurate", "error", "neither")
+# Bốn dòng bị hướng dẫn chỉ sẵn nhãn (xem phần "Nhiễm" trong preregistration/D3_ra_nhan_65_null.md) — không phải phán đoán độc
+# lập, nên phải báo kèm một cột đã bỏ chúng.
+NHIEM = ("L005", "L023", "L031", "L054")
 ARMS_637 = {"Baseline": "fix", "V3 lượt 1": "v3", "V3 lượt 2": "v3_r2", "V3 lượt 3": "v3_r3", "Vector thuần": "vec"}
 ARMS_D = {"B1": [f"b1_s{s}" for s in (101, 202, 303)], "B2": [f"b2_s{s}" for s in (101, 202, 303)],
           # lượt vector thuần chính thức nằm ở file 637 câu, không phải trong logs/stage_d/
@@ -91,22 +94,26 @@ def main():
         print("   Mọi con số dưới đây là cách đọc của một người; phải ghi đúng như vậy trong Limitations.")
     co_du = {sheet[i] for i, v in agreed.items() if v == "CO_DU"}
     mot_phan = {sheet[i] for i, v in agreed.items() if v == "CO_MOT_PHAN"}
+    nhiem = {sheet[i] for i in NHIEM if i in sheet}
+    print(f"\n   ⚠ {len(nhiem)} dòng nhiễm ({', '.join(NHIEM)}): hướng dẫn phát cho người rà đã nêu sẵn nhãn của đúng các dòng này.")
+    print("     Cột cuối bỏ hẳn chúng khỏi phân tích. Chi tiết: preregistration/D3_ra_nhan_65_null.md, mục Nhiễm.")
     print(f"\n2. CO_DU {len(co_du)} câu · CO_MOT_PHAN {len(mot_phan)} câu · "
           f"bất đồng {len(both) - len(agreed)} câu (cần người thứ ba)")
 
     keep = set(null_all())
     print("\n3. Độ nhạy Null acc / err / neither — áp cùng lúc cho mọi cấu hình (KHÔNG thay số chính thức)")
-    print(f"   {'cấu hình':14s} {'chính thức':>22s} {'bỏ CO_DU':>22s} {'bỏ CO_DU + CO_MOT_PHAN':>26s}")
+    print(f"   {'cấu hình':14s} {'chính thức':>22s} {'bỏ CO_DU':>22s} {'bỏ CO_DU + CO_MOT_PHAN':>26s} "
+          f"{'bỏ thêm 4 dòng nhiễm':>26s}")
     rows = [(name, [verdicts_637(tag, keep)]) for name, tag in ARMS_637.items()]
     rows += [(name, [verdicts_stage_d(t, keep) for t in tags]) for name, tags in ARMS_D.items()]
     for name, runs in rows:
         cells = []
-        for exclude in (set(), co_du, co_du | mot_phan):
+        for exclude in (set(), co_du, co_du | mot_phan, co_du | mot_phan | nhiem):
             trio = [rates(r, exclude)[0] for r in runs]
             n = rates(runs[0], exclude)[1]
             cells.append(f"{st.mean(c['accurate'] for c in trio):.1f}/{st.mean(c['error'] for c in trio):.1f}/"
                          f"{st.mean(c['neither'] for c in trio):.1f} (n={n})")
-        print(f"   {name:14s} {cells[0]:>22s} {cells[1]:>22s} {cells[2]:>26s}")
+        print(f"   {name:14s} {cells[0]:>22s} {cells[1]:>22s} {cells[2]:>26s} {cells[3]:>26s}")
     print("\n   Câu `doi_mot_chi_tiet = CO` vẫn tính là Null đúng thiết kế (quy tắc chốt trước ở D3).")
 
 

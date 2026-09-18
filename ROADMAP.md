@@ -862,6 +862,12 @@ Null acc B1 62,2 → 60,7 · B2 57,8 → 55,6 · vector thuần 65,2 → 65,9; N
 Null của B2 không phải nhiễu giám khảo** — chấm kỹ hơn thì nó nặng thêm. 4 câu-lượt có 3 phiếu chia đều, tính là `neither` theo
 luật đã khoá. Câu hỏi còn lại thuần tuý là rubric cho câu trả lời pha trộn (Đ1).
 
+**Đ3 — rà tay 65 nhãn Null (17/09 Anh Tài, merge 18/09; ĐỘ NHẠY).** `KHONG_CO` 39 · `CO_MOT_PHAN` 22 · `CO_DU` 4. Bỏ các câu
+`CO_DU`, rồi bỏ thêm `CO_MOT_PHAN`, thứ hạng Null không đổi và B2 vẫn thấp nhất (chênh với B1 −4,4 / −3,8 / −7,4). **Nhãn không
+giải thích được khoảng cách Null của B2.** ⚠ Bản hướng dẫn phát cho người rà lỡ nêu sẵn nhãn của 4 câu trong phiếu (L005, L023,
+L031, L054) — lỗi của người viết hướng dẫn; 4 dòng đó đánh dấu nhiễm, `score_label_audit.py` in thêm cột đã bỏ chúng, kết luận
+không đổi. Chi tiết: `reproduce/null_audit/preregistration/D3_ra_nhan_65_null.md`, mục Nhiễm.
+
 **Đ1 → Đ6 — rubric cho câu trả lời pha trộn (17–18/09, đăng ký trước `D1_…`, `D6_cham_lai_null_rubric_lam_ro.md`; ĐỘ NHẠY, không
 thay số chính thức, không xét lại E4).** Đ1: một người chấm 40 câu, 22/24 câu Gemini chấm `neither` là đúng. Đ6: prompt giám khảo
 cộng một đoạn quy tắc cho đáp án vàng "Insufficient information" (khoá sha256), cổng kiểm với người QUA 38/40 (rubric gốc 15/40),

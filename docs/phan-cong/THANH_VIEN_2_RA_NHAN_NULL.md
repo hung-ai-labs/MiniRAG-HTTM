@@ -92,14 +92,18 @@ Chỉ chọn `CO_DU` khi corpus trả lời đúng **chính** câu hỏi đang h
 
 Hai cờ này tách nhau ra để lúc phân tích còn thử được cả hai cách hiểu. Đừng gộp.
 
-### Ví dụ minh hoạ — không phải câu trong phiếu
+### Ví dụ minh hoạ — tình huống bịa, không lấy từ corpus
 
-| Câu hỏi | Corpus có gì | `nhan` | `doi_mot_chi_tiet` |
+> **Sửa 18/09/2026.** Bản trước dùng bốn câu **có thật trong phiếu** làm ví dụ và kèm luôn nhãn nên vô tình chỉ đáp án cho bốn
+> dòng L005, L023, L031, L054. Lỗi là của người viết hướng dẫn (Hùng). Bốn dòng đó đã được đánh dấu nhiễm trong đăng ký trước và
+> báo cáo riêng. Bảng dưới đây dựng bằng nhân vật và sự việc **không** có trong corpus, chỉ để minh hoạ luật.
+
+| Câu hỏi (bịa) | Corpus (bịa) có gì | `nhan` | `doi_mot_chi_tiet` |
 |---|---|---|---|
-| "Li Hua đo cửa sổ được bao nhiêu?" | có tin nhắn ghi số đo cụ thể | `CO_DU` | `KHONG` |
-| "Li Hua ăn gì tối 20/1?" | không có đoạn nào nói bữa tối hôm đó | `KHONG_CO` | `KHONG` |
-| "Li Hua thích loại **bánh mì** mới nào?" | corpus chỉ nói anh thích **bánh ngọt** mới | `KHONG_CO` | `CO` |
-| "Yuriko góp ý gì **trong buổi gặp** sáng thứ Năm?" | buổi gặp có thật, nhưng góp ý nằm ở tin nhắn buổi chiều | `CO_MOT_PHAN` | `CO` |
+| "Chị Lan đặt bao nhiêu mét dây điện cho xưởng?" | có tin nhắn ghi đúng số mét | `CO_DU` | `KHONG` |
+| "Chị Lan uống gì trong buổi họp sáng thứ Ba?" | không đoạn nào nói buổi họp đó có đồ uống | `KHONG_CO` | `KHONG` |
+| "Chị Lan khen loại **trà** mới nào?" | corpus chỉ nói chị khen loại **cà phê** mới | `KHONG_CO` | `CO` |
+| "Anh Bình dặn gì **lúc bàn giao xưởng**?" | có lời dặn thật, nhưng nằm ở cuộc gọi tối hôm trước | `CO_MOT_PHAN` | `CO` |
 
 ## 6. Rà xong thì làm gì
 

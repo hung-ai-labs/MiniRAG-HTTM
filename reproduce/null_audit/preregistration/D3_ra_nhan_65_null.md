@@ -60,6 +60,32 @@ cấu hình nào và **không** chứa phán quyết của giám khảo. Câu b�
 **Quy tắc chốt trước:** câu `doi_mot_chi_tiet = CO` mặc định vẫn là `KHONG_CO` (Null đúng thiết kế); cờ này chỉ để bảng độ
 nhạy tách được hai cách hiểu.
 
+## ⚠ Nhiễm — phát hiện 18/09/2026, sau khi người rà đã nộp
+
+Bản hướng dẫn giao cho người rà ([`docs/phan-cong/THANH_VIEN_2_RA_NHAN_NULL.md`](../../../docs/phan-cong/THANH_VIEN_2_RA_NHAN_NULL.md),
+mục "Ví dụ minh hoạ") ghi là ví dụ **không nằm trong phiếu**, nhưng thực ra cả bốn ví dụ đều là câu có thật trong phiếu, và bảng ví
+dụ nêu luôn nhãn mong đợi. Lỗi của người viết hướng dẫn (Hùng), không phải của người rà.
+
+| Dòng | Câu hỏi | Nhãn hướng dẫn gợi ý | Nhãn người rà điền |
+|---|---|---|---|
+| `L005` | bữa tối 20/1/2026 | `KHONG_CO` / `KHONG` | `KHONG_CO` / `KHONG` |
+| `L023` | góp ý của Yuriko tại buổi gặp | `CO_MOT_PHAN` / `CO` | `CO_MOT_PHAN` / `CO` |
+| `L031` | loại bánh mì mới | `KHONG_CO` / `CO` | `KHONG_CO` / `CO` |
+| `L054` | số đo cửa sổ | `CO_DU` / `KHONG` | `CO_DU` / `KHONG` |
+
+Bốn dòng trùng khớp hoàn toàn với gợi ý, nên **không được coi là phán đoán độc lập**. Nặng thêm ở chỗ ba trong bốn dòng (cửa sổ,
+bánh mì, Yuriko) đúng là ba câu mà đợt kiểm toán 15/09 đã nghi là nhãn sai — tức là phần hướng dẫn này làm lộ đúng giả thuyết mà
+mục 4 của chính nó cấm người rà biết trước.
+
+**Xử lý, chốt 18/09:**
+- `L005`, `L023`, `L031`, `L054` đánh dấu **nhiễm**. `score_label_audit.py` in thêm một cột đã bỏ bốn dòng này, bên cạnh các cột cũ;
+  mọi chỗ trích dẫn Đ3 phải kèm cột đó.
+- Không yêu cầu rà lại bốn dòng: người rà đã đọc gợi ý, làm lại cũng không lấy lại được tính độc lập. Muốn có nhãn sạch cho bốn câu
+  này thì phải là **người khác** và có đăng ký mới.
+- Ví dụ trong cả hai bản hướng dẫn đã đổi sang tình huống bịa (18/09).
+- Kết luận của Đ3 (nhãn không giải thích được khoảng cách Null của B2) vẫn giữ: nó là phân tích độ nhạy, và câu hỏi rubric sau đó đã
+  được Đ6 đo trực tiếp.
+
 ## Cách tính
 
 `reproduce/null_audit/score_label_audit.py`: Cohen's κ giữa hai người; và bảng độ nhạy Null acc / err / neither của **mọi cấu

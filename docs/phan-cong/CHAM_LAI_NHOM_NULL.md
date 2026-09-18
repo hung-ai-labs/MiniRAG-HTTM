@@ -72,15 +72,19 @@ Hai cột cờ thì khác: chúng ghi **sự thật quan sát được**, không
 - `noi_ro_khong_co = CO` nếu **ở bất kỳ đâu** trong câu trả lời có nói rõ rằng chi tiết được hỏi không có trong dữ liệu.
 - `khang_dinh_them = CO` nếu ngoài lời từ chối, câu trả lời còn khẳng định một chi tiết cụ thể.
 
-### Ví dụ minh hoạ — không nằm trong phiếu của bạn
+### Ví dụ minh hoạ — tình huống bịa, không lấy từ corpus
 
-Câu hỏi: *"Li Hua ăn món gì vào bữa tối ngày 20/1/2026?"* (corpus không ghi bữa tối hôm đó)
+> **Sửa 18/09/2026.** Ví dụ cũ dùng một câu hỏi có thật trong bộ dữ liệu. Câu đó không nằm trong phiếu 40 dòng của việc này, nhưng
+> lại nằm trong phiếu của việc Đ3, nên đổi sang tình huống bịa hoàn toàn cho khỏi lặp lại lỗi (xem
+> [`../../reproduce/null_audit/preregistration/D3_ra_nhan_65_null.md`](../../reproduce/null_audit/preregistration/D3_ra_nhan_65_null.md)).
+
+Câu hỏi: *"Chị Lan uống gì trong buổi họp sáng thứ Ba?"* (corpus bịa: không đoạn nào nói buổi họp đó có đồ uống)
 
 | Câu trả lời | `phan_quyet` | `noi_ro_khong_co` | `khang_dinh_them` |
 |---|---|---|---|
-| "Dữ liệu không ghi Li Hua ăn gì vào tối hôm đó." | `CHINH_XAC` | `CO` | `KHONG` |
-| "Li Hua ăn lẩu Tứ Xuyên với Wolfgang." | `SAI` | `KHONG` | `CO` |
-| "Hôm đó trong khu phố có nhiều hoạt động thú vị." | `KHONG_BIET` | `KHONG` | `KHONG` |
+| "Dữ liệu không ghi chị Lan uống gì trong buổi họp đó." | `CHINH_XAC` | `CO` | `KHONG` |
+| "Chị Lan uống trà sữa cùng anh Bình." | `SAI` | `KHONG` | `CO` |
+| "Sáng thứ Ba ở xưởng có nhiều việc diễn ra." | `KHONG_BIET` | `KHONG` | `KHONG` |
 
 Ba ví dụ này đều thuộc loại dễ. Loại khó — "không có thông tin, **nhưng** có thể suy ra là…" — bạn tự quyết.
 

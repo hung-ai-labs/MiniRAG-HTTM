@@ -27,7 +27,7 @@ Cổng RRF đạt chỉ vì ngưỡng là "không xấu đi". Không có cải t
 
 ## 3. Kết quả đầy đủ
 
-Validity: **VALID**, 64/64 check bắt buộc PASS (`validity_audit.md`).
+Validity: **VALID**, 68/68 check bắt buộc PASS (`validity_audit.md`).
 
 ### mode = graph (`MINIRAG_CHUNK_FUSION=""`)
 
@@ -154,7 +154,7 @@ hai nhánh; dựng lại lần hai cho vector y hệt.
 | `logs/entity_resolution/eval_{graph,rrf}_report.json` | kết quả ghép cặp |
 | `logs/entity_resolution/per_query_{graph,rrf}.jsonl` | kết quả từng câu kèm gold dùng để chấm |
 | `logs/entity_resolution/eval_summary.md` | tóm tắt |
-| `logs/entity_resolution/validity_audit.{json,md}` | 64 check bắt buộc, kèm nguồn bằng chứng |
+| `logs/entity_resolution/validity_audit.{json,md}` | 68 check bắt buộc, kèm nguồn bằng chứng |
 | `logs/entity_resolution/merge_report.json`, `integrity_report.txt` | kiểm toàn vẹn merge |
 | `logs/entity_resolution/reembed_pair_report.{json,txt}` | dựng hai nhánh, 83 check |
 | `logs/entity_resolution/embedding_parity.json` | bằng chứng batch-padding |
@@ -164,7 +164,7 @@ hai nhánh; dựng lại lần hai cho vector y hệt.
 
 ## 9. Bằng chứng tính hợp lệ
 
-64/64 check bắt buộc PASS, mỗi check ghi nguồn. Những cái đáng kể:
+68/68 check bắt buộc PASS, mỗi check ghi nguồn. Những cái đáng kể:
 
 - Bốn lượt **đều được chạy** trong một tiến trình, đúng thứ tự, không lượt nào dùng lại. Bằng
   chứng: stdout gốc và `minirag.log` do chính tiến trình ghi, có dấu thời gian từng truy vấn.

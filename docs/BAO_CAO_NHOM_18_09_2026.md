@@ -1,4 +1,4 @@
-# Báo cáo tổng hợp cho nhóm — 18/09/2026
+# Báo cáo tổng hợp cho nhóm — 18/09/2026 (cập nhật chiều 18/09)
 
 > Chốt trạng thái sau tầng D và chuỗi kiểm nhóm Null. Số chi tiết: [`KET_QUA_HIEN_TAI.md`](KET_QUA_HIEN_TAI.md).
 > Lịch sử thí nghiệm và đăng ký trước: [`../ROADMAP.md`](../ROADMAP.md). Quy tắc bắt buộc: [`../CLAUDE.md`](../CLAUDE.md).
@@ -13,9 +13,11 @@
 - **Đ6 (18/09)** chấm lại toàn bộ nhóm Null bằng rubric nói rõ cách xử lý câu trả lời pha trộn: bốn cấu hình nằm trong 1,5 điểm
   (73,3–74,8) và chênh Null giữa B2 với vector thuần về 0 — nhưng baseline gốc vẫn hơn cả bốn khoảng 12 điểm. Đây là **phân tích độ nhạy**, không
   thay số chính thức.
-- **Hai việc của thành viên đều cho kết quả phủ định:** E1 hợp nhất thực thể (Tài) không cải thiện truy hồi bằng chứng; P1 cắt tỉa
-  đường đi (Huy Đức) nhanh hơn 82% nhưng thiếu 0,5 điểm so với cổng chất lượng, P2 không dịch chuyển chỉ số nào. Cả hai đã merge,
-  không đổi hành vi mặc định của hệ thống.
+- **So với MiniRAG gốc:** B2 hơn **24 điểm** acc tổng (49,9 → 74,0), err giảm 28,1 → 19,5 — nhưng nhóm Null khẳng định sai **gấp
+  đôi** (err 13,3 → 25,9 theo rubric làm rõ). Đây là Limitation thật.
+- **Hai việc của thành viên đều không đổi điểm:** E1 hợp nhất thực thể (Tài) không cải thiện truy hồi bằng chứng; P1/P2 của Huy Đức
+  đo end-to-end trên dev 200 cho điểm nằm trong nhiễu, nhưng **P1 cắt 80% thời gian truy hồi** — kết quả Efficiency dùng được. Cả hai
+  đã merge, không đổi hành vi mặc định của hệ thống.
 - Có một lỗi quy trình phải khai báo trong bài: bản hướng dẫn việc Đ3 lỡ nêu sẵn nhãn của 4 câu trong phiếu. Đã ghi nhận, đã sửa,
   kết luận không đổi.
 
@@ -41,6 +43,17 @@ Báo cáo gốc: `logs/stage_d/stage_d_report.txt`.
 recall@30 của B1 là 97,6% so với 96,1% của B2, nhưng chunk chứa đáp án **còn sống sau bước cắt A1@4000** chỉ 75,4% ở B1 so với
 86,0% ở B2. B2 vẫn duyệt đồ thị và vẫn giữ bảng thực thể 65 token trong context — chỉ khác ở cách xếp hạng chunk.
 
+### So sánh các phiên bản — 435 câu ngoài dev, acc / err / neither
+
+| Phiên bản | Tất cả | Single (347) | Multi (43) | Null (45) |
+|---|---|---|---|---|
+| Baseline — MiniRAG gốc, đã vá (1 lượt) | 49,89 / 28,05 / 22,07 | 50,14 / 25,65 / 24,21 | 23,26 / 62,79 / 13,95 | **73,33 / 13,33 / 13,33** |
+| V3 — RRF(đồ thị, vector) | 60,84 / 24,52 / 14,64 | 64,17 / 21,52 / 14,31 | 32,56 / 50,39 / 17,05 | 62,22 / 22,96 / 14,81 |
+| **B2 — RRF(vector, BM25)** | **73,95 / 19,54 / 6,51** | **80,79 / 14,79 / 4,42** | 35,66 / 54,26 / 10,08 | 57,78 / 22,96 / 19,26 |
+
+Đa số 3 lượt chấm, trung bình 3 lượt sinh (baseline 1 lượt). McNemar B2 so với baseline: net **+103 / +96 / +115**, p ≤ 3·10⁻¹⁵;
+B2 so với V3: net +46 / +57 / +68, p ≤ 2·10⁻⁵. Multi chỉ 43 câu và V3 dao động ±10 điểm giữa các lượt — không kết luận về Multi.
+
 ## 3. Nhóm Null — chuỗi bốn việc kiểm
 
 **Vấn đề.** Với câu Null, đáp án vàng là "Insufficient information". Rubric gốc có ba nhãn nhưng **không quy định** câu trả lời pha
@@ -51,7 +64,7 @@ trộn: nêu sự kiện gần giống rồi mới nói chi tiết được hỏ
 | **Đ2** — chấm lại 3 lượt bằng rubric gốc | máy, 16/09 | **Không phải nhiễu giám khảo.** Chấm kỹ hơn thì B2 còn xuống 55,6 |
 | **Đ1** — người chấm 40 câu | Djicz, 17/09 | 22/24 câu giám khảo chấm `neither` thì **người chấm là đúng** (92%, KTC 74–98%) |
 | **Đ3** — rà tay 65 nhãn Null | Tài, 17/09 | `KHONG_CO` 39 · `CO_MOT_PHAN` 22 · `CO_DU` 4. **Nhãn không giải thích được** khoảng cách Null của B2 |
-| **Đ6** — chấm lại toàn bộ bằng rubric làm rõ | máy, 18/09 | Khoảng cách **là do rubric**. Bốn nhánh hoà nhau |
+| **Đ6** — chấm lại toàn bộ bằng rubric làm rõ | máy, 18/09 | **Giữa các nhánh RRF:** khoảng cách là do rubric, bốn nhánh hoà nhau. **So với baseline gốc:** khoảng cách **thật**, B2 kém 12,6 điểm |
 | ~~Đ4~~ — thêm 3 seed cho H2 | — | **bỏ** 16/09: sau Đ2 gần như chỉ xác nhận BORDERLINE, tốn ~9 giờ GPU, dễ bị phản biện "chạy tới khi đạt" |
 
 ### Đ6 — kết quả
@@ -83,7 +96,7 @@ Sau đó chấm 45 câu Null × 4 nhánh × 3 lượt sinh × 3 lượt chấm =
 
 **Bổ sung 18/09 — chấm lại cả baseline (sửa đăng ký, push trước khi gọi).** Baseline MiniRAG gốc theo rubric làm rõ: **86,7 / 13,3 / 0,0** (rubric gốc 71,1 / 15,6 / 13,3). Rubric làm rõ xoá khoảng cách **giữa các nhánh RRF**, nhưng **không** xoá khoảng cách với baseline: B2 74,1 so với 86,7, Null net B2 − baseline trung bình **−5,67 câu mỗi lượt** (rubric gốc −6,00). Phần chênh này là của hệ thống: err nhóm Null của baseline 13,3 so với 25–27 ở mọi nhánh RRF. Đưa chunk vector vào context làm Qwen khẳng định sai trên câu Null nhiều hơn. `logs/null_audit/d6_clarified/baseline_ket_qua.txt`.
 
-**Đọc thế nào.** B2 không bịa nhiều hơn — tỉ lệ `error` nhóm Null của nó thấp nhất trong bốn nhánh ngay từ rubric gốc. 26 câu-lượt
+**Đọc thế nào.** **So với ba nhánh RRF kia**, B2 không bịa nhiều hơn — tỉ lệ `error` nhóm Null của nó thấp nhất trong bốn nhánh RRF ngay từ rubric gốc (so với baseline thì cao gấp đôi, xem đoạn trên). 26 câu-lượt
 `neither` của B2 chuyển thành 23 `accurate` và 3 `error`. Lời từ chối thuần không bị chấm sai lần nào (175/175 `accurate`), nên
 rubric mới không hề dễ dãi. Rubric làm rõ gần như bỏ hẳn nhãn `neither` cho câu Null (1/1.620 phiếu), vì vậy **chỉ so cột acc và
 err giữa hai rubric**, không so cột `neither`.
@@ -138,7 +151,7 @@ hiện lớn hơn là đồ thị không đóng góp vào mức tăng (ablation 
 **Lưu ý kho:** hai bản sao index của cặp control/treatment (`logs/entity_resolution/pair/`) không đưa vào git vì nặng ~30 MB và
 dựng lại được; index `LiHua-World-qwen-entres/`, toàn bộ script và báo cáo vẫn nằm trong repo.
 
-## 6. P1 / P2 — cắt tỉa và chấm lại đường đi: nhanh hơn nhiều, nhưng trượt cổng
+## 6. P1 / P2 — cắt tỉa và chấm lại đường đi: nhanh hơn nhiều, điểm không đổi
 
 Huy Đức nộp 17/09, đã merge. Hai công tắc, **mặc định tắt**: `MINIRAG_PATH_PRUNE` (P1) và `MINIRAG_PATH_SCORE` (P2). Lượt kiểm
 chứng với công tắc tắt cho lại **đúng** số của bước 0, nên merge không đổi hành vi hệ thống. Đo offline trên 180 câu dev có
@@ -157,9 +170,8 @@ evidence (`logs/path/`).
 Nên phát biểu đúng là: *cắt 80% số đường và 82% thời gian thì mất khoảng 1,5 điểm chunk đáp án và 2 câu trong 180* — đánh đổi rõ
 ràng, không phải cải thiện chất lượng.
 
-**P2 — không dịch chuyển chỉ số nào.** Cả ba chỉ số chất lượng và cả số câu đủ đáp án (75) **trùng khít** bước 0. Trước khi ai viết
-P2 vào bài, phải kiểm một việc: điểm mới có thực sự tác động tới thứ hạng cuối không, hay bị bước sau ghi đè — trùng khít đến từng
-con số thường là dấu hiệu công tắc không ăn, chứ không phải hai công thức khác nhau ra cùng kết quả.
+**P2 — không dịch chuyển chỉ số offline nào.** Cả ba chỉ số chất lượng và số câu đủ đáp án (75) trùng khít bước 0. Lượt đo end-to-end
+bên dưới cho thấy P2 **có** tác dụng nhưng rất yếu — chỉ đổi context ở 16% số câu.
 
 ### Đo end-to-end với công tắc bật (18/09, dev 200 câu, V3, seed sinh 101)
 

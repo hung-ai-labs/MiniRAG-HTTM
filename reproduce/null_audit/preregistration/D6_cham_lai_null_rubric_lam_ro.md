@@ -74,6 +74,18 @@ only if it presents the missing detail as a fact.
   từng cặp lượt của H1, H2, H3 theo cả hai rubric.
 - **Không báo** kiểm định ý nghĩa giữa các nhánh: 45 câu mỗi nhánh không đủ, giống tầng D. Chỉ báo thứ hạng và chiều.
 
+## Sửa đăng ký, 18/09/2026 — thêm baseline vào bước 3
+
+Chốt **trước** khi gửi lời gọi nào cho baseline. Lý do: bước 3 cho thấy theo rubric làm rõ bốn nhánh RRF hoà nhau, nhưng baseline
+MiniRAG gốc (Null acc chính thức 73,3 trên 45 câu ngoài dev) chưa được chấm lại, nên chưa biết khoảng cách Null giữa B2 và baseline
+là do rubric hay do hệ thống.
+
+- **Thêm mẫu:** 45 câu trả lời Null ngoài dev của `logs/qwen637_fix.csv` (baseline chỉ có **một** lượt sinh) × 3 lượt chấm.
+- **Rubric, giám khảo, seed, luật đa số:** giữ nguyên, prompt vẫn khoá đúng mã băm ở trên. Các phiếu đã chấm của bốn nhánh được dùng
+  lại, không chấm lại.
+- **Báo thêm:** Null acc / err / neither của baseline theo hai rubric; Null net của V3 và B2 so với baseline theo hai rubric.
+- **Cách dùng:** giữ nguyên mục dưới — chỉ độ nhạy.
+
 ## Cách dùng kết quả
 
 **ĐỘ NHẠY.**

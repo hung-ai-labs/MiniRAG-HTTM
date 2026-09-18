@@ -40,6 +40,8 @@ D1 = "logs/null_audit/d1_judge_audit"
 LABELS = ("accurate", "error", "neither")
 HUMAN = {"CHINH_XAC": "accurate", "SAI": "error", "KHONG_BIET": "neither"}
 RUNS = {
+    # Baseline thêm 18/09 (bản sửa đăng ký): chỉ có 1 lượt sinh.
+    "BASE": [("fix", "logs/qwen637_fix.csv")],
     "V3": [("v3", "logs/qwen637_v3.csv"), ("v3_r2", "logs/qwen637_v3_r2.csv"), ("v3_r3", "logs/qwen637_v3_r3.csv")],
     "VEC": [("vec", "logs/qwen637_vec.csv"), ("vec_s202", "logs/stage_d/vec_s202.csv"), ("vec_s303", "logs/stage_d/vec_s303.csv")],
     "B1": [(f"b1_s{s}", f"logs/stage_d/b1_s{s}.csv") for s in (101, 202, 303)],
@@ -49,6 +51,9 @@ PAIRS = {
     "H1 = B1 với V3": [("b1_s101", "v3"), ("b1_s202", "v3_r2"), ("b1_s303", "v3_r3")],
     "H2 = B2 với vector thuần": [("b2_s101", "vec"), ("b2_s202", "vec_s202"), ("b2_s303", "vec_s303")],
     "H3 = B2 với B1": [("b2_s101", "b1_s101"), ("b2_s202", "b1_s202"), ("b2_s303", "b1_s303")],
+    # thêm 18/09: so với baseline (một lượt sinh, nên cả ba cặp dùng chung lượt baseline)
+    "V3 với baseline": [("v3", "fix"), ("v3_r2", "fix"), ("v3_r3", "fix")],
+    "B2 với baseline": [("b2_s101", "fix"), ("b2_s202", "fix"), ("b2_s303", "fix")],
 }
 
 
@@ -159,7 +164,7 @@ def gate(s2):
 
 
 def official_one(tag, keep):
-    path = f"logs/qwen637_{tag}_judged.csv" if tag in ("v3", "v3_r2", "v3_r3", "vec") else f"logs/stage_d/{tag}_judged.csv"
+    path = f"logs/qwen637_{tag}_judged.csv" if tag in ("fix", "v3", "v3_r2", "v3_r3", "vec") else f"logs/stage_d/{tag}_judged.csv"
     return {r["question"]: r["verdict"] for r in csv.DictReader(open(path, encoding="utf-8"))
             if r["run"] == "1" and r["question"] in keep}
 
@@ -190,7 +195,7 @@ def full(s2):
         tag, q = k.split("|", 1)
         by_tag[tag][q] = v
 
-    print("Đ6 — BƯỚC 3: nhóm Null ngoài dev (45 câu) × 4 nhánh × 3 lượt sinh, rubric làm rõ, 3 lượt chấm")
+    print("Đ6 — BƯỚC 3: nhóm Null ngoài dev (45 câu) × baseline + 4 nhánh, rubric làm rõ, 3 lượt chấm")
     print("ĐỘ NHẠY — số chính thức của tầng D, cổng E4 và H1–H3 KHÔNG đổi\n")
     print(f"   {'nhánh':5s} | {'rubric gốc (chính thức)':>26s} | {'rubric làm rõ':>22s}")
     print(f"   {'':5s} | {'acc / err / neither':>26s} | {'acc / err / neither':>22s}")

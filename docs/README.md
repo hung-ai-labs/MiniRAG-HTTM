@@ -1,12 +1,13 @@
 # Tài liệu dự án MiniRAG-HTTM
 
-> Cập nhật 16/09/2026. Quy tắc bắt buộc: [`../CLAUDE.md`](../CLAUDE.md). Kế hoạch, lịch sử thí nghiệm và đăng ký trước:
+> Cập nhật 18/09/2026. Quy tắc bắt buộc: [`../CLAUDE.md`](../CLAUDE.md). Kế hoạch, lịch sử thí nghiệm và đăng ký trước:
 > [`../ROADMAP.md`](../ROADMAP.md).
 
 ## Đọc gì trước
 
 | Bạn cần | Đọc |
 |---|---|
+| **Báo cáo tổng hợp 18/09** — chốt B2, chuỗi kiểm nhóm Null, điều phải ghi khi viết bài | [`BAO_CAO_NHOM_18_09_2026.md`](BAO_CAO_NHOM_18_09_2026.md) |
 | Kết quả hiện tại so với baseline (acc / err / neither / Null) | [`KET_QUA_HIEN_TAI.md`](KET_QUA_HIEN_TAI.md) |
 | Việc của **thành viên 1** — cắt tỉa và chấm lại đường đi | [`phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md`](phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md) |
 | Việc của **thành viên 1** — chấm tay 40 câu Null (Đ1, ~1 giờ) | [`phan-cong/THANH_VIEN_1_CHAM_LAI_NHOM_NULL.md`](phan-cong/CHAM_LAI_NHOM_NULL.md) |

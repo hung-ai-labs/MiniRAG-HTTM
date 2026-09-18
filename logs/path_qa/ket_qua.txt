@@ -1,0 +1,48 @@
+Dev 200 câu · cấu hình V3 (MINIRAG_CHUNK_FUSION=rrf) · công tắc P1/P2 của thành viên 1
+THĂM DÒ TRÊN DEV — không thay số chính thức, không đụng cổng tầng D
+
+   cấu hình                           Tất cả (n=200)             Single (n=159)               Multi (n=21)                Null (n=20)
+                                 acc / err / neither        acc / err / neither        acc / err / neither        acc / err / neither
+   V3 lượt 1                    60.0 /  26.5 /  13.5       62.3 /  22.6 /  15.1       42.9 /  47.6 /   9.5       60.0 /  35.0 /   5.0
+   V3 lượt 2                    61.0 /  28.0 /  11.0       63.5 /  25.8 /  10.7       42.9 /  47.6 /   9.5       60.0 /  25.0 /  15.0
+   V3 lượt 3                    61.5 /  25.5 /  13.0       64.2 /  22.6 /  13.2       38.1 /  47.6 /  14.3       65.0 /  25.0 /  10.0
+   V3 + P1 (cắt tỉa)            60.5 /  27.5 /  12.0       61.6 /  23.9 /  14.5       42.9 /  52.4 /   4.8       70.0 /  30.0 /   0.0
+   V3 + P2 (trọng số)           61.0 /  31.0 /   8.0       63.5 /  27.0 /   9.4       38.1 /  57.1 /   4.8       65.0 /  35.0 /   0.0
+   V3 + cả hai                  59.0 /  27.5 /  13.5       60.4 /  23.9 /  15.7       42.9 /  52.4 /   4.8       65.0 /  30.0 /   5.0
+
+   Dải nhiễu giữa ba lượt V3 (cùng cấu hình, khác lượt sinh):
+     Tất cả   acc  60.0 …  61.5  (rộng  1.5 điểm)
+     Single   acc  62.3 …  64.2  (rộng  1.9 điểm)
+     Multi    acc  38.1 …  42.9  (rộng  4.8 điểm)
+     Null     acc  60.0 …  65.0  (rộng  5.0 điểm)
+   Chênh lệch nhỏ hơn dải này KHÔNG kết luận được (CLAUDE.md §3).
+
+   Null chỉ có 20 câu trên dev: mỗi câu đổi phán quyết là 5 điểm.
+
+McNemar chính xác — từng lượt công tắc so với từng lượt V3 (đúng = accurate)
+
+   V3 + P1 (cắt tỉa)
+     vs V3 lượt 1: Tất cả 21↑/20↓ net  +1 p=1.000 · Single 13↑/14↓ net  -1 p=1.000 · Multi  6↑/ 6↓ net  +0 p=1.000 · Null  2↑/ 0↓ net  +2 p=0.500
+     vs V3 lượt 2: Tất cả 21↑/22↓ net  -1 p=1.000 · Single 16↑/19↓ net  -3 p=0.736 · Multi  3↑/ 3↓ net  +0 p=1.000 · Null  2↑/ 0↓ net  +2 p=0.500
+     vs V3 lượt 3: Tất cả 18↑/20↓ net  -2 p=0.871 · Single 13↑/17↓ net  -4 p=0.585 · Multi  4↑/ 3↓ net  +1 p=1.000 · Null  1↑/ 0↓ net  +1 p=1.000
+
+   V3 + P2 (trọng số)
+     vs V3 lượt 1: Tất cả 19↑/17↓ net  +2 p=0.868 · Single 13↑/11↓ net  +2 p=0.839 · Multi  4↑/ 5↓ net  -1 p=1.000 · Null  2↑/ 1↓ net  +1 p=1.000
+     vs V3 lượt 2: Tất cả 14↑/14↓ net  +0 p=1.000 · Single  9↑/ 9↓ net  +0 p=1.000 · Multi  3↑/ 4↓ net  -1 p=1.000 · Null  2↑/ 1↓ net  +1 p=1.000
+     vs V3 lượt 3: Tất cả 12↑/13↓ net  -1 p=1.000 · Single  8↑/ 9↓ net  -1 p=1.000 · Multi  3↑/ 3↓ net  +0 p=1.000 · Null  1↑/ 1↓ net  +0 p=1.000
+
+   V3 + cả hai
+     vs V3 lượt 1: Tất cả 18↑/20↓ net  -2 p=0.871 · Single 11↑/14↓ net  -3 p=0.690 · Multi  5↑/ 5↓ net  +0 p=1.000 · Null  2↑/ 1↓ net  +1 p=1.000
+     vs V3 lượt 2: Tất cả 16↑/20↓ net  -4 p=0.618 · Single 12↑/17↓ net  -5 p=0.458 · Multi  2↑/ 2↓ net  +0 p=1.000 · Null  2↑/ 1↓ net  +1 p=1.000
+     vs V3 lượt 3: Tất cả 15↑/20↓ net  -5 p=0.500 · Single  9↑/15↓ net  -6 p=0.307 · Multi  5↑/ 4↓ net  +1 p=1.000 · Null  1↑/ 1↓ net  +0 p=1.000
+
+P1 so với P1+P2 (chỉ khác công tắc P2), 1 câu chung — kiểm công tắc P2 có tác dụng thật không
+   khoá mỗi dòng ctx: ['chunk_ids', 'context_sha256', 'entities_tok', 'fusion', 'graph_ids', 'graph_paths', 'graph_seeds', 'n_chunks', 'query', 'ranked_ids', 'retrieval_ms', 'sources_tok', 'vector_ids']
+   context giống hệt: 0/1 câu
+
+Kiểm bằng context đã ghi (200 câu chung cả ba lượt)
+   p1  : đường 2-hop trung vị     3926 · thời gian truy hồi trung vị    1035 ms · chunk trung vị    9
+   p2  : đường 2-hop trung vị    19678 · thời gian truy hồi trung vị    5239 ms · chunk trung vị    8
+   p12 : đường 2-hop trung vị     3870 · thời gian truy hồi trung vị    1076 ms · chunk trung vị    9
+   p1 so với p12 (bật thêm P2): context khác nhau 32/200 câu · danh sách chunk giống hệt 171/200
+   p2 so với p12 (bật thêm P1): context khác nhau 172/200 câu · danh sách chunk giống hệt 29/200

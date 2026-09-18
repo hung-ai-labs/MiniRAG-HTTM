@@ -153,6 +153,36 @@ ràng, không phải cải thiện chất lượng.
 P2 vào bài, phải kiểm một việc: điểm mới có thực sự tác động tới thứ hạng cuối không, hay bị bước sau ghi đè — trùng khít đến từng
 con số thường là dấu hiệu công tắc không ăn, chứ không phải hai công thức khác nhau ra cùng kết quả.
 
+### Đo end-to-end với công tắc bật (18/09, dev 200 câu, V3, seed sinh 101)
+
+Ba lượt QA trên Qwen2.5-3B qua Modal, chấm Gemini 1 lượt — giống giao thức tầng D. Mốc là ba lượt V3 chính thức cắt về đúng 200 câu
+dev. Kết quả: `logs/path_qa/ket_qua.txt`.
+
+| Cấu hình | Tất cả (200) | Single (159) | Multi (21) | Null (20) |
+|---|---|---|---|---|
+| V3 lượt 1 | 60,0 / 26,5 / 13,5 | 62,3 / 22,6 / 15,1 | 42,9 / 47,6 / 9,5 | 60,0 / 35,0 / 5,0 |
+| V3 lượt 2 | 61,0 / 28,0 / 11,0 | 63,5 / 25,8 / 10,7 | 42,9 / 47,6 / 9,5 | 60,0 / 25,0 / 15,0 |
+| V3 lượt 3 | 61,5 / 25,5 / 13,0 | 64,2 / 22,6 / 13,2 | 38,1 / 47,6 / 14,3 | 65,0 / 25,0 / 10,0 |
+| V3 + P1 | 60,5 / 27,5 / 12,0 | 61,6 / 23,9 / 14,5 | 42,9 / 52,4 / 4,8 | 70,0 / 30,0 / 0,0 |
+| V3 + P2 | 61,0 / 31,0 / 8,0 | 63,5 / 27,0 / 9,4 | 38,1 / 57,1 / 4,8 | 65,0 / 35,0 / 0,0 |
+| V3 + cả hai | 59,0 / 27,5 / 13,5 | 60,4 / 23,9 / 15,7 | 42,9 / 52,4 / 4,8 | 65,0 / 30,0 / 5,0 |
+
+*(acc / err / neither)*
+
+**Không lượt nào đổi điểm.** McNemar so với từng lượt V3: net dao động −5 đến +2, p nhỏ nhất 0,307 — không đâu gần ý nghĩa thống kê.
+Riêng ba lượt V3 cùng cấu hình đã chênh nhau 1,5 điểm ở tổng và 5,0 ở Null, nên mọi chênh lệch trong bảng đều nằm dưới sàn nhiễu.
+Số câu đổi phán quyết mỗi cặp là 25–41 trong 200 — churn của bước sinh, không phải tín hiệu.
+
+**Hai điều đáng chú ý trong hành vi.**
+- **P1 xác nhận lợi ích tốc độ ngay trong lượt QA thật:** đường 2-hop trung vị 19.678 → 3.926, thời gian truy hồi trung vị
+  5.239 ms → 1.035 ms (−80%). Đo trên cùng 200 câu, cùng máy, cùng endpoint.
+- **Cả P1 lẫn P2 đều đẩy `neither` xuống và `err` lên** (Null `neither` về 0 ở cả hai). Hệ thống nói "không biết" ít hơn và khẳng
+  định nhiều hơn, tổng điểm giữ nguyên. Đây là đổi hành vi, không phải cải thiện.
+
+**Đính chính nhận định hôm qua về P2.** Tôi đã nghi công tắc P2 không ăn vì mọi chỉ số offline trùng khít. So context đã ghi:
+P2 **có** tác dụng, nhưng chỉ đổi context ở **32/200 câu (16%)**; phần lớn câu cho ra đúng danh sách chunk cũ. Chỉ số offline không
+bắt được vì nó đo tỉ lệ giữ chunk đáp án theo tổng, không đo thứ tự. Vậy P2 là cơ chế **yếu**, không phải cơ chế hỏng.
+
 **Hai điều phải sửa trước khi trích dẫn P1.**
 1. **Cơ chế thực cài khác mô tả đã đăng ký.** Đăng ký ghi "bỏ đường đi qua hub bậc > 100 nếu không chứa node thuộc
    `maybe_answer_list`"; code thực tế (`minirag/path_rerank.py`) là **giới hạn 60 đường mỗi thực thể khởi đầu, ưu tiên đường ngắn**,
@@ -167,7 +197,7 @@ con số thường là dấu hiệu công tắc không ăn, chứ không phải 
 | Hùng | Sàng lọc BM25, tầng D, chuỗi kiểm Null | `dev` | Tầng D xong, Đ6 xong |
 | Djicz | Đ1 — chấm tay 40 câu Null | `tv1/d1-cham-null` | **xong**, đã merge |
 | Tài | Đ3 — rà 65 nhãn Null | `tv2/d3-ra-nhan` | **xong**, đã merge 18/09 |
-| Huy Đức | Cắt tỉa và chấm lại đường đi (P1, P2) | `tv1/path-pruning` | **xong 17/09**, đã merge — P1 trượt cổng chất lượng, P2 không đổi gì |
+| Huy Đức | Cắt tỉa và chấm lại đường đi (P1, P2) | `tv1/path-pruning` | **xong 17/09**, đã merge — đo end-to-end 18/09: nhanh hơn 80%, điểm không đổi |
 | Tài | Hợp nhất thực thể trùng tên (E1) | `tv2/entity-resolution` | **xong 18/09** — kết quả phủ định, đã merge |
 
 **Việc tiếp theo chưa ai nhận:** Đ5 gồm K2 (rà mẫu đáp án vàng của câu có đáp án, 3 giờ), K3 (kiểm nhãn Single/Multi, 1 giờ),

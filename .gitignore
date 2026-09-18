@@ -70,3 +70,6 @@ logs/stage_d/*_ctx.jsonl
 
 # hai bản sao index của cặp control/treatment E1 — không đưa vào git (xem logs/entity_resolution/DELIVERY_NOTE.md)
 logs/entity_resolution/pair/
+
+# context đã ghi của lượt đo công tắc P1/P2 — nặng, dựng lại được (như logs/stage_d/*_ctx.jsonl)
+logs/path_qa/*_ctx.jsonl

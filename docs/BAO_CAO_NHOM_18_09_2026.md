@@ -46,7 +46,7 @@ trộn: nêu sự kiện gần giống rồi mới nói chi tiết được hỏ
 |---|---|---|
 | **Đ2** — chấm lại 3 lượt bằng rubric gốc | máy, 16/09 | **Không phải nhiễu giám khảo.** Chấm kỹ hơn thì B2 còn xuống 55,6 |
 | **Đ1** — người chấm 40 câu | Djicz, 17/09 | 22/24 câu giám khảo chấm `neither` thì **người chấm là đúng** (92%, KTC 74–98%) |
-| **Đ3** — rà tay 65 nhãn Null | Anh Tài, 17/09 | `KHONG_CO` 39 · `CO_MOT_PHAN` 22 · `CO_DU` 4. **Nhãn không giải thích được** khoảng cách Null của B2 |
+| **Đ3** — rà tay 65 nhãn Null | Tài, 17/09 | `KHONG_CO` 39 · `CO_MOT_PHAN` 22 · `CO_DU` 4. **Nhãn không giải thích được** khoảng cách Null của B2 |
 | **Đ6** — chấm lại toàn bộ bằng rubric làm rõ | máy, 18/09 | Khoảng cách **là do rubric**. Bốn nhánh hoà nhau |
 | ~~Đ4~~ — thêm 3 seed cho H2 | — | **bỏ** 16/09: sau Đ2 gần như chỉ xác nhận BORDERLINE, tốn ~9 giờ GPU, dễ bị phản biện "chạy tới khi đạt" |
 
@@ -104,15 +104,38 @@ err giữa hai rubric**, không so cột `neither`.
 **Hướng đã đóng, đừng mở lại:** verifier / cơ chế từ chối (A3, V5a–V5e đều phủ định); tinh chỉnh tham số đơn thuần
 ([`../CLAUDE.md`](../CLAUDE.md) §1b).
 
-## 5. Ai đang làm gì
+## 5. E1 — hợp nhất thực thể trùng tên: kết quả phủ định
+
+Tài chạy xong 18/09, đã merge (`logs/entity_resolution/DELIVERY_NOTE.md`). Đo offline trên 180 câu dev có evidence, **không** chạy
+sinh hay chấm, cùng một chính sách embedding quan hệ cho cả hai nhánh.
+
+**Hỏi:** gộp thực thể trùng tên có giúp giữ đủ chunk bằng chứng cho nhiều câu hơn không? **Đáp: không.**
+
+| Cổng đã đăng ký trước | Ngưỡng | Kết quả | Kết luận |
+|---|---|---|---|
+| Chỉ đồ thị — `graph_top30` | net ≥ +9 và p < 0,01 | net **−1** (2 lên / 3 xuống), p = 1,0 | **TRƯỢT** |
+| RRF — `final_chunks` | net ≥ 0 | net **0** (2 lên / 2 xuống), p = 1,0 | đạt ở mức tối thiểu |
+
+Cổng RRF đạt chỉ vì ngưỡng là "không xấu đi" — không có cải thiện nào.
+
+**Cấu trúc đồ thị thì đẹp lên đúng như dự đoán:** node 1.556 → 1.538, cạnh 1.509 → 1.463, node cô lập 717 → 709, nhóm trùng tên sau
+chuẩn hoá 21 → 3 (đúng 3 nhóm cố ý giữ lại). Nhưng truy hồi bằng chứng không nhúc nhích. Validity 68/68 check bắt buộc PASS.
+
+**Cách dùng trong bài:** đây là **kết quả phủ định có giá trị** — làm sạch đồ thị không tự động cải thiện truy hồi, khớp với phát
+hiện lớn hơn là đồ thị không đóng góp vào mức tăng (ablation vector thuần). Đừng trình bày như thất bại của thành viên.
+
+**Lưu ý kho:** hai bản sao index của cặp control/treatment (`logs/entity_resolution/pair/`) không đưa vào git vì nặng ~30 MB và
+dựng lại được; index `LiHua-World-qwen-entres/`, toàn bộ script và báo cáo vẫn nằm trong repo.
+
+## 6. Ai đang làm gì
 
 | Người | Việc | Nhánh | Trạng thái |
 |---|---|---|---|
 | Hùng | Sàng lọc BM25, tầng D, chuỗi kiểm Null | `dev` | Tầng D xong, Đ6 xong |
 | Djicz | Đ1 — chấm tay 40 câu Null | `tv1/d1-cham-null` | **xong**, đã merge |
-| Anh Tài | Đ3 — rà 65 nhãn Null | `tv2/d3-ra-nhan` | **xong**, đã merge 18/09 |
-| Thành viên 1 | Cắt tỉa và chấm lại đường đi | `tv1/path-pruning` | đang làm, chưa rà |
-| Thành viên 2 | Hợp nhất thực thể trùng tên | `tv2/entity-resolution` | đang làm, chưa rà |
+| Tài | Đ3 — rà 65 nhãn Null | `tv2/d3-ra-nhan` | **xong**, đã merge 18/09 |
+| Huy Đức | Cắt tỉa và chấm lại đường đi | `tv1/path-pruning` | đang làm, chưa rà |
+| Tài | Hợp nhất thực thể trùng tên (E1) | `tv2/entity-resolution` | **xong 18/09** — kết quả phủ định, đã merge |
 
 **Việc tiếp theo chưa ai nhận:** Đ5 gồm K2 (rà mẫu đáp án vàng của câu có đáp án, 3 giờ), K3 (kiểm nhãn Single/Multi, 1 giờ),
 G2 (giám khảo dễ dãi với chi tiết sai, 3 giờ). G3 (giám khảo thứ hai) **gọi API trả phí — phải hỏi nhóm trước**.
@@ -120,7 +143,7 @@ G2 (giám khảo dễ dãi với chi tiết sai, 3 giờ). G3 (giám khảo th�
 **Nhắc chung.** Index `LiHua-World-qwen-modal/` không ai ghi vào. Mọi công tắc cải tiến mặc định tắt. Chạy QA 200 / 435 / 637 câu
 phải được nhóm duyệt và mỗi lượt chỉ một người chạy.
 
-## 6. Tra ở đâu
+## 7. Tra ở đâu
 
 | Cần gì | File |
 |---|---|

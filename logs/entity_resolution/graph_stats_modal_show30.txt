@@ -1,0 +1,29 @@
+index: ./LiHua-World-qwen-modal
+node 1556 · cạnh 1509
+thành phần liên thông 746 · lớn nhất 771 node · node cô lập (bậc 0) 717
+nhóm trùng tên sau chuẩn hoá: 21 nhóm, 42 node
+    "LIHUA" (bậc 331) · "LI HUA" (bậc 62)
+    "WOLFGANGSCHULZ" (bậc 122) · "WOLFGANG SCHULZ" (bậc 8)
+    "JENNIFER MOORE" (bậc 52) · "JENNIFERMOORE" (bậc 46)
+    "CHAESONG-HWA" (bậc 71) · "CHAE SONG-HWA" (bậc 4)
+    "YURIKOYAMAMOTO" (bậc 63) · "YURIKO YAMAMOTO" (bậc 10)
+    "ADAMSMITH" (bậc 46) · "ADAM SMITH" (bậc 1)
+    "EMILY BURNETT" (bậc 42) · "EMILYBURNETT" (bậc 5)
+    "THANECHAMBERS" (bậc 21) · "THANE CHAMBERS" (bậc 18)
+    "JAKEWATSON" (bậc 32) · "JAKE WATSON" (bậc 2)
+    "REXXARREMAR" (bậc 17) · "REXXAR REMAR" (bậc 0)
+    "MALFURIONSTORMRAGE" (bậc 16) · "MALFURION STORMRAGE" (bậc 0)
+    "TIRIONFORDRING" (bậc 13) · "TIRION FORDRING" (bậc 0)
+    "GROMHELLSCREAM" (bậc 11) · "GROM HELLSCREAM" (bậc 0)
+    "BLOOD AND WINE" (bậc 2) · ""BLOOD AND WINE" (bậc 2)
+    "HERE COMES THE SUN" (bậc 2) · ""HERE COMES THE SUN"" (bậc 1)
+    "SET LIST" (bậc 3) · "SETLIST" (bậc 0)
+    "MAIN ST" (bậc 2) · "MAIN ST." (bậc 0)
+    "10:00AM" (bậc 0) · "10:00 AM" (bậc 0)
+    "AWESOME! 🎉" (bậc 0) · "AWESOME" (bậc 0)
+    "KIDS' (bậc 0) · "KIDS" (bậc 0)
+    "AIR-CONDITIONER" (bậc 0) · "AIR CONDITIONER" (bậc 0)
+tên không có chữ hay số (rác): 5 — ['"🎉"', '"👏"', '"💥"', '"😊"', '"🙌"']
+entity_type khác nhau: 47 · phổ biến nhất: [('"EVENT"', 378), ('"CONCEPT"', 249), ('"PERSON"', 205), ('"LOCATION"', 140), ('"TECHNOLOGY"', 138), ('"UNKNOWN"', 124), ('"ORGANIZATION"', 89), ('"PRODUCT"', 44)]
+độ dài mô tả node: trung vị 110 · max 50846 ký tự
+hub bậc cao nhất: "LIHUA" (331) · "WOLFGANGSCHULZ" (122) · "CHAESONG-HWA" (71) · "YURIKOYAMAMOTO" (63) · "LI HUA" (62)

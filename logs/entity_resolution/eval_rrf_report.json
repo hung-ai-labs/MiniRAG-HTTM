@@ -1,0 +1,178 @@
+{
+  "mode": "rrf",
+  "fusion": "rrf",
+  "arms": {
+    "control": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\control",
+    "treatment": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\entres"
+  },
+  "timestamp": "2026-09-18 07:12:59",
+  "overall_status": "VALID",
+  "gate": {
+    "status": "EVALUATED",
+    "blocking_checks": [],
+    "graph_only": {
+      "metric": "mode=graph -> graph_top30 (ALL)",
+      "rule": "full-evidence net >= +9 VA McNemar exact p < 0,01",
+      "net": -1,
+      "mcnemar_p": 1.0,
+      "passed": false
+    },
+    "rrf": {
+      "metric": "mode=rrf -> final_chunks (ALL)",
+      "rule": "full-evidence net >= 0",
+      "net": 0,
+      "mcnemar_p": 1.0,
+      "passed": true
+    }
+  },
+  "audit_notes": [
+    "3-query engineering smoke test was observed before the full run; no merge decision, metric definition or numerical threshold was changed based on it. Its n=3 pass counts for mode=graph were printed to the operator.",
+    "The RRF gate was corrected at the ANALYSIS layer from graph_top30 to final_chunks because graph_ids is captured before chunk fusion (minirag/operate.py:1489). The correction was applied to eval_offline.py at 2026-09-17 22:52:08 (file mtime), after the full run was launched at 22:43:00 (process output file ctime) and before the first full-run raw log existed (control_graph.jsonl ctime 23:25:45). It is NOT a preregistration made before measurement. Preregistered thresholds (+9 / p<0.01; >=0) are unchanged.",
+    "The running retrieval process keeps the launch-time code in memory, so it still writes reports with the uncorrected RRF gate. Those reports are preserved under provenance/runner_original/ as run evidence and are superseded by this report for gate conclusions.",
+    "Report-layer changes (fail-closed gating, provenance verification) do not change the merge list, the retrieval implementation, the sample, the metric definitions or the numerical thresholds.",
+    "Control arm is NOT the byte-identical committed retrieval index: both arms had their relationship VDB re-embedded with hf_embed at batch=1 per the 17/09/2026 amendment.",
+    "Headline result: effect of E1 entity resolution under the deterministic relationship-embedding correction."
+  ],
+  "check_summary": {
+    "required": 68,
+    "pass": 68,
+    "fail": 0,
+    "unverified": 0
+  },
+  "graph_top30": {
+    "ALL": {
+      "n": 180,
+      "control_pass": 103,
+      "control_rate": 57.22222222222222,
+      "treatment_pass": 102,
+      "treatment_rate": 56.666666666666664,
+      "wins": 2,
+      "losses": 3,
+      "tie_pass": 100,
+      "tie_fail": 75,
+      "net": -1,
+      "mcnemar_p": 1.0,
+      "mcnemar_method": "exact two-sided binomial tren cap lech: min(1, 2*P(X<=min(b,c))), X~Bin(b+c,0.5)"
+    },
+    "Single": {
+      "n": 159,
+      "control_pass": 95,
+      "control_rate": 59.74842767295598,
+      "treatment_pass": 94,
+      "treatment_rate": 59.119496855345915,
+      "wins": 1,
+      "losses": 2,
+      "tie_pass": 93,
+      "tie_fail": 63,
+      "net": -1,
+      "mcnemar_p": 1.0,
+      "mcnemar_method": "exact two-sided binomial tren cap lech: min(1, 2*P(X<=min(b,c))), X~Bin(b+c,0.5)"
+    },
+    "Multi": {
+      "n": 21,
+      "control_pass": 8,
+      "control_rate": 38.095238095238095,
+      "treatment_pass": 8,
+      "treatment_rate": 38.095238095238095,
+      "wins": 1,
+      "losses": 1,
+      "tie_pass": 7,
+      "tie_fail": 12,
+      "net": 0,
+      "mcnemar_p": 1.0,
+      "mcnemar_method": "exact two-sided binomial tren cap lech: min(1, 2*P(X<=min(b,c))), X~Bin(b+c,0.5)"
+    }
+  },
+  "final_chunks": {
+    "ALL": {
+      "n": 180,
+      "control_pass": 112,
+      "control_rate": 62.22222222222222,
+      "treatment_pass": 112,
+      "treatment_rate": 62.22222222222222,
+      "wins": 2,
+      "losses": 2,
+      "tie_pass": 110,
+      "tie_fail": 66,
+      "net": 0,
+      "mcnemar_p": 1.0,
+      "mcnemar_method": "exact two-sided binomial tren cap lech: min(1, 2*P(X<=min(b,c))), X~Bin(b+c,0.5)"
+    },
+    "Single": {
+      "n": 159,
+      "control_pass": 98,
+      "control_rate": 61.63522012578616,
+      "treatment_pass": 98,
+      "treatment_rate": 61.63522012578616,
+      "wins": 1,
+      "losses": 1,
+      "tie_pass": 97,
+      "tie_fail": 60,
+      "net": 0,
+      "mcnemar_p": 1.0,
+      "mcnemar_method": "exact two-sided binomial tren cap lech: min(1, 2*P(X<=min(b,c))), X~Bin(b+c,0.5)"
+    },
+    "Multi": {
+      "n": 21,
+      "control_pass": 14,
+      "control_rate": 66.66666666666667,
+      "treatment_pass": 14,
+      "treatment_rate": 66.66666666666667,
+      "wins": 1,
+      "losses": 1,
+      "tie_pass": 13,
+      "tie_fail": 6,
+      "net": 0,
+      "mcnemar_p": 1.0,
+      "mcnemar_method": "exact two-sided binomial tren cap lech: min(1, 2*P(X<=min(b,c))), X~Bin(b+c,0.5)"
+    }
+  },
+  "workload": {
+    "control": {
+      "graph_seeds": {
+        "n": 180,
+        "mean": 96.08,
+        "median": 96.5,
+        "p95": 149,
+        "max": 176
+      },
+      "graph_paths": {
+        "n": 180,
+        "mean": 19631.98,
+        "median": 19994.5,
+        "p95": 31566,
+        "max": 36741
+      },
+      "retrieval_ms": {
+        "n": 180,
+        "mean": 10000.75,
+        "median": 8354.77,
+        "p95": 20783.87,
+        "max": 31113.64
+      }
+    },
+    "treatment": {
+      "graph_seeds": {
+        "n": 180,
+        "mean": 95.39,
+        "median": 96.0,
+        "p95": 148,
+        "max": 174
+      },
+      "graph_paths": {
+        "n": 180,
+        "mean": 21909.57,
+        "median": 22307.0,
+        "p95": 35154,
+        "max": 40612
+      },
+      "retrieval_ms": {
+        "n": 180,
+        "mean": 129878.71,
+        "median": 7179.97,
+        "p95": 20694.94,
+        "max": 11245501.39
+      }
+    }
+  }
+}

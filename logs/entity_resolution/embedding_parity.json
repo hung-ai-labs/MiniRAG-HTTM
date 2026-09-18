@@ -1,0 +1,247 @@
+{
+  "workingdir": "E:\\Sv clone\\MiniRAG\\LiHua-World-qwen-modal",
+  "n_records": 30,
+  "n_each": 10,
+  "threshold_median_cosine": 0.999,
+  "modes": {
+    "single": {
+      "median_cosine": 0.682176853696439,
+      "min_cosine": 0.027014455731059456,
+      "max_abs_diff": 0.43565608610091
+    },
+    "batch": {
+      "median_cosine": 0.41673261727346045,
+      "min_cosine": 0.15701430579207973,
+      "max_abs_diff": 0.5046969512883666
+    }
+  },
+  "best_mode": "single",
+  "asis_parity_ok": false,
+  "function_parity": {
+    "median_cosine": 0.9999999999997752,
+    "min_cosine": 0.9795625677550306,
+    "ok": true
+  },
+  "recovered": [
+    {
+      "store": "entities_name",
+      "id": "Ename-008b2682861285f03f3af0b7d7d048a5",
+      "cosine": 0.9999999999996041,
+      "pad_len": 8,
+      "real_tokens": 6
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-00bd3654c9a6b102d3d593b41601b107",
+      "cosine": 0.9999999999997762,
+      "pad_len": 14,
+      "real_tokens": 6
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-00cb42533fd09e57033ac4ffa0d40c4d",
+      "cosine": 0.9999999999996768,
+      "pad_len": 8,
+      "real_tokens": 5
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-00e616b8c5b8e5a8d2cd2c2eee958994",
+      "cosine": 0.9999999999997742,
+      "pad_len": 8,
+      "real_tokens": 8
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-00ec9aae664a31b9e0002fb3ea4670fd",
+      "cosine": 0.9999999999995769,
+      "pad_len": 9,
+      "real_tokens": 5
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-014b087e93035651bf34dc4914954838",
+      "cosine": 0.9999999999997252,
+      "pad_len": 9,
+      "real_tokens": 6
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-015e77e172077173534168f6ab340cb5",
+      "cosine": 0.9999999999996976,
+      "pad_len": 6,
+      "real_tokens": 6
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-017a9b1f686b62676056189e895af575",
+      "cosine": 0.9999999999997375,
+      "pad_len": 8,
+      "real_tokens": 6
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-019159193e9882a8c4c40f4654cafdf6",
+      "cosine": 0.999999999999767,
+      "pad_len": 14,
+      "real_tokens": 8
+    },
+    {
+      "store": "entities_name",
+      "id": "Ename-01ac6f32af95b4b6c8b1cc58fb8ff4e0",
+      "cosine": 0.9999999999996344,
+      "pad_len": 8,
+      "real_tokens": 6
+    },
+    {
+      "store": "entities",
+      "id": "ent-008b2682861285f03f3af0b7d7d048a5",
+      "cosine": 0.9999999999999474,
+      "pad_len": 512,
+      "real_tokens": 25
+    },
+    {
+      "store": "entities",
+      "id": "ent-00bd3654c9a6b102d3d593b41601b107",
+      "cosine": 0.9999999999999415,
+      "pad_len": 512,
+      "real_tokens": 18
+    },
+    {
+      "store": "entities",
+      "id": "ent-00cb42533fd09e57033ac4ffa0d40c4d",
+      "cosine": 0.9999999999998889,
+      "pad_len": 512,
+      "real_tokens": 30
+    },
+    {
+      "store": "entities",
+      "id": "ent-00e616b8c5b8e5a8d2cd2c2eee958994",
+      "cosine": 0.9999999999999035,
+      "pad_len": 512,
+      "real_tokens": 26
+    },
+    {
+      "store": "entities",
+      "id": "ent-00ec9aae664a31b9e0002fb3ea4670fd",
+      "cosine": 0.9999999999999294,
+      "pad_len": 512,
+      "real_tokens": 34
+    },
+    {
+      "store": "entities",
+      "id": "ent-014b087e93035651bf34dc4914954838",
+      "cosine": 0.999999999999938,
+      "pad_len": 512,
+      "real_tokens": 50
+    },
+    {
+      "store": "entities",
+      "id": "ent-015e77e172077173534168f6ab340cb5",
+      "cosine": 0.9999999999999422,
+      "pad_len": 512,
+      "real_tokens": 56
+    },
+    {
+      "store": "entities",
+      "id": "ent-017a9b1f686b62676056189e895af575",
+      "cosine": 0.9999999999999365,
+      "pad_len": 512,
+      "real_tokens": 57
+    },
+    {
+      "store": "entities",
+      "id": "ent-019159193e9882a8c4c40f4654cafdf6",
+      "cosine": 0.9999999999999516,
+      "pad_len": 512,
+      "real_tokens": 29
+    },
+    {
+      "store": "entities",
+      "id": "ent-01ac6f32af95b4b6c8b1cc58fb8ff4e0",
+      "cosine": 0.9999999999999323,
+      "pad_len": 512,
+      "real_tokens": 28
+    },
+    {
+      "store": "relationships",
+      "id": "rel-00191164e3e057227f0b954af3687537",
+      "cosine": 0.9999999999998027,
+      "pad_len": 51,
+      "real_tokens": 47
+    },
+    {
+      "store": "relationships",
+      "id": "rel-02887b8f479b1919c175be7ccb7310b5",
+      "cosine": 0.9795625677550306,
+      "pad_len": 148,
+      "real_tokens": 101
+    },
+    {
+      "store": "relationships",
+      "id": "rel-028dbc285f573100b05ffc69b8a19b35",
+      "cosine": 0.9999999999999452,
+      "pad_len": 512,
+      "real_tokens": 58
+    },
+    {
+      "store": "relationships",
+      "id": "rel-02bdab789b297f850a42bca9c826a587",
+      "cosine": 0.9999999999997708,
+      "pad_len": 60,
+      "real_tokens": 47
+    },
+    {
+      "store": "relationships",
+      "id": "rel-030097b1498a7f262884a943d9623f0b",
+      "cosine": 0.9999999999996617,
+      "pad_len": 76,
+      "real_tokens": 45
+    },
+    {
+      "store": "relationships",
+      "id": "rel-03c90ba345cb086104eeee3ffba56883",
+      "cosine": 0.9910412290846626,
+      "pad_len": 512,
+      "real_tokens": 45
+    },
+    {
+      "store": "relationships",
+      "id": "rel-0401f9a5261d1419888a9a3f60d15c1a",
+      "cosine": 0.9999999999996527,
+      "pad_len": 46,
+      "real_tokens": 39
+    },
+    {
+      "store": "relationships",
+      "id": "rel-0429448de23f6abeebc3e14581f7ae92",
+      "cosine": 0.9999999999999232,
+      "pad_len": 512,
+      "real_tokens": 43
+    },
+    {
+      "store": "relationships",
+      "id": "rel-044a93a1930ff6810c26942af6bfc1d0",
+      "cosine": 0.9999999999997091,
+      "pad_len": 45,
+      "real_tokens": 44
+    },
+    {
+      "store": "relationships",
+      "id": "rel-0474f230fb0d1d93857c56049f347be7",
+      "cosine": 0.9999999999997887,
+      "pad_len": 80,
+      "real_tokens": 53
+    }
+  ],
+  "status": "BLOCKER_PADDING_REGIME",
+  "message": "ham + model + content DUNG TUYET DOI, nhung vector da commit bi nhiem pad-token (hf.py mean qua ca vi tri pad, khong dung attention_mask) nen khong tai tao duoc tu van ban. Quyet dinh che do nhung lai phai duoc nhom chot truoc khi do retrieval.",
+  "detail_lines": [
+    "  single entities        n= 10 cosine min=0.027014 median=0.070298 max_abs_diff max=0.265245",
+    "  single entities_name   n= 10 cosine min=0.726142 median=0.891299 max_abs_diff max=0.435656",
+    "  single relationships   n= 10 cosine min=0.117606 median=0.684498 max_abs_diff max=0.396266",
+    "  batch  entities        n= 10 cosine min=0.157014 median=0.269641 max_abs_diff max=0.352691",
+    "  batch  entities_name   n= 10 cosine min=0.286822 median=0.529335 max_abs_diff max=0.504697",
+    "  batch  relationships   n= 10 cosine min=0.243639 median=0.674021 max_abs_diff max=0.352796"
+  ]
+}

@@ -1,0 +1,470 @@
+{
+  "timestamp": "2026-09-17 22:25:55",
+  "git_commit": "8ee861df81c00f1dc9f44968ecc89cf16b54375c",
+  "policy": {
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "embedding_func": "minirag.llm.hf.hf_embed (khong doi)",
+    "embedding_batch_num": 1,
+    "reembedded_stores": [
+      "relationships"
+    ],
+    "untouched_stores": [
+      "entities_name",
+      "chunks",
+      "entities"
+    ]
+  },
+  "arms": {
+    "control": {
+      "source": "E:\\Sv clone\\MiniRAG\\LiHua-World-qwen-modal",
+      "dir": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\control",
+      "records": 1509,
+      "seconds": 74.7,
+      "edges": 1509
+    },
+    "entres": {
+      "source": "E:\\Sv clone\\MiniRAG\\LiHua-World-qwen-entres",
+      "dir": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\entres",
+      "records": 1463,
+      "seconds": 72.1,
+      "edges": 1463
+    }
+  },
+  "cross_arm": {
+    "control_records": 1509,
+    "treatment_records": 1463,
+    "common_untouched": 1320,
+    "changed_or_absent": 143,
+    "min_cosine": 0.9999999999999996,
+    "median_cosine": 1.0,
+    "max_abs_diff": 0.0
+  },
+  "determinism": {
+    "control": {
+      "ids_and_meta_equal": true,
+      "max_abs_diff": 0.0
+    },
+    "entres": {
+      "ids_and_meta_equal": true,
+      "max_abs_diff": 0.0
+    }
+  },
+  "checks": [
+    {
+      "name": "[control] graphml giong het index tham chieu",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] vdb_entities_name.json giong het (khong nhung lai)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] vdb_chunks.json giong het (khong nhung lai)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] file bat bien giong het: kv_store_text_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] file bat bien giong het: vdb_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] file bat bien giong het: kv_store_full_docs.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] file bat bien giong het: kv_store_doc_status.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] file bat bien giong het: extracted_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] chunk count va danh sach id giong het",
+      "passed": true,
+      "detail": "514 vs 514"
+    },
+    {
+      "name": "[control] id/src_id/tgt_id cua kho quan he khong doi",
+      "passed": true,
+      "detail": "1509 vs 1509 ban ghi"
+    },
+    {
+      "name": "[control] so ban ghi quan he == so canh",
+      "passed": true,
+      "detail": "1509 vs 1509"
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 2",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 3",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 4",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 5",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 6",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 7",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 8",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 9",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 11",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 12",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 13",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 15",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 16",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 17",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 19",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[control] control giu nguyen ca hai node cua nhom 21",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] graphml giong het index tham chieu",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] vdb_entities_name.json giong het (khong nhung lai)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] vdb_chunks.json giong het (khong nhung lai)",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] file bat bien giong het: kv_store_text_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] file bat bien giong het: vdb_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] file bat bien giong het: kv_store_full_docs.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] file bat bien giong het: kv_store_doc_status.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] file bat bien giong het: extracted_chunks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] chunk count va danh sach id giong het",
+      "passed": true,
+      "detail": "514 vs 514"
+    },
+    {
+      "name": "[entres] id/src_id/tgt_id cua kho quan he khong doi",
+      "passed": true,
+      "detail": "1463 vs 1463 ban ghi"
+    },
+    {
+      "name": "[entres] so ban ghi quan he == so canh",
+      "passed": true,
+      "detail": "1463 vs 1463"
+    },
+    {
+      "name": "[entres] nhom 1: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 1: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 2: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 2: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 3: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 3: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 4: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 4: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 5: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 5: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 6: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 6: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 7: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 7: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 8: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 8: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 9: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 9: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 10: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 10: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 11: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 11: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 12: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 12: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 13: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 13: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 15: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 15: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 16: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 16: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 17: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 17: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 19: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 19: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 21: alias da bi xoa",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom 21: keep con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom REJECT 14: ca hai node con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom REJECT 18: ca hai node con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[entres] nhom REJECT 20: ca hai node con lai",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "[cross] vector trung khop tren quan he khong bi E1 dong toi",
+      "passed": true,
+      "detail": "n=1320 min_cosine=0.9999999999999996 max_abs_diff=0.0"
+    },
+    {
+      "name": "[control] chay lai cho vector y het (tat dinh)",
+      "passed": true,
+      "detail": "ids/meta=True max_abs_diff=0.0"
+    },
+    {
+      "name": "[entres] chay lai cho vector y het (tat dinh)",
+      "passed": true,
+      "detail": "ids/meta=True max_abs_diff=0.0"
+    },
+    {
+      "name": "[source] LiHua-World-qwen-modal khong bi ghi vao",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "status": "PASS"
+}

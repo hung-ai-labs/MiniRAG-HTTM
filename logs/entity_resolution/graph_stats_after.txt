@@ -1,0 +1,6 @@
+index: E:\Sv clone\MiniRAG\LiHua-World-qwen-entres
+node 1538 - canh 1463
+entity_type (lower) khac nhau: 47
+entity_type (with-case) khac nhau: 47
+chunk_count: 514
+vdb_counts: {'entities': 1407, 'entities_name': 1407, 'relationships': 1463, 'chunks': 514}

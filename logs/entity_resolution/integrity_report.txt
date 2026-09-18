@@ -1,0 +1,65 @@
+PASS  CHECK1 get_types() lower giong het truoc/sau  before=47 after=47
+PASS  CHECK1b get_types() with-case giong het truoc/sau  before=47 after=47
+PASS  CHECK2 nhom 1: alias '"LI HUA"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 1: keep '"LIHUA"' con ton tai  
+PASS  CHECK2 nhom 2: alias '"WOLFGANG SCHULZ"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 2: keep '"WOLFGANGSCHULZ"' con ton tai  
+PASS  CHECK2 nhom 3: alias '"JENNIFERMOORE"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 3: keep '"JENNIFER MOORE"' con ton tai  
+PASS  CHECK2 nhom 4: alias '"CHAE SONG-HWA"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 4: keep '"CHAESONG-HWA"' con ton tai  
+PASS  CHECK2 nhom 5: alias '"YURIKO YAMAMOTO"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 5: keep '"YURIKOYAMAMOTO"' con ton tai  
+PASS  CHECK2 nhom 6: alias '"ADAM SMITH"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 6: keep '"ADAMSMITH"' con ton tai  
+PASS  CHECK2 nhom 7: alias '"EMILYBURNETT"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 7: keep '"EMILY BURNETT"' con ton tai  
+PASS  CHECK2 nhom 8: alias '"THANE CHAMBERS"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 8: keep '"THANECHAMBERS"' con ton tai  
+PASS  CHECK2 nhom 9: alias '"JAKE WATSON"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 9: keep '"JAKEWATSON"' con ton tai  
+PASS  CHECK2 nhom 10: alias '"REXXAR REMAR"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 10: keep '"REXXARREMAR"' con ton tai  
+PASS  CHECK2 nhom 11: alias '"MALFURION STORMRAGE"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 11: keep '"MALFURIONSTORMRAGE"' con ton tai  
+PASS  CHECK2 nhom 12: alias '"TIRION FORDRING"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 12: keep '"TIRIONFORDRING"' con ton tai  
+PASS  CHECK2 nhom 13: alias '"GROM HELLSCREAM"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 13: keep '"GROMHELLSCREAM"' con ton tai  
+PASS  CHECK2 nhom 15: alias '""HERE COMES THE SUN""' da bi xoa khoi graph  
+PASS  CHECK2 nhom 15: keep '"HERE COMES THE SUN"' con ton tai  
+PASS  CHECK2 nhom 16: alias '"SETLIST"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 16: keep '"SET LIST"' con ton tai  
+PASS  CHECK2 nhom 17: alias '"MAIN ST."' da bi xoa khoi graph  
+PASS  CHECK2 nhom 17: keep '"MAIN ST"' con ton tai  
+PASS  CHECK2 nhom 19: alias '"AWESOME! 🎉"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 19: keep '"AWESOME"' con ton tai  
+PASS  CHECK2 nhom 21: alias '"AIR-CONDITIONER"' da bi xoa khoi graph  
+PASS  CHECK2 nhom 21: keep '"AIR CONDITIONER"' con ton tai  
+PASS  CHECK3/12 nhom REJECT 14: ca hai node con ton tai (khong bi merge)  
+PASS  CHECK3/12 nhom REJECT 18: ca hai node con ton tai (khong bi merge)  
+PASS  CHECK3/12 nhom REJECT 20: ca hai node con ton tai (khong bi merge)  
+PASS  CHECK11 approved duplicate groups remaining = 0  []
+PASS  CHECK12 rejected duplicate groups remaining = 3 (whitelist, hop le)  3: ['1000am', 'bloodandwine', 'kids']
+PASS  CHECK12b khong phat sinh duplicate ngoai whitelist  []
+PASS  CHECK9 chunk count giong het  514 vs 514
+PASS  CHECK10 chunk id list (sorted) giong het  
+PASS  file bat bien giong het source: kv_store_text_chunks.json  
+PASS  file bat bien giong het source: vdb_chunks.json  
+PASS  file bat bien giong het source: kv_store_full_docs.json  
+PASS  file bat bien giong het source: kv_store_doc_status.json  
+PASS  file bat bien giong het source: extracted_chunks.json  
+PASS  CHECK15 source index khong doi (hash cay thu muc)  
+PASS  CHECK13 khong con dangling graph edge  []
+PASS  CHECK4 khong con ent- record tro toi alias  []
+PASS  CHECK4b khong con Ename- record tro toi alias  []
+PASS  CHECK5 khong con rel- record co src_id/tgt_id la alias  []
+PASS  CHECK14 khong con rel- record tro toi node khong ton tai trong graph  []
+PASS  CHECK6 moi keep van co Ename- record  []
+PASS  CHECK7 moi keep van co ent- record  []
+PASS  CHECK8 moi canh bi doi (con ton tai) deu co rel- record  []
+PASS  CHECK8b moi canh trong graph cuoi deu co rel- record  0 canh thieu: []
+PASS  CHECK8c khong co rel- record mo coi (khong ung voi canh nao)  0 record thua: []
+PASS  CHECK8d so rel- record == so canh  1463 record vs 1463 canh
+
+FINAL: PASS

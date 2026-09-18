@@ -1,0 +1,11 @@
+index: ./LiHua-World-qwen-entres
+node 1538 · cạnh 1463
+thành phần liên thông 738 · lớn nhất 761 node · node cô lập (bậc 0) 709
+nhóm trùng tên sau chuẩn hoá: 3 nhóm, 6 node
+    "BLOOD AND WINE" (bậc 2) · ""BLOOD AND WINE" (bậc 2)
+    "10:00AM" (bậc 0) · "10:00 AM" (bậc 0)
+    "KIDS' (bậc 0) · "KIDS" (bậc 0)
+tên không có chữ hay số (rác): 5 — ['"🎉"', '"👏"', '"💥"', '"😊"', '"🙌"']
+entity_type khác nhau: 47 · phổ biến nhất: [('"EVENT"', 378), ('"CONCEPT"', 247), ('"PERSON"', 192), ('"LOCATION"', 139), ('"TECHNOLOGY"', 137), ('"UNKNOWN"', 124), ('"ORGANIZATION"', 89), ('"PRODUCT"', 44)]
+độ dài mô tả node: trung vị 110 · max 59218 ký tự
+hub bậc cao nhất: "LIHUA" (363) · "WOLFGANGSCHULZ" (123) · "JENNIFER MOORE" (91) · "CHAESONG-HWA" (71) · "YURIKOYAMAMOTO" (65)

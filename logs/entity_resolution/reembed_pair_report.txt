@@ -1,0 +1,92 @@
+Paired deterministic relationship re-embedding -- 2026-09-17 22:25:55 (commit 8ee861df81)
+Chinh sach: sentence-transformers/all-MiniLM-L6-v2 + hf_embed, batch = 1; chi nhung lai kho 'relationships'
+control  : E:\Sv clone\MiniRAG\logs\entity_resolution\pair\control -- 1509 ban ghi / 1509 canh (74.7s)
+treatment: E:\Sv clone\MiniRAG\logs\entity_resolution\pair\entres -- 1463 ban ghi / 1463 canh (72.1s)
+quan he chung khong bi E1 dong toi: 1320 (doi noi dung hoac chi co o mot nhanh: 143)
+  cosine min 0.9999999999999996 - trung vi 1.0 - max_abs_diff 0.0
+
+PASS  [control] graphml giong het index tham chieu  
+PASS  [control] vdb_entities_name.json giong het (khong nhung lai)  
+PASS  [control] vdb_chunks.json giong het (khong nhung lai)  
+PASS  [control] file bat bien giong het: kv_store_text_chunks.json  
+PASS  [control] file bat bien giong het: vdb_chunks.json  
+PASS  [control] file bat bien giong het: kv_store_full_docs.json  
+PASS  [control] file bat bien giong het: kv_store_doc_status.json  
+PASS  [control] file bat bien giong het: extracted_chunks.json  
+PASS  [control] chunk count va danh sach id giong het  514 vs 514
+PASS  [control] id/src_id/tgt_id cua kho quan he khong doi  1509 vs 1509 ban ghi
+PASS  [control] so ban ghi quan he == so canh  1509 vs 1509
+PASS  [control] control giu nguyen ca hai node cua nhom 1  
+PASS  [control] control giu nguyen ca hai node cua nhom 2  
+PASS  [control] control giu nguyen ca hai node cua nhom 3  
+PASS  [control] control giu nguyen ca hai node cua nhom 4  
+PASS  [control] control giu nguyen ca hai node cua nhom 5  
+PASS  [control] control giu nguyen ca hai node cua nhom 6  
+PASS  [control] control giu nguyen ca hai node cua nhom 7  
+PASS  [control] control giu nguyen ca hai node cua nhom 8  
+PASS  [control] control giu nguyen ca hai node cua nhom 9  
+PASS  [control] control giu nguyen ca hai node cua nhom 10  
+PASS  [control] control giu nguyen ca hai node cua nhom 11  
+PASS  [control] control giu nguyen ca hai node cua nhom 12  
+PASS  [control] control giu nguyen ca hai node cua nhom 13  
+PASS  [control] control giu nguyen ca hai node cua nhom 15  
+PASS  [control] control giu nguyen ca hai node cua nhom 16  
+PASS  [control] control giu nguyen ca hai node cua nhom 17  
+PASS  [control] control giu nguyen ca hai node cua nhom 19  
+PASS  [control] control giu nguyen ca hai node cua nhom 21  
+PASS  [entres] graphml giong het index tham chieu  
+PASS  [entres] vdb_entities_name.json giong het (khong nhung lai)  
+PASS  [entres] vdb_chunks.json giong het (khong nhung lai)  
+PASS  [entres] file bat bien giong het: kv_store_text_chunks.json  
+PASS  [entres] file bat bien giong het: vdb_chunks.json  
+PASS  [entres] file bat bien giong het: kv_store_full_docs.json  
+PASS  [entres] file bat bien giong het: kv_store_doc_status.json  
+PASS  [entres] file bat bien giong het: extracted_chunks.json  
+PASS  [entres] chunk count va danh sach id giong het  514 vs 514
+PASS  [entres] id/src_id/tgt_id cua kho quan he khong doi  1463 vs 1463 ban ghi
+PASS  [entres] so ban ghi quan he == so canh  1463 vs 1463
+PASS  [entres] nhom 1: alias da bi xoa  
+PASS  [entres] nhom 1: keep con lai  
+PASS  [entres] nhom 2: alias da bi xoa  
+PASS  [entres] nhom 2: keep con lai  
+PASS  [entres] nhom 3: alias da bi xoa  
+PASS  [entres] nhom 3: keep con lai  
+PASS  [entres] nhom 4: alias da bi xoa  
+PASS  [entres] nhom 4: keep con lai  
+PASS  [entres] nhom 5: alias da bi xoa  
+PASS  [entres] nhom 5: keep con lai  
+PASS  [entres] nhom 6: alias da bi xoa  
+PASS  [entres] nhom 6: keep con lai  
+PASS  [entres] nhom 7: alias da bi xoa  
+PASS  [entres] nhom 7: keep con lai  
+PASS  [entres] nhom 8: alias da bi xoa  
+PASS  [entres] nhom 8: keep con lai  
+PASS  [entres] nhom 9: alias da bi xoa  
+PASS  [entres] nhom 9: keep con lai  
+PASS  [entres] nhom 10: alias da bi xoa  
+PASS  [entres] nhom 10: keep con lai  
+PASS  [entres] nhom 11: alias da bi xoa  
+PASS  [entres] nhom 11: keep con lai  
+PASS  [entres] nhom 12: alias da bi xoa  
+PASS  [entres] nhom 12: keep con lai  
+PASS  [entres] nhom 13: alias da bi xoa  
+PASS  [entres] nhom 13: keep con lai  
+PASS  [entres] nhom 15: alias da bi xoa  
+PASS  [entres] nhom 15: keep con lai  
+PASS  [entres] nhom 16: alias da bi xoa  
+PASS  [entres] nhom 16: keep con lai  
+PASS  [entres] nhom 17: alias da bi xoa  
+PASS  [entres] nhom 17: keep con lai  
+PASS  [entres] nhom 19: alias da bi xoa  
+PASS  [entres] nhom 19: keep con lai  
+PASS  [entres] nhom 21: alias da bi xoa  
+PASS  [entres] nhom 21: keep con lai  
+PASS  [entres] nhom REJECT 14: ca hai node con lai  
+PASS  [entres] nhom REJECT 18: ca hai node con lai  
+PASS  [entres] nhom REJECT 20: ca hai node con lai  
+PASS  [cross] vector trung khop tren quan he khong bi E1 dong toi  n=1320 min_cosine=0.9999999999999996 max_abs_diff=0.0
+PASS  [control] chay lai cho vector y het (tat dinh)  ids/meta=True max_abs_diff=0.0
+PASS  [entres] chay lai cho vector y het (tat dinh)  ids/meta=True max_abs_diff=0.0
+PASS  [source] LiHua-World-qwen-modal khong bi ghi vao  
+
+FINAL: PASS

@@ -1,0 +1,9 @@
+{
+  "file": "logs/entity_resolution/provenance/eval_offline_AFTER_GATE_PATCH_2252.py",
+  "copied_from": "reproduce/entity_resolution/eval_offline.py",
+  "source_mtime": 1789660328.5791798,
+  "source_mtime_str": "2026-09-17 22:52:08",
+  "copied_at": "2026-09-17 23:40:05",
+  "sha256": "3e65df8aa60ffe8e0431f2148016adc31e4f2a78287d22d67765822a901f4ca9",
+  "note": "Ban sao runner o trang thai sau patch cong 22:52:08 (mtime chua doi khi sao). Dung de xac minh patch_gate(ban_dung_lai_luc_launch) == ban nay, doc lap voi cac patch sau run."
+}

@@ -67,3 +67,6 @@ logs/screening/cache/ctx_*.jsonl
 logs/screening/*.out
 # Tầng D: giữ câu trả lời và phán quyết, bỏ context thô (22 MB) — trung vị token đã lưu trong stage_d_report.json
 logs/stage_d/*_ctx.jsonl
+
+# hai bản sao index của cặp control/treatment E1 — không đưa vào git (xem logs/entity_resolution/DELIVERY_NOTE.md)
+logs/entity_resolution/pair/

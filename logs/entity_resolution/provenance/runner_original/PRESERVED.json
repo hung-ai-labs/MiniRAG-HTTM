@@ -1,0 +1,61 @@
+{
+  "_note": "sha256/mtime/ctime ghi LUC BAO TOAN (sau khi lan chay ket thuc). Chung chi dung de phat hien ban luu tru bi sua ve sau; KHONG phai hash truoc lan chay.",
+  "files": {
+    "eval_graph_report.json": {
+      "sha256": "0b4c7fab2a7ab14330d5501531b670ddcf9de7d4f66910df485e5b2c0a22c26f",
+      "size": 7003,
+      "original_path": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval_graph_report.json",
+      "original_mtime": 1789690118.5644515,
+      "original_ctime": 1789690118.5644515,
+      "preserved_at": 1789690147.0525627
+    },
+    "eval_rrf_report.json": {
+      "sha256": "d91ace90f9f25625e801538a509809e25c04fa5b7a6ee64b5237a850e1d3021f",
+      "size": 6997,
+      "original_path": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval_rrf_report.json",
+      "original_mtime": 1789690118.5872312,
+      "original_ctime": 1789690118.5852246,
+      "preserved_at": 1789690147.0567734
+    },
+    "eval_summary.md": {
+      "sha256": "9fbed4dec2469ead3b8ef33aa764ffd57d2638bcb6fce15c1a6506b73bf6e5e5",
+      "size": 3844,
+      "original_path": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\eval_summary.md",
+      "original_mtime": 1789690118.6010065,
+      "original_ctime": 1789690118.6010065,
+      "preserved_at": 1789690147.06004
+    },
+    "per_query_graph.jsonl": {
+      "sha256": "f72e8bbfb85776697ea96e0ba43f5ec4949dc4ebdc95002dbe24f1fe4890e92e",
+      "size": 671424,
+      "original_path": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\per_query_graph.jsonl",
+      "original_mtime": 1789690118.5852246,
+      "original_ctime": 1789690118.5644515,
+      "preserved_at": 1789690147.0996974
+    },
+    "per_query_rrf.jsonl": {
+      "sha256": "1bf94e224cec2edda4f59767c492c99b2571b69fcee6e7ee449da8f5e956db2c",
+      "size": 701071,
+      "original_path": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\per_query_rrf.jsonl",
+      "original_mtime": 1789690118.599001,
+      "original_ctime": 1789690118.5872312,
+      "preserved_at": 1789690147.2020607
+    },
+    "process_stdout.txt": {
+      "sha256": "b4bdf954ad7b0e5994fdb1da2cab50b59b8372d03cdf36d4fab6f4569f83b2c6",
+      "size": 4903,
+      "original_path": "C:/Users/nguye/AppData/Local/Temp/claude/e--Sv-clone-MiniRAG/a2576469-0235-4132-9613-a95e07ecc450/tasks/bwb21nlcb.output",
+      "original_mtime": 1789690121.180177,
+      "original_ctime": 1789659780.9664478,
+      "preserved_at": 1789690147.224642
+    },
+    "minirag_log_control.txt": {
+      "sha256": "5deb54c0f894167bebb5fbf57dd61e5da8dd4b9bef068224f40d6c8171204295",
+      "size": 478664,
+      "original_path": "E:\\Sv clone\\MiniRAG\\logs\\entity_resolution\\pair\\control\\minirag.log",
+      "original_mtime": 1789690118.428523,
+      "original_ctime": 1789659478.345258,
+      "preserved_at": 1789690147.2658765
+    }
+  }
+}

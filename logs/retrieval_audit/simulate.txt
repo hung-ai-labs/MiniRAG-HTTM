@@ -1,0 +1,13 @@
+Dev 200 · 200 câu có context · 180 câu có evidence · 94 câu có đáp án trích nguyên văn được từ chunk đáp án · W = 400 · ngân sách 4000
+
+=== window so với B2
+   đủ chunk đáp án (180)                151/180 → 163/180 · 12 lên / 0 xuống · p = 0.000488
+      Single 136/159 → 147/159 · 11 lên / 0 xuống
+      Multi  15/21 → 16/21 · 1 lên / 0 xuống
+   đáp án nguyên văn có trong Sources   82/94 → 85/94 · 5 lên / 2 xuống · p = 0.453
+      Single 78/88 → 81/88 · 5 lên / 2 xuống
+      Multi  4/6 → 4/6 · 0 lên / 0 xuống
+   token Sources trung vị 3602.0 → 3867.0 (+7.4%) · chunk trung vị 8.0 → 13.0 · context đổi 178/200 câu
+   Sự kiện phân biệt (Time khác nhau) trong Sources, trung vị — mọi câu: 8.0 → 13.0 · Null: 10.5 → 14.0
+   Null: context đổi 20/20 câu · chunk trung vị 10.5 → 14.0
+

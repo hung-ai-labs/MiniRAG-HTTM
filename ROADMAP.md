@@ -1194,3 +1194,37 @@ baseline (152 / 65). Không được trình bày V3 là bằng chứng rằng đ
 Vector thuần mới một lượt sinh.
 
 **Mặc định vẫn tắt** (`MINIRAG_CHUNK_FUSION`). Bật hay không là quyết định của nhóm; nếu bật thì giữ A1@4000.
+
+### ⛔ Vì sao đóng hướng xếp hạng lại tất định — "Why deterministic reranking was closed" (chốt 20/09/2026)
+
+Hồ sơ đầy đủ: [`logs/retrieval_audit/README.md`](logs/retrieval_audit/README.md), chi tiết ở `BASELINE_B2.md` và
+`RANKING_DEPTH.md`. Toàn bộ **offline** trên dev 200, B2 đông lạnh (`context_sha256` trùng 198/198), 0 lời gọi sinh,
+0 lời gọi giám khảo, không sửa `minirag/`.
+
+**Chuỗi nhân quả:**
+
+1. **Recall ứng viên cao** — 98,1% chunk đáp án có trong danh sách trộn; truy hồi tìm được bằng chứng.
+2. **Bằng chứng mất ở khâu chọn theo ngân sách cố định** — sau A1@4000 chỉ còn 83,9% câu đủ chunk đáp án (từ 97,8%);
+   86% ca hỏng là "tìm được nhưng bị cắt". Khoảng trống đo được ≈ **+8,2 điểm acc dev**.
+3. **Phần lớn mất mát là do độ sâu xếp hạng, không phải do biên tràn** — chính sách "dừng ở chunk đầu tiên làm tràn"
+   chỉ gây 5/25 ca (kiểm overflow-rescue); 20/25 ca là do chunk đáp án bị xếp quá sâu so với ngân sách.
+4. **Tín hiệu bề mặt tất định thu hồi được một phần bằng chứng của câu trả lời được** — tốt nhất là độ phủ idf và điểm
+   BM25, mỗi tín hiệu chạm 9/20 ca (cận trên theo điều kiện cần, chưa mô phỏng).
+5. **Chính những tín hiệu đó làm mạnh thêm bằng chứng gần giống ở nhóm Null** — cả hai kéo chunk ngoài Sources vào
+   15–16/20 câu Null (9–10 câu khớp đủ thực thể) và đều xếp chunk gây nhầm của L052 lên hạng 1.
+6. **Không tìm được bộ xếp hạng lại tất định nào an toàn** → dừng: không viết reranker, không tiền đăng ký reranker,
+   không chạy sinh/giám khảo cho hướng này.
+
+**Hai kết quả phủ định phụ, chỉ tồn tại dưới dạng mô phỏng offline — không phải tính năng runtime:**
+- *cửa sổ trong chunk dài, W = 400*: trượt 3/6 cổng đã chốt trước (P p = 0,45; token +7,4%; sự kiện phân biệt Null +33%).
+- *overflow-rescue*: độ phủ 5/25 (Multi 0/4), trần ≈ +1,6 điểm dev — dưới sàn nhiễu sinh 1,5 điểm; đồng thời thêm một
+  sự kiện mới vào context của 20/20 câu Null.
+
+**Cách phát biểu bắt buộc:**
+- ✅ *"Khoảng trống truy hồi vẫn còn và đo được (≈ +8,2 điểm dev), nhưng các tín hiệu bề mặt tất định đã thử không thu
+  hồi được nó một cách an toàn — chúng đồng thời làm tăng bằng chứng gây nhầm cho nhóm Null."*
+- ⛔ **Không** viết "truy hồi đã hết dư địa".
+- ✅ *"Trên LiHua-World và cấu hình này, một phần chunk đáp án chỉ được một bộ truy hồi tìm thấy bị cách trộn hiện tại
+  pha loãng (8/20 ca); phần lớn ca còn lại (12/20) vốn đã yếu ở cả BM25 lẫn dense."*
+- ⛔ **Không** viết "RRF xấu" hay bất kỳ phát biểu phổ quát nào về reciprocal rank fusion — chưa thử corpus khác, k khác,
+  bộ truy hồi khác.

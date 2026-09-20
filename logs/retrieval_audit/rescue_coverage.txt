@@ -1,0 +1,16 @@
+ĐỘ PHỦ TỐI ĐA — overflow-rescue (chưa mô phỏng cửa sổ)
+
+25 câu có chunk đáp án trong ứng viên nhưng mất ở A1: 25
+   chunk tràn đầu tiên LÀ chunk đáp án: 5/25
+   trong 16 ca chunk đáp án dài 1.200 token: 5/17
+      Single 5/21
+      Multi  0/4
+   nếu cứu được trọn chunk đó thì câu đủ mọi chunk đáp án: 5/5
+   ngân sách còn lại cho cửa sổ ở các câu trúng: [125, 919, 1052, 1112, 1156]
+   ngân sách còn lại, mọi câu: trung vị 398.0 · <100 token: 30/200
+   câu không trúng: chunk đáp án bị cắt đứng sau chunk tràn đầu tiên [1, 2, 4, 4, 5, 5, 6, 6, 6, 7, 7, 8, 9, 10, 16, 18, 18, 19, 27, 38] vị trí
+
+NULL (20 câu dev) — chunk tràn đầu tiên và sự kiện mới
+   có chunk tràn: 20/20 · chunk tràn thuộc SỰ KIỆN MỚI (Time chưa có trong Sources): 20/20
+   ngân sách còn lại ở câu Null: [9, 10, 25, 26, 36, 38, 262, 367, 367, 385, 400, 670, 730, 766, 801, 823, 854, 864, 879, 1045]
+   sự kiện phân biệt trung vị Null: B2 10.5 → tối đa +1

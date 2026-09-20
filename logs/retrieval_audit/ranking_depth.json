@@ -1,0 +1,404 @@
+{
+ "cut": [
+  {
+   "q": "When was the first time Li Hua had dinner with Wolfgang this year?",
+   "type": "Single",
+   "gold": {
+    "rrf": 37,
+    "bm25_rank": null,
+    "bm25": 0.12,
+    "vec_rank": 20,
+    "vec": 0.412,
+    "src": "vector",
+    "tok": 145,
+    "idf_cov": 0.01,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-09b195a6696ac95febc767836c4353c4",
+    "same_doc_above": false,
+    "max_jacc_above": 0.31
+   },
+   "cat": "D"
+  },
+  {
+   "q": "What type of gameplay does Jareth enjoy after a big challenge?",
+   "type": "Single",
+   "gold": {
+    "rrf": 11,
+    "bm25_rank": 18,
+    "bm25": 6.32,
+    "vec_rank": 15,
+    "vec": 0.336,
+    "src": "both",
+    "tok": 1200,
+    "idf_cov": 0.36,
+    "ent_cov": 0.0,
+    "date": null,
+    "doc": "doc-6819239c5f018f8a08a8f54a4c8cf9f8",
+    "same_doc_above": true,
+    "max_jacc_above": 0.3
+   },
+   "cat": "D"
+  },
+  {
+   "q": "What does Sova plan to do to keep their cardio interesting?",
+   "type": "Single",
+   "gold": {
+    "rrf": 14,
+    "bm25_rank": 3,
+    "bm25": 10.54,
+    "vec_rank": null,
+    "vec": 0.306,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.86,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-a1f58e16cb00fb159516b72ece5e4d9d",
+    "same_doc_above": true,
+    "max_jacc_above": 0.37
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What does Bronwyn think about the idea of stealth missions?",
+   "type": "Single",
+   "gold": {
+    "rrf": 13,
+    "bm25_rank": 6,
+    "bm25": 8.42,
+    "vec_rank": null,
+    "vec": 0.18,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.68,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-e0fa544e8a6b49a8e4e2464f28ea4d9c",
+    "same_doc_above": true,
+    "max_jacc_above": 0.35
+   },
+   "cat": "D"
+  },
+  {
+   "q": "Which boss did Gavriel struggle with the most in \"Octopath Traveler\"?",
+   "type": "Single",
+   "gold": {
+    "rrf": 15,
+    "bm25_rank": 2,
+    "bm25": 17.37,
+    "vec_rank": null,
+    "vec": 0.158,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.65,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-6819239c5f018f8a08a8f54a4c8cf9f8",
+    "same_doc_above": true,
+    "max_jacc_above": 0.3
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What is the common interest between Li Hua and Jake Watson?",
+   "type": "Single",
+   "gold": {
+    "rrf": 47,
+    "bm25_rank": null,
+    "bm25": 0,
+    "vec_rank": 28,
+    "vec": 0.228,
+    "src": "vector",
+    "tok": 470,
+    "idf_cov": 0.0,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-cba2af7c9c54c6e0462966b61184d5f1",
+    "same_doc_above": false,
+    "max_jacc_above": 0.28
+   },
+   "cat": "D"
+  },
+  {
+   "q": "Where was the first time Li Hua had dinner with Wolfgang this year?",
+   "type": "Single",
+   "gold": {
+    "rrf": 37,
+    "bm25_rank": null,
+    "bm25": 0.12,
+    "vec_rank": 20,
+    "vec": 0.429,
+    "src": "vector",
+    "tok": 145,
+    "idf_cov": 0.01,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-09b195a6696ac95febc767836c4353c4",
+    "same_doc_above": false,
+    "max_jacc_above": 0.27
+   },
+   "cat": "D"
+  },
+  {
+   "q": "Who will bring cones for drills at the match?",
+   "type": "Single",
+   "gold": {
+    "rrf": 10,
+    "bm25_rank": 5,
+    "bm25": 10.45,
+    "vec_rank": 27,
+    "vec": 0.284,
+    "src": "both",
+    "tok": 1200,
+    "idf_cov": 1.0,
+    "ent_cov": null,
+    "date": null,
+    "doc": "doc-46682f329e566cd9b62a73da6b6d1400",
+    "same_doc_above": false,
+    "max_jacc_above": 0.35
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What does Turalyon want to hear everyone's thoughts on?",
+   "type": "Single",
+   "gold": {
+    "rrf": 22,
+    "bm25_rank": 11,
+    "bm25": 8.4,
+    "vec_rank": null,
+    "vec": 0.178,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.84,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-3ae76b6d5df07df9965768c193de175d",
+    "same_doc_above": false,
+    "max_jacc_above": 0.39
+   },
+   "cat": "D"
+  },
+  {
+   "q": "Where do they plan to meet for soccer practice?",
+   "type": "Single",
+   "gold": {
+    "rrf": 17,
+    "bm25_rank": 7,
+    "bm25": 8.46,
+    "vec_rank": null,
+    "vec": 0.201,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.83,
+    "ent_cov": null,
+    "date": null,
+    "doc": "doc-da897a5553daf2e8cb519c9434abcc51",
+    "same_doc_above": true,
+    "max_jacc_above": 0.36
+   },
+   "cat": "D"
+  },
+  {
+   "q": "What type of instrument does Li Hua play in the basement?",
+   "type": "Single",
+   "gold": {
+    "rrf": 20,
+    "bm25_rank": 10,
+    "bm25": 7.2,
+    "vec_rank": null,
+    "vec": 0.28,
+    "src": "bm25",
+    "tok": 114,
+    "idf_cov": 0.45,
+    "ent_cov": null,
+    "date": null,
+    "doc": "doc-00e3c7e70a1beba5036b975051db79c5",
+    "same_doc_above": false,
+    "max_jacc_above": 0.3
+   },
+   "cat": "D"
+  },
+  {
+   "q": "Did Li Hua ask Yuriko to play music together before Wolfgang proposed to pause playing musical instruments?",
+   "type": "Multi",
+   "gold": {
+    "rrf": 22,
+    "bm25_rank": null,
+    "bm25": 4.66,
+    "vec_rank": 12,
+    "vec": 0.372,
+    "src": "vector",
+    "tok": 502,
+    "idf_cov": 0.11,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-ad2f8ac24a96bd4a9fc0f23d7caf1e2a",
+    "same_doc_above": false,
+    "max_jacc_above": 0.36
+   },
+   "cat": "D"
+  },
+  {
+   "q": "What is Bronwyn's experience with going full support in tough fights in \"Octopath Traveler\"?",
+   "type": "Single",
+   "gold": {
+    "rrf": 9,
+    "bm25_rank": 2,
+    "bm25": 19.73,
+    "vec_rank": null,
+    "vec": 0.12,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.66,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-6819239c5f018f8a08a8f54a4c8cf9f8",
+    "same_doc_above": true,
+    "max_jacc_above": 0.3
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What time does Li Hua watch the movie \"Overwatch 3\"?",
+   "type": "Multi",
+   "gold": {
+    "rrf": 48,
+    "bm25_rank": 26,
+    "bm25": 5.04,
+    "vec_rank": null,
+    "vec": 0.192,
+    "src": "bm25",
+    "tok": 237,
+    "idf_cov": 0.23,
+    "ent_cov": 0.0,
+    "date": null,
+    "doc": "doc-c0dfabe7db11e6ecb50c618397b51807",
+    "same_doc_above": false,
+    "max_jacc_above": 0.28
+   },
+   "cat": "D"
+  },
+  {
+   "q": "What event is the community organizing?",
+   "type": "Single",
+   "gold": {
+    "rrf": 14,
+    "bm25_rank": 1,
+    "bm25": 9.27,
+    "vec_rank": null,
+    "vec": 0.167,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 1.0,
+    "ent_cov": null,
+    "date": null,
+    "doc": "doc-744409fe7ca59fa8093013709a0fac6e",
+    "same_doc_above": false,
+    "max_jacc_above": 0.39
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What is the name of the song that Yuriko recommend to the band on 20260706?",
+   "type": "Single",
+   "gold": {
+    "rrf": 6,
+    "bm25_rank": 5,
+    "bm25": 8.91,
+    "vec_rank": 16,
+    "vec": 0.368,
+    "src": "both",
+    "tok": 695,
+    "idf_cov": 0.36,
+    "ent_cov": 1.0,
+    "date": 1.0,
+    "doc": "doc-db78e24226822ad20b9a08c03efffd2a",
+    "same_doc_above": false,
+    "max_jacc_above": 0.38
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What feedbacks does Hailey ask from LiHua in July?",
+   "type": "Multi",
+   "gold": {
+    "rrf": 24,
+    "bm25_rank": null,
+    "bm25": 3.64,
+    "vec_rank": 14,
+    "vec": 0.455,
+    "src": "vector",
+    "tok": 268,
+    "idf_cov": 0.46,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-c3b8eea5dc13042d47dd58f6cf64c979",
+    "same_doc_above": false,
+    "max_jacc_above": 0.31
+   },
+   "cat": "D"
+  },
+  {
+   "q": "Question: Did Jennifer remind Li Hua to consume enough protein after the workout before she shared tips with the group members on common mistakes to avoid after an intense workout?",
+   "type": "Multi",
+   "gold": {
+    "rrf": 11,
+    "bm25_rank": 2,
+    "bm25": 27.58,
+    "vec_rank": null,
+    "vec": 0.33,
+    "src": "bm25",
+    "tok": 1200,
+    "idf_cov": 0.53,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-0af1e37905ca304c193ec01b594ccf0f",
+    "same_doc_above": false,
+    "max_jacc_above": 0.29
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What is IllidanStormrage's suggestion to the ongoing garden construction according to the discussion on 20260522?",
+   "type": "Single",
+   "gold": {
+    "rrf": 9,
+    "bm25_rank": 1,
+    "bm25": 22.04,
+    "vec_rank": 23,
+    "vec": 0.33,
+    "src": "both",
+    "tok": 1200,
+    "idf_cov": 0.85,
+    "ent_cov": null,
+    "date": 1.0,
+    "doc": "doc-a0014d023d68c619ea320a7713cbae93",
+    "same_doc_above": false,
+    "max_jacc_above": 0.36
+   },
+   "cat": "A"
+  },
+  {
+   "q": "What does ChaeSong-hwa suggest for the garden once everything is set up?",
+   "type": "Single",
+   "gold": {
+    "rrf": 10,
+    "bm25_rank": 12,
+    "bm25": 12.19,
+    "vec_rank": 16,
+    "vec": 0.403,
+    "src": "both",
+    "tok": 1200,
+    "idf_cov": 0.76,
+    "ent_cov": 1.0,
+    "date": null,
+    "doc": "doc-3ae76b6d5df07df9965768c193de175d",
+    "same_doc_above": false,
+    "max_jacc_above": 0.41
+   },
+   "cat": "D"
+  }
+ ]
+}

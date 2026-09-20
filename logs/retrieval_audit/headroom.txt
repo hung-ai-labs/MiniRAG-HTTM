@@ -1,0 +1,8 @@
+B2 dev (1 lượt sinh, 1 lượt chấm) — acc theo tình trạng bằng chứng:
+   đủ chunk đáp án trong Sources   : 128/149 = 85.9%
+   tìm được nhưng bị A1 cắt         : 5/25 = 20.0%
+   không có trong ứng viên          : 3/4 = 75.0%
+   TRẦN của mọi cơ chế chọn chunk (giữ được hết 25 câu bị cắt, acc lên bằng nhóm đủ đáp án): +16.5 câu / 200 = +8.2 điểm acc dev
+   so với sàn nhiễu sinh: 3 lượt V3 cùng cấu hình chênh 1,5 điểm trên dev; ngưỡng tầng D 4,18 điểm
+
+Chunk đáp án dài (> 400 token) có chứa đáp án nguyên văn: cửa sổ giữ được đáp án 51/56 = 91%

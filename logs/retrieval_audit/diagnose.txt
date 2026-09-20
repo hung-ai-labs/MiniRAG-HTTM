@@ -1,0 +1,33 @@
+python-dotenv could not parse statement starting at line 4
+python-dotenv could not parse statement starting at line 6
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+python-dotenv could not parse statement starting at line 9
+Dev 200 · B2 dựng lại offline · 200 câu có context · 180 câu có evidence
+Tái dựng A1 từ ranked_ids khớp chunk_ids đã log: 200/200
+
+1–3. Recall và giữ lại (180 câu có evidence)
+   chunk đáp án trong ứng viên (≤ 60 chunk trộn): 203/207 = 98.1%
+   chunk đáp án còn sau A1@4000:                 178/207 = 86.0%
+   câu đủ mọi chunk đáp án — trong ứng viên 176/180 = 97.8% · sau A1 151/180 = 83.9%
+      Multi  đủ đáp án sau A1 15/21 = 71.4%
+      Single đủ đáp án sau A1 136/159 = 85.5%
+4. Hạng chunk đáp án đầu tiên trong danh sách trộn: trung vị 1.0 · p75 3 · p90 10
+5. Số chunk: ứng viên trung vị 48.0 · vào Sources trung vị 8.0 (min 3, max 33)
+6. Token Sources trung vị 3602.0 · chunk dài trung vị 215.0 token, p90 1200, max 1200
+   ngân sách bỏ trống do A1 dừng ở chunk đầu tiên tràn: trung vị 398.0 token
+7. Cặp chunk gần trùng (Jaccard từ ≥ 0,6) trong Sources: 343 cặp, ở 8/200 câu
+8. Nguồn của chunk trong Sources: cả hai 1265 (65%) · chỉ vector 368 (19%) · chỉ BM25 313 (16%)
+   Nguồn của chunk đáp án có trong ứng viên: cả hai 173 (85%) · chỉ BM25 23 (11%) · chỉ vector 7 (3%)
+9. Câu có chunk đáp án tìm được nhưng bị A1 cắt: 25/180
+
+PHÂN LOẠI THẤT BẠI — câu không đủ chunk đáp án sau A1 (phân loại tự động theo proxy, không đọc nghĩa)
+   tìm được nhưng bị A1 cắt                  25 câu (86%)
+   chunk đáp án không có trong ứng viên       4 câu (14%)
+   Chunk không phải đáp án đứng trước chunk đáp án bị cắt: 388
+      cùng người nói, khác thời điểm        382 (98%)
+      cả hai                                194 (50%)
+      chỉ vector                            100 (26%)
+      chỉ BM25                               94 (24%)
+      chunk nối tiếp (không có Time)         51 (13%)
+   Theo loại câu: Multi bị cắt 4 · Multi không trong ứng viên 2 · Single bị cắt 21 · Single không trong ứng viên 2

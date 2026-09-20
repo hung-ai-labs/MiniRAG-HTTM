@@ -1,0 +1,72 @@
+Kiểm vector: sắp lại cosine khớp vector_ids đã log 166/200 câu
+Kiểm BM25: xếp lại khớp bm25_ids đã log 200/200 câu
+
+Tập độ sâu xếp hạng: 20 câu (Single 16, Multi 4)
+
+1. Chunk đáp án bị cắt (hạng RRF cao nhất trong số bị cắt) — hạng/điểm từng bộ, đặc trưng
+   loại | RRF | BM25 hạng/điểm | vector hạng/cos | nguồn | tok | idf_cov | ent_cov | ngày | trùng doc trên | chunk trên: số / token
+   S D | 37 | None/  0.1 |   20/0.412 | vector |  145 | 0.01 | 1.00 | — | — | 36 / 9902 · nợ 6047
+   S D | 11 |   18/  6.3 |   15/0.336 | both   | 1200 | 0.36 | 0.00 | — | có | 10 / 9154 · nợ 6354
+   S A | 14 |    3/ 10.5 | None/0.306 | bm25   | 1200 | 0.86 | 1.00 | — | có | 13 / 9715 · nợ 6915
+   S D | 13 |    6/  8.4 | None/0.180 | bm25   | 1200 | 0.68 | 1.00 | — | có | 12 / 11620 · nợ 8820
+   S A | 15 |    2/ 17.4 | None/0.158 | bm25   | 1200 | 0.65 | 1.00 | — | có | 14 / 13801 · nợ 11001
+   S D | 47 | None/  0.0 |   28/0.228 | vector |  470 | 0.00 | 1.00 | — | — | 46 / 19275 · nợ 15745
+   S D | 37 | None/  0.1 |   20/0.429 | vector |  145 | 0.01 | 1.00 | — | — | 36 / 9913 · nợ 6058
+   S A | 10 |    5/ 10.4 |   27/0.284 | both   | 1200 | 1.00 |    — | — | — | 9 / 6594 · nợ 3794
+   S D | 22 |   11/  8.4 | None/0.178 | bm25   | 1200 | 0.84 | 1.00 | — | — | 21 / 17996 · nợ 15196
+   S D | 17 |    7/  8.5 | None/0.201 | bm25   | 1200 | 0.83 |    — | — | có | 16 / 7844 · nợ 5044
+   S D | 20 |   10/  7.2 | None/0.280 | bm25   |  114 | 0.45 |    — | — | — | 19 / 5069 · nợ 1183
+   M D | 22 | None/  4.7 |   12/0.372 | vector |  502 | 0.11 | 1.00 | — | — | 20 / 12641 · nợ 9445
+   S A |  9 |    2/ 19.7 | None/0.120 | bm25   | 1200 | 0.66 | 1.00 | — | có | 8 / 6660 · nợ 3860
+   M D | 48 |   26/  5.0 | None/0.192 | bm25   |  237 | 0.23 | 0.00 | — | — | 46 / 13979 · nợ 10388
+   S A | 14 |    1/  9.3 | None/0.167 | bm25   | 1200 | 1.00 |    — | — | — | 13 / 10662 · nợ 7862
+   S A |  6 |    5/  8.9 |   16/0.368 | both   |  695 | 0.36 | 1.00 | 1 | — | 5 / 4211 · nợ 906
+   M D | 24 | None/  3.6 |   14/0.455 | vector |  268 | 0.46 | 1.00 | — | — | 22 / 4081 · nợ 506
+   M A | 11 |    2/ 27.6 | None/0.330 | bm25   | 1200 | 0.53 | 1.00 | — | — | 9 / 4887 · nợ 2311
+   S A |  9 |    1/ 22.0 |   23/0.330 | both   | 1200 | 0.85 |    — | 1 | — | 8 / 8544 · nợ 5744
+   S D | 10 |   12/ 12.2 |   16/0.403 | both   | 1200 | 0.76 | 1.00 | — | — | 9 / 9852 · nợ 7052
+
+2. Phân nhóm (cao = hạng ≤ 5, chốt trước): A 8 · D 12
+   hạng BM25 của chunk đáp án: [1, 1, 2, 2, 2, 3, 5, 5, 6, 7, 10, 11, 12, 18, 26, 99, 99, 99, 99, 99]  (99 = không có trong top-30)
+   hạng vector của chunk đáp án: [12, 14, 15, 16, 16, 20, 20, 23, 27, 28, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99]
+   nguồn chunk đáp án: {'vector': 5, 'both': 5, 'bm25': 10}
+
+3. 372 chunk không phải đáp án đứng trên chunk đáp án bị cắt — so với chính chunk đáp án của câu đó
+   cosine cao hơn đáp án                             276 (74%)
+   BM25 cao hơn đáp án                               218 (59%)
+   idf_cov cao hơn đáp án                            179 (48%)
+   nguồn: cả hai                                     178 (48%)
+   (có thực thể) ent_cov = 1                         156 (42%)
+   idf_cov thấp hơn đáp án                           144 (39%)
+   dài ≥ 800 token                                   110 (30%)
+   (có thực thể) ent_cov thấp hơn đáp án             102 (27%)
+   cùng tài liệu với một chunk cao hơn                15 (4%)
+   (có ngày) sai ngày                                 13 (3%)
+   nguồn: chỉ một bộ, trong khi đáp án ở cả hai        0 (0%)
+   gần trùng chunk cao hơn (J ≥ 0,6)                   0 (0%)
+
+4. Tín hiệu — điều kiện cần để cứu (20 ca) và rủi ro đẩy đáp án ra ở 151 câu đang đủ đáp án
+   tín hiệu                                   | cứu được (S / M) | câu tốt có rủi ro (S / M) | câu có tín hiệu
+   S1 đồng thuận hai bộ                       |  0/20 (0 / 0) |   0/151 (0 / 0) | 20/20
+   S2 độ phủ idf từ câu hỏi                   |  9/20 (7 / 2) |  12/151 (6 / 6) | 20/20
+   S3 độ phủ thực thể                         |  3/20 (2 / 1) |   3/151 (3 / 0) | 15/20
+   S4 khớp ngày nêu rõ                        |  2/20 (2 / 0) |   0/151 (0 / 0) | 2/20
+   S5 chunk ngắn (−token)                     |  6/20 (4 / 2) | 111/151 (102 / 9) | 20/20
+   S6 không cùng tài liệu với chunk cao hơn   |  0/20 (0 / 0) |   6/151 (6 / 0) | 20/20
+   S7 chỉ điểm BM25                           |  9/20 (7 / 2) |   7/151 (5 / 2) | 20/20
+   S8 chỉ cosine vector                       |  3/20 (2 / 1) |  34/151 (30 / 4) | 20/20
+   S9 hạng tốt nhất ở một bộ (−min hạng)      |  5/20 (4 / 1) |   8/151 (6 / 2) | 20/20
+
+5. An toàn Null — 20 câu dev
+   (a) câu Null mà tín hiệu sẽ kéo được chunk ngoài Sources vào (chunk ngoài, tốt hơn hẳn chunk trong, đủ token)
+   (b) chunk được kéo vào có độ phủ thực thể = 1 và idf_cov ≥ trung vị Sources B2 của câu đó (dạng 'sự thật gần giống')
+   (c) chunk gây nhầm đã xác định (L002, L055, L052): tỉ lệ ứng viên có tín hiệu tốt hơn hẳn nó (0,00 = nó đứng đầu hoặc đồng hạng đầu)
+   S1 đồng thuận hai bộ                       | (a)  0/20 | (b)  0/20 | (c) L002 0.13 · L052 0.00 · L055 0.00
+   S2 độ phủ idf từ câu hỏi                   | (a) 15/20 | (b) 10/20 | (c) L002 0.58 · L052 0.00 · L055 0.49
+   S3 độ phủ thực thể                         | (a)  6/20 | (b)  3/20 | (c) L002 0.00
+   S4 khớp ngày nêu rõ                        | (a)  2/20 | (b)  1/20 | (c) L052 0.02
+   S5 chunk ngắn (−token)                     | (a) 20/20 | (b) 10/20 | (c) L002 0.17 · L052 0.63 · L055 0.25
+   S6 không cùng tài liệu với chunk cao hơn   | (a)  0/20 | (b)  0/20 | (c) L002 0.00 · L052 0.00 · L055 0.00
+   S7 chỉ điểm BM25                           | (a) 16/20 | (b)  9/20 | (c) L002 0.57 · L052 0.00 · L055 0.29
+   S8 chỉ cosine vector                       | (a) 18/20 | (b)  7/20 | (c) L002 0.00 · L052 0.02 · L055 0.18
+   S9 hạng tốt nhất ở một bộ (−min hạng)      | (a) 16/20 | (b) 11/20 | (c) L002 0.00 · L052 0.00 · L055 0.35

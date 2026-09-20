@@ -268,6 +268,12 @@ và cả 5 hướng sửa (A3, V5a–V5e) đều phủ định — **đừng m�
 viết "cải thiện Multi-hop"); báo 435 câu ngoài dev làm kết quả chính; **ablation vector thuần ngang V3** (80 / 61, p = 0,13, luật (c)) và tái hiện toàn bộ
 mức tăng so với baseline → không được nói đồ thị đóng góp, không được viết "trộn giữ lợi thế đồ thị".
 
+**Hướng xếp hạng lại tất định đã đóng 20/09/2026** — kiểm toán offline `logs/retrieval_audit/README.md` (ROADMAP, mục
+"Vì sao đóng hướng xếp hạng lại tất định"). Khoảng trống truy hồi **vẫn còn** (≈ +8,2 điểm dev) nhưng cả 9 tín hiệu bề
+mặt tất định đều thu hồi không an toàn: tín hiệu tốt nhất chạm 9/20 ca và đồng thời đẩy bằng chứng gần giống lên đầu ở
+15–16/20 câu Null. W = 400 và overflow-rescue là **thí nghiệm phủ định offline**, không phải tính năng runtime. Đừng mở
+lại reranker tất định; đừng viết "truy hồi hết dư địa" hay "RRF xấu".
+
 ### Năm cấu hình đo trên dev 200 câu — chỉ để đối chiếu, ĐỪNG dùng làm mốc
 
 

@@ -1,0 +1,149 @@
+{
+ "fails": [
+  [
+   "When was the first time Li Hua had dinner with Wolfgang this year?",
+   "cut rank 37 need 10047 tok",
+   "Single"
+  ],
+  [
+   "What is Aisling's opinion on using traps in \"Octopath Traveler\"?",
+   "cut rank 4 need 4148 tok",
+   "Single"
+  ],
+  [
+   "What type of gameplay does Jareth enjoy after a big challenge?",
+   "cut rank 11 need 10354 tok",
+   "Single"
+  ],
+  [
+   "What does Sova plan to do to keep their cardio interesting?",
+   "cut rank 14 need 10915 tok",
+   "Single"
+  ],
+  [
+   "What does Bronwyn think about the idea of stealth missions?",
+   "cut rank 13 need 12820 tok",
+   "Single"
+  ],
+  [
+   "Which boss did Gavriel struggle with the most in \"Octopath Traveler\"?",
+   "cut rank 15 need 15001 tok",
+   "Single"
+  ],
+  [
+   "What is the common interest between Li Hua and Jake Watson?",
+   "cut rank 47 need 19745 tok",
+   "Single"
+  ],
+  [
+   "Where was the first time Li Hua had dinner with Wolfgang this year?",
+   "cut rank 37 need 10058 tok",
+   "Single"
+  ],
+  [
+   "Who will bring cones for drills at the match?",
+   "cut rank 10 need 7794 tok",
+   "Single"
+  ],
+  [
+   "Why are Wolfgang and LiHua going to the local music store?",
+   "never",
+   "Single"
+  ],
+  [
+   "What does Turalyon want to hear everyone's thoughts on?",
+   "cut rank 22 need 19196 tok",
+   "Single"
+  ],
+  [
+   "Where do they plan to meet for soccer practice?",
+   "cut rank 17 need 9044 tok",
+   "Single"
+  ],
+  [
+   "What cool thing does Wolfgang find that he wants to share with LiHua?",
+   "never",
+   "Single"
+  ],
+  [
+   "What was the content of the first-ever delivery from Hailey to LiHua and what was LiHua's opinion about it?",
+   "never",
+   "Multi"
+  ],
+  [
+   "What type of instrument does Li Hua play in the basement?",
+   "cut rank 20 need 5183 tok",
+   "Single"
+  ],
+  [
+   "Who reminds everyone to drink water before and during the match?",
+   "cut rank 4 need 4088 tok",
+   "Single"
+  ],
+  [
+   "Did Li Hua ask Yuriko to play music together before Wolfgang proposed to pause playing musical instruments?",
+   "cut rank 22 need 13445 tok",
+   "Multi"
+  ],
+  [
+   "Who does EmilyBurnett think is a standout character in the Game of Thrones series?",
+   "cut rank 4 need 4044 tok",
+   "Single"
+  ],
+  [
+   "What is Bronwyn's experience with going full support in tough fights in \"Octopath Traveler\"?",
+   "cut rank 9 need 7860 tok",
+   "Single"
+  ],
+  [
+   "What time does Li Hua watch the movie \"Overwatch 3\"?",
+   "cut rank 48 need 14388 tok",
+   "Multi"
+  ],
+  [
+   "What type of passes does Briar suggest adding to the practice?",
+   "cut rank 5 need 5075 tok",
+   "Single"
+  ],
+  [
+   "What event is the community organizing?",
+   "cut rank 14 need 11862 tok",
+   "Single"
+  ],
+  [
+   "What is the name of the song that Yuriko recommend to the band on 20260706?",
+   "cut rank 6 need 4906 tok",
+   "Single"
+  ],
+  [
+   "What feedbacks does Hailey ask from LiHua in July?",
+   "cut rank 24 need 4506 tok",
+   "Multi"
+  ],
+  [
+   "Did Wolfgang's promotion announcement occur before he invited Li Hua for dinner on 20260430?",
+   "never",
+   "Multi"
+  ],
+  [
+   "Question: Did Jennifer remind Li Hua to consume enough protein after the workout before she shared tips with the group members on common mistakes to avoid after an intense workout?",
+   "cut rank 11 need 6311 tok",
+   "Multi"
+  ],
+  [
+   "What is IllidanStormrage's suggestion to the ongoing garden construction according to the discussion on 20260522?",
+   "cut rank 9 need 9744 tok",
+   "Single"
+  ],
+  [
+   "What game has Gavriel been hooked on recently for its blend of RPG elements and social simulation?",
+   "cut rank 4 need 4281 tok",
+   "Single"
+  ],
+  [
+   "What does ChaeSong-hwa suggest for the garden once everything is set up?",
+   "cut rank 10 need 11052 tok",
+   "Single"
+  ]
+ ]
+}

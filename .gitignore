@@ -73,3 +73,8 @@ logs/entity_resolution/pair/
 
 # context đã ghi của lượt đo công tắc P1/P2 — nặng, dựng lại được (như logs/stage_d/*_ctx.jsonl)
 logs/path_qa/*_ctx.jsonl
+
+# kiểm toán truy hồi 19/09: context dump dev 200 (4,4 MB) và bảng id mô phỏng — dựng lại được bằng
+# reproduce/retrieval_audit/{dump_contexts.py,simulate.py}; giữ lại script + tóm tắt kết quả + nhật ký quyết định
+logs/retrieval_audit/vector_bm25_dev_ctx.jsonl
+logs/retrieval_audit/simulate_ids.json

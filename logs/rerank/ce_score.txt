@@ -1,0 +1,15 @@
+Fetching 23 files:   0%|          | 0/23 [00:00<?, ?it/s]Fetching 23 files: 100%|██████████| 23/23 [00:00<00:00, 4088.19it/s]
+cross-encoder/ms-marco-MiniLM-L6-v2 @ 233902d25c44 · cpu · lô 32 · MaxP · 200 câu dev
+snapshot: /Users/hunggoodboy/.cache/huggingface/hub/models--cross-encoder--ms-marco-MiniLM-L6-v2/snapshots/233902d25c440f23af6f7d6e94d2946bac0bee0a
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (546 > 512). Running this sequence through the model will result in indexing errors
+   25/200 câu · 2316 cửa sổ · 38s suy luận
+   50/200 câu · 4395 cửa sổ · 72s suy luận
+   75/200 câu · 6665 cửa sổ · 110s suy luận
+   100/200 câu · 9187 cửa sổ · 152s suy luận
+   125/200 câu · 11684 cửa sổ · 192s suy luận
+   150/200 câu · 13893 cửa sổ · 227s suy luận
+   175/200 câu · 16326 cửa sổ · 264s suy luận
+   200/200 câu · 18723 cửa sổ · 302s suy luận
+
+18723 cửa sổ · suy luận 302.2s = 62 cửa sổ/s · 1511 ms/câu · tổng 303s
+→ /Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/logs/rerank/ce1_scores.json

@@ -1,0 +1,20 @@
+cross-encoder/ms-marco-MiniLM-L6-v2 @ 233902d25c44 · lô 32 · MaxP · 200 câu dev (bỏ 5 câu khởi động)
+
+=== CPU — chỉ phần xếp lại, mỗi câu
+   p50 1601 ms · p95 2388 ms · trung bình 1605 ms · max 2913 ms
+   mỗi cửa sổ: p50 17.0 ms · thông lượng 59 cửa sổ/s
+
+=== MPS — chỉ phần xếp lại, mỗi câu
+   p50 847 ms · p95 1243 ms · trung bình 834 ms · max 1519 ms
+   mỗi cửa sổ: p50 8.9 ms · thông lượng 114 cửa sổ/s
+
+=== Truy hồi B2 đông lạnh (logs/screening/b2/answers.jsonl, n=396)
+   p50 5472 ms · p95 10024 ms · trung bình 5750 ms
+   (phần lớn là dựng đường đi đồ thị; BM25 p50 1 ms, p95 3 ms)
+
+=== Tổng truy hồi B2 + cross-encoder (cộng p50 với p50, p95 với p95 — cận trên, hai phần tuần tự)
+   cpu: p50 7072 ms (+29% so B2) · p95 12412 ms (+24%)
+   mps: p50 6319 ms (+15% so B2) · p95 11267 ms (+12%)
+
+=== Kiểm MPS có cho cùng thứ hạng như CPU không (quyết định thiết bị runtime)
+   chênh điểm lớn nhất 5.96e-06 · thứ hạng TRÙNG trên câu mẫu (61 cửa sổ)

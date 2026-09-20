@@ -15,7 +15,29 @@ A1 từ `ranked_ids` khớp `chunk_ids` **200/200**. Ứng viên trung vị 48/c
 BertTokenizer, max 512 · MaxP (cửa sổ `512−len(q)−3`, bước = cửa sổ/2, lấy max) · CPU float32, lô 32 · điểm logit thô,
 hoà điểm giữ thứ tự RRF · xếp lại **đúng** tập ứng viên B2.
 
-**Chi phí thật:** 18.723 cửa sổ, 302 s = **1.511 ms/câu** trên CPU (62 cửa sổ/s). Không thêm lời gọi LLM nào.
+### Chi phí và độ trễ (đo lại 20/09, `ce_latency.txt`)
+
+> **Đính chính cách viết.** Bản báo cáo đầu ghi "1.511 ms/câu" theo dấu chấm phần nghìn kiểu Việt (= 1511 ms).
+> Phép tính đúng (302,2 s ÷ 200 câu = 1,511 s), nhưng người đọc tiếng Anh hiểu thành 1,511 mili giây. Từ đây
+> **mọi số mili giây viết nguyên, không dấu phân nhóm**.
+
+18.723 cửa sổ trên 200 câu = **16,1 ms/cửa sổ**, ≈ 94 cửa sổ/câu.
+
+| Mỗi câu | p50 | p95 | trung bình | max |
+|---|---:|---:|---:|---:|
+| chỉ phần xếp lại — **CPU** | **1601 ms** | 2388 ms | 1605 ms | 2913 ms |
+| chỉ phần xếp lại — **MPS** | **847 ms** | 1243 ms | 834 ms | 1519 ms |
+| truy hồi B2 đông lạnh (n=396, log) | 5472 ms | 10024 ms | 5750 ms | — |
+| **tổng B2 + CE, CPU** | 7072 ms (**+29%**) | 12412 ms (+24%) | | |
+| **tổng B2 + CE, MPS** | 6319 ms (**+15%**) | 11267 ms (+12%) | | |
+
+Tổng là cộng tuần tự p50+p50 / p95+p95 — **cận trên**, vì hai phân vị không nhất thiết rơi vào cùng câu.
+BM25 p50 1 ms, p95 3 ms: gần như toàn bộ 5472 ms của B2 là dựng đường đi đồ thị.
+
+**MPS so với CPU:** chênh điểm lớn nhất 5,96e−06, **thứ hạng trùng khít** trên câu mẫu. MPS nhanh gấp đôi, nhưng
+thiết bị runtime **giữ CPU** đúng như đã ghim — không đổi thiết bị để cải thiện số đo.
+
+Không thêm lời gọi LLM nào.
 
 **Kiểm toàn vẹn:** tập ứng viên không đổi 200/200 · không câu nào vượt 4.000 token.
 

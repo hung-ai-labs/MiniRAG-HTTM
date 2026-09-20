@@ -94,7 +94,7 @@ def main():
                "n_windows": n_win, "infer_sec": round(t_infer, 1), "scores": scores},
               open(OUT, "w", encoding="utf-8"), ensure_ascii=False)
     print(f"\n{n_win} cửa sổ · suy luận {t_infer:.1f}s = {n_win / t_infer:.0f} cửa sổ/s · "
-          f"{1000 * t_infer / len(recs):.0f} ms/câu · tổng {time.perf_counter() - t0:.0f}s")
+          f"{t_infer / len(recs):.2f} s/câu ({1000 * t_infer / len(recs):.0f} mili giây) · tổng {time.perf_counter() - t0:.0f}s")
     print(f"→ {OUT}")
 
 

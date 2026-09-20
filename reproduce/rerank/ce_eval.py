@@ -44,7 +44,7 @@ def main():
     rank_a = {q: {c: i + 1 for i, c in enumerate(order(r))} for q, r in recs.items()}
 
     print(f"CE1 · {SC['model']} @ {SC['revision'][:12]} · {SC['device']} lô {SC['batch']} · {SC['policy']}")
-    print(f"{SC['n_windows']} cửa sổ · {SC['infer_sec']}s = {1000 * SC['infer_sec'] / len(recs):.0f} ms/câu\n")
+    print(f"{SC['n_windows']} cửa sổ · {SC['infer_sec']}s = {SC['infer_sec'] / len(recs):.2f} s/câu ({1000 * SC['infer_sec'] / len(recs):.0f} mili giây) — p50/p95 xem ce_latency.txt\n")
     # kiểm toàn vẹn: xếp lại KHÔNG được đổi tập ứng viên
     assert all(set(order(r)) == set(r["ranked_ids"]) for r in recs.values()), "tập ứng viên đã đổi!"
     assert all(sum(d.tok(c) for c in v) <= d.BUDGET for v in new.values()), "vượt 4000 token!"

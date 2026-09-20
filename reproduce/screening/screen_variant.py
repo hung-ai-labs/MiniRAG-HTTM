@@ -444,7 +444,7 @@ async def stage_offline(rag, variant, gold):
 
 
 # ---------------------------------------------------------------- tầng B và C
-async def stage_screen(rag, variant, stage, gold, base="v3"):
+async def stage_screen(rag, variant, stage, gold, base_name="v3"):
     rows = question_set(stage)
     vdir = os.path.join(OUT, variant)
     done = os.path.join(vdir, f"{stage}_report.json")
@@ -452,21 +452,38 @@ async def stage_screen(rag, variant, stage, gold, base="v3"):
     if prior in ("PROMOTE", "STOP") and os.environ.get("SCREEN_FORCE") != "1":
         sys.exit(f"{variant} {stage} đã có quyết định {prior} ({done}) — không chạy lại: đo lại thời gian và ghi đè báo cáo "
                  "đã commit. SCREEN_FORCE=1 để bỏ qua (phải ghi lý do vào ROADMAP).")
-    frozen = load_jsonl(BASES[base])
-    missing = [r for r in rows if frozen.get(r["Question"], {}).get("verdict") not in LABELS]
-    if missing:
-        sys.exit(f"thiếu mốc {base} cho {len(missing)} câu — chạy --variant {base} --stage {stage} trước")
+    fz3 = load_jsonl(FROZEN)
     if stage == "dev":
         # Sửa đổi đăng ký trước 15/09 (đo lại cổng thời gian truy hồi): canary_amendment.json thay quyết định gốc nếu có.
         can, amd = os.path.join(vdir, "canary_report.json"), os.path.join(vdir, "canary_amendment.json")
         src = amd if os.path.exists(amd) else can
         if not os.path.exists(src) or json.load(open(src))["decision"] != "PROMOTE":
             sys.exit(f"tầng C chỉ chạy khi canary của biến thể này là PROMOTE ({os.path.basename(src)})")
-    print(f"dựng lại context mốc {base} (cache parser) để kiểm tất định và đo độ trễ cùng lượt...", flush=True)
-    base_ctx = await contexts(rag, rows, base, cache_only=True)
+    print(f"dựng lại context mốc {base_name} (cache parser) để kiểm tất định và đo độ trễ cùng lượt...", flush=True)
+    base_ctx = await contexts(rag, rows, base_name, cache_only=True)
+    if base_name == "v3":
+        frozen = fz3
+    else:
+        # Mốc không phải V3: tầng canary/dev của chính nó chỉ SINH cho câu có context khác V3, câu giống V3 dùng lại
+        # câu trả lời + phán quyết V3. Nên bản ghi mốc = answers.jsonl của nó khi hash khớp, ngược lại là V3 đông lạnh.
+        bans = load_jsonl(BASES[base_name])
+        frozen, unresolved = {}, []
+        for r in rows:
+            q = r["Question"]
+            if q in bans and same_context(base_ctx[q], bans[q]):
+                frozen[q] = bans[q]
+            elif q in fz3 and same_context(base_ctx[q], fz3[q]):
+                frozen[q] = fz3[q]          # context mốc trùng V3 -> câu trả lời của mốc CHÍNH LÀ câu trả lời V3
+            else:
+                unresolved.append(q)
+        if unresolved:
+            sys.exit(f"ASSERT: {len(unresolved)} câu có context mốc {base_name} không khớp hash của {base_name} lẫn của V3 — dừng")
+    missing = [r for r in rows if frozen.get(r["Question"], {}).get("verdict") not in LABELS]
+    if missing:
+        sys.exit(f"thiếu phán quyết mốc {base_name} cho {len(missing)} câu — chạy --variant {base_name} --stage {stage} trước")
     bad = [q for q, c in base_ctx.items() if not same_context(c, frozen[q])]
     if bad:
-        sys.exit(f"ASSERT: context {base} dựng lại lệch hash đông lạnh ở {len(bad)} câu — truy hồi không tất định, dừng")
+        sys.exit(f"ASSERT: context {base_name} dựng lại lệch hash đông lạnh ở {len(bad)} câu — truy hồi không tất định, dừng")
     var_ctx = await contexts(rag, rows, variant, cache_only=True)
     changed = {q: not same_context(var_ctx[q], frozen[q]) for q in var_ctx}
     ans_path = os.path.join(vdir, "answers.jsonl")
@@ -557,13 +574,13 @@ async def stage_screen(rag, variant, stage, gold, base="v3"):
                      f" net {so['net']:+d}, m khác nhau = {m_diff}, σ = {fmt(sigma(m_diff))}")
     ev_b, ev_v = evidence(processed or rows, base_ctx, gold), evidence(processed or rows, var_ctx, gold)
     lines = [f"Variant: {variant} ({VARIANTS[variant]}"
-             + (f" + rerank={RERANK[variant]}" if variant in RERANK else "") + f") · mốc so sánh: {base}",
+             + (f" + rerank={RERANK[variant]}" if variant in RERANK else "") + f") · mốc so sánh: {base_name}",
              f"Stage: {stage} ({len(processed)}/{len(rows)} câu; một lượt sinh seed {SEED} × một lượt chấm; bằng chứng sàng lọc, không phải kết luận H1–H3)",
              "Retrieval:",
              f"- chunk đáp án giữ: {fmt(ev_b['retention'], 1)}% → {fmt(ev_v['retention'], 1)}% · câu đủ đáp án: {fmt(ev_b['full'], 1)}% → {fmt(ev_v['full'], 1)}% ({ev_v['questions']} câu có evidence)",
              f"- token context trung vị: {fmt(eff['tokens_base'], 0)} → {fmt(eff['tokens_var'], 0)}",
              f"- truy hồi trung vị: {fmt(eff['retrieval_ms_base'], 1)} → {fmt(eff['retrieval_ms_var'], 1)} ms",
-             f"- context đổi so với mốc {base}: {m_total}/{len(rows)} câu (câu không đổi dùng lại câu trả lời + phán quyết của mốc)",
+             f"- context đổi so với mốc {base_name}: {m_total}/{len(rows)} câu (câu không đổi dùng lại câu trả lời + phán quyết của mốc)",
              *qa_lines(s, gens, judges, gens_total, judges_total, extra),
              "Sequential gates:", *[f"- {x}" for x in batch_log],
              "Safety:", *[f"- {'ĐẠT' if ok else 'TRƯỢT'}: {k}" for k, ok in checks.items()],

@@ -1,0 +1,30 @@
+NULL — 20 câu canary · mốc B2 → CE1
+
+      accurate → accurate · đổi context có | What was the exact date and time when Cersei Lannister first met J
+      error    → error    · đổi context có | What new species of flowers will be featured in the community gard
+      accurate → accurate · đổi context có | What payment method did Li Hua use to purchase groceries from the 
+   ↑ error    → accurate · đổi context có | What is Thane's favorite type of food that he enjoys while playing
+      accurate → accurate · đổi context có | What song did Yuriko and Wolfgang decide to perform together after
+      accurate → accurate · đổi context có | What was the final match score of the 2025 UEFA Champions League f
+      accurate → accurate · đổi context có | What color was the curtain that Li Hua chose for his living room?
+      error    → error    · đổi context có | What type of equipment does Wolfgang Schulz use when he works out 
+      accurate → accurate · đổi context có | What specific brand of protein supplement does Jennifer recommend 
+      accurate → accurate · đổi context có | What color did Li Hua decide to paint the walls of the basement af
+      accurate → accurate · đổi context có | What is the name of the song that Li Hua will sing at the karaoke 
+      error    → error    · đổi context có | What type of feedback did Li Hua provide to Chae regarding the com
+   ~ error    → neither  · đổi context có | What type of protein supplements did Li Hua use after the workout 
+      error    → error    · đổi context có | What specific measurements did Li Hua take for the window size bef
+      error    → error    · đổi context có | What were Li Hua's specific fitness goals and how did Jennifer's a
+      accurate → accurate · đổi context có | What food did Emily order for the group's discussion about Game of
+      accurate → accurate · đổi context có | What were the specific details of the negotiation between Jake Wat
+      error    → error    · đổi context có | What specific suggestions did Li Hua have regarding the constructi
+   ↓ accurate → error    · đổi context có | What were the specific requirements that the customers modified an
+      error    → error    · đổi context có | What specific feedback did Yuriko give to Li Hua about the demo we
+
+   Chuyển dịch: accurate→accurate: 10 · accurate→error: 1 · error→accurate: 1 · error→error: 7 · error→neither: 1
+   acc 11/20 → 11/20 · err 9 → 8 · neither 0 → 1
+
+   Vật liệu đầu vào (20 câu Null có context cả hai bên):
+      sự kiện phân biệt trong Sources, trung vị 10.5 → 7.5
+      số chunk trung vị 10.5 → 7.5
+      token Sources trung vị 3607.5 → 3499.5

@@ -1,0 +1,37 @@
+Dựng lại context dev 200 với cờ TẮT và cờ BẬT (offline, 0 lời gọi LLM)
+   (dùng lại ce1_off_dev_ctx.jsonl)
+   (dùng lại ce1_on_dev_ctx.jsonl)
+
+1. Cờ TẮT dựng lại đúng hash B2 đông lạnh
+   [ĐẠT] context_sha256 trùng B2 — 198/198
+   [ĐẠT] chunk_ids trùng B2 — 198/198
+   [ĐẠT] bản ghi cờ TẮT không có trường rerank
+
+2. Điểm cross-encoder tất định
+   [ĐẠT] chấm hai lần chênh ≤ 1e-6 — chênh lớn nhất 0.00e+00
+   [ĐẠT] thứ hạng lặp lại giống hệt
+
+3–5. Xếp lại chỉ đổi thứ tự, A1 không đổi
+   [ĐẠT] tập ứng viên không đổi — 200/200
+   [ĐẠT] số ứng viên trước khi xếp lại bằng B2 — ranked_ids (thứ tự RRF) trùng B2
+   [ĐẠT] A1@4000 áp lên thứ tự mới, không đổi luật — 200/200
+   [ĐẠT] không câu nào vượt 4.000 token — max 3999
+
+6. Không nhãn vàng / trường đánh giá nào trong runtime
+   [ĐẠT] minirag/rerank.py: phần code không nhắc tới nhãn/đánh giá
+   [ĐẠT] khối rerank trong operate.py không nhắc tới nhãn/đánh giá
+   [ĐẠT] minirag/rerank.py không mở file nào ngoài snapshot model — chỉ đọc model.safetensors trong snapshot
+   [ĐẠT] rerank() chỉ nhận (mode, query, ids, texts)
+
+7. Chế độ lạ báo lỗi to
+   [ĐẠT] ném ValueError — MINIRAG_RERANK không hợp lệ: 'ce_khong_ton_tai' (hợp lệ: ('c
+
+8. Reranker hỏng thì báo lỗi to, KHÔNG lặng lẽ về B2
+   [ĐẠT] lỗi được ném ra ngoài
+
+9. Dựng lại offline khớp bản kiểm toán đã đăng ký
+   [ĐẠT] thứ hạng runtime == thứ hạng kiểm toán offline — 200/200
+   [ĐẠT] Sources runtime == Sources kiểm toán offline — 200/200
+
+============================================================
+SELFTEST: 17/17 mục đạt — ĐẠT

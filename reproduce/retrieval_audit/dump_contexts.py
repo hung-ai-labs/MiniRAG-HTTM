@@ -25,6 +25,8 @@ async def main():
     ap = argparse.ArgumentParser(add_help=False)
     ap.add_argument("--fusion", default="vector_bm25")
     ap.add_argument("--tag", default="")
+    ap.add_argument("--rerank", default="", help="chế độ thí nghiệm, vd. ce1; rỗng = B2 thuần")
+    ap.add_argument("--limit", type=int, default=0, help="chỉ chạy N câu đầu (dùng cho selftest)")
     own, rest = ap.parse_known_args()
     sys.argv = [sys.argv[0]] + rest
     from gemini_common import build_rag, get_args
@@ -33,6 +35,8 @@ async def main():
 
     rows = list(csv.DictReader(open(os.path.join(ROOT, "logs", "devset.csv"), encoding="utf-8")))
     assert len(rows) == 200
+    if own.limit:
+        rows = rows[: own.limit]
     os.makedirs(OUT, exist_ok=True)
     tag = own.tag or own.fusion
     out_path = os.path.join(OUT, f"{tag}_dev_ctx.jsonl")
@@ -42,6 +46,11 @@ async def main():
                        "MINIRAG_KW_CACHE": KW_CACHE, "MINIRAG_KW_CACHE_ONLY": "1"})
     for k in ("MINIRAG_TRUNCATE_SOURCES", "MINIRAG_MAX_TOKEN_TEXT_UNIT", "MINIRAG_PATH_PRUNE", "MINIRAG_PATH_SCORE"):
         os.environ.pop(k, None)
+    # chế độ thí nghiệm đặt TƯỜNG MINH: rỗng = B2 thuần, không thừa hưởng biến môi trường bên ngoài
+    if own.rerank:
+        os.environ["MINIRAG_RERANK"] = own.rerank
+    else:
+        os.environ.pop("MINIRAG_RERANK", None)
 
     with open(out_path, "w", encoding="utf-8") as fh:
         for r in rows:

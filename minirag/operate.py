@@ -1536,6 +1536,20 @@ async def _build_mini_query_context(
             text_units_section_list.append([i, t["content"]])
             kept_ids.append(final_chunk_id[i])
 
+    # CHẾ ĐỘ THÍ NGHIỆM — xếp lại bằng cross-encoder. TẮT MẶC ĐỊNH (MINIRAG_RERANK rỗng => không chạy gì).
+    # Bật: MINIRAG_RERANK=ce1. Chỉ đổi THỨ TỰ đúng tập ứng viên trên; A1 bên dưới, BM25, vector, RRF, ngân sách
+    # token và prompt đều không đổi. Đăng ký trước: reproduce/rerank/preregistration/CE1_cross_encoder_pretrained.md.
+    # Hỏng thì NÉM LỖI — một lượt thí nghiệm không được âm thầm quay về B2, vì như vậy là nhiễm bẩn số liệu.
+    _rr = os.environ.get("MINIRAG_RERANK", "").strip()
+    _rr_ms, _pre_rr = None, None
+    if _rr:
+        from .rerank import rerank as _rerank_chunks
+        _texts = {c: row[1] for c, row in zip(kept_ids, text_units_section_list)}
+        _pre_rr = list(kept_ids)
+        kept_ids, _rr_ms = _rerank_chunks(_rr, originalquery, kept_ids, _texts)
+        _post_rr = list(kept_ids)
+        text_units_section_list = [[i, _texts[c]] for i, c in enumerate(kept_ids)]
+
     # A1: the Entities table above is capped at max_token_for_node_context (500,
     # line 1364) but Sources never passed through truncate_list_by_token_size at
     # all, so the half of the context that carries the raw text -- by far the
@@ -1604,6 +1618,12 @@ async def _build_mini_query_context(
         if bm25_ids is not None:
             _rec["bm25_ids"] = bm25_ids
             _rec["bm25_ms"] = round(bm25_ms, 3)
+        if _rr:
+            # chỉ ghi khi chế độ thí nghiệm bật — bản ghi của B2 giữ nguyên đúng các trường cũ
+            _rec["rerank"] = _rr
+            _rec["rerank_ms"] = round(_rr_ms, 2)
+            _rec["pre_rerank_ids"] = _pre_rr
+            _rec["post_rerank_ids"] = _post_rr
         with open(_ctx_log, "a", encoding="utf-8") as _fh:
             _fh.write(json.dumps(_rec, ensure_ascii=False) + "\n")
     return context

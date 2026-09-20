@@ -22,12 +22,19 @@ sys.path.insert(0, ROOT)
 SEED = 20260914
 D = 0.209                      # tỉ lệ đổi kết quả giữa hai lượt cùng cấu hình (tập lặp V3 cố định)
 T_NONDEV = 4.18                # ngưỡng bền với nhiễu sinh trên 435 câu — chỉ để báo, tầng D không chạy ở đây
-VARIANTS = {"v3": "rrf", "vec": "vector", "b1": "rrf_bm25", "b2": "vector_bm25"}
+VARIANTS = {"v3": "rrf", "vec": "vector", "b1": "rrf_bm25", "b2": "vector_bm25", "ce1": "vector_bm25"}
+# Chế độ thí nghiệm xếp lại (đăng ký trước reproduce/rerank/preregistration/). Biến thể không có tên ở đây
+# thì MINIRAG_RERANK bị GỠ khỏi môi trường -> đường đi B2 không đổi một chút nào.
+RERANK = {"ce1": "ce1"}
+ADVISORY = "(ghi nhận, không quyết) "   # cổng vẫn chạy và vẫn in, nhưng không chặn quyết định
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": ""}
 PREDICTION = {"b1": "câu đủ đáp án 72,8% · chunk giữ 75,8% (probe dev)", "b2": "câu đủ đáp án 83,9% · chunk giữ 86,0% (probe dev)"}
 OUT = os.path.join(ROOT, "logs", "screening")
 KW_CACHE = os.path.join(OUT, "cache", "kw_cache.jsonl")
 FROZEN = os.path.join(OUT, "frozen", "v3.jsonl")
+# Mốc so sánh của tầng canary/dev. Mặc định V3 đông lạnh (mọi biến thể cũ). CE1 phải so với B2, nếu không
+# phép so sẽ gộp HAI thay đổi (cách trộn + reranker) thay vì một.
+BASES = {"v3": FROZEN, "b2": os.path.join(OUT, "b2", "answers.jsonl")}
 DEV_W = {"Single": 159 / 200, "Multi": 21 / 200, "Null": 20 / 200}
 LABELS = ("accurate", "error", "neither")
 
@@ -100,6 +107,10 @@ def set_env(variant, ctx_log, cache_only):
     os.environ.update(BASE_ENV)
     os.environ.update({"MINIRAG_CHUNK_FUSION": VARIANTS[variant], "MINIRAG_CONTEXT_LOG": ctx_log,
                        "MINIRAG_KW_CACHE": KW_CACHE, "MINIRAG_SLM_SEED": str(SEED)})
+    if variant in RERANK:
+        os.environ["MINIRAG_RERANK"] = RERANK[variant]
+    else:
+        os.environ.pop("MINIRAG_RERANK", None)
     for k in ("MINIRAG_TRUNCATE_SOURCES", "MINIRAG_MAX_TOKEN_TEXT_UNIT"):
         os.environ.pop(k, None)
     if cache_only:
@@ -137,13 +148,13 @@ async def contexts(rag, rows, variant, cache_only):
         if rec is None:        # parser hỏng hoặc đồ thị không ra node/cạnh -> câu trả lời cố định fail_response
             res[q] = {"none": True, "context_sha256": "NONE", "prompt_sha256": "NONE", "chunk_ids": [],
                       "ranked_ids": [], "tokens": None, "sources_tok": None, "retrieval_ms": None,
-                      "graph_seeds": None, "graph_paths": None}
+                      "graph_seeds": None, "graph_paths": None, "rerank_ms": None}
         else:
             res[q] = {"none": False, "context_sha256": rec["context_sha256"], "prompt_sha256": prompt_sha(q, out),
                       "chunk_ids": rec["chunk_ids"], "ranked_ids": rec["ranked_ids"],
                       "tokens": rec["sources_tok"] + rec["entities_tok"], "sources_tok": rec["sources_tok"],
                       "retrieval_ms": rec["retrieval_ms"], "graph_seeds": rec.get("graph_seeds"),
-                      "graph_paths": rec.get("graph_paths")}
+                      "graph_paths": rec.get("graph_paths"), "rerank_ms": rec.get("rerank_ms")}
     return res
 
 
@@ -254,7 +265,20 @@ def safety(s, var_ctx, base_ctx, rows, stage, variant=None):
         checks["thời gian truy hồi: đo xen kẽ tầng B đạt T1 và T2"] = bool(a.get("T1") and a.get("T2"))
         checks["Single net ≥ 0"] = s["by_type"]["Single"]["net"] >= 0
     else:
-        checks["truy hồi thêm ≤ 50 ms"] = bool(vm is not None and bm is not None and vm - bm <= 50)
+        gate50 = bool(vm is not None and bm is not None and vm - bm <= 50)
+        if variant in RERANK:
+            # CE2 mục 2, tuyên bố TRƯỚC khi chạy: cổng 50 ms được hiệu chỉnh cho BM25 (1 ms). Một reranker học
+            # cố ý đánh đổi tính toán lấy chất lượng nên trượt nó theo thiết kế. Không vặn cổng: vẫn chạy, vẫn in,
+            # nhưng không quyết. Cổng thời gian thật là cổng 8 của CE1 và trần p95 dưới đây.
+            checks[ADVISORY + "truy hồi thêm ≤ 50 ms"] = gate50
+            rr = [c["rerank_ms"] for c in var_ctx.values() if c.get("rerank_ms") is not None]
+            checks["phần xếp lại ≤ 3000 ms/câu (cổng 8 của CE1)"] = bool(rr) and max(rr) <= 3000
+            pv = sorted(c["retrieval_ms"] for c in var_ctx.values() if c["retrieval_ms"] is not None)
+            pb = sorted(c["retrieval_ms"] for c in base_ctx.values() if c["retrieval_ms"] is not None)
+            p95 = lambda x: x[min(len(x) - 1, int(0.95 * len(x)))]  # noqa: E731
+            checks["tổng truy hồi p95 ≤ 2× mốc"] = bool(pv and pb) and p95(pv) <= 2 * p95(pb)
+        else:
+            checks["truy hồi thêm ≤ 50 ms"] = gate50
     return checks, {"tokens_var": vt, "tokens_base": bt, "retrieval_ms_var": vm, "retrieval_ms_base": bm}
 
 
@@ -420,7 +444,7 @@ async def stage_offline(rag, variant, gold):
 
 
 # ---------------------------------------------------------------- tầng B và C
-async def stage_screen(rag, variant, stage, gold):
+async def stage_screen(rag, variant, stage, gold, base="v3"):
     rows = question_set(stage)
     vdir = os.path.join(OUT, variant)
     done = os.path.join(vdir, f"{stage}_report.json")
@@ -428,21 +452,21 @@ async def stage_screen(rag, variant, stage, gold):
     if prior in ("PROMOTE", "STOP") and os.environ.get("SCREEN_FORCE") != "1":
         sys.exit(f"{variant} {stage} đã có quyết định {prior} ({done}) — không chạy lại: đo lại thời gian và ghi đè báo cáo "
                  "đã commit. SCREEN_FORCE=1 để bỏ qua (phải ghi lý do vào ROADMAP).")
-    frozen = load_jsonl(FROZEN)
+    frozen = load_jsonl(BASES[base])
     missing = [r for r in rows if frozen.get(r["Question"], {}).get("verdict") not in LABELS]
     if missing:
-        sys.exit(f"thiếu V3 đông lạnh cho {len(missing)} câu — chạy --variant v3 --stage {stage} trước")
+        sys.exit(f"thiếu mốc {base} cho {len(missing)} câu — chạy --variant {base} --stage {stage} trước")
     if stage == "dev":
         # Sửa đổi đăng ký trước 15/09 (đo lại cổng thời gian truy hồi): canary_amendment.json thay quyết định gốc nếu có.
         can, amd = os.path.join(vdir, "canary_report.json"), os.path.join(vdir, "canary_amendment.json")
         src = amd if os.path.exists(amd) else can
         if not os.path.exists(src) or json.load(open(src))["decision"] != "PROMOTE":
             sys.exit(f"tầng C chỉ chạy khi canary của biến thể này là PROMOTE ({os.path.basename(src)})")
-    print("dựng lại context V3 (cache parser) để kiểm tất định và đo độ trễ cùng lượt...", flush=True)
-    base_ctx = await contexts(rag, rows, "v3", cache_only=True)
+    print(f"dựng lại context mốc {base} (cache parser) để kiểm tất định và đo độ trễ cùng lượt...", flush=True)
+    base_ctx = await contexts(rag, rows, base, cache_only=True)
     bad = [q for q, c in base_ctx.items() if not same_context(c, frozen[q])]
     if bad:
-        sys.exit(f"ASSERT: context V3 dựng lại lệch hash đông lạnh ở {len(bad)} câu — truy hồi không tất định, dừng")
+        sys.exit(f"ASSERT: context {base} dựng lại lệch hash đông lạnh ở {len(bad)} câu — truy hồi không tất định, dừng")
     var_ctx = await contexts(rag, rows, variant, cache_only=True)
     changed = {q: not same_context(var_ctx[q], frozen[q]) for q in var_ctx}
     ans_path = os.path.join(vdir, "answers.jsonl")
@@ -494,7 +518,7 @@ async def stage_screen(rag, variant, stage, gold):
         if invalid:
             decision = "INVALID"
         elif stage == "dev":
-            decision = "PROMOTE" if s["net"] >= 1.0 * sg and all(checks.values()) else "STOP"
+            decision = "PROMOTE" if s["net"] >= 1.0 * sg and all(v for k, v in checks.items() if not k.startswith(ADVISORY)) else "STOP"
         elif b == "1":
             net_b1 = s["net"]
             if m > 0 and s["net"] <= -1.0 * sg:
@@ -502,10 +526,10 @@ async def stage_screen(rag, variant, stage, gold):
         elif b == "2":
             if m > 0 and s["net"] <= -0.5 * sg:
                 decision = "STOP"
-            elif m > 0 and s["net"] >= 2.0 * sg and net_b1 > 0 and all(checks.values()):
+            elif m > 0 and s["net"] >= 2.0 * sg and net_b1 > 0 and all(v for k, v in checks.items() if not k.startswith(ADVISORY)):
                 decision = "PROMOTE"
         else:
-            decision = "PROMOTE" if s["net"] >= 1 and all(checks.values()) else "STOP"
+            decision = "PROMOTE" if s["net"] >= 1 and all(v for k, v in checks.items() if not k.startswith(ADVISORY)) else "STOP"
         batch_log.append(note + (f" → {decision}" if decision else " → chạy tiếp"))
         print(batch_log[-1], flush=True)
         if decision:
@@ -532,13 +556,14 @@ async def stage_screen(rag, variant, stage, gold):
         extra.append(f"- phụ: {variant} so với {other} trên {so['n']} câu chung: {so['up']} lên / {so['down']} xuống,"
                      f" net {so['net']:+d}, m khác nhau = {m_diff}, σ = {fmt(sigma(m_diff))}")
     ev_b, ev_v = evidence(processed or rows, base_ctx, gold), evidence(processed or rows, var_ctx, gold)
-    lines = [f"Variant: {variant} ({VARIANTS[variant]})",
+    lines = [f"Variant: {variant} ({VARIANTS[variant]}"
+             + (f" + rerank={RERANK[variant]}" if variant in RERANK else "") + f") · mốc so sánh: {base}",
              f"Stage: {stage} ({len(processed)}/{len(rows)} câu; một lượt sinh seed {SEED} × một lượt chấm; bằng chứng sàng lọc, không phải kết luận H1–H3)",
              "Retrieval:",
              f"- chunk đáp án giữ: {fmt(ev_b['retention'], 1)}% → {fmt(ev_v['retention'], 1)}% · câu đủ đáp án: {fmt(ev_b['full'], 1)}% → {fmt(ev_v['full'], 1)}% ({ev_v['questions']} câu có evidence)",
              f"- token context trung vị: {fmt(eff['tokens_base'], 0)} → {fmt(eff['tokens_var'], 0)}",
              f"- truy hồi trung vị: {fmt(eff['retrieval_ms_base'], 1)} → {fmt(eff['retrieval_ms_var'], 1)} ms",
-             f"- context đổi so với V3: {m_total}/{len(rows)} câu (câu không đổi dùng lại câu trả lời + phán quyết V3)",
+             f"- context đổi so với mốc {base}: {m_total}/{len(rows)} câu (câu không đổi dùng lại câu trả lời + phán quyết của mốc)",
              *qa_lines(s, gens, judges, gens_total, judges_total, extra),
              "Sequential gates:", *[f"- {x}" for x in batch_log],
              "Safety:", *[f"- {'ĐẠT' if ok else 'TRƯỢT'}: {k}" for k, ok in checks.items()],
@@ -556,6 +581,8 @@ async def main():
     ap = argparse.ArgumentParser(add_help=False)
     ap.add_argument("--variant", required=True, choices=sorted(VARIANTS))
     ap.add_argument("--stage", required=True, choices=["offline", "canary", "dev"])
+    ap.add_argument("--base", default="v3", choices=sorted(BASES),
+                    help="mốc so sánh cho canary/dev; CE1 phải dùng b2 để chỉ đổi MỘT biến")
     own, rest = ap.parse_known_args()
     sys.argv = [sys.argv[0]] + rest
     from gemini_common import build_rag, get_args
@@ -568,7 +595,7 @@ async def main():
     elif own.stage == "offline":
         await stage_offline(rag, own.variant, gold)
     else:
-        await stage_screen(rag, own.variant, own.stage, gold)
+        await stage_screen(rag, own.variant, own.stage, gold, own.base)
 
 
 if __name__ == "__main__":

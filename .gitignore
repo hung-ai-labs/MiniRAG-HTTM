@@ -82,3 +82,5 @@ logs/retrieval_audit/simulate_ids.json
 # CE1: điểm cross-encoder cho 9.351 cặp dev + bảng id xếp lại — dựng lại bằng reproduce/rerank/ce_score.py (302s CPU)
 logs/rerank/ce1_scores.json
 logs/rerank/ce1_eval.json
+logs/retrieval_audit/ce1_off_dev_ctx.jsonl
+logs/retrieval_audit/ce1_on_dev_ctx.jsonl

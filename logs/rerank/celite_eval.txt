@@ -1,0 +1,49 @@
+CE-lite · tiền tố 25 theo RRF · model/MaxP/lô giống hệt CE1
+Kiểm: CE1 dựng lại từ điểm đã lưu khớp context runtime đã ghi 200/200 câu
+
+=== PHASE 2A — chi phí
+   ứng viên xếp lại/câu: CE1 46.8 → CE-lite 25.0 (53%)
+   cửa sổ MaxP/câu:      CE1 93,6 → CE-lite 52.5 (56%)
+   ước tính tuyến tính từ CE1: max 1922 ms
+   ĐO THẬT (CPU, bỏ 5 câu khởi động, n=195): p50 845 · p95 1507 · max 1708 ms · vượt 3000: 0
+   CE1 để đối chiếu: p50 1830 · p95 2731 · max 3429 ms
+
+   Trong 11 ca CE1 cứu được, CE-lite còn cứu: 11/11 · thêm 1 ca CE1 không cứu được
+
+=== BẢNG CHÍNH — B2 vs CE1 đầy đủ vs CE-lite
+   Chỉ số                                       |        B2 |       CE1 |   CE-lite
+   đủ bằng chứng (180 câu có evidence)          |   151/180 |   162/180 |   163/180
+   đáp án nguyên văn trong Sources (94)         |     82/94 |     87/94 |     87/94
+   trong 20 ca độ sâu: đủ bằng chứng            |      0/20 |     11/20 |     12/20
+   Single đủ bằng chứng                         |   136/159 |   146/159 |   147/159
+   Multi đủ bằng chứng                          |     15/21 |     16/21 |     16/21
+   token Sources trung vị                       |      3602 |      3600 |      3712
+   số chunk Sources trung vị                    |         8 |         6 |         6
+   sự kiện phân biệt Null, trung vị             |      10.5 |       7.5 |       7.5
+   xếp lại ms/câu (p50)                         |         0 |      1830 |       845
+   xếp lại ms/câu (max)                         |         0 |      3429 |      1708
+
+=== Chuyển dịch giữ bằng chứng
+   CE-lite so với B2       · đủ bằng chứng     : 17 mất→giữ / 5 giữ→mất · net +12 · p = 0.0169
+      Single 15 lên / 4 xuống · net +11
+      Multi  2 lên / 1 xuống · net +1
+   CE-lite so với B2       · đáp án nguyên văn : 8 mất→giữ / 3 giữ→mất · net +5 · p = 0.227
+      Single 7 lên / 3 xuống · net +4
+      Multi  1 lên / 0 xuống · net +1
+   CE-lite so với CE1      · đủ bằng chứng     : 1 mất→giữ / 0 giữ→mất · net +1 · p = 1
+      Single 1 lên / 0 xuống · net +1
+      Multi  0 lên / 0 xuống · net +0
+   CE-lite so với CE1      · đáp án nguyên văn : 0 mất→giữ / 0 giữ→mất · net +0 · p = 1
+      Single 0 lên / 0 xuống · net +0
+      Multi  0 lên / 0 xuống · net +0
+
+=== PHASE 2B — an toàn Null (bắt buộc)
+   CE1     : chunk mới vào 67 · rời đi 93 · câu có chunk mới khớp đủ thực thể 4/20 (cổng ≤ 7)
+   CE-lite : chunk mới vào 55 · rời đi 73 · câu có chunk mới khớp đủ thực thể 4/20 (cổng ≤ 7)
+   CE-lite kéo thêm chunk khớp đủ thực thể mà CE1 KHÔNG có: 2/20 câu
+
+   Ba chunk gây nhầm đã biết (luật CE2: THOÁI LUI chỉ khi bị đẩy lên so với B2)
+      L002: B2 8 → CE1 3 → CE-lite 3 · Sources CE-lite có · THOÁI LUI
+      L052: B2 1 → CE1 1 → CE-lite 1 · Sources CE-lite có · TRUNG TÍNH
+      L055: B2 4 → CE1 16 → CE-lite 9 · Sources CE-lite — · CẢI THIỆN
+      → THOÁI LUI 1/3 (cổng ≤ 1)

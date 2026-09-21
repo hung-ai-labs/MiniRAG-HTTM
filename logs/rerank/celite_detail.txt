@@ -1,0 +1,17 @@
+1. Trần token: không câu nào vượt 4000
+   B2       max 4000 token · trung vị 3602
+   CE1      max 3999 token · trung vị 3600
+   CE-lite  max 3999 token · trung vị 3712
+
+2. Ca CE-lite cứu được mà CE1 không cứu
+   [Single] hạng RRF 20 → CE1 22 → CE-lite 15
+      What type of instrument does Li Hua play in the basement?
+
+3. Hai câu Null mà CE-lite kéo chunk khớp đủ thực thể vào còn CE1 thì không
+   What type of feedback did Li Hua provide to Chae regarding the community
+      1 chunk · Time ['20261221_12:00'] · hạng CE-lite [9]
+   What song did Yuriko and Wolfgang decide to perform together after watch
+      1 chunk · Time ['20260625_19:00'] · hạng CE-lite [4]
+
+4. So thứ tự CE-lite với CE1 trên toàn dev
+   chunk_ids sau A1 trùng CE1: 102/200 câu → CE-lite LÀ biến thể khác, đúng như CE4 đã ghi

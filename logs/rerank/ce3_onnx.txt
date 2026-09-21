@@ -1,0 +1,33 @@
+CE3 · cross-encoder/ms-marco-MiniLM-L6-v2 @ 233902d25c44 · ONNX Runtime 1.30.0 · CPUExecutionProvider · 6 luồng · lô 32 · MaxP (không đổi)
+/Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/reproduce/rerank/ce_onnx.py:33: UserWarning: # 'dynamic_axes' is not recommended when dynamo=True, and may lead to 'torch._dynamo.exc.UserError: Constraints violated.' Supply the 'dynamic_shapes' argument instead if export is unsuccessful.
+  torch.onnx.export(
+W0921 14:13:35.854000 50092 .venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_compat.py:133] Setting ONNX exporter to use operator set version 18 because the requested opset_version 17 is a lower version than we have implementations for. Automatic version conversion will be performed, which may not be successful at converting to the requested version. If version conversion is unsuccessful, the opset version of the exported model will be kept at 18. Please consider setting opset_version >=18 to leverage latest ONNX features
+W0921 14:13:36.239000 50092 .venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
+W0921 14:13:36.239000 50092 .venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
+W0921 14:13:36.239000 50092 .venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
+W0921 14:13:36.239000 50092 .venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
+[torch.onnx] Obtain model graph for `BertForSequenceClassification([...]` with `torch.export.export(..., strict=False)`...
+[torch.onnx] Obtain model graph for `BertForSequenceClassification([...]` with `torch.export.export(..., strict=False)`... ✅
+[torch.onnx] Run decompositions...
+[torch.onnx] Run decompositions... ✅
+[torch.onnx] Translate the graph into ONNX...
+[torch.onnx] Translate the graph into ONNX... ✅
+The model version conversion is not supported by the onnxscript version converter and fallback is enabled. The model will be converted using the onnx C API (target version: 17).
+[torch.onnx] Optimize the ONNX graph...
+[torch.onnx] Optimize the ONNX graph... ✅
+/Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/.venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_onnx_program.py:486: UserWarning: # The axis name: seq will not be used, since it shares the same shape constraints with another axis: seq.
+  rename_mapping = _dynamic_shapes.create_rename_mapping(
+/Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/.venv/lib/python3.13/site-packages/torch/onnx/_internal/exporter/_onnx_program.py:486: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+  rename_mapping = _dynamic_shapes.create_rename_mapping(
+   đã xuất /Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/logs/rerank/ce1_minilm_l6.onnx (0.1 MB)
+   nạp session: 76 ms · provider ['CPUExecutionProvider']
+   50/200 câu · 4395 cửa sổ
+   100/200 câu · 9187 cửa sổ
+   150/200 câu · 13893 cửa sổ
+   200/200 câu · 18723 cửa sổ
+
+=== Độ trễ phần xếp lại, ONNX Runtime CPU (bỏ 5 câu khởi động, n=195)
+   p50 4958 ms · p95 7579 ms · max 13110 ms · trung bình 4924 ms
+   số câu vượt 3000 ms: 172/195
+   nạp model 76 ms (đo riêng) · RSS tăng thêm ~2963 MB · file ONNX 0.1 MB
+→ /Users/hunggoodboy/Documents/HTTM-TK/MiniRAG-HTTM/logs/rerank/ce3_onnx_scores.json

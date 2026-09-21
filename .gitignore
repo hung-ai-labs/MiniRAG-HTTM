@@ -84,3 +84,8 @@ logs/rerank/ce1_scores.json
 logs/rerank/ce1_eval.json
 logs/retrieval_audit/ce1_off_dev_ctx.jsonl
 logs/retrieval_audit/ce1_on_dev_ctx.jsonl
+
+# CE3: model ONNX đã xuất (91 MB trọng số ngoài) + điểm — dựng lại bằng reproduce/rerank/ce_onnx.py
+logs/rerank/*.onnx
+logs/rerank/*.onnx.data
+logs/rerank/ce3_onnx_scores.json

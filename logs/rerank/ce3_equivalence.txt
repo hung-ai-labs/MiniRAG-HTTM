@@ -1,0 +1,15 @@
+CE3 (ONNX Runtime CPU fp32) so với CE1 (PyTorch CPU fp32) — dung sai chốt trước: |Δđiểm| ≤ 1e-3
+
+1. Điểm từng chunk: 9351 cặp · max |Δ| 1.597e-05 · p99 7.629e-06 · vượt 1e-3: 0  → ĐẠT
+2. Thứ tự sau xếp lại trùng: 200/200
+3. chunk_ids sau A1@4000 trùng: 200/200
+4. Chồng lấp top-10: trung bình 1.0000 · số câu <1.0: 0
+5. Đối chiếu: CE1 offline == CE1 runtime đã ghi 200/200 (selftest mục 9 đã chứng minh)
+   → hash context của CE3 sẽ trùng CE1 ở đúng 200/200 câu mà chunk_ids trùng
+
+PHÂN LOẠI: nhóm A
+
+=== Độ trễ, cùng máy, cùng 6 luồng, cùng lô 32, cùng MaxP
+   CE1 PyTorch : p50    1830 · p95    2731 · max    3429 ms · vượt 3000: 5/200
+   CE3 ONNX    : p50    4958 · p95    7579 · max   13110 ms · vượt 3000: 172/195
+   → ONNX CHẬM hơn 2.71× ở p50, 3.82× ở max

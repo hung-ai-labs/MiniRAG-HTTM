@@ -1,0 +1,45 @@
+THĂM DÒ — 20 ca độ sâu xếp hạng · CE1 cứu được 11
+
+1. Chunk đáp án bị cắt của từng ca
+   loại | hạng RRF | BM25 | vec | nguồn | tok | CE1 cứu | token cộng dồn tới nó
+   S    |       37 | None |  20 | vector |  145 | —       |  10047
+   S    |       11 |   18 |  15 | cả hai | 1200 | —       |  10354
+   S    |       14 |    3 | None | bm25   | 1200 | CÓ      |  10915
+   S    |       13 |    6 | None | bm25   | 1200 | —       |  12820
+   S    |       15 |    2 | None | bm25   | 1200 | CÓ      |  15001
+   S    |       47 | None |  28 | vector |  470 | —       |  19745
+   S    |       37 | None |  20 | vector |  145 | —       |  10058
+   S    |       10 |    5 |  27 | cả hai | 1200 | CÓ      |   7794
+   S    |       22 |   11 | None | bm25   | 1200 | CÓ      |  19196
+   S    |       17 |    7 | None | bm25   | 1200 | CÓ      |   9044
+   S    |       20 |   10 | None | bm25   |  114 | —       |   5183
+   M    |       22 | None |  12 | vector |  502 | —       |  13445
+   S    |        9 |    2 | None | bm25   | 1200 | CÓ      |   7860
+   M    |       48 |   26 | None | bm25   |  237 | —       |  14388
+   S    |       14 |    1 | None | bm25   | 1200 | CÓ      |  11862
+   S    |        6 |    5 |  16 | cả hai |  695 | CÓ      |   4906
+   M    |       24 | None |  14 | vector |  268 | CÓ      |   4506
+   M    |       11 |    2 | None | bm25   | 1200 | CÓ      |   6311
+   S    |        9 |    1 |  23 | cả hai | 1200 | CÓ      |   9744
+   S    |       10 |   12 |  16 | cả hai | 1200 | —       |  11052
+
+   hạng RRF, 11 ca CE1 CỨU ĐƯỢC  : [6, 9, 9, 10, 11, 14, 14, 15, 17, 22, 24]  (max 24)
+   hạng RRF, 9 ca KHÔNG cứu được : [10, 11, 13, 20, 22, 37, 37, 47, 48]
+   token cộng dồn, 11 ca cứu được: trung vị 9044 · max 19196
+
+2. Độ phủ và chi phí từng luật
+   luật                                 | phủ 11 ca cứu | phủ 20 ca | ứng viên/câu | cửa sổ/câu | % chi phí CE1
+   top 10 theo RRF                      |  4/11         |  5/20     |        10.0  |      21.8  |    23%
+   top 15 theo RRF                      |  8/11         | 11/20     |        15.0  |      32.3  |    34%
+   top 20 theo RRF                      |  9/11         | 13/20     |        20.0  |      42.6  |    46%
+   top 25 theo RRF                      | 11/11         | 16/20     |        25.0  |      52.5  |    56%
+   top 30 theo RRF                      | 11/11         | 16/20     |        30.0  |      62.5  |    67%
+   hợp top 10 BM25 & top 10 vector      |  9/11         | 11/20     |        16.5  |      34.1  |    36%
+   hợp top 15 BM25 & top 15 vector      | 11/11         | 16/20     |        24.6  |      50.3  |    54%
+   hợp top 20 BM25 & top 20 vector      | 11/11         | 18/20     |        32.1  |      65.4  |    70%
+   tiền tố token 1.5× ngân sách         |  3/11         |  4/20     |        15.0  |      26.2  |    28%
+   tiền tố token 2.0× ngân sách         |  6/11         |  7/20     |        19.3  |      34.3  |    37%
+   tiền tố token 2.5× ngân sách         |  8/11         | 13/20     |        23.1  |      41.6  |    44%
+   tiền tố token 3.0× ngân sách         |  9/11         | 15/20     |        26.5  |      48.7  |    52%
+
+   CE1 đầy đủ: ứng viên/câu 46.8 · cửa sổ/câu 93.6 = 100% (tương ứng p50 1830 ms, max 3429 ms trên CPU)

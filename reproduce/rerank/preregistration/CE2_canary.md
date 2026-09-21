@@ -38,6 +38,14 @@ nó sẽ trượt cổng này theo thiết kế, không phải vì hỏng.
   **phần xếp lại ≤ 3000 ms mỗi câu trên CPU**. Đo được: p50 1601 ms, p95 2388 ms → đạt;
 - thêm trần tổng, tuyên bố ở đây trước khi chạy: **tổng truy hồi p95 ≤ 2× p95 của B2 đông lạnh** (10024 → trần 20048 ms).
 
+**Bổ sung tiến cứu 21/09/2026 — viết TRƯỚC khi chạy tầng dev 200.** Tầng dev của bộ sàng lọc có một cổng riêng,
+*"thời gian truy hồi: đo xen kẽ tầng B đạt T1 và T2"*, đọc file `canary_amendment.json` của biến thể. File đó là hiện
+vật của sửa đổi đăng ký 15/09 dành riêng cho B2. Biến thể reranker **không có và không thể có** file đó, nên để nguyên
+thì cổng trượt vì một lý do sai — không phải vì reranker chậm. Với biến thể trong `RERANK`, tầng dev dùng **đúng bộ
+cổng thời gian đã tuyên bố ở trên**: cổng 50 ms ghi nhận-không-quyết, cổng 8 của CE1 (≤ 3000 ms/câu), và trần tổng
+p95 ≤ 2× mốc. Mọi biến thể khác giữ nguyên hành vi cũ. Đây là thay thế một cổng **không áp dụng được**, không phải nới
+lỏng một cổng đang trượt.
+
 Thiết bị runtime cho canary: **CPU**, đúng như đã ghim. MPS nhanh gấp đôi và cho thứ hạng trùng khít, nhưng đổi thiết bị
 để làm đẹp số đo là việc không được làm.
 
@@ -72,6 +80,18 @@ Giữ nguyên bộ cổng an toàn sẵn có của tầng canary, cộng luật 
 
 Trượt bất kỳ cổng 1–7 → dừng, không chạy dev 200, tắt cờ, giữ B2, ghi kết quả phủ định.
 Đạt hết → **dừng và xin duyệt**. Không tự chạy dev 200. Không chạm 637 hay tầng D.
+
+## 6. Tầng dev 200 (chạy 21/09/2026 sau khi nhóm duyệt)
+
+Cổng của tầng dev do bộ sàng lọc định sẵn, cộng mục 2 ở trên: `Null net ≥ −3` · `Multi net ≥ −3` ·
+`số phiếu error tăng ≤ +4` · `token context trung vị ±5%` · `Single net ≥ 0` · ba cổng thời gian của reranker.
+Quyết định PROMOTE đòi **net ≥ 1σ(m)** *và* mọi cổng không-ghi-nhận đều đạt.
+
+**Điều phải nhìn kỹ nhất là Multi, không phải Null.** Canary cho Multi 2 lên / 4 xuống trong khi bằng chứng giữ được
+lại *tốt hơn*; cả 4 câu tụt đều đã đủ bằng chứng ở cả hai bên. Giả thuyết: thứ tự trình bày tác động lên bước sinh ở
+cùng bằng chứng. Dev 200 có 21 câu Multi — vẫn nhỏ, nên kết quả Multi ở đây là **quan sát**, không phải kết luận.
+
+Dừng sau dev 200 và xin duyệt. Không chạm 637 hay tầng D.
 
 ## 5. Diễn giải
 

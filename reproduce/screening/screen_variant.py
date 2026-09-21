@@ -257,28 +257,36 @@ def safety(s, var_ctx, base_ctx, rows, stage, variant=None):
               "Multi net ≥ −3": s["by_type"]["Multi"]["net"] >= -3,
               f"số phiếu error tăng ≤ +{err_lim}": s["err_delta_count"] <= err_lim,
               "token context trung vị ±5%": bool(vt and bt and abs(vt / bt - 1) <= 0.05)}
+    def rerank_time_gates():
+        # CE2 mục 2 (tuyên bố TRƯỚC khi chạy, áp cho MỌI tầng của biến thể có reranker): cổng 50 ms được hiệu chỉnh
+        # cho BM25 (1 ms). Một reranker học cố ý đánh đổi tính toán lấy chất lượng nên trượt nó theo thiết kế.
+        # Không vặn cổng: vẫn chạy, vẫn in, nhưng không quyết. Cổng thời gian thật là cổng 8 của CE1 + trần p95.
+        checks[ADVISORY + "truy hồi thêm ≤ 50 ms"] = bool(vm is not None and bm is not None and vm - bm <= 50)
+        rr = [c["rerank_ms"] for c in var_ctx.values() if c.get("rerank_ms") is not None]
+        checks["phần xếp lại ≤ 3000 ms/câu (cổng 8 của CE1)"] = bool(rr) and max(rr) <= 3000
+        pv = sorted(c["retrieval_ms"] for c in var_ctx.values() if c["retrieval_ms"] is not None)
+        pb = sorted(c["retrieval_ms"] for c in base_ctx.values() if c["retrieval_ms"] is not None)
+        p95 = lambda x: x[min(len(x) - 1, int(0.95 * len(x)))]  # noqa: E731
+        checks["tổng truy hồi p95 ≤ 2× mốc"] = bool(pv and pb) and p95(pv) <= 2 * p95(pb)
+
     if stage == "dev":
-        # Sửa đổi đăng ký trước 15/09 (commit fe36c1e): cổng thời gian tầng C lấy kết quả đo xen kẽ hợp lệ ở tầng B;
-        # hiệu tuần tự vm − bm vẫn in trong báo cáo để tham khảo, không làm cổng.
-        amd = os.path.join(OUT, variant or "", "canary_amendment.json")
-        a = json.load(open(amd, encoding="utf-8")) if variant and os.path.exists(amd) else {}
-        checks["thời gian truy hồi: đo xen kẽ tầng B đạt T1 và T2"] = bool(a.get("T1") and a.get("T2"))
-        checks["Single net ≥ 0"] = s["by_type"]["Single"]["net"] >= 0
-    else:
-        gate50 = bool(vm is not None and bm is not None and vm - bm <= 50)
         if variant in RERANK:
-            # CE2 mục 2, tuyên bố TRƯỚC khi chạy: cổng 50 ms được hiệu chỉnh cho BM25 (1 ms). Một reranker học
-            # cố ý đánh đổi tính toán lấy chất lượng nên trượt nó theo thiết kế. Không vặn cổng: vẫn chạy, vẫn in,
-            # nhưng không quyết. Cổng thời gian thật là cổng 8 của CE1 và trần p95 dưới đây.
-            checks[ADVISORY + "truy hồi thêm ≤ 50 ms"] = gate50
-            rr = [c["rerank_ms"] for c in var_ctx.values() if c.get("rerank_ms") is not None]
-            checks["phần xếp lại ≤ 3000 ms/câu (cổng 8 của CE1)"] = bool(rr) and max(rr) <= 3000
-            pv = sorted(c["retrieval_ms"] for c in var_ctx.values() if c["retrieval_ms"] is not None)
-            pb = sorted(c["retrieval_ms"] for c in base_ctx.values() if c["retrieval_ms"] is not None)
-            p95 = lambda x: x[min(len(x) - 1, int(0.95 * len(x)))]  # noqa: E731
-            checks["tổng truy hồi p95 ≤ 2× mốc"] = bool(pv and pb) and p95(pv) <= 2 * p95(pb)
+            # Cổng "đo xen kẽ tầng B đạt T1 và T2" là hiện vật của sửa đổi đăng ký 15/09 dành riêng cho B2
+            # (canary_amendment.json). Biến thể reranker không có và KHÔNG THỂ có file đó, nên để nguyên thì cổng
+            # trượt vì một lý do sai. Thay bằng đúng bộ cổng thời gian đã tuyên bố trong CE2 — tuyên bố 21/09/2026,
+            # TRƯỚC khi chạy tầng dev, ghi trong CE2 mục 2.
+            rerank_time_gates()
         else:
-            checks["truy hồi thêm ≤ 50 ms"] = gate50
+            # Sửa đổi đăng ký trước 15/09 (commit fe36c1e): cổng thời gian tầng C lấy kết quả đo xen kẽ hợp lệ ở tầng B;
+            # hiệu tuần tự vm − bm vẫn in trong báo cáo để tham khảo, không làm cổng.
+            amd = os.path.join(OUT, variant or "", "canary_amendment.json")
+            a = json.load(open(amd, encoding="utf-8")) if variant and os.path.exists(amd) else {}
+            checks["thời gian truy hồi: đo xen kẽ tầng B đạt T1 và T2"] = bool(a.get("T1") and a.get("T2"))
+        checks["Single net ≥ 0"] = s["by_type"]["Single"]["net"] >= 0
+    elif variant in RERANK:
+        rerank_time_gates()
+    else:
+        checks["truy hồi thêm ≤ 50 ms"] = bool(vm is not None and bm is not None and vm - bm <= 50)
     return checks, {"tokens_var": vt, "tokens_base": bt, "retrieval_ms_var": vm, "retrieval_ms_base": bm}
 
 

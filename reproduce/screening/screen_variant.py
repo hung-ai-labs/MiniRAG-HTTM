@@ -287,7 +287,16 @@ def safety(s, var_ctx, base_ctx, rows, stage, variant=None):
         rerank_time_gates()
     else:
         checks["truy hồi thêm ≤ 50 ms"] = bool(vm is not None and bm is not None and vm - bm <= 50)
-    return checks, {"tokens_var": vt, "tokens_base": bt, "retrieval_ms_var": vm, "retrieval_ms_base": bm}
+    # Ghi lại phân vị để cổng thời gian KIỂM TOÁN ĐƯỢC về sau: lượt dev 21/09 trượt cổng p95 mà không có số nào
+    # lưu lại, nên không dựng lại được cái mà cổng đã nhìn thấy. Chỉ là đo đạc, không đổi cổng nào.
+    q95 = lambda xs: (sorted(xs)[min(len(xs) - 1, int(0.95 * len(xs)))] if xs else None)  # noqa: E731
+    rv = [c["retrieval_ms"] for c in var_ctx.values() if c["retrieval_ms"] is not None]
+    rb = [c["retrieval_ms"] for c in base_ctx.values() if c["retrieval_ms"] is not None]
+    rr_all = [c["rerank_ms"] for c in var_ctx.values() if c.get("rerank_ms") is not None]
+    return checks, {"tokens_var": vt, "tokens_base": bt, "retrieval_ms_var": vm, "retrieval_ms_base": bm,
+                    "retrieval_p95_var": q95(rv), "retrieval_p95_base": q95(rb),
+                    "rerank_p50": med(rr_all) if rr_all else None, "rerank_p95": q95(rr_all),
+                    "rerank_max": max(rr_all) if rr_all else None}
 
 
 def evidence(rows, ctxs, gold):

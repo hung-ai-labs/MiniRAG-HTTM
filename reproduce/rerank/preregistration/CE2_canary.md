@@ -57,7 +57,7 @@ Thiết bị runtime cho canary: **CPU**, đúng như đã ghim. MPS nhanh gấp
 | Mốc so sánh | B2 đông lạnh, cùng bộ câu, cùng seed sinh 20260914 |
 | Biến thể | `MINIRAG_CHUNK_FUSION=vector_bm25` **+** `MINIRAG_RERANK=ce1` — khác B2 **đúng một biến** |
 | Không đổi | BM25, vector, RRF, A1@4000, parser, generator, prompt, ngân sách token, seed |
-| Lượt | 1 lượt sinh, 3 lượt chấm (như mọi tầng canary trước) |
+| Lượt | 1 lượt sinh, ~~3 lượt chấm~~ **1 lượt chấm** — sửa 20/09 sau khi chạy: tầng canary của bộ sàng lọc luôn là 1×1; tôi mô tả nhầm quy trình sẵn có, không phải đổi cổng |
 | Điều kiện tiên quyết | 9 selftest phải ĐẠT hết (`reproduce/rerank/run_selftest.sh`) |
 
 ## 4. Cổng quyết định canary — chốt trước khi chạy
@@ -81,6 +81,12 @@ Giữ nguyên bộ cổng an toàn sẵn có của tầng canary, cộng luật 
 Trượt bất kỳ cổng 1–7 → dừng, không chạy dev 200, tắt cờ, giữ B2, ghi kết quả phủ định.
 Đạt hết → **dừng và xin duyệt**. Không tự chạy dev 200. Không chạm 637 hay tầng D.
 
+## 5. Diễn giải
+
+Không được viết bất cứ điều gì về "giải quyết ảo giác" hay "giải quyết Null". Canary 100 câu, một lượt sinh — theo
+CLAUDE.md §3 nó là **cổng sàng lọc rẻ**, không phải bằng chứng. Sàn nhiễu sinh trên dev là 1,5 điểm; canary nhỏ hơn dev
+nên nhiễu còn lớn hơn.
+
 ## 6. Tầng dev 200 (chạy 21/09/2026 sau khi nhóm duyệt)
 
 Cổng của tầng dev do bộ sàng lọc định sẵn, cộng mục 2 ở trên: `Null net ≥ −3` · `Multi net ≥ −3` ·
@@ -92,9 +98,3 @@ lại *tốt hơn*; cả 4 câu tụt đều đã đủ bằng chứng ở cả 
 cùng bằng chứng. Dev 200 có 21 câu Multi — vẫn nhỏ, nên kết quả Multi ở đây là **quan sát**, không phải kết luận.
 
 Dừng sau dev 200 và xin duyệt. Không chạm 637 hay tầng D.
-
-## 5. Diễn giải
-
-Không được viết bất cứ điều gì về "giải quyết ảo giác" hay "giải quyết Null". Canary 100 câu, một lượt sinh — theo
-CLAUDE.md §3 nó là **cổng sàng lọc rẻ**, không phải bằng chứng. Sàn nhiễu sinh trên dev là 1,5 điểm; canary nhỏ hơn dev
-nên nhiễu còn lớn hơn.

@@ -1,0 +1,29 @@
+1. N = 25 đóng cứng
+   [ĐẠT] runtime N_PREFIX['ce1_lite'] == 25 — {'ce1': None, 'ce1_lite': 25}
+   [ĐẠT] bản đánh giá offline dùng cùng N — 25
+   [ĐẠT] N không đọc từ biến môi trường
+
+2. Chỉ 25 ứng viên đầu được xếp lại, đuôi giữ nguyên thứ tự RRF
+   [ĐẠT] đuôi sau vị trí 25 y nguyên — 200/200
+   [ĐẠT] tiền tố chỉ bị hoán vị trong chính nó — 200/200
+
+3–4. Runtime khớp bản dựng offline
+   [ĐẠT] thứ hạng runtime == CE-lite offline — 200/200
+   [ĐẠT] Sources runtime == CE-lite offline — 200/200
+   [ĐẠT] không câu nào vượt 4.000 token — max 3999
+
+5. Tập ứng viên không đổi
+   [ĐẠT] tập ứng viên giữ nguyên — 200/200
+   [ĐẠT] thứ tự RRF đi vào trùng B2 — 200/200
+
+6. Báo lỗi to
+   [ĐẠT] chế độ lạ ném ValueError
+   [ĐẠT] lỗi reranker được ném ra
+   [ĐẠT] ce1_lite nằm trong MODES — ('ce1', 'ce1_lite')
+
+7. Cờ TẮT vẫn là B2 đông lạnh
+   [ĐẠT] hash B2 trùng — 198/198
+   [ĐẠT] bản ghi cờ TẮT không có trường rerank
+
+============================================================
+SELFTEST ce1_lite: 15/15 mục đạt — ĐẠT

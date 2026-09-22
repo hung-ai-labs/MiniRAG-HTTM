@@ -22,10 +22,11 @@ sys.path.insert(0, ROOT)
 SEED = 20260914
 D = 0.209                      # tỉ lệ đổi kết quả giữa hai lượt cùng cấu hình (tập lặp V3 cố định)
 T_NONDEV = 4.18                # ngưỡng bền với nhiễu sinh trên 435 câu — chỉ để báo, tầng D không chạy ở đây
-VARIANTS = {"v3": "rrf", "vec": "vector", "b1": "rrf_bm25", "b2": "vector_bm25", "ce1": "vector_bm25"}
+VARIANTS = {"v3": "rrf", "vec": "vector", "b1": "rrf_bm25", "b2": "vector_bm25", "ce1": "vector_bm25",
+            "ce1_lite": "vector_bm25"}
 # Chế độ thí nghiệm xếp lại (đăng ký trước reproduce/rerank/preregistration/). Biến thể không có tên ở đây
 # thì MINIRAG_RERANK bị GỠ khỏi môi trường -> đường đi B2 không đổi một chút nào.
-RERANK = {"ce1": "ce1"}
+RERANK = {"ce1": "ce1", "ce1_lite": "ce1_lite"}
 ADVISORY = "(ghi nhận, không quyết) "   # cổng vẫn chạy và vẫn in, nhưng không chặn quyết định
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": ""}
 PREDICTION = {"b1": "câu đủ đáp án 72,8% · chunk giữ 75,8% (probe dev)", "b2": "câu đủ đáp án 83,9% · chunk giữ 86,0% (probe dev)"}

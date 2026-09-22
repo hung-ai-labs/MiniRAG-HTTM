@@ -17,7 +17,11 @@ import time
 MODEL = "cross-encoder/ms-marco-MiniLM-L6-v2"
 REVISION = "233902d25c440f23af6f7d6e94d2946bac0bee0a"
 MAXLEN = 512
-MODES = ("ce1",)
+# ce1      : xếp lại TOÀN BỘ ứng viên (đăng ký trước CE1).
+# ce1_lite : chỉ xếp lại N_PREFIX ứng viên đầu theo thứ tự RRF; phần còn lại giữ nguyên thứ tự RRF và nằm sau
+#            (đăng ký trước CE4). N = 25 ĐÓNG CỨNG — không phải tham số để chỉnh.
+MODES = ("ce1", "ce1_lite")
+N_PREFIX = {"ce1": None, "ce1_lite": 25}
 
 _STATE = {}
 
@@ -93,9 +97,11 @@ def rerank(mode, query, ids, texts):
         raise ValueError(f"MINIRAG_RERANK không hợp lệ: {mode!r} (hợp lệ: {MODES})")
     t0 = time.perf_counter()
     ids = list(ids)
-    s = score(query, ids, texts)
-    pos = {c: i for i, c in enumerate(ids)}
-    out = sorted(ids, key=lambda c: (-s[c], pos[c]))
+    n = N_PREFIX[mode]
+    head, tail = (ids, []) if n is None else (ids[:n], ids[n:])
+    s = score(query, head, texts)
+    pos = {c: i for i, c in enumerate(head)}
+    out = sorted(head, key=lambda c: (-s[c], pos[c])) + tail
     if sorted(out) != sorted(ids):
         raise RuntimeError("CE1: tập ứng viên đã đổi sau khi xếp lại")
     return out, 1000 * (time.perf_counter() - t0)

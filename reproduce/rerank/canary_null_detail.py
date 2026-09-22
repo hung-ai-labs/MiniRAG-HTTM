@@ -1,6 +1,6 @@
 """Chi tiết nhóm Null của lượt canary CE1 — chuyển dịch từng câu so với mốc B2, cộng ba chunk gây nhầm đã biết.
 
-    .venv/bin/python reproduce/rerank/canary_null_detail.py [canary|dev] | tee logs/rerank/<tầng>_null_detail.txt
+    .venv/bin/python reproduce/rerank/canary_null_detail.py [canary|dev] [ce1|ce1_lite] | tee logs/rerank/<tầng>_null_detail.txt
 
 Chỉ đọc log đã có. Không gọi LLM, không sinh, không chấm.
 Mốc B2 dựng đúng cách screen_variant dựng: answers.jsonl của B2 khi có, ngược lại V3 đông lạnh
@@ -27,14 +27,15 @@ def last(path):
 
 def main():
     stage = sys.argv[1] if len(sys.argv) > 1 else "canary"
+    var = sys.argv[2] if len(sys.argv) > 2 else "ce1"
     src = (os.path.join(ROOT, "reproduce", "screening", "canary100.csv") if stage == "canary"
            else os.path.join(ROOT, "logs", "devset.csv"))
     rows = list(csv.DictReader(open(src, encoding="utf-8")))
     nul = [r["Question"] for r in rows if r["Type"] == "Null"]
     v3 = last(os.path.join(S, "frozen", "v3.jsonl"))
     b2 = last(os.path.join(S, "b2", "answers.jsonl"))
-    ce = last(os.path.join(S, "ce1", "answers.jsonl"))
-    rep = json.load(open(os.path.join(S, "ce1", f"{stage}_report.json"), encoding="utf-8"))
+    ce = last(os.path.join(S, var, "answers.jsonl"))
+    rep = json.load(open(os.path.join(S, var, f"{stage}_report.json"), encoding="utf-8"))
     ctx = rep["contexts"]
 
     def base_verdict(q):
@@ -43,7 +44,7 @@ def main():
     def var_verdict(q):
         return ce[q]["verdict"] if q in ce and ce[q].get("verdict") else base_verdict(q)
 
-    print(f"NULL — {len(nul)} câu, tầng {stage} · mốc B2 → CE1\n")
+    print(f"NULL — {len(nul)} câu, tầng {stage} · mốc B2 → {var}\n")
     tr = collections.Counter()
     for q in nul:
         a, b = base_verdict(q), var_verdict(q)
@@ -60,8 +61,9 @@ def main():
     print(f"   acc {acc_b}/{len(nul)} → {acc_v}/{len(nul)} · err {err_b} → {err_v} · neither {nei_b} → {nei_v}")
 
     # vật liệu đầu vào của nhóm Null
+    ctxf = {"ce1": "ce1_on_dev_ctx.jsonl", "ce1_lite": "ce1_lite_on_dev_ctx.jsonl"}[var]
     on = {r["question"]: r for r in (json.loads(l) for l in
-                                     open(os.path.join(ROOT, "logs", "retrieval_audit", "ce1_on_dev_ctx.jsonl"),
+                                     open(os.path.join(ROOT, "logs", "retrieval_audit", ctxf),
                                           encoding="utf-8")) if not r.get("none")}
     b2c = {r["question"]: r for r in (json.loads(l) for l in
                                       open(os.path.join(ROOT, "logs", "retrieval_audit", "vector_bm25_dev_ctx.jsonl"),

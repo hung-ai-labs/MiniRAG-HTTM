@@ -54,8 +54,26 @@ và nằm sau tiền tố; rồi **A1@4000 như cũ**. Chọn N = 25 theo luật
 | ứng viên xếp lại/câu | 46,8 → **25,0** (53%) |
 | cửa sổ MaxP/câu | 93,6 → **52,5** (56%) |
 | ước tính tuyến tính | max ≈ 1922 ms |
-| **đo thật trên CPU** (n=195) | **p50 845 · p95 1507 · max 1708 ms · 0 câu vượt 3000** |
+| ~~**đo thật trên CPU** (n=195)~~ | ~~p50 845 · p95 1507 · max 1708 ms · 0 câu vượt 3000~~ **← SỐ NÀY SAI, xem đính chính** |
 | 11 ca CE1 cứu được | **11/11 còn cứu**, **thêm 1 ca** CE1 không cứu được |
+
+> ## ⛔ ĐÍNH CHÍNH 22/09/2026 — phép đo độ trễ ở trên KHÔNG so được
+>
+> Con số `p50 845 · p95 1507 · max 1708` đo bằng **vòng lặp tách rời** (`celite_eval.measure_latency`), chỉ chạy
+> reranker, không có phần còn lại của pipeline. Nhưng con số của CE1 (`p50 1830 · p95 2731 · max 3429`) lấy từ
+> `rerank_ms` ghi **trong pipeline**. Tôi đã so hai loại đo khác nhau và kết luận "max 1708 ms, dưới mốc 3000" —
+> **kết luận đó không đứng vững**.
+>
+> Đo lại công bằng, cả hai **trong pipeline**, cùng cách dựng lại dev 200 (`celite_latency_fair.txt`):
+>
+> | | p50 | p95 | max | vượt 3000 |
+> |---|---:|---:|---:|---:|
+> | CE1 đầy đủ | 1830 ms | 2731 ms | 3429 ms | 5/200 |
+> | **CE-lite** | **970 ms** | **1725 ms** | **5246 ms** | 1/200 |
+>
+> CE-lite **giảm một nửa p50 và p95** nhưng **đuôi max xấu hơn CE1** (5246 so với 3429). Đuôi bị chi phối bởi tải máy
+> chứ không phải khối lượng của reranker. Kết luận "đạt mốc vận hành" ở mục 7 bảng quyết định CE4 vì thế **sai** —
+> xem `logs/rerank/CE_LITE_CANARY.md`.
 
 **Bảng chính**
 
@@ -120,7 +138,7 @@ bằng chứng gần giống **nhiều hơn** CE1 ở hai câu — đúng cảnh
 | 4 | an toàn Null không xấu đi đáng kể | 4/20 (≤ 7) · thoái lui 1/3 (≤ 1) | ĐẠT, kèm cảnh báo 2 câu ở trên |
 | 5 | ngân sách context không đổi | max 3999 ≤ 4000 · trung vị +3,1% (≤ ±5%) | ĐẠT |
 | 6 | không thêm lời gọi LLM | 0 | ĐẠT |
-| 7 | độ trễ CPU đạt mốc vận hành | **max 1708 ms**, 0/195 vượt 3000 | ĐẠT |
+| 7 | độ trễ CPU đạt mốc vận hành | ~~max 1708 ms~~ → đo lại trong pipeline **max 5246 ms** | **TRƯỢT** (đính chính 22/09) |
 
 ## CE-lite là biến thể truy hồi MỚI, không phải tối ưu triển khai
 

@@ -1,0 +1,484 @@
+{
+ "stage": "canary",
+ "decision": "STOP",
+ "processed": 100,
+ "m_total": 99,
+ "summary": {
+  "n": 100,
+  "excluded": 0,
+  "up": 13,
+  "down": 9,
+  "net": 4,
+  "mcnemar_p": 0.5234670639038086,
+  "base": {
+   "accurate": 68.0,
+   "error": 28.0,
+   "neither": 4.0
+  },
+  "var": {
+   "accurate": 72.0,
+   "error": 26.0,
+   "neither": 2.0
+  },
+  "err_delta_count": -2,
+  "by_type": {
+   "Single": {
+    "n": 59,
+    "base_acc": 76.27118644067797,
+    "var_acc": 86.44067796610169,
+    "up": 9,
+    "down": 3,
+    "net": 6
+   },
+   "Multi": {
+    "n": 21,
+    "base_acc": 57.142857142857146,
+    "var_acc": 47.61904761904762,
+    "up": 2,
+    "down": 4,
+    "net": -2
+   },
+   "Null": {
+    "n": 20,
+    "base_acc": 55.0,
+    "var_acc": 55.0,
+    "up": 2,
+    "down": 2,
+    "net": 0
+   }
+  },
+  "adj_base_acc": 72.13559322033899,
+  "adj_var_acc": 79.22033898305085
+ },
+ "safety": {
+  "Null net ≥ −3": true,
+  "Multi net ≥ −3": true,
+  "số phiếu error tăng ≤ +3": true,
+  "token context trung vị ±5%": true,
+  "(ghi nhận, không quyết) truy hồi thêm ≤ 50 ms": false,
+  "phần xếp lại ≤ 3000 ms/câu (cổng 8 của CE1)": false,
+  "tổng truy hồi p95 ≤ 2× mốc": true
+ },
+ "efficiency": {
+  "tokens_var": 3943.0,
+  "tokens_base": 3861.5,
+  "retrieval_ms_var": 6928.3099999999995,
+  "retrieval_ms_base": 5363.485000000001,
+  "retrieval_p95_var": 15066.22,
+  "retrieval_p95_base": 9696.96,
+  "rerank_p50": 931.46,
+  "rerank_p95": 3077.63,
+  "rerank_max": 7161.69
+ },
+ "batches": [
+  "sau 40 câu: m = 39, net +4, σ(m) = 2,85, loại 0 → chạy tiếp",
+  "sau 80 câu: m = 79, net +5, σ(m) = 4,06, loại 0 → chạy tiếp",
+  "sau 100 câu: m = 99, net +4, σ(m) = 4,55, loại 0 → STOP"
+ ],
+ "gens_total": 99,
+ "judges_total": 99,
+ "contexts": {
+  "Which game does Ileana mention for its unique world and storytelling?": {
+   "sha": "e1385b716c9c2dc26d42d1f519ae87a3c12becff331e1cebb9e7570021b27f0d",
+   "changed": true
+  },
+  "What was the exact date and time when Cersei Lannister first met Jaime Lannister in the Game of Thrones series?": {
+   "sha": "4be04d3c5440178bfc3dc90411bab1951d188e00cac7d82c04b0ba9c08cac9db",
+   "changed": true
+  },
+  "What type of pizza does WolfgangSchulz prefer?": {
+   "sha": "55db09efd8cfed28dde8abe4f6f9408a26cb922789716f0be395264074c961b9",
+   "changed": true
+  },
+  "What playing style is associated with Guardiola's Barcelona team?": {
+   "sha": "0b80217a4d4a9b2debca07ff44299a1b0d8b5b2c59a810f68912a0422ef32d8d",
+   "changed": true
+  },
+  "Where do they plan to meet for soccer practice?": {
+   "sha": "ecfaa30a33863f2d73ae29a6a38d7ef71cc14d2396ae2b96b3f631981565029e",
+   "changed": true
+  },
+  "How does LiHua feel about the bench press challenge proposed by JenniferMoore?": {
+   "sha": "144f010799f943c09448554860434c16872c90222b7537c2ffcd6152f90c0b43",
+   "changed": true
+  },
+  "What is JenniferMoore's reminder to LiHua about on 20260919?": {
+   "sha": "e43c34639e69fe34ceb5d833e2e7ff1644c2161b550e380bd73f58e6f4fc402a",
+   "changed": true
+  },
+  "Which character's dynamic with Cersei is mentioned as complicated?": {
+   "sha": "15c14424af067f6f7dddc55d4185ef69a35c9439cde1491242cbf4b3f54591c9",
+   "changed": true
+  },
+  "What game has Gavriel been hooked on recently for its blend of RPG elements and social simulation?": {
+   "sha": "2e8a4d43a10eccede6e4a848fe2996367bc8db881c2b4c219b6255df836ad4e0",
+   "changed": true
+  },
+  "What does LiHua predict will happen in \"The Rings of Power\"?": {
+   "sha": "2f975c728f73bf4d07afb43c3bcaab374090264bb9e9625a08c33e7e3a884d38",
+   "changed": true
+  },
+  "What does EmilyBurnett think about the future relevance of Westworld's themes?": {
+   "sha": "9311658e7489f0113453d6fdd4ac9537fe813451e9540021f73eb3530634a40d",
+   "changed": false
+  },
+  "When does Li Hua ask Jennifer Moore about adjusting the protein in her meal plan?": {
+   "sha": "343914a6f7e9f37be0a6068328ae6677b15acb9e40dfb704eabf4c7b06c84584",
+   "changed": true
+  },
+  "Who initiated the discussion about Cersei's journey in Game of Thrones?": {
+   "sha": "5990464117ec2324cd0edb0fb99b165fb483daddad6540c5defb4919950461c8",
+   "changed": true
+  },
+  "What feedbacks does Hailey ask from LiHua in July?": {
+   "sha": "04eec9c0f025e6ff0ae31fe4a5fcb8e9ceea814cc262648aae5a1e1e86ecea39",
+   "changed": true
+  },
+  "Which game does Jareth praise for its storytelling in side quests?": {
+   "sha": "5fbe421b94e14611786d3a9a849709bca36b4e188367e88398cc9395ec22fd1d",
+   "changed": true
+  },
+  "What new species of flowers will be featured in the community garden renovation, according to the feedback provided by Li Hua during the progress reports?": {
+   "sha": "fa06bdfa39f08488c841656ffbed8d1caa027ec39b8112e5c5b8dbb830164f18",
+   "changed": true
+  },
+  "Is the time interval more than 3 days between LiHua first asking Adam if he can buy a small fridge for the basement and Adam asking LiHua about the size of the fridge?": {
+   "sha": "b1ddbc47f3fb784dca3927e9bb6e7a254a155b0f5c295f98a49d22cb913a46f8",
+   "changed": true
+  },
+  "What does RexxarRemar suggest to have available to keep everyone hydrated during the picnic?": {
+   "sha": "2310ead07f0025d247f5ff09ccb186a3590d263e0608112612bdebd7299737f6",
+   "changed": true
+  },
+  "What local dish did WolfgangSchulz try in Prague?": {
+   "sha": "ebd748593985421d11a5323da1bc6984dddcffea06fed4c2b06f6884c449535c",
+   "changed": true
+  },
+  "Did Yuriko tell Li Hua about booking a seat at the \"Central Perk\" cafe before Li Hua sent her a message to confirm the details of their next meeting?": {
+   "sha": "888d629b3632803836c92a221313576e906562a987194c97f8e3e8dc582ed194",
+   "changed": true
+  },
+  "What payment method did Li Hua use to purchase groceries from the store on April 15, 2026?": {
+   "sha": "204520731ca0f2a2b1d998a7cc5670498287bc154f2eef6a8df152488f4a758d",
+   "changed": true
+  },
+  "What topics will be covered in the community medical knowledge lecture?": {
+   "sha": "21113ca1847f693912636308f89650f94c07cfcb5c1b1ebf00ce7e07233ba8f3",
+   "changed": true
+  },
+  "Did Wolfgang ask Li Hua if she wants to have pizza for dinner after work today before he wondered if she wanted to have Sichuan hot pot for dinner tonight?": {
+   "sha": "9761aef5c13d7fb7f2cffbfdd47c2c660e92e8c194f7b75105906d4296d9c914",
+   "changed": true
+  },
+  "Which game does LiHua mention he's been playing on 20260920?": {
+   "sha": "5d3040afe1334f39162f9189fe79e3e5d5d1145126586d320ae697bc1a46f015",
+   "changed": true
+  },
+  "What is Thane's favorite type of food that he enjoys while playing video games?": {
+   "sha": "716ebbe9850b48b26f589d13b40be6355c41abed0bd23762ca14c316fbf7d775",
+   "changed": true
+  },
+  "What song does Yuriko propose that the band can practice this weekend according to the band's discussion on 20260703?": {
+   "sha": "58334f82d4348ba30dc0de903f0107174a55abe1d71f70f6b54b64e7307b122f",
+   "changed": true
+  },
+  "What type of passes does Briar suggest adding to the practice?": {
+   "sha": "84290f0f98c30ab4f19ce6850cc885405515e07bdbdb0e42b34f8d0a3dd5cefb",
+   "changed": true
+  },
+  "What song did Yuriko and Wolfgang decide to perform together after watching the drum tutorial?": {
+   "sha": "0c08bd967f436d40d451a6669035cdd392a13db49868adf066429331e22ff81e",
+   "changed": true
+  },
+  "What could Jaime and Brienne have done to rebuild trust according to Merrick?": {
+   "sha": "65f6692db072766b839eed3a927a7051f4feac437941d0ae12836c135fbeaaf5",
+   "changed": true
+  },
+  "What was the final match score of the 2025 UEFA Champions League final?": {
+   "sha": "f5a8bbb9a29898cc7bde240e6963159ab2734eee51203f948bc8127e4092295d",
+   "changed": true
+  },
+  "What color was the curtain that Li Hua chose for his living room?": {
+   "sha": "a698dc194e2b61004c708ae4c67c50f00eba59ec6281420610f41938dd155e50",
+   "changed": true
+  },
+  "What type of equipment does Wolfgang Schulz use when he works out at the gym?": {
+   "sha": "892684eaebb91cb332454372f7f772ba65b843be8fb4274e804bb1921da748c1",
+   "changed": true
+  },
+  "Did Wolfgang ask Li Hua about watching \"Star Wars: A New Hope\" after he asked Li Hua about going to see \"Overwatch 3\"?": {
+   "sha": "1fe9470ade49158f7c5d57277b016ebe71898675f1fe9e5b6c7eeff4785cafd0",
+   "changed": true
+  },
+  "What drinks does WolfgangSchulz want to have while watching the movie?": {
+   "sha": "c3606e2c7f9f85619ca8078ed7f00fd86c1ae132fcfaad296269b4b75e9fdee5",
+   "changed": true
+  },
+  "What aspect of \"Black Myth: Wukong\" does LiHua find the most impressive?": {
+   "sha": "d78d5fdf8ac99bf8c9455a2f8c7f64e37b0e6ff987d13207de7e994b3be15d8f",
+   "changed": true
+  },
+  "Did Adam Smith send Li Hua a reminder about the upcoming rent due date before Li Hua sent a message about having already transferred the rent on 20260301?": {
+   "sha": "ff4529066e4e33888dec69a03e5bac084afa1b72e61273736c40138663eb96cd",
+   "changed": true
+  },
+  "What is Li Hua's opinion on the characters in Succession?": {
+   "sha": "a4911360e1908ed3df78a3a7ff132c73b6d301a30698d77f27098294cbec70eb",
+   "changed": true
+  },
+  "What is the opportunity that makes Wolfgang and Yuriko acquaitances?": {
+   "sha": "4e3134585fb2517851103738db30dcc6375f144491e6e724f09a57b5125b86a1",
+   "changed": true
+  },
+  "What tips does Jennifer give to LiHua about preventing muscle soreness after a tough workout?": {
+   "sha": "595fc53baa89cec84576999e5e8df30c15b05cf20c364d6c1c26fa804aca2dff",
+   "changed": true
+  },
+  "Which boss did Gavriel struggle with the most in \"Octopath Traveler\"?": {
+   "sha": "fce422b46b414e6372177738da136a7c83d21cd8e1fd8c8e73cf870e0e0737e3",
+   "changed": true
+  },
+  "Did Li Hua ask Jennifer for advice on how to prevent muscle soreness after an intense workout session before he told her that he feels soreness in his arm muscles after the workout this week?": {
+   "sha": "19d58ebf6927990e3ac545ae9b4ecfd4bfc32c97d4532318914048bbc8ca7279",
+   "changed": true
+  },
+  "What specific brand of protein supplement does Jennifer recommend for Li Hua's weight loss journey?": {
+   "sha": "4454c578c062fcc6f168566ba600e4d1aabbbaa9f29dd11060358b3835a9a965",
+   "changed": true
+  },
+  "What does Briar think about Real Madrid's chances for the rest of the season?": {
+   "sha": "cbd97f8f34fdce49e3fc4c94127609918bfa1efc2950b6416c852f8cd725ca6b",
+   "changed": true
+  },
+  "Did Hailey announce the new line of high-protein breads before inviting Li Hua to the special bakery event?": {
+   "sha": "f9cce6bf911d3b63643627d392b0eb9415c9c05279989d8c53132c46e75c6bd9",
+   "changed": true
+  },
+  "What is IllidanStormrage's suggestion to the ongoing garden construction according to the discussion on 20260522?": {
+   "sha": "a8967b6e5dc3e987425abfa5966ac962f078b34d0059340701aba2a4719dcda5",
+   "changed": true
+  },
+  "Question: Did Jennifer remind Li Hua to consume enough protein after the workout before she shared tips with the group members on common mistakes to avoid after an intense workout?": {
+   "sha": "44fe7e01d187bdff5533be5d9253f92957fd242d646f107ea1f43f1743f79381",
+   "changed": true
+  },
+  "What is Jake's first tip for avoiding soccer injuries?": {
+   "sha": "bc722fb950c528308a69437c7237dc26c4f1ac0fe79b22d3894d5347dd2a3e0a",
+   "changed": true
+  },
+  "What does Kieran wish Jaime had done differently?": {
+   "sha": "b9110387f2fb9ead6423a942d9ff5433195d581b32f4b32f9adf0731f8bc2caa",
+   "changed": true
+  },
+  "What time does Li Hua watch the movie \"Overwatch 3\"?": {
+   "sha": "40061c0d72037d59413edf27834c77ada8b6ee2824304a40590b5b54ff9359dc",
+   "changed": true
+  },
+  "Did Li Hua provide feedback to Jennifer Moore on his new meal plan before he asked her for advice on a healthy meal plan?": {
+   "sha": "7e8756016ed4c478bda4e185b5b316d8c55f121307afc5f3fe1b1e35c4fc291d",
+   "changed": true
+  },
+  "What are some of the upcoming PS5 exclusives discussed?": {
+   "sha": "08510511dd2dc749bc59bf3a2a0ed3d3d1b5b23cfe28f981c63844328fca8f23",
+   "changed": true
+  },
+  "Which regions in Witcher 3 did Li Hua and Thane Chambers discuss?": {
+   "sha": "b7cf976a20c14fd0b5270a96325ce8a33154c3cbbe0aade2ef5b9f35302d4f80",
+   "changed": true
+  },
+  "Who offers to help with setting up for the garage sale?": {
+   "sha": "c4e5bd2e098fddb1051b7805c011248069abf89f0d708eb2c940aa39605a3e7d",
+   "changed": true
+  },
+  "Did Chae tell Li Hua that taking a warm shower before sleeping can improve the sleep quality before sharing the neuroscience article with her?": {
+   "sha": "2eda445e279e3c8b2a198e7bd21cc6dd59ee4cc54b7e12bbafa00cc848ecd06e",
+   "changed": true
+  },
+  "What are LiHua's favorite snacks for the game?": {
+   "sha": "f222a0f2dbb647d5867de52d1e68e4585ce2ebe22b609b2ba842d42b8b037691",
+   "changed": true
+  },
+  "What did Li Hua enjoy the most about the restaurant that he and Wolfgang visited for dinner on 20260514?": {
+   "sha": "56581d53f1d878fa62ff17cd052596f72ef60fa85668ccc555bf67a9c03e1d40",
+   "changed": true
+  },
+  "What is the common interest between Li Hua and Jake Watson?": {
+   "sha": "2259faff817eb3fa91a3669a0e52b779822d59a3081a4f19962ac0081015c861",
+   "changed": true
+  },
+  "Who offers to help with the installation of the curtains?": {
+   "sha": "5571ed1915c27f534f65de98ed120b2ff146cfb0b37e730894e1d8de6516715b",
+   "changed": true
+  },
+  "What drink does JakeWatson recommend for hydration after a match?": {
+   "sha": "3899b81b0ddd03007e9b78f98e2b65106f5a5ed1dfca09b5331d5f05ed3bbb73",
+   "changed": true
+  },
+  "What color did Li Hua decide to paint the walls of the basement after completing the renovation?": {
+   "sha": "71054879e34e1b2990dcd6ba48ad7f1158ac39e104bc8c8c1546628e40cd2bb0",
+   "changed": true
+  },
+  "What does Li Hua think about the rosemary focaccia?": {
+   "sha": "2baac8b1712b44b450d4f7cb86a6f5740125dc3a73fd8a7ced1cab653ee7ac51",
+   "changed": true
+  },
+  "What is the name of the café where Li Hua and YurikoYamamoto first meeting to talk about Yuriko's website?": {
+   "sha": "f698383978bbd864d2a48cfebc32a1fa416ebc87a44d17445184f6c1cbcb2872",
+   "changed": true
+  },
+  "What is the name of the song that Li Hua will sing at the karaoke on 20260425?": {
+   "sha": "7387fb17b5737c81339b9f6bf44219842e6198e040ae75958bd95211ac2f44d2",
+   "changed": true
+  },
+  "What type of gameplay does Jareth enjoy after a big challenge?": {
+   "sha": "51301bf5d2275baf0c78e350826639706ae46aa4ffcb770af2ac37f0e6741301",
+   "changed": true
+  },
+  "Why does LiHua bring up Adam Smith in the band's conversation on 20260616?": {
+   "sha": "74d1c3d0f23cf110056cf5de3947a60300083d4248af80a4d4b32d7141d03670",
+   "changed": true
+  },
+  "What was the content of the first-ever delivery from Hailey to LiHua and what was LiHua's opinion about it?": {
+   "sha": "be89206d811df5d14a06bd4a132d4c5757fdab682658018b30da624939da266d",
+   "changed": true
+  },
+  "What new song does the Jolly band decide to work on for the jam session according to their discussion on 20260410?": {
+   "sha": "5e4e302f803c356579fdc23454c0b16ceb343e19c177ce8cc4d64d41fca61377",
+   "changed": true
+  },
+  "What type of feedback did Li Hua provide to Chae regarding the community medical knowledge lecture, and what is Wolfgang's role in the band rehearsal?": {
+   "sha": "2a7a57d5f9d35765942c50ae96433e447553474ba7ca53e1bf2106953e952553",
+   "changed": true
+  },
+  "What percentage discount is Hailey Johnson offering for Mother's Day pastries?": {
+   "sha": "d02d3aa87701e7e32c933dca9bcb369c8985f8368f973118ab19376cdf80f07a",
+   "changed": true
+  },
+  "When did Li Hua inform Adam Smith that the rent was transferred?": {
+   "sha": "f343efcdfb577d381472adbdd02afb64ff4e81a5b2546ca161619fb5fc6b2697",
+   "changed": true
+  },
+  "Who does EmilyBurnett think is a standout character in the Game of Thrones series?": {
+   "sha": "f3f2cd11c4528e76978eb8b538fa1f25f6f54c1d070a786f57fd32d78f4b5f7f",
+   "changed": true
+  },
+  "What new components are being added to the garden project as Turalyon announces it on 20260806?": {
+   "sha": "2875f7aff21e331da3c5b0a277ccab180b5e9c218dc8acd01f0b3be7d30a4b7f",
+   "changed": true
+  },
+  "What type of protein supplements did Li Hua use after the workout on September 19, 2026?": {
+   "sha": "d9377e6e1e85b0e03ee6d6fae469821c56630cd56d0eab25dda7e6142655cb11",
+   "changed": true
+  },
+  "What specific measurements did Li Hua take for the window size before the installation of the curtain?": {
+   "sha": "9eadeac72e8ba20b7ba84ec3c6d40fd799483473ee0547731a7f9971d1ad0fa3",
+   "changed": true
+  },
+  "What does Lachlan find haunting about Cersei's end?": {
+   "sha": "4fb0fa8aa3aabce067314c9cf94222ecf40e0cd22e52de49236c6cc413d6b3f5",
+   "changed": true
+  },
+  "What type of instrument does Li Hua play in the basement?": {
+   "sha": "640ed469f81386237f86929f5ebf656fada82291208081a309ac8581f1dde66c",
+   "changed": true
+  },
+  "What funny glitch did Fionnuala experience in the game Red Dead Redemption 2?": {
+   "sha": "fa80c63aa5d2eff32c117f0985f2530023a561540126f67124b071a2685b2ca0",
+   "changed": true
+  },
+  "What were Li Hua's specific fitness goals and how did Jennifer's advice on nutrition influence them during his training for a marathon?": {
+   "sha": "ed71202cebb65d5df9869783f8a89658a533c4527d88257c649cf6a6e3b52ed1",
+   "changed": true
+  },
+  "Did Li Hua send a message to Jennifer asking if he can turn the Thursday class to Friday after he requested a change in his training schedule for Thursday?": {
+   "sha": "add40c482f03b062cf4c06ba1ecc974c55940effd55fb281c1135de0f2ce9561",
+   "changed": true
+  },
+  "What food did Emily order for the group's discussion about Game of Thrones characters?": {
+   "sha": "feffb71d4c28a99499f15acdb3573cd99d70375370a24e950f1aff852c9d2aa5",
+   "changed": true
+  },
+  "How does LiHua feel about the soreness in their arm muscles?": {
+   "sha": "3309969336e847ec4c31db7143179cdd74d37ba4276804a7fdb28ab4b9574685",
+   "changed": true
+  },
+  "What were the specific details of the negotiation between Jake Watson and Li Hua regarding player transfers from FC Barcelona to FC Bayern Munich?": {
+   "sha": "b9a416899aa02546083479ca3ae0f1d7e01d866910d90f4a1d8131ea609413fa",
+   "changed": true
+  },
+  "What does ThaneChambers think about Sekiro: Shadows Die Twice?": {
+   "sha": "77d451df02da8610e082d4ae5226bbfdea8ae78dbfaa69e3b21bdd8b52bbaa2c",
+   "changed": true
+  },
+  "What specific suggestions did Li Hua have regarding the construction schedule during the last community meeting?": {
+   "sha": "caed00fd278df470eb2ddee2e71a5bd570fef14a477d99b82cb5c4e37e0b7bd2",
+   "changed": true
+  },
+  "What does Saffron say Cersei was blinded by?": {
+   "sha": "7447268bdcee8ca3776cf279b3863f7f3a57feb05b2259b49f17eacbb7de1041",
+   "changed": true
+  },
+  "What time do they agree to meet for pizza?": {
+   "sha": "1b8102e076b57d2e3d7af259ff3bf444fc5445eca118caf5c9421a6b39b9ea75",
+   "changed": true
+  },
+  "Who does LiHua want to invite to the photo exhibition and who goes with him (during August)?": {
+   "sha": "e5b724a4b7640096527774130cd805d571e84ebeddcb085e104b6b3a5aded9c4",
+   "changed": true
+  },
+  "Who will bring the tools for the curtain installation?": {
+   "sha": "f3441fce5a9aa4fe81bcd12b564edc3435f509ad4a51e1b15189eeacf5340fcd",
+   "changed": true
+  },
+  "What were the specific requirements that the customers modified and how did Li Hua respond to each change?": {
+   "sha": "ed322a093c45874648a34b04e56db81f788487d09de3057704d9afa3e203fafb",
+   "changed": true
+  },
+  "Who does Jake believe has the potential to be a game-changer for Barca?": {
+   "sha": "f23b720a63128faf49b0d74c8a8504ebb6f41bd712b2af5da611747b3e4567f6",
+   "changed": true
+  },
+  "When was the first time Li Hua had dinner with Wolfgang this year?": {
+   "sha": "587a3771f9a683d4560da1ed95da8ab4a5ef0478cf3f56370757a4eb3cdfc641",
+   "changed": true
+  },
+  "Which character does LiHua mention as their favorite and describe as inspiring?": {
+   "sha": "0fd9138410ae3a4cf484599824785bbc3a11303856f99b9a1d97f24eb8e2e9e0",
+   "changed": true
+  },
+  "What aspect of Guardiola's career does JakeWatson admire?": {
+   "sha": "031ebc8a5a70bacaf542ed262947f3389195f43d36ce7c9b724eb82399b9fa2d",
+   "changed": true
+  },
+  "Is the time interval between LiHua asking JakeWatson to help him with dribbling skills and Li Hua asking the group about classic must-watch UCL matches more than 2 days (restrict your search within August)?": {
+   "sha": "61becb3a0ad89cc2575bc14f1ce03f48368f662a2554ff2c50fcf1f19502dce6",
+   "changed": true
+  },
+  "What event is the community organizing?": {
+   "sha": "7a9c80941b4c44d4f486eab9e858dbf391cf723514991c52cd9a3d4df50ae7a9",
+   "changed": true
+  },
+  "What does Fionnuala think about matchmaking systems?": {
+   "sha": "f33b968b9667e64e24e801bde610f1481043e6ccd5d08745bc31662b9d7a4ec1",
+   "changed": true
+  },
+  "What specific feedback did Yuriko give to Li Hua about the demo website during their meeting at the cafe \"Central Perk\" on Thursday morning, and how did Li Hua respond to her comments?": {
+   "sha": "d8afcac06874ae15b5de7e06e5333117d1e6cb03090a656a2545e46f1ed941e1",
+   "changed": true
+  },
+  "Is the time interval more than 7 days between Adam asking LiHua about the size of the fridge and Adam informing LiHua that the fridge will be delivered at 4pm next day?": {
+   "sha": "5e05e29ada5daa261f2b2314a37d28d3116cd52d28eba52083094be0548164bc",
+   "changed": true
+  },
+  "Did Li Hua ask Yuriko to play music together before Wolfgang proposed to pause playing musical instruments?": {
+   "sha": "dedf9ce7a7d3bb9aff47cb2a72d36cd136308985a9f03fa39347292f47a5f6f0",
+   "changed": true
+  },
+  "Did Wolfgang's promotion announcement occur before he invited Li Hua for dinner on 20260430?": {
+   "sha": "1adfff2542c8adf75b77207efb35a292d3a4a10770a5e980ed6549d897344160",
+   "changed": true
+  }
+ },
+ "endpoint": "https://hung-ai-labs--minirag-slm-serve.modal.run",
+ "ran_by": "Hunggoodboy"
+}

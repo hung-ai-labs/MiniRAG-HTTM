@@ -1,0 +1,21 @@
+1. MULTI — 21 câu canary, câu đổi phán quyết (so mốc B2)
+   error    → accurate · bằng chứng đủ → đủ · CE1 cho câu này: accurate | When does Li Hua ask Jennifer Moore about adjustin
+   accurate → error    · bằng chứng đủ → đủ · CE1 cho câu này: error    | Is the time interval more than 3 days between LiHu
+   accurate → error    · bằng chứng đủ → đủ · CE1 cho câu này: accurate | Did Wolfgang ask Li Hua if she wants to have pizza
+   error    → accurate · bằng chứng đủ → đủ · CE1 cho câu này: error    | Did Wolfgang ask Li Hua about watching "Star Wars:
+   accurate → error    · bằng chứng đủ → đủ · CE1 cho câu này: error    | Did Hailey announce the new line of high-protein b
+   accurate → error    · bằng chứng thiếu → thiếu · CE1 cho câu này: accurate | Did Wolfgang's promotion announcement occur before
+   Multi acc: B2 12/21 · CE1 10/21 · CE-lite 10/21
+   CE1 và CE-lite cho cùng phán quyết ở 15/21 câu Multi
+
+2. Ba chunk gây nhầm — B2 → CE1 → CE-lite
+   L055: 4 → CE1 16 → CE-lite 9 · Sources CE-lite — · CẢI THIỆN
+   L002: 8 → CE1 3 → CE-lite 3 · Sources CE-lite có · THOÁI LUI
+   L052: 1 → CE1 1 → CE-lite 1 · Sources CE-lite có · TRUNG TÍNH
+   → THOÁI LUI 1/3 (cổng ≤ 1)
+
+3. Hai câu Null có chunk gần giống thêm (offline) → thành lỗi QA chưa?
+   What song did Yuriko and Wolfgang decide to perform together a
+      chunk thêm: ['20260625_19:00'] · B2 accurate → CE1 accurate → CE-lite error
+   What type of feedback did Li Hua provide to Chae regarding the
+      chunk thêm: ['20261221_12:00'] · B2 error → CE1 error → CE-lite error

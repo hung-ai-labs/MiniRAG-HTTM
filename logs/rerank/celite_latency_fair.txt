@@ -1,0 +1,11 @@
+SO SÁNH CÔNG BẰNG — cả hai đo TRONG pipeline, cùng cách dựng lại dev 200
+
+   CE1 đầy đủ   n=200 · p50   1830 · p95   2731 · max    3429 ms · vượt 3000: 5/200
+   CE-lite      n=200 · p50    970 · p95   1725 · max    5246 ms · vượt 3000: 1/200
+
+   CE-lite / CE1: p50 0.53× · p95 0.63× · max 1.53×
+
+   Lượt canary (cùng máy, đang chạy cả pipeline + sinh): p50 931 · p95 3078 · max 7162 ms
+   Đo TÁCH RỜI trong celite_eval (vòng lặp riêng, không có pipeline): p50 845 · p95 1507 · max 1708 ms
+
+   → Con số tách rời KHÔNG so được với con số trong pipeline. Báo cáo CE4 của tôi đã so nhầm hai loại.

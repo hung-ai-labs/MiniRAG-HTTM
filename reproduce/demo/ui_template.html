@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Đối chiếu truy hồi MiniRAG</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -205,7 +206,21 @@ dialog button{border:1px solid var(--line);background:var(--sunk);color:var(--fg
 
 <script id="data" type="application/json">/*__DATA__*/</script>
 <script>
-const D = JSON.parse(document.getElementById('data').textContent);
+const raw = document.getElementById('data').textContent;
+let D;
+try { D = JSON.parse(raw); } catch (e) { D = null; }
+if (!D || !D.questions) {
+  document.body.innerHTML = `<div class="wrap" style="padding-block:40px;max-width:640px">
+    <h1 style="font-size:19px;margin-bottom:10px">Đây là file khuôn, chưa có dữ liệu</h1>
+    <p style="color:var(--fg-dim);font-size:14px;line-height:1.6">
+      File cần mở là <code class="mono" style="background:var(--sunk);padding:2px 6px;border-radius:2px">logs/demo/ui.html</code>,
+      không phải <code class="mono" style="background:var(--sunk);padding:2px 6px;border-radius:2px">reproduce/demo/ui_template.html</code>.</p>
+    <p style="color:var(--fg-dim);font-size:14px;line-height:1.6">Chưa có thì dựng lại:</p>
+    <pre class="mono" style="background:var(--sunk);border:1px solid var(--line);border-radius:3px;
+      padding:12px 14px;font-size:12.5px;overflow-x:auto">.venv/bin/python reproduce/demo/make_ui.py
+open logs/demo/ui.html</pre></div>`;
+  throw new Error('template opened without data');
+}
 const Q = D.questions, CH = D.chunks;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

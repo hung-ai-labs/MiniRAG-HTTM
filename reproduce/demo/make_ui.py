@@ -101,7 +101,7 @@ def main():
     html = os.path.join(ROOT, "logs", "demo", "ui.html")
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     open(html, "w", encoding="utf-8").write(
-        "<!doctype html>\n<meta charset=\"utf-8\">\n"
+        "<!doctype html>\n"   # charset nằm sẵn trong khuôn
         "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\">\n"
         + tpl.replace("/*__DATA__*/", payload))
     print(f"{OUT}  ({os.path.getsize(OUT) / 1e6:.2f} MB) · {len(qs)} câu · {len(used)} chunk")

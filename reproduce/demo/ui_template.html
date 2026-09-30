@@ -1,0 +1,380 @@
+<title>Đối chiếu truy hồi MiniRAG</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Bảng điều khiển kiểu máy đo: rail trái chọn câu, khung phải đối chiếu hai hệ thống.
+   Nền lam-đá lạnh, một điểm nhấn chàm cho trạng thái chọn, màu ngữ nghĩa riêng cho kết quả truy hồi. */
+:root{
+  --bg:#f4f6f9; --panel:#ffffff; --sunk:#eaeef4; --line:#d3dae4; --line-soft:#e3e9f0;
+  --fg:#16202e; --fg-dim:#5a6b80; --fg-faint:#8595a8;
+  --accent:#3b45c9; --accent-soft:#e6e8fb; --on-accent:#ffffff;
+  --ok:#0f7a4d; --ok-soft:#dcf2e6; --bad:#c02b32; --bad-soft:#fde5e6; --warn:#9a6205; --warn-soft:#fbeed2;
+  --font-d:"IBM Plex Sans Condensed",system-ui,sans-serif;
+  --font-b:"IBM Plex Sans",system-ui,sans-serif;
+  --font-m:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10151c; --panel:#171e28; --sunk:#0c1116; --line:#2b3644; --line-soft:#222c38;
+  --fg:#e3e9f1; --fg-dim:#9aa9bc; --fg-faint:#6d7d92;
+  --accent:#8b93f5; --accent-soft:#232a52; --on-accent:#0c1116;
+  --ok:#4bc98a; --ok-soft:#10301f; --bad:#ff7a80; --bad-soft:#3a1315; --warn:#e0a94a; --warn-soft:#332406;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#10151c; --panel:#171e28; --sunk:#0c1116; --line:#2b3644; --line-soft:#222c38;
+  --fg:#e3e9f1; --fg-dim:#9aa9bc; --fg-faint:#6d7d92;
+  --accent:#8b93f5; --accent-soft:#232a52; --on-accent:#0c1116;
+  --ok:#4bc98a; --ok-soft:#10301f; --bad:#ff7a80; --bad-soft:#3a1315; --warn:#e0a94a; --warn-soft:#332406;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:14px;line-height:1.5;margin:0}
+h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
+.mono{font-family:var(--font-m);font-variant-numeric:tabular-nums}
+
+/* ── đầu trang */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--panel);
+  border-bottom:1px solid var(--line);padding-block:12px}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:16px}
+.htop{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
+h1{font-size:19px;letter-spacing:-.01em}
+.sub{color:var(--fg-dim);font-size:12.5px}
+.hero{margin-left:auto;display:flex;align-items:baseline;gap:8px;font-family:var(--font-m);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.hero b{font-size:22px;font-weight:600;color:var(--ok)}
+.hero s{text-decoration:none;font-size:15px;color:var(--fg-faint)}
+.hero span{font-size:11.5px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.06em}
+
+/* ── bảng số */
+.stats{background:var(--panel);border:1px solid var(--line);border-radius:3px;margin-block:16px;overflow-x:auto}
+.stats table{border-collapse:collapse;width:100%;min-width:560px}
+.stats caption{text-align:left;font-family:var(--font-d);font-weight:700;font-size:13px;padding:11px 14px 3px;
+  letter-spacing:.01em}
+.stats .capnote{display:block;font-family:var(--font-b);font-weight:400;color:var(--fg-dim);font-size:12px;
+  padding:0 14px 9px;letter-spacing:0}
+.stats th,.stats td{padding:6px 14px;border-top:1px solid var(--line-soft);text-align:right;
+  font-family:var(--font-m);font-variant-numeric:tabular-nums;font-size:13px}
+.stats th:first-child,.stats td:first-child{text-align:left;font-family:var(--font-b);color:var(--fg-dim)}
+.stats thead th{font-family:var(--font-b);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--fg-faint);font-weight:600}
+.stats tbody tr:hover{background:var(--sunk)}
+.d-up{color:var(--ok);font-weight:500} .d-dn{color:var(--bad)}
+.stats td.b2{font-weight:600}
+
+/* ── bố cục hai cột */
+.cols{display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px;align-items:start;
+  padding-bottom:40px}
+@media (max-width:900px){.cols{grid-template-columns:1fr}}
+
+/* ── rail trái */
+.rail{background:var(--panel);border:1px solid var(--line);border-radius:3px;overflow:hidden;
+  position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px)}
+@media (max-width:900px){.rail{position:static}}
+.search{width:100%;border:0;border-bottom:1px solid var(--line);background:var(--sunk);color:var(--fg);
+  padding:10px 12px;font:inherit;font-size:13px}
+.search:focus{outline:2px solid var(--accent);outline-offset:-2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+.chip{border:1px solid var(--line);background:transparent;color:var(--fg-dim);border-radius:2px;
+  padding:3px 8px;font:inherit;font-size:11.5px;cursor:pointer;letter-spacing:.02em}
+.chip:hover{border-color:var(--accent);color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
+  font-weight:500}
+.qlist{max-height:min(62vh,620px);overflow-y:auto}
+@media (max-width:900px){.qlist{max-height:340px}}
+.qitem{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:8px 11px;cursor:pointer;
+  border-bottom:1px solid var(--line-soft);border-left:3px solid transparent;background:none;width:100%;
+  text-align:left;font:inherit;color:inherit}
+.qitem:hover{background:var(--sunk)}
+.qitem[aria-current="true"]{background:var(--accent-soft);border-left-color:var(--accent)}
+.qnum{font-family:var(--font-m);font-size:11.5px;color:var(--fg-faint);padding-top:2px}
+.qtext{min-width:0;font-size:12.5px;line-height:1.35;overflow:hidden;display:-webkit-box;
+  -webkit-line-clamp:2;-webkit-box-orient:vertical}
+.qmeta{display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap}
+.tag{font-family:var(--font-m);font-size:10.5px;padding:0 4px;border-radius:2px;border:1px solid var(--line);
+  color:var(--fg-dim);letter-spacing:.02em}
+.tag.win{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600}
+.tag.lose{background:var(--bad-soft);border-color:transparent;color:var(--bad);font-weight:600}
+.tag.ret{background:var(--sunk)}
+.railfoot{padding:8px 12px;font-size:11.5px;color:var(--fg-dim);border-top:1px solid var(--line-soft);
+  font-family:var(--font-m)}
+
+/* ── khung chi tiết */
+.detail{min-width:0;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:3px}
+.card > h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--fg-faint);
+  padding:10px 14px;border-bottom:1px solid var(--line-soft);font-weight:700}
+.qhead{padding:14px}
+.qhead .qq{font-family:var(--font-d);font-size:18px;font-weight:700;line-height:1.28}
+.qhead dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:10px 0 0;font-size:13px}
+.qhead dt{color:var(--fg-faint);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+.qhead dd{margin:0}
+.gold{padding:0 14px 12px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.pair{grid-template-columns:1fr}}
+.sys > h2{display:flex;align-items:baseline;gap:8px}
+.sys .who{font-family:var(--font-d);font-size:14px;letter-spacing:0;text-transform:none;color:var(--fg)}
+.sys.ours{border-color:var(--accent)}
+.sys.ours > h2{background:var(--accent-soft)}
+.nums{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;padding:11px 14px;font-size:12.5px;
+  border-bottom:1px solid var(--line-soft)}
+.nums dt{color:var(--fg-dim)}
+.nums dd{margin:0;font-family:var(--font-m);font-variant-numeric:tabular-nums}
+.score{font-weight:600;padding:0 5px;border-radius:2px}
+.score.full{background:var(--ok-soft);color:var(--ok)}
+.score.part{background:var(--warn-soft);color:var(--warn)}
+.score.zero{background:var(--bad-soft);color:var(--bad)}
+.rk{padding:9px 14px;border-bottom:1px solid var(--line-soft);display:flex;flex-direction:column;gap:5px}
+.rkrow{display:flex;gap:7px;align-items:baseline;font-size:12px;flex-wrap:wrap}
+.rkrow .ts{font-family:var(--font-m);font-size:11.5px;color:var(--fg-dim)}
+.rkrow em{font-style:normal;font-family:var(--font-m);font-weight:600}
+.hit{color:var(--ok)} .cut{color:var(--warn)} .miss{color:var(--bad)}
+.srclist{list-style:none;margin:0;padding:6px 0;max-height:330px;overflow-y:auto}
+.srclist li{display:grid;grid-template-columns:22px 1fr;gap:6px;padding:4px 14px;font-size:12px;
+  align-items:baseline;border-left:3px solid transparent}
+.srclist li.isgold{background:var(--ok-soft);border-left-color:var(--ok)}
+.srclist .n{font-family:var(--font-m);font-size:11px;color:var(--fg-faint)}
+.srclist button{background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  min-width:0}
+.srclist button:hover .snip{text-decoration:underline}
+.srclist .ts{font-family:var(--font-m);font-size:10.5px;color:var(--fg-faint);display:block}
+.snip{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ansbox{padding:11px 14px;font-size:13px;border-top:1px solid var(--line-soft)}
+.ansbox .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-faint);
+  display:block;margin-bottom:3px;font-weight:600}
+.verdict{display:inline-block;font-family:var(--font-m);font-size:11.5px;font-weight:600;padding:1px 7px;
+  border-radius:2px;margin-top:8px}
+.v-accurate{background:var(--ok-soft);color:var(--ok)}
+.v-error{background:var(--bad-soft);color:var(--bad)}
+.v-neither{background:var(--warn-soft);color:var(--warn)}
+.outcome{padding:11px 14px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.outcome b{font-family:var(--font-d);font-size:14px}
+.note{font-size:12.5px;color:var(--fg-dim);padding:10px 14px;border-top:1px solid var(--line-soft);
+  background:var(--sunk)}
+dialog{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:3px;padding:0;
+  max-width:min(760px,92vw);width:100%}
+dialog::backdrop{background:#0a0e13cc}
+.dlghead{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:12px 16px;
+  border-bottom:1px solid var(--line-soft)}
+.dlghead h3{font-size:14px}
+dialog pre{margin:0;padding:14px 16px;white-space:pre-wrap;word-break:break-word;font-family:var(--font-m);
+  font-size:12px;line-height:1.55;max-height:62vh;overflow-y:auto}
+dialog button{border:1px solid var(--line);background:var(--sunk);color:var(--fg);border-radius:2px;
+  padding:3px 10px;font:inherit;font-size:12px;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header>
+  <div class="wrap htop">
+    <div>
+      <h1>Đối chiếu truy hồi: MiniRAG gốc ⟷ B2</h1>
+      <div class="sub">200 câu dev · đọc từ log đã lưu, không gọi mô hình</div>
+    </div>
+    <div class="hero">
+      <span>chunk bằng chứng giữ được</span>
+      <s id="h-base">–</s> → <b id="h-b2">–</b>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <table>
+      <caption>Độ chính xác truy hồi
+        <span class="capnote" id="cap-n">Cột Evidence chỉ dùng để chấm điểm; hệ thống lúc chạy không đọc nhãn này.</span>
+      </caption>
+      <thead><tr><th>Chỉ số</th><th>MiniRAG gốc</th><th>B2 (của nhóm)</th><th>Chênh</th></tr></thead>
+      <tbody id="stats"></tbody>
+    </table>
+  </div>
+
+  <div class="cols">
+    <aside class="rail">
+      <input class="search" id="search" type="search" placeholder="Tìm câu hỏi…" aria-label="Tìm câu hỏi">
+      <div class="chips" id="chips"></div>
+      <div class="qlist" id="qlist"></div>
+      <div class="railfoot" id="railfoot"></div>
+    </aside>
+    <main class="detail" id="detail"></main>
+  </div>
+</div>
+
+<dialog id="dlg">
+  <div class="dlghead"><h3 id="dlg-t"></h3><button type="button" id="dlg-x">Đóng</button></div>
+  <pre id="dlg-x2"></pre>
+</dialog>
+
+<script id="data" type="application/json">/*__DATA__*/</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const Q = D.questions, CH = D.chunks;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pc = n => n.toFixed(1) + '%';
+
+const cat = x => {
+  const a = x.base.verdict, b = x.b2.verdict;
+  if (a === b) return 'same';
+  return b === 'accurate' ? 'win' : (a === 'accurate' ? 'lose' : 'same');
+};
+const hits = a => a.none ? 0 : a.ranks.filter(r => r.in).length;
+const snip = c => {
+  const L = (CH[c]?.x || '').split('\n').map(s => s.trim())
+    .filter(s => s && !s.startsWith('Time:'));
+  return L[0] || '(trống)';
+};
+
+/* ── bảng số */
+const ROWS = [
+  ['Chunk cần lấy tìm ra được (có trong ứng viên)', 'found', '%', 1],
+  ['Chunk cần lấy giữ được (vào Sources sau khi cắt)', 'kept', '%', 1],
+  ['Câu lấy đủ mọi chunk cần — trong ứng viên', 'full_cand', '%', 1],
+  ['Câu lấy đủ mọi chunk cần — sau khi cắt', 'full_src', '%', 1],
+  ['Độ chính xác Sources (chunk đúng / chunk lấy)', 'prec', '%', 1],
+  ['Hạng trung vị của chunk cần lấy', 'rank', '', -1],
+  ['Số chunk ứng viên, trung vị', 'ncand', '', 0],
+  ['Số chunk vào Sources, trung vị', 'nsrc', '', 0],
+];
+function stats() {
+  const g = D.agg.base, b = D.agg.b2;
+  $('#cap-n').insertAdjacentHTML('afterbegin', `${g.n} câu dev có Evidence. `);
+  $('#h-base').textContent = pc(g.kept);
+  $('#h-b2').textContent = pc(b.kept);
+  $('#stats').innerHTML = ROWS.map(([lab, k, u, dir]) => {
+    const dv = b[k] - g[k], f = v => u ? pc(v) : v.toFixed(1);
+    const cls = dir === 0 || Math.abs(dv) < 0.05 ? '' : (dv * dir > 0 ? 'd-up' : 'd-dn');
+    return `<tr><td>${esc(lab)}</td><td>${f(g[k])}</td><td class="b2">${f(b[k])}</td>
+      <td class="${cls}">${dv > 0 ? '+' : ''}${dv.toFixed(1)}</td></tr>`;
+  }).join('');
+}
+
+/* ── rail */
+let filter = 'all', term = '', cur = 0;
+const FILTERS = [['all', 'Tất cả'], ['win', 'B2 sửa được'], ['lose', 'B2 làm hỏng'],
+                 ['Null', 'Null'], ['Multi', 'Multi']];
+function matches(x) {
+  if (term && !x.q.toLowerCase().includes(term)) return false;
+  if (filter === 'all') return true;
+  if (filter === 'Null' || filter === 'Multi') return x.type === filter;
+  return cat(x) === filter;
+}
+function rail() {
+  const list = Q.filter(matches);
+  $('#qlist').innerHTML = list.map(x => {
+    const c = cat(x), h = hits(x.base), h2 = hits(x.b2), n = x.gold.length;
+    const ret = n ? `${h}/${n} → ${h2}/${n}` : 'Null';
+    return `<button class="qitem" data-i="${x.i}" aria-current="${x.i === cur}">
+      <span class="qnum">${x.i}</span>
+      <span><span class="qtext">${esc(x.q)}</span><span class="qmeta">
+        <span class="tag">${x.type}</span><span class="tag ret">${ret}</span>
+        ${c === 'win' ? '<span class="tag win">B2 sửa</span>' : ''}
+        ${c === 'lose' ? '<span class="tag lose">B2 hỏng</span>' : ''}
+      </span></span></button>`;
+  }).join('') || '<div style="padding:14px;color:var(--fg-dim);font-size:13px">Không có câu nào khớp.</div>';
+  const n = { win: 0, lose: 0, same: 0 };
+  Q.forEach(x => n[cat(x)]++);
+  $('#railfoot').textContent = `hiện ${list.length}/200 · B2 sửa ${n.win} · B2 hỏng ${n.lose} · giữ nguyên ${n.same}`;
+}
+
+/* ── chi tiết */
+function armHTML(a, x, ours) {
+  const n = x.gold.length, h = hits(a);
+  if (a.none) return `<section class="card sys${ours ? ' ours' : ''}">
+    <h2><span class="who">${ours ? '❷ B2 — bản của nhóm' : '❶ MiniRAG gốc'}</span>
+    <span>${ours ? 'RRF: vector + BM25' : 'xếp hạng bằng đường đi đồ thị'}</span></h2>
+    <div class="note">Đồ thị không ra node/cạnh → không dựng được context.</div>
+    ${ansHTML(a)}</section>`;
+  const cls = !n ? '' : (h === n ? 'full' : h ? 'part' : 'zero');
+  const rk = n ? `<div class="rk">${a.ranks.map(r => {
+    const t = CH[r.c]?.t || '—';
+    const st = r.r == null
+      ? `<em class="miss">không có trong ứng viên</em>`
+      : (r.in ? `hạng <em class="hit">#${r.r}</em> <span class="hit">→ vào Sources</span>`
+              : `hạng <em class="cut">#${r.r}</em> <span class="cut">→ bị cắt mất</span>`);
+    return `<div class="rkrow"><span class="ts">${esc(t)}</span>${st}</div>`;
+  }).join('')}</div>` : '';
+  return `<section class="card sys${ours ? ' ours' : ''}">
+    <h2><span class="who">${ours ? '❷ B2 — bản của nhóm' : '❶ MiniRAG gốc'}</span>
+    <span>${ours ? 'RRF: vector + BM25' : 'xếp hạng bằng đường đi đồ thị'}</span></h2>
+    <dl class="nums">
+      <dt>Ứng viên được xếp hạng</dt><dd>${a.cand} chunk</dd>
+      <dt>Đưa vào Sources</dt><dd>${a.src.length} chunk · ${a.tok} / ${D.budget} token</dd>
+      ${n ? `<dt>Lấy đúng chunk cần</dt><dd><span class="score ${cls}">${h}/${n} =
+        ${Math.round(100 * h / n)}%</span></dd>` : ''}
+    </dl>${rk}
+    <ol class="srclist">${a.src.map((c, i) => `<li class="${x.gold.includes(c) ? 'isgold' : ''}">
+      <span class="n">${i + 1}</span>
+      <button type="button" data-c="${esc(c)}"><span class="ts">${esc(CH[c]?.t || '—')}</span>
+      <span class="snip">${esc(snip(c))}</span></button></li>`).join('')}</ol>
+    ${ansHTML(a)}</section>`;
+}
+function ansHTML(a) {
+  const v = a.verdict || '—';
+  return `<div class="ansbox"><span class="lbl">Câu trả lời sinh ra</span>
+    ${esc(a.answer || '(trống)')}
+    <div><span class="verdict v-${esc(v)}">${{accurate:'GIÁM KHẢO: ĐÚNG',error:'GIÁM KHẢO: SAI',
+      neither:'GIÁM KHẢO: KHÔNG BIẾT'}[v] || esc(v)}</span></div></div>`;
+}
+function detail(i) {
+  const x = Q.find(y => y.i === i);
+  if (!x) return;
+  cur = i;
+  const n = x.gold.length, hb = hits(x.base), h2 = hits(x.b2), c = cat(x);
+  const goldHTML = n
+    ? `<ol class="srclist">${x.gold.map((g, k) => `<li class="isgold"><span class="n">${k + 1}</span>
+        <button type="button" data-c="${esc(g)}"><span class="ts">${esc(CH[g]?.t || '—')}</span>
+        <span class="snip">${esc(snip(g))}</span></button></li>`).join('')}</ol>`
+    : `<div class="note">Câu <b>Null</b>: đáp án đúng là “không đủ thông tin”, nên không có chunk nào cần lấy.
+        Ở nhóm này truy hồi tốt hơn có thể phản tác dụng.</div>`;
+  const outcome = c === 'win' ? `<b class="hit">B2 sửa được câu này</b>`
+    : c === 'lose' ? `<b class="miss">B2 làm hỏng câu này</b>`
+    : `<b>Hai bên cùng kết quả</b>`;
+  $('#detail').innerHTML = `
+    <section class="card">
+      <div class="qhead"><div class="qq">${esc(x.q)}</div>
+        <dl><dt>Loại</dt><dd>${esc(x.type)}</dd>
+            <dt>Đáp án vàng</dt><dd><b>${esc(x.gold_ans)}</b></dd></dl></div>
+      <h2>Chunk cần lấy trong tài liệu — ${n} chunk</h2>
+      <div class="gold">${goldHTML}</div>
+    </section>
+    <div class="pair">${armHTML(x.base, x, false)}${armHTML(x.b2, x, true)}</div>
+    <section class="card"><div class="outcome">
+      ${n ? `<span>Truy hồi: gốc <b class="mono">${hb}/${n}</b> · B2 <b class="mono">${h2}/${n}</b></span>` : ''}
+      <span>${outcome} <span style="color:var(--fg-dim)">(${esc(x.base.verdict)} → ${esc(x.b2.verdict)})</span></span>
+    </div></section>`;
+  document.querySelectorAll('.qitem').forEach(b =>
+    b.setAttribute('aria-current', String(+b.dataset.i === i)));
+}
+
+/* ── sự kiện */
+$('#chips').innerHTML = FILTERS.map(([k, l]) =>
+  `<button class="chip" type="button" data-f="${k}" aria-pressed="${k === 'all'}">${l}</button>`).join('');
+$('#chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === b)));
+  rail();
+});
+$('#search').addEventListener('input', e => { term = e.target.value.trim().toLowerCase(); rail(); });
+$('#qlist').addEventListener('click', e => {
+  const b = e.target.closest('.qitem'); if (b) detail(+b.dataset.i);
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('button[data-c]'); if (!b) return;
+  const c = b.dataset.c, ch = CH[c];
+  $('#dlg-t').textContent = ch?.t ? 'Chunk ' + ch.t : 'Chunk';
+  $('#dlg-x2').textContent = (ch?.x || '') + (ch?.cut ? '\n\n… (đã cắt bớt phần hiển thị)' : '');
+  $('#dlg').showModal();
+});
+$('#dlg-x').addEventListener('click', () => $('#dlg').close());
+document.addEventListener('keydown', e => {
+  if ($('#dlg').open || /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  const l = Q.filter(matches), k = l.findIndex(x => x.i === cur);
+  const nx = l[Math.min(l.length - 1, Math.max(0, k + (e.key === 'ArrowDown' ? 1 : -1)))];
+  if (nx) { detail(nx.i); e.preventDefault();
+    document.querySelector(`.qitem[data-i="${nx.i}"]`)?.scrollIntoView({block:'nearest'}); }
+});
+
+stats(); rail();
+detail((Q.find(x => cat(x) === 'win' && x.gold.length === 1) || Q[0]).i);
+</script>

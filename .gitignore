@@ -90,3 +90,4 @@ logs/rerank/*.onnx
 logs/rerank/*.onnx.data
 logs/rerank/ce3_onnx_scores.json
 logs/retrieval_audit/ce1_lite_on_dev_ctx.jsonl
+logs/retrieval_audit/goc_dev_ctx.jsonl

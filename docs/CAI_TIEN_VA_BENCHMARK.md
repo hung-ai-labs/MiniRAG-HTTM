@@ -125,7 +125,28 @@ giữ được 86,0% — **cùng ngân sách 4.000 token, cùng model sinh, cùn
 
 Chạy lại bảng này: `.venv/bin/python reproduce/demo/so_sanh_chunk.py --acc`
 
-### 3.4 Kịch bản demo trước hội đồng
+### 3.4 App demo trực tiếp (hỏi đáp, đồ thị, tải tài liệu)
+
+```bash
+reproduce/demo/run_server.sh                      # Modal Qwen2.5-3B — khớp mô hình của benchmark
+MINIRAG_DEMO_LLM=gemini reproduce/demo/run_server.sh   # Gemini free tier — nhanh, không tốn tiền
+```
+Mở http://127.0.0.1:8765
+
+| Tab | Có gì |
+|---|---|
+| **Hỏi đáp** | gõ một câu bất kỳ → chạy **tuần tự hai cấu hình** trên cùng kho, cùng mô hình sinh, cùng trần 4.000 token; hiện **hai câu trả lời cạnh nhau** kèm bằng chứng lấy được (thời điểm, hạng, trích đoạn), số ứng viên, số chunk vào Sources, token, thời gian truy hồi, số seed và số đường đi đồ thị |
+| **Thực thể & đường đi** | duyệt 1.556 node / 1.509 cạnh của đồ thị, tìm theo tên, bấm một thực thể để xem các đường đi 2 bước — đúng loại đường mà MiniRAG gốc dùng để xếp hạng chunk |
+| **Tải tài liệu** | nạp `.docx` / `.txt` / `.md`, lập chỉ mục rồi hỏi trên chính tài liệu đó |
+
+⚠ **Tài liệu tải lên luôn vào kho nháp `playground-index/demo`.** Kho `LiHua-World-qwen-modal` là **chỉ đọc** —
+toàn bộ số benchmark trong tài liệu này dựa trên nó, ghi thêm vào đó là làm hỏng mọi phép so sánh. Server chặn
+cứng điều này, không phải bằng quy ước.
+
+⚠ Nếu chạy bằng Gemini thì **câu trả lời sẽ khác** bảng benchmark (bảng đo bằng Qwen2.5-3B). Phần *truy hồi* —
+tức chunk nào được lấy và ở hạng nào — thì không đổi, vì nó không phụ thuộc mô hình sinh.
+
+### 3.5 Kịch bản demo trước hội đồng
 
 ```bash
 # 1) bảng % truy hồi — mở đầu bằng con số

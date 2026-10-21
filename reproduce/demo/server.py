@@ -1,4 +1,5 @@
-"""Máy chủ demo: hỏi một câu, nhận HAI câu trả lời (MiniRAG gốc và B2) kèm bằng chứng lấy được.
+"""Máy chủ demo: hỏi một câu, nhận HAI câu trả lời (MiniRAG gốc và B2) kèm bằng chứng lấy được,
+rồi để Gemini chấm cả hai.
 
     reproduce/demo/run_server.sh              # Modal Qwen2.5-3B (khớp số benchmark)
     MINIRAG_DEMO_LLM=gemini reproduce/demo/run_server.sh
@@ -10,8 +11,16 @@ An toàn:
   playground-index/demo/ — nếu ghi vào kho đông lạnh thì mọi số benchmark trong repo mất giá trị.
 - Hai cấu hình chạy TUẦN TỰ trên cùng câu hỏi, cùng kho, cùng model sinh; chỉ khác đúng một biến:
   MINIRAG_CHUNK_FUSION rỗng (gốc) so với vector_bm25 (B2).
+- Giám khảo Gemini chạy HAI việc tách biệt, đừng trộn hai thứ này khi trình bày:
+  (a) phán quyết accurate/error/neither bằng ĐÚNG prompt của Step_2_evaluate — đây là con số
+      so sánh được với benchmark; mỗi câu trả lời được chấm độc lập, không thấy câu còn lại;
+  (b) một nhận xét so sánh, có làm mù thứ tự (A/B hoán vị ngẫu nhiên) để tránh thiên lệch vị trí.
+      Đây là bình luận định tính, KHÔNG phải số liệu benchmark.
+- Hai cấu hình chia nhau cùng bảng Entities và cùng tập đường đi: MINIRAG_CHUNK_FUSION chỉ đổi
+  xếp hạng Sources. Nên phần entity/path thường giống nhau — UI nói thẳng điều đó thay vì
+  dựng ra một khác biệt không có.
 """
-import asyncio, io, json, os, re, shutil, sys, time, uuid
+import asyncio, csv, io, json, os, random, re, shutil, sys, time, uuid
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT)
@@ -21,7 +30,9 @@ FROZEN = os.path.join(ROOT, "LiHua-World-qwen-modal")
 PLAY = os.path.join(ROOT, "playground-index", "demo")
 UPLOADS = os.path.join(ROOT, "uploads", "demo")
 CTXLOG = os.path.join(ROOT, "logs", "demo", "_ctx")
+QUERYSET = os.path.join(ROOT, "dataset", "LiHua-World", "qa", "query_set.csv")
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": ""}
+JUDGE_MODEL = os.environ.get("MINIRAG_DEMO_JUDGE", "gemini-flash-lite-latest")
 ARMS = [("goc", "MiniRAG gốc", ""), ("b2", "B2 — bản cải tiến", "vector_bm25")]
 
 _lock = asyncio.Lock()          # biến môi trường là toàn cục -> phải chạy tuần tự
@@ -83,6 +94,122 @@ def graph_of(workdir):
     return out
 
 
+# ---------------------------------------------------------------- bộ câu hỏi có sẵn
+_qs_cache = {}
+
+
+def queryset():
+    """Câu hỏi kèm đáp án vàng của chính LiHua-World, để hỏi cái đã biết đáp án."""
+    if "rows" in _qs_cache:
+        return _qs_cache["rows"]
+    rows, seen = [], set()
+    if os.path.exists(QUERYSET):
+        for r in csv.DictReader(open(QUERYSET, encoding="utf-8")):
+            q = (r["Question"] or "").strip()
+            if not q or q in seen:                 # query_set có 2 câu trùng
+                continue
+            seen.add(q)
+            rows.append({"q": q, "gold": (r["Gold Answer"] or "").strip(),
+                         "type": (r["Type"] or "").strip(),
+                         "evidence": [t for t in (r["Evidence"] or "").split("<and>") if t.strip()]})
+    _qs_cache["rows"] = rows
+    return rows
+
+
+def evidence_map(workdir):
+    """Evidence trong query_set là dấu thời gian -> tìm chunk mang đúng 'Time: <ts>'."""
+    key = ("ev", workdir)
+    if key in _qs_cache:
+        return _qs_cache[key]
+    m = {}
+    for cid, rec in chunks_of(workdir).items():
+        t = ctime(rec.get("content", ""))
+        if t:
+            m.setdefault(t, []).append(cid)
+    _qs_cache[key] = m
+    return m
+
+
+# ---------------------------------------------------------------- giám khảo Gemini
+JUDGE_PROMPT = """You are grading a question-answering system.
+
+Question: {question}
+Gold answer: {gold}
+System answer: {pred}
+
+Reply with exactly one word:
+- "accurate" if the system answer conveys the gold answer. Wording may differ;
+  a more specific but consistent answer still counts (gold "bottle", answer
+  "water bottle" -> accurate).
+- "error" if the system answer asserts something that contradicts the gold
+  answer, without acknowledging any uncertainty.
+- "neither" if the system answer says it does not know, refuses to answer, or
+  is off-topic.
+"""
+
+COMPARE_PROMPT = """Bạn là giám khảo cho một hệ thống hỏi đáp trên tài liệu. Trả lời bằng tiếng Việt.
+
+Câu hỏi: {question}
+{goldline}
+Câu trả lời A: {a}
+
+Câu trả lời B: {b}
+
+Hãy trả về ĐÚNG định dạng JSON sau, không thêm chữ nào ngoài JSON:
+{{"winner": "A" | "B" | "tie",
+  "ly_do": "<một đến hai câu: vì sao bên thắng tốt hơn, nêu rõ chi tiết cụ thể>",
+  "nhan_xet_A": "<một câu>",
+  "nhan_xet_B": "<một câu>"}}
+
+Tiêu chí, theo thứ tự quan trọng: (1) có nêu đúng dữ kiện mà câu hỏi đòi hay không;
+(2) có dữ kiện nào bị bịa hoặc mâu thuẫn (sai ngày, sai người nói, sai thứ tự) hay không;
+(3) có nói "không biết" khi lẽ ra trả lời được hay không. Câu dài hơn không phải là tốt hơn.
+"""
+
+
+async def judge_one(question, gold, pred):
+    """Phán quyết một câu, ĐÚNG prompt benchmark. Lỗi thì nói lỗi, không bịa 'neither'."""
+    from minirag.llm.gemini import gemini_complete_if_cache
+    for attempt in range(4):
+        try:
+            v = await gemini_complete_if_cache(
+                JUDGE_MODEL, JUDGE_PROMPT.format(question=question, gold=gold, pred=pred))
+            v = (v or "").strip().strip('".').lower()
+            return v if v in ("accurate", "error", "neither") else f"khong_ro:{v[:40]}"
+        except Exception as e:
+            if attempt == 3:
+                return f"judge_failed: {type(e).__name__}"
+            await asyncio.sleep(1.5 * (attempt + 1))
+
+
+async def judge_compare(question, gold, ans):
+    """Nhận xét so sánh, có làm mù thứ tự để không thiên lệch vị trí."""
+    from minirag.llm.gemini import gemini_complete_if_cache
+    keys = [k for k, _l, _f in ARMS]
+    random.shuffle(keys)                              # A/B là cấu hình nào -> ngẫu nhiên
+    slot = {"A": keys[0], "B": keys[1]}
+    prompt = COMPARE_PROMPT.format(
+        question=question,
+        goldline=f"Đáp án vàng: {gold}" if gold else "(Câu này không có đáp án vàng.)",
+        a=ans[slot["A"]], b=ans[slot["B"]])
+    try:
+        raw = await gemini_complete_if_cache(JUDGE_MODEL, prompt)
+    except Exception as e:
+        return {"error": f"{type(e).__name__}: {e}"}
+    m = re.search(r"\{.*\}", raw or "", re.S)
+    if not m:
+        return {"error": "giám khảo không trả về JSON", "raw": (raw or "")[:400]}
+    try:
+        d = json.loads(m.group(0))
+    except Exception as e:
+        return {"error": f"JSON hỏng: {e}", "raw": (raw or "")[:400]}
+    w = str(d.get("winner", "")).strip().upper()
+    return {"winner_key": slot.get(w) if w in slot else "tie",
+            "slot": slot,                              # công khai phép hoán vị để kiểm lại được
+            "ly_do": d.get("ly_do", ""),
+            "nhan_xet": {slot["A"]: d.get("nhan_xet_A", ""), slot["B"]: d.get("nhan_xet_B", "")}}
+
+
 # ---------------------------------------------------------------- truy vấn
 async def run_arm(rag, question, fusion, workdir):
     from minirag import QueryParam
@@ -120,6 +247,12 @@ async def run_arm(rag, question, fusion, workdir):
                          "time": ctime(ch.get(c, {}).get("content", "")),
                          "snip": snippet(ch.get(c, {}).get("content", ""))}
                         for c in rec.get("chunk_ids", [])],
+            # phần đồ thị: thực thể rút từ câu hỏi, bảng Entities thật sự vào context, và đường đi
+            "query_entities": rec.get("query_entities") or [],
+            "entities": [{"name": n, "score": round(sc, 4)}
+                         for n, sc in (rec.get("entities_used") or [])],
+            "paths": rec.get("paths") or [],
+            "ranked_ids": ranked,
         })
     return out
 
@@ -135,6 +268,7 @@ def entities_from_context(ctx):
 
 # ---------------------------------------------------------------- app
 def make_app():
+    import gemini_common  # noqa: F401  — nạp .env ngay, để giám khảo Gemini chạy được cả khi sinh bằng Modal
     from fastapi import FastAPI, UploadFile, File, Form, HTTPException
     from fastapi.responses import HTMLResponse, JSONResponse
 
@@ -214,7 +348,47 @@ def make_app():
                     res[key]["label"] = label
                 except Exception as e:                       # hỏng thì báo to, không giấu
                     res[key] = {"label": label, "error": f"{type(e).__name__}: {e}"}
-        return JSONResponse(res)
+        return JSONResponse({"arms": res, "gold": gold_info(question, w)})
+
+    def gold_info(question, w):
+        """Chunk đáp án theo cột Evidence của chính bộ dữ liệu — dùng để CHẤM, không vào runtime."""
+        row = next((r for r in queryset() if r["q"] == question), None)
+        if not row or w != FROZEN:
+            return None
+        ev, ch = evidence_map(w), chunks_of(w)
+        want = []
+        for ts in row["evidence"]:
+            for cid in ev.get(ts.strip(), []):
+                want.append({"id": cid, "time": ts.strip(),
+                             "snip": snippet(ch.get(cid, {}).get("content", ""))})
+        return {"gold_answer": row["gold"], "type": row["type"],
+                "evidence_ts": row["evidence"], "chunks": want,
+                "missing_ts": [t.strip() for t in row["evidence"] if not ev.get(t.strip())]}
+
+    @app.get("/api/questions")
+    def questions(q: str = "", type: str = "", limit: int = 60):
+        rows = queryset()
+        if type:
+            rows = [r for r in rows if r["type"].lower() == type.lower()]
+        if q:
+            s = q.lower()
+            rows = [r for r in rows if s in r["q"].lower()]
+        return {"total": len(rows), "items": rows[:limit]}
+
+    @app.post("/api/judge")
+    async def judge(payload: dict):
+        question = (payload.get("question") or "").strip()
+        answers = payload.get("answers") or {}
+        gold = (payload.get("gold") or "").strip()
+        if not question or len(answers) < 2:
+            raise HTTPException(400, "cần câu hỏi và hai câu trả lời")
+        out = {"model": JUDGE_MODEL, "gold": gold}
+        if gold:
+            ks = list(answers)
+            vs = await asyncio.gather(*[judge_one(question, gold, answers[k]) for k in ks])
+            out["verdict"] = dict(zip(ks, vs))
+        out["compare"] = await judge_compare(question, gold, answers)
+        return out
 
     @app.post("/api/upload")
     async def upload(file: UploadFile = File(...)):

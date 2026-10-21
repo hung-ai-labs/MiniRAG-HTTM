@@ -93,6 +93,45 @@ main{padding-block:16px 48px}
 @keyframes s{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation:none}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+/* bộ chọn câu hỏi có sẵn */
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line-soft)}
+.pick input[type=text]{flex:1;min-width:180px;background:var(--sunk);color:var(--fg);border:1px solid var(--line);
+  border-radius:2px;padding:5px 9px;font-size:13px}
+.qlist{list-style:none;margin:0;padding:0;max-height:240px;overflow-y:auto}
+.qlist li{border-bottom:1px solid var(--line-soft)}
+.qlist button{width:100%;text-align:left;background:none;border:0;padding:8px 14px;cursor:pointer;color:inherit;font:inherit;font-size:13px}
+.qlist button:hover{background:var(--sunk)}
+.qlist .qm{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap;align-items:center}
+/* chấm điểm */
+.verd{font-family:var(--font-m);font-size:11px;border-radius:2px;padding:1px 7px;font-weight:600;border:1px solid}
+.v-accurate{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.v-error{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.v-neither{background:var(--warn-soft);color:var(--warn);border-color:var(--warn)}
+.v-other{background:var(--sunk);color:var(--fg-dim);border-color:var(--line)}
+.win{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent);border-radius:2px;
+  font-family:var(--font-m);font-size:11px;padding:1px 7px;font-weight:600}
+.jrow{padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.jcmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.jcmp{grid-template-columns:1fr}}
+.jcmp>div{background:var(--sunk);border:1px solid var(--line-soft);border-radius:3px;padding:9px 11px;font-size:13px}
+.jcmp h3{font-size:12px;margin-bottom:4px;display:flex;gap:7px;align-items:center}
+/* bảng đáp án vàng */
+table.gold{width:100%;border-collapse:collapse;font-size:12.5px}
+table.gold th,table.gold td{text-align:left;padding:6px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+table.gold th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-faint);font-weight:700}
+table.gold td.r{font-family:var(--font-m);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hit{color:var(--ok);font-weight:600}.miss{color:var(--bad);font-weight:600}
+/* thực thể / đường đi theo từng nhánh */
+details.gph{border-top:1px solid var(--line-soft)}
+details.gph>summary{padding:8px 14px;cursor:pointer;font-size:12px;color:var(--fg-dim);font-weight:500}
+details.gph>summary:hover{color:var(--fg)}
+.ents{display:flex;flex-wrap:wrap;gap:4px;padding:4px 14px 10px}
+.ent{font-family:var(--font-m);font-size:11px;background:var(--sunk);border:1px solid var(--line);
+  border-radius:2px;padding:1px 6px;color:var(--fg-dim)}
+.ent b{color:var(--fg);font-weight:600}
+.pblk{padding:0 14px 10px}
+.pblk>div{margin-top:6px}
+.pname{font-size:12px;font-weight:600}
 </style>
 
 <header><div class="wrap">
@@ -117,9 +156,23 @@ main{padding-block:16px 48px}
       <textarea id="q" placeholder="Hỏi một câu về tài liệu trong kho…"></textarea>
       <button class="btn" id="go">Hỏi</button>
     </div>
-    <p class="hint">Thử: <b data-ex="Which game does Ileana mention for its unique world and storytelling?">game Ileana nhắc tới</b> ·
-      <b data-ex="Who offers to help with setting up for the garage sale?">ai giúp dọn garage sale</b> ·
-      <b data-ex="What does Li Hua think about the rosemary focaccia?">Li Hua nghĩ gì về focaccia</b></p>
+    <details class="card" id="qbank" style="margin-bottom:14px" open>
+      <summary style="padding:9px 14px;cursor:pointer;font-size:12px;color:var(--fg-dim);font-weight:600;
+        text-transform:uppercase;letter-spacing:.06em">Câu hỏi có sẵn của bộ dữ liệu — đã biết đáp án vàng</summary>
+      <div class="pick">
+        <select id="qtype">
+          <option value="">mọi loại</option>
+          <option value="Single">Single — một tài liệu</option>
+          <option value="Multi">Multi — nhiều tài liệu</option>
+          <option value="Null">Null — không có trong tài liệu</option>
+        </select>
+        <input type="text" id="qsearch" placeholder="Tìm trong 635 câu hỏi…">
+        <span class="badge" id="qcount">…</span>
+      </div>
+      <ul class="qlist" id="qlist"></ul>
+      <div class="note">Chọn một câu ở đây thì có đáp án vàng và danh sách chunk đáp án, nên đo được
+        bên nào lấy đúng tài liệu. Tự gõ câu khác vẫn chạy được, chỉ là không có mốc để đối chiếu.</div>
+    </details>
     <div id="out"></div>
   </section>
 
@@ -161,7 +214,8 @@ main{padding-block:16px 48px}
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let corpus = 'frozen', curNode = null;
+let corpus = 'frozen', curNode = null, lastAsk = null;
+let askSeq = 0, asking = false;   // chống chạy chồng: lượt cũ không được ghi đè lượt mới
 
 async function j(url, opt) {
   const r = await fetch(url, opt);
@@ -181,15 +235,43 @@ async function status() {
 }
 
 /* ── hỏi đáp */
-function armHTML(a, ours) {
+function armHTML(a, ours, gold) {
   if (a.error) return `<section class="card arm${ours ? ' ours' : ''}"><h2><span>${esc(a.label)}</span></h2>
     <div class="err">Lỗi: ${esc(a.error)}</div></section>`;
   if (a.none) return `<section class="card arm${ours ? ' ours' : ''}"><h2><span>${esc(a.label)}</span></h2>
     <div class="answer">${esc(a.answer)}</div>
     <div class="note">Đồ thị không ra node/cạnh cho câu này nên không dựng được context.</div></section>`;
+  const goldIds = new Set((gold?.chunks || []).map(c => c.id));
   const ev = (a.sources || []).map((s, i) => `<li><span class="n">${i + 1}</span>
-    <span><span class="ts">${esc(s.time || '—')}${s.rank ? ' · hạng #' + s.rank : ''}</span>
+    <span><span class="ts">${goldIds.has(s.id) ? '<b class="hit">★ chunk đáp án</b> · ' : ''}${
+      esc(s.time || '—')}${s.rank ? ' · hạng #' + s.rank : ''}</span>
     <span class="sn">${esc(s.snip)}</span></span></li>`).join('');
+  const ents = (a.entities || []).slice(0, 24).map(e =>
+    `<span class="ent"><b>${esc(e.name)}</b> ${e.score.toFixed(3)}</span>`).join('');
+  const paths = (a.paths || []).map(g => `<div><div class="pname">${esc(g.entity)}
+    <span class="pill">điểm ${g.score.toFixed(3)}</span></div>${
+    (g.paths || []).length ? g.paths.map(pp => `<div class="path">${
+      pp.map(x => `<em>${esc(x)}</em>`).join('<i>→</i>')}</div>`).join('')
+      : '<div class="path"><i>thực thể này không có đường đi 2 bước nào</i></div>'}
+    ${(g.chunks_from_path || []).length ? `<div class="path"><i>→ chunk rút ra:</i>${
+      g.chunks_from_path.map(c => `<em>${esc(c.slice(0, 14))}…</em>`).join('')}</div>` : ''}</div>`).join('');
+  const entsBlock = ents
+    ? `<div class="ents">${ents}</div>`
+    : `<div class="note" style="border-top:0;background:none"><b class="miss">Bảng Entities rỗng ở câu này</b>
+       — không phải lỗi hiển thị. Trần <span class="mono">max_token_for_node_context = 500</span> cắt theo
+       luật "dừng ở mục đầu tiên làm tràn", mà mô tả thực thể đầu bảng đã dài hơn 500 token, nên cả bảng
+       bị loại, chỉ còn dòng tiêu đề (6 token). Đo trên 200 câu dev: <b>77 câu (38,5%)</b> rơi vào trạng
+       thái này, trung vị toàn tập là 81,5 / 500 token. Nghĩa là ở phần lớn câu hỏi, đồ thị không đóng góp
+       gì vào context ngoài việc xếp hạng chunk — khớp với kết quả ablation "vector thuần ngang V3".</div>`;
+  const gph = `<details class="gph"><summary>Thực thể &amp; đường đi đồ thị dùng cho câu này
+    (${(a.query_entities || []).length} thực thể từ câu hỏi · ${(a.entities || []).length} dòng vào bảng Entities
+    · ${a.graph_seeds ?? 0} seed · ${a.graph_paths ?? 0} đường đi)</summary>
+    <div class="note" style="border-top:1px solid var(--line-soft)">Thực thể rút từ câu hỏi:
+      ${(a.query_entities || []).map(e => `<span class="ent">${esc(e)}</span>`).join(' ') || '<i>không có</i>'}</div>
+    ${entsBlock}
+    ${paths ? `<div class="pblk"><div class="pname" style="color:var(--fg-faint);font-size:11px;
+      text-transform:uppercase;letter-spacing:.05em">Đường đi của ${(a.paths || []).length} thực thể điểm cao nhất
+      (tối đa 5 đường mỗi thực thể)</div>${paths}</div>` : ''}</details>`;
   return `<section class="card arm${ours ? ' ours' : ''}">
     <h2><span>${esc(a.label)}</span><span class="mono">${a.ms} ms</span></h2>
     <div class="answer">${esc(a.answer)}</div>
@@ -203,25 +285,161 @@ function armHTML(a, ours) {
     </div>
     <h2 style="border-top:0">Bằng chứng đưa vào context</h2>
     <ol class="ev">${ev || '<li style="grid-column:1/-1;color:var(--fg-dim)">không có chunk nào</li>'}</ol>
+    ${gph}
   </section>`;
 }
+
+/* bảng đáp án vàng: chunk nào là đáp án, mỗi bên xếp nó hạng mấy và có đưa vào context không */
+function goldHTML(gold, arms) {
+  if (!gold) return `<div class="card" style="margin-bottom:14px"><div class="note">Câu này không nằm trong
+    bộ câu hỏi của LiHua-World nên không có đáp án vàng — vẫn so được hai câu trả lời, nhưng không có
+    mốc để nói bên nào lấy đúng tài liệu.</div></div>`;
+  const keys = ARMKEYS;
+  const rank = (k, cid) => {
+    const a = arms[k] || {};
+    const i = (a.ranked_ids || []).indexOf(cid);
+    const inctx = (a.sources || []).some(s => s.id === cid);
+    if (i < 0) return '<span class="miss">không tìm thấy</span>';
+    return `<span class="${inctx ? 'hit' : 'miss'}">#${i + 1}</span>${
+      inctx ? '' : ' <span class="pill">bị cắt khỏi context</span>'}`;
+  };
+  const score = k => {
+    const a = arms[k] || {}, n = gold.chunks.length;
+    const got = gold.chunks.filter(c => (a.sources || []).some(s => s.id === c.id)).length;
+    return n ? `${got}/${n} · ${(100 * got / n).toFixed(0)}%` : '—';
+  };
+  const rows = gold.chunks.map(c => `<tr><td><span class="mono">${esc(c.time)}</span><br>
+    <span style="color:var(--fg-dim)">${esc(c.snip)}</span></td>
+    ${keys.map(k => `<td class="r">${rank(k, c.id)}</td>`).join('')}</tr>`).join('');
+  return `<div class="card" style="margin-bottom:14px">
+    <h2>Đáp án vàng &amp; chunk đáp án <span style="float:right;font-weight:400">loại ${esc(gold.type)}</span></h2>
+    <div class="note" style="border-top:0">Đáp án vàng: <b>${esc(gold.gold_answer)}</b>
+      ${gold.missing_ts.length ? ` · ${gold.missing_ts.length} mốc Evidence không có chunk nào trong kho
+        (<span class="mono">${gold.missing_ts.map(esc).join(', ')}</span>)` : ''}</div>
+    ${gold.chunks.length ? `<table class="gold"><thead><tr><th>chunk đáp án</th>
+      ${keys.map(k => `<th>${esc((arms[k] || {}).label || k)}</th>`).join('')}</tr></thead>
+      <tbody>${rows}<tr><th>lấy đúng &amp; giữ được trong context</th>
+      ${keys.map(k => `<td class="r"><b>${score(k)}</b></td>`).join('')}</tr></tbody></table>`
+      : '<div class="note">Không mốc Evidence nào khớp chunk trong kho này.</div>'}</div>`;
+}
+
+/* giám khảo Gemini */
+const VRANK = {accurate: 2, neither: 1, error: 0};
+function disagree(r, c) {
+  if (!r.verdict || !c.winner_key || c.winner_key === 'tie') return false;
+  const other = ARMKEYS.find(k => k !== c.winner_key);
+  const a = VRANK[r.verdict[c.winner_key]], b = VRANK[r.verdict[other]];
+  return a === undefined || b === undefined ? false : a <= b;
+}
+
+function judgeHTML(r, arms) {
+  if (r.loading) return `<div class="card" style="margin-top:14px"><h2>Giám khảo Gemini</h2>
+    <div class="note" style="border-top:0"><span class="spin"></span> đang chấm…</div></div>`;
+  if (r.error) return `<div class="card" style="margin-top:14px"><h2>Giám khảo Gemini</h2>
+    <div class="err">${esc(r.error)}</div></div>`;
+  const keys = ARMKEYS;
+  const vcls = v => ['accurate', 'error', 'neither'].includes(v) ? 'v-' + v : 'v-other';
+  const c = r.compare || {};
+  return `<div class="card" style="margin-top:14px">
+    <h2>Giám khảo Gemini <span class="mono" style="float:right;font-weight:400">${esc(r.model)}</span></h2>
+    <div class="jrow">
+      ${r.verdict ? `<div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center">
+        <span style="font-size:12px;color:var(--fg-dim)">Phán quyết (đúng prompt của benchmark, mỗi câu
+        chấm riêng, không thấy câu còn lại):</span>
+        ${keys.map(k => `<span>${esc((arms[k] || {}).label || k)}
+          <span class="verd ${vcls(r.verdict[k])}">${esc(r.verdict[k])}</span></span>`).join('')}</div>`
+        : '<div style="font-size:12px;color:var(--fg-dim)">Không có đáp án vàng nên không chấm accurate/error/neither.</div>'}
+      ${c.error ? `<div class="err" style="padding:0">${esc(c.error)}</div>` : `
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <span style="font-size:12px;color:var(--fg-dim)">Nhận xét so sánh (làm mù thứ tự):</span>
+          ${c.winner_key === 'tie' ? '<span class="win">hai bên ngang nhau</span>'
+            : `<span class="win">chọn ${esc((arms[c.winner_key] || {}).label || c.winner_key)}</span>`}
+        </div>
+        <div style="font-size:13px">${esc(c.ly_do)}</div>
+        ${disagree(r, c) ? `<div class="note" style="border-top:0;background:var(--warn-soft);
+          color:var(--warn);border-radius:3px"><b>Hai việc của giám khảo đang mâu thuẫn nhau.</b>
+          Phán quyết một từ không xếp bên được chọn cao hơn bên kia. Đây là chuyện có thật và đã đo:
+          trên 40 câu kiểm tay, <b>13 câu</b> được chấm <span class="mono">accurate</span> vẫn chứa ngày,
+          thứ tự hoặc người nói mâu thuẫn với Sources. Khi trình bày, hãy tin cột phán quyết (nó dùng
+          đúng prompt của benchmark) và đọc nhận xét như ý kiến tham khảo.</div>` : ''}
+        <div class="jcmp">${keys.map(k => `<div><h3>${esc((arms[k] || {}).label || k)}
+          <span class="pill">vào prompt ở ô ${esc(Object.keys(c.slot || {}).find(x => c.slot[x] === k) || '?')}</span></h3>
+          ${esc((c.nhan_xet || {})[k] || '—')}</div>`).join('')}</div>`}
+    </div>
+    <div class="note">Phán quyết một lượt. Benchmark trong báo cáo chấm <b>3 lượt</b> và lấy trung bình —
+      sd giữa các lượt chấm là 0,30 điểm trên 637 câu, nên một lượt ở đây chỉ để minh hoạ, đừng trích dẫn
+      như số liệu. Nhận xét so sánh là bình luận định tính, không phải thước đo của benchmark.</div></div>`;
+}
+const ARMKEYS = ['goc', 'b2'];
+
+function sameGraph(arms) {
+  const [a, b] = ARMKEYS.map(k => arms[k] || {});
+  const key = x => JSON.stringify([(x.entities || []).map(e => e.name), x.paths || []]);
+  return !a.error && !b.error && !a.none && !b.none && key(a) === key(b);
+}
+
+function render(r, jd) {
+  const arms = r.arms;
+  $('#out').innerHTML = goldHTML(r.gold, arms)
+    + `<div class="pair">${armHTML(arms.goc, false, r.gold)}${armHTML(arms.b2, true, r.gold)}</div>`
+    + `<div class="card" style="margin-top:14px"><div class="note">Hai bên chạy tuần tự trên cùng kho, cùng mô hình
+      sinh, cùng trần 4000 token. Khác nhau đúng một biến: cách xếp hạng chunk
+      (<span class="mono">đường đi đồ thị</span> so với <span class="mono">RRF vector + BM25</span>).
+      ${sameGraph(arms) ? `<b>Thực thể và đường đi của hai bên giống hệt nhau ở câu này</b> — đúng như thiết kế:
+      bản cải tiến không đổi cách dựng hay duyệt đồ thị, nó chỉ đổi cách xếp hạng chunk cho mục Sources.
+      Khác biệt phải tìm ở bảng bằng chứng, không phải ở đồ thị.` : ''}</div></div>`
+    + (jd ? judgeHTML(jd, arms) : '');
+}
+
 async function ask() {
   const question = $('#q').value.trim();
-  if (!question) return;
+  if (!question || asking) return;        // bấm hai lần / chọn câu khác giữa chừng -> bỏ qua
+  const seq = ++askSeq;
+  asking = true;
   $('#go').disabled = true;
   $('#out').innerHTML = `<div class="card"><div class="note" style="background:none">
     <span class="spin"></span> Đang chạy cả hai cấu hình trên cùng câu hỏi… (sinh câu trả lời hai lần, mất một lúc)</div></div>`;
   try {
     const r = await j('/api/ask', {method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({question, corpus})});
-    $('#out').innerHTML = `<div class="pair">${armHTML(r.goc, false)}${armHTML(r.b2, true)}</div>
-      <div class="card" style="margin-top:14px"><div class="note">Hai bên chạy tuần tự trên cùng kho, cùng mô hình
-      sinh, cùng trần 4000 token. Khác nhau đúng một biến: cách xếp hạng chunk
-      (<span class="mono">đường đi đồ thị</span> so với <span class="mono">RRF vector + BM25</span>).</div></div>`;
+    lastAsk = r;
+    render(r, null);
+    judge(question, r, seq);
   } catch (e) {
     $('#out').innerHTML = `<div class="card"><div class="err">${esc(e.message)}</div></div>`;
   }
+  asking = false;
   $('#go').disabled = false;
+}
+
+async function judge(question, r, seq) {
+  const answers = {};
+  for (const k of ARMKEYS) {
+    const a = r.arms[k] || {};
+    if (a.error || a.answer == null) return;          // thiếu một bên thì không chấm
+    answers[k] = a.answer;
+  }
+  if (seq !== askSeq) return;
+  render(r, {loading: true});
+  let jd;
+  try {
+    jd = await j('/api/judge', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({question, answers, gold: r.gold?.gold_answer || ''})});
+  } catch (e) { jd = {error: 'giám khảo lỗi: ' + e.message}; }
+  if (seq === askSeq) render(r, jd);                  // lượt cũ về muộn thì vứt, không ghi đè
+}
+
+/* ── câu hỏi có sẵn */
+let qTimer = null;
+async function qbank() {
+  const r = await j(`/api/questions?limit=80&type=${encodeURIComponent($('#qtype').value)}`
+    + `&q=${encodeURIComponent($('#qsearch').value.trim())}`);
+  $('#qcount').textContent = `${r.items.length} / ${r.total} câu`;
+  $('#qlist').innerHTML = r.items.map(it => `<li><button type="button" data-q="${esc(it.q)}">
+    ${esc(it.q)}<span class="qm"><span class="pill">${esc(it.type)}</span>
+    <span class="pill">đáp án: ${esc(it.gold.slice(0, 60))}</span>
+    <span class="pill">${it.evidence.length} mốc Evidence</span></span></button></li>`).join('')
+    || '<li style="padding:12px 14px;color:var(--fg-dim)">không có câu nào khớp</li>';
 }
 
 /* ── đồ thị */
@@ -273,9 +491,15 @@ $('#go').addEventListener('click', ask);
 $('#q').addEventListener('keydown', e => {
   if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) ask();
 });
-document.querySelectorAll('[data-ex]').forEach(b => b.addEventListener('click', () => {
-  $('#q').value = b.dataset.ex; ask();
-}));
+$('#qlist').addEventListener('click', e => {
+  const b = e.target.closest('button[data-q]');
+  if (!b) return;
+  $('#q').value = b.dataset.q;
+  $('#qbank').open = false;
+  ask();
+});
+$('#qtype').addEventListener('change', qbank);
+$('#qsearch').addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(qbank, 200); });
 $('#corpus').addEventListener('change', e => { corpus = e.target.value; curNode = null;
   if (!$('#p-graph').hidden) graph(); });
 $('#g-q').addEventListener('input', () => graph());
@@ -290,4 +514,5 @@ $('#reset').addEventListener('click', async () => {
   await status();
 });
 status();
+qbank();
 </script>

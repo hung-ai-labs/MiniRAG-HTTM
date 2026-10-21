@@ -1437,6 +1437,13 @@ async def _build_mini_query_context(
     scored_edged_reasoning_path, pairs_append = edge_vote_path(
         scored_reasoning_path, goodedge
     )
+    # Chỉ để trưng ra trong demo/chẩn đoán: path2chunk ở dưới GHI ĐÈ v["Path"] bằng danh sách
+    # chunk id, nên đường đi theo node chỉ còn tồn tại ở đây. Chụp lại trước khi mất.
+    _paths_snap = {}
+    if os.environ.get("MINIRAG_CONTEXT_LOG", "").strip():
+        for _n, _v in scored_edged_reasoning_path.items():
+            _paths_snap[_n] = [[str(x) for x in _pt] for _pt in list(_v["Path"])[:5]]
+
     scored_edged_reasoning_path = await path2chunk(
         scored_edged_reasoning_path,
         knowledge_graph_inst,
@@ -1614,6 +1621,22 @@ async def _build_mini_query_context(
             "graph_seeds": _n_seeds,
             "graph_paths": _n_paths,
             "retrieval_ms": round(1000 * (time.perf_counter() - _t0), 2),
+            # Chỉ để trưng ra trong demo/chẩn đoán: thực thể câu hỏi, bảng Entities thật sự
+            # vào context, và vài đường đi của các thực thể điểm cao nhất. Không trường nào
+            # trong số này quay lại pipeline, nên context_sha256 ở trên không đổi.
+            "query_entities": [str(e) for e in ent_from_query],
+            "entities_used": [[str(r[0]), float(r[1])] for r in entites_section_list[1:]],
+            "paths": [
+                {"entity": str(name),
+                 "score": float(scored_edged_reasoning_path[name].get("Score", 0) or 0),
+                 "paths": _paths_snap.get(name, []),
+                 "chunks_from_path": [str(x) for x in
+                                      (scored_edged_reasoning_path[name].get("Path") or [])[:5]]}
+                for name, _s in sorted(
+                    ((n, scored_edged_reasoning_path[n].get("Score", 0) or 0)
+                     for n in scored_edged_reasoning_path),
+                    key=lambda kv: -kv[1])[:8]
+            ],
         })
         if bm25_ids is not None:
             _rec["bm25_ids"] = bm25_ids

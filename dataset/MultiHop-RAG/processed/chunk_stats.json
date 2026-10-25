@@ -1,0 +1,23 @@
+{
+  "docs_jsonl_sha256": "5816d2d43cb0bbd825f61414c1648c38e57b495c211b7d046936da0c32fd8077",
+  "settings": {
+    "chunk_token_size": 1200,
+    "chunk_overlap_token_size": 100,
+    "tiktoken_model_name": "gpt-4o-mini"
+  },
+  "docs": 609,
+  "chunks": 1656,
+  "unique_chunk_ids": 1656,
+  "expected_index_llm_calls": 3312,
+  "docs_with_more_than_one_chunk": 609,
+  "chunks_without_metadata_header": 1047,
+  "tail_chunks_inside_overlap": 73,
+  "chunks_per_doc": {
+    "median": 2,
+    "max": 15
+  },
+  "tokens_per_chunk": {
+    "median": 1200.0,
+    "max": 1200
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "dataset": "MultiHop-RAG",
+  "text_format_version": 1,
+  "text_header": [
+    "Title",
+    "Source",
+    "Author (omitted when empty)",
+    "Published (Month D, YYYY + raw ISO)",
+    "Category"
+  ],
+  "doc_id": "article url; minirag_doc_id is what MiniRAG.insert assigns",
+  "query_id": "mhr-NNNN = row position in MultiHopRAG.json",
+  "inputs": {
+    "MultiHopRAG.json": {
+      "sha256": "03cfb4926461f868684903aadc8024447bdda5bb3f6804741424cce338515bff"
+    },
+    "corpus.json": {
+      "sha256": "20b61b5ab84de84a927420c5d265b7ec8d859ae49980699958a787ade9e4d28f"
+    }
+  },
+  "outputs": {
+    "docs.jsonl": {
+      "sha256": "5816d2d43cb0bbd825f61414c1648c38e57b495c211b7d046936da0c32fd8077"
+    },
+    "gold.jsonl": {
+      "sha256": "1b785bc52967705bb5f5052bdb826be196377c47d77ebb5765b4c6d6408a1740"
+    },
+    "queries.jsonl": {
+      "sha256": "23c6b847bbc63de6f1627afaaa83f006ba1739e004084240505a3da4354d81ce"
+    },
+    "questions.csv": {
+      "sha256": "983540343a132571de73b333808335d6d5e92049a490c450320dc59846c31cdc"
+    }
+  },
+  "counts": {
+    "docs": 609,
+    "docs_without_author": 68,
+    "queries": 2556,
+    "queries_by_type": {
+      "comparison": 856,
+      "inference": 816,
+      "null": 301,
+      "temporal": 583
+    }
+  }
+}

@@ -33,6 +33,11 @@ minirag-venv/
 dataset/2WikiMultiHopQA/raw/extracted/
 dataset/2WikiMultiHopQA/raw/data_ids_april7.zip
 
+# New-dataset indexes and run artefacts: large, backed up outside Git with checksums
+# (docs/research/MULTIHOP_RAG_ROADMAP.md). Manifests and reports are committed explicitly.
+indexes/
+runs/
+
 # Gemini benchmark artefacts (regenerate with reproduce/Step_0..4)
 LiHua-World-gemini/
 logs/*.csv

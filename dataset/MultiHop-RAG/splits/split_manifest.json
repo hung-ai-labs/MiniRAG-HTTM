@@ -1,0 +1,54 @@
+{
+  "dataset": "MultiHop-RAG",
+  "method": "stratified random sample by question type, largest-remainder quotas, random.Random(seed).sample over sorted query_ids, types in fixed order",
+  "seed": 13,
+  "dev_size": 400,
+  "quotas": {
+    "comparison": 134,
+    "inference": 128,
+    "null": 47,
+    "temporal": 91
+  },
+  "counts": {
+    "dev": {
+      "comparison": 134,
+      "inference": 128,
+      "null": 47,
+      "temporal": 91,
+      "total": 400
+    },
+    "test_internal": {
+      "comparison": 722,
+      "inference": 688,
+      "null": 254,
+      "temporal": 492,
+      "total": 2156
+    }
+  },
+  "inputs": {
+    "gold.jsonl": {
+      "sha256": "1b785bc52967705bb5f5052bdb826be196377c47d77ebb5765b4c6d6408a1740"
+    },
+    "questions.csv": {
+      "sha256": "983540343a132571de73b333808335d6d5e92049a490c450320dc59846c31cdc"
+    }
+  },
+  "outputs": {
+    "dev400.csv": {
+      "sha256": "4633ef777b747ef0fb8cca86457454eed64680432d899a3d5410afce2b63ef77"
+    },
+    "dev400.ids": {
+      "sha256": "3e35f0a7cf4a3e8bce187a8118d0bde99d297dc595f91ee913a985dec3b1fb08"
+    },
+    "test_internal.ids": {
+      "sha256": "605ed3868bf5abc008d70c4eafa319d1b8b2a9506bbee41a72570ad100c3df5a"
+    }
+  },
+  "evidence_overlap": {
+    "dev_evidence_docs": 268,
+    "test_questions_with_evidence": 1902,
+    "test_questions_sharing_any_doc_with_dev": 1604,
+    "test_questions_with_identical_evidence_set_in_dev": 638
+  },
+  "python": "3.13"
+}

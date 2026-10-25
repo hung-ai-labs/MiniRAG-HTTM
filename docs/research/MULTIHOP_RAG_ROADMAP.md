@@ -157,8 +157,8 @@ M0.1–M0.6 không cần key. Làm đúng thứ tự.
 | # | Task | Loại | Đầu ra | ✓ |
 |---|---|---|---|---|
 | M1.1 | Pilot index 30 bài (seed 13): `index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30` | 🟣 ⏸ | lời gọi/chunk thật, % `finish_reason=length` ở `MINIRAG_MAX_TOKENS=1024` (V-05), dự toán index đầy đủ | ✅ |
-| M1.2 | Index 609 bài → `indexes/multihop_rag-qwen-full609/`; checksum, backup, chỉ đọc | 🟣 ⏸ | index đóng băng + thống kê | ⬜ |
-| M1.3 | Ánh xạ evidence → chunk (`fact` → chunk qua `minirag_doc_id`) | 💻 | `gold_chunks.jsonl`, tỷ lệ khớp | ⬜ |
+| M1.2 | Index 609 bài → `indexes/multihop_rag-qwen-full609/`; checksum, backup, chỉ đọc | 🟣 ⏸ | index `completed`, 6/6 kiểm đạt, file chỉ đọc; manifest + sha256 từng file: [`artifacts/multihop_rag-qwen-full609.index_manifest.json`](artifacts/multihop_rag-qwen-full609.index_manifest.json). **Backup ngoài máy: chưa** (chưa có `<BACKUP_ROOT>`) | ✅ |
+| M1.3 | Ánh xạ evidence → chunk (`fact` → chunk qua `minirag_doc_id`): `map_mhr_evidence.py` | 💻 | `processed/gold_chunks.jsonl` — 6.084/6.084 fact nằm trọn trong chunk, 139 fact nằm ở 2 chunk (vùng chồng lấn), 0 chunk thiếu trong index | ✅ |
 | M1.4 | Smoke 20 câu dev × C0, C1; đọc tay 20 phán quyết (Yes/No, "Insufficient information.", từ chối) | 🟣 🔵 | judge và parser đúng trên dataset mới; 0 `parse_failed` sót | ⬜ |
 | M1.5 | C0 trên dev 400: 1 lượt sinh × 3 lượt chấm, bật `MINIRAG_CONTEXT_LOG` | 🟣 🔵 | `baseline_mhr.yaml` đóng băng + kết quả theo loại câu | ⬜ |
 | M1.6 | Evidence Recall của Sources (context log + M1.3) | 💻 | recall theo loại câu | ⬜ |
@@ -183,6 +183,20 @@ của lô dở và qua đủ 6 kiểm toàn vẹn.
 **Cấu hình index đầy đủ (M1.2):** `MINIRAG_MAX_TOKENS=4096 PYTHONUTF8=1 index_run.py --subset full --llm-max-async 32
 --batch-docs 32`. Song song 32 (giới hạn `@modal.concurrent` của endpoint) chỉ để giảm thời gian GPU — Modal tính tiền theo
 thời gian container chạy; nội dung yêu cầu gửi đi không đổi.
+
+**Kết quả M1.2 (26/10/2026).** Một lần chạy, không resume, 162 phút (≈ 715 token sinh/giây, gấp ~3 lần pilot ở song song 8).
+
+| Mục | Giá trị |
+|---|---|
+| Tài liệu / chunk | 609 / 1.656 — khớp dự kiến |
+| Node / cạnh | 18.561 / 14.849; node cô lập 6.524 (35%) |
+| Lời gọi | 3.312 thành công, **100% `Qwen/Qwen2.5-3B-Instruct`**; 1 `APIConnectionError` lúc khởi động lạnh, tự thử lại |
+| Chạm trần 4096 | trích xuất 129/1.656 · gleaning 195/1.656 (9,8%). **149/324 là vòng lặp** (< 50% bản ghi duy nhất); ~175 đầu ra (5,3%) là danh sách dài thật bị cắt, vẫn giữ trung vị 30 bản ghi duy nhất |
+| Bản ghi trùng | 15,7% tổng; đầu ra tự dừng chỉ 4,3% — gần như toàn bộ phần trùng nằm trong các vòng lặp |
+| Chunk không sinh entity | 5 (3 chunk đuôi 25–39 token, 2 chunk thường) |
+| Token sinh | 5,35 triệu |
+
+Nâng trần thêm chỉ tốn GPU cho vòng lặp → giữ 4096. Vòng lặp làm cộng dồn trọng số một số cạnh (Limitations).
 
 **Cổng ra Phase 1:** baseline đóng băng + bảng lỗi. Luôn báo **theo loại câu**: 52% đáp án là Yes/No (comparison 96%,
 temporal 90%) → ~50% acc ở hai loại này đạt được bằng đoán.

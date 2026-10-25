@@ -28,6 +28,11 @@ examples/output/
 build/
 minirag-venv/
 
+# 2WikiMultiHopQA is committed as split archive parts.
+# Keep the reassembled archive and local extracted copies out of Git.
+dataset/2WikiMultiHopQA/raw/extracted/
+dataset/2WikiMultiHopQA/raw/data_ids_april7.zip
+
 # Gemini benchmark artefacts (regenerate with reproduce/Step_0..4)
 LiHua-World-gemini/
 logs/*.csv

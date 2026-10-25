@@ -75,7 +75,12 @@ def get_args(description="MiniRAG + Gemini"):
     return parser.parse_args()
 
 
-def build_rag(args):
+def build_rag(args, *, llm_max_async=None):
+    # Optional for the parallel QA runner; legacy scripts keep their limit.
+    if llm_max_async is None:
+        llm_max_async = 8
+    if isinstance(llm_max_async, bool) or not isinstance(llm_max_async, int) or llm_max_async < 1:
+        raise ValueError("llm_max_async must be a positive integer")
     try:
         keys = _resolve_api_keys()
     except ValueError as e:
@@ -117,7 +122,7 @@ def build_rag(args):
         llm_model_func=gemini_complete,
         llm_model_max_token_size=200,
         llm_model_name=args.model,
-        llm_model_max_async=8,
+        llm_model_max_async=llm_max_async,
         embedding_func_max_async=4,
         embedding_func=embedding,
     )

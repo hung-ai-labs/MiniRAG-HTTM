@@ -1,0 +1,10 @@
+{
+  "facts": 6084,
+  "located": {
+    "inside": 6084
+  },
+  "facts_in_more_than_one_chunk": 139,
+  "questions_with_evidence": 2255,
+  "index_checked": "multihop_rag-qwen-full609",
+  "mapped_chunks_missing_from_index": 0
+}

@@ -39,7 +39,7 @@ kèm hai giới hạn — Null khẳng định sai nhiều hơn, và thay xếp 
 | Index LiHua (`LiHua-World-*`) | Index MultiHop chỉ ở `indexes/multihop_rag-*`; `index_run.py` từ chối mọi đường dẫn khác và mọi thư mục đã tồn tại khi chạy mới. `qa_run.py` chỉ chạy trên bản sao index |
 | Kết quả LiHua đã đóng băng | Không ghi vào `logs/`; đầu ra ở `runs/multihop_rag/`. Không sửa `Step_2_evaluate.py`, `baseline.yaml`, `logs/devset.csv` |
 | Code dùng chung | Đợt này **không sửa** `minirag/`. Code mới là file mới trong `reproduce/research/`. Ghi metadata request bằng cách bọc client trong tiến trình (`llm_trace.py`), không sửa backend |
-| Luồng 2Wiki | Không đụng `dataset/2WikiMultiHopQA/`. Endpoint Modal dùng chung (`max_containers=1`) → xếp lịch, không chạy song song khi người kia chạy, không đo latency khi endpoint bị chia |
+| Luồng 2Wiki | Không đụng `dataset/2WikiMultiHopQA/`. Người làm 2Wiki chạy GPU riêng → endpoint không dùng chung. MultiHop dùng **một** deployment duy nhất (workspace Modal của người làm MultiHop) cho toàn bộ đợt; đổi deployment giữa chừng là thay đổi điều kiện thí nghiệm (`endpoint_sha256` trong manifest phải giữ nguyên) |
 | Nhánh git | `research/mhr-qwen` tách từ `dev`, merge theo mốc |
 
 Kiểm sau mỗi mốc: `git diff dev -- minirag/ logs/ baseline.yaml reproduce/Step_*.py dataset/LiHua-World dataset/2WikiMultiHopQA`
@@ -139,7 +139,7 @@ M0.1–M0.6 không cần key. Làm đúng thứ tự.
 | M0.4 | Đếm chunk thật: `count_mhr_chunks.py` | 💻 | `processed/chunk_stats.json` — **1.656 chunk**, ≈ 3.312 lời gọi index | ✅ |
 | M0.5 | `index_run.py` + `llm_trace.py`: chặn Gemini, chặn thư mục ngoài `indexes/multihop_rag-*`, log từng request, resume theo lô, kiểm toàn vẹn | 💻 | script + 8 test offline (gồm ngắt-rồi-resume trên MiniRAG thật với LLM giả) | ✅ |
 | M0.6 | **Đăng ký trước + commit**: đóng băng mục trên, commit trước mọi lượt sinh thật | ⏸ | commit "Pre-register the MultiHop-RAG transfer study" | ✅ |
-| M0.7 | Key + revision: `MINIRAG_SLM_KEY`, gói `modal`, 1 lời gọi thử, ghim HF revision / vLLM / sampling (V-04) | 🟣 ⏸ | `serving.json` cho `qa_run.py --serving-config` | ⬜ |
+| M0.7 | Key + revision: `MINIRAG_SLM_KEY`, gói `modal`, 1 lời gọi thử, ghim HF revision / vLLM / sampling (V-04) | 🟣 ⏸ | [`serving_qwen_modal.json`](../../reproduce/research/serving_qwen_modal.json) (revision `aa8e7253…`, bf16, 32k, sampling của `generation_config`); `slm_smoke.py` 26/10: vLLM 0.11.0, phục vụ `Qwen/Qwen2.5-3B-Instruct` + `minirag-slm`, `response.model` = `Qwen/Qwen2.5-3B-Instruct`, khởi động lạnh 53 s — 3/3 kiểm đạt | ✅ |
 
 **Phát hiện ở Phase 0 (ghi vào Limitations / failure taxonomy):**
 - Bài ngắn nhất 1.113 token, vượt bước nhảy 1.100 của bộ chunk → **cả 609 bài đều ≥ 2 chunk**, **1.047 chunk (63%) không có

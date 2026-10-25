@@ -128,6 +128,10 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(annotate(first), {"phase": "extract", "chunk_id": "chunk-2"})
         glean = first + [{"role": "assistant", "content": "..."}, {"role": "user", "content": "MANY missed"}]
         self.assertEqual(annotate(glean), {"phase": "glean", "chunk_id": "chunk-2"})
+        # A tail chunk inside the previous chunk's overlap: the longer chunk is the one asked about.
+        annotate = ir.annotator({"chunk-full": ("doc-A", "alpha body tail"), "chunk-tail": ("doc-A", "body tail")})
+        self.assertEqual(annotate([{"role": "user", "content": "x alpha body tail"}])["chunk_id"], "chunk-full")
+        self.assertEqual(annotate([{"role": "user", "content": "x body tail"}])["chunk_id"], "chunk-tail")
 
 
 class TraceTests(unittest.TestCase):

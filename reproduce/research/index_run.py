@@ -119,10 +119,12 @@ def annotator(chunks):
     def annotate(messages):
         turns = [m for m in messages if m.get("role") != "system"]
         user_text = "\n".join(m.get("content") or "" for m in turns if m.get("role") == "user")
-        found = [cid for cid, content in contents if content and content in user_text]
+        found = [(len(content), cid) for cid, content in contents if content and content in user_text]
+        # A tail chunk no longer than the overlap is a substring of the chunk before it, so a
+        # prompt about the longer chunk matches both: the longest match is the one asked about.
         # The first turn is extraction; gleaning replays it as history plus a continue prompt.
         return {"phase": "extract" if len(turns) == 1 else "glean",
-                "chunk_id": found[0] if len(found) == 1 else None}
+                "chunk_id": max(found)[1] if found else None}
 
     return annotate
 

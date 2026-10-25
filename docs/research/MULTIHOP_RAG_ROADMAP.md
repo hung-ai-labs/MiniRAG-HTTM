@@ -156,13 +156,33 @@ M0.1–M0.6 không cần key. Làm đúng thứ tự.
 
 | # | Task | Loại | Đầu ra | ✓ |
 |---|---|---|---|---|
-| M1.1 | Pilot index 30 bài (seed 13): `index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30` | 🟣 ⏸ | lời gọi/chunk thật, % `finish_reason=length` ở `MINIRAG_MAX_TOKENS=1024` (V-05), dự toán index đầy đủ | ⬜ |
+| M1.1 | Pilot index 30 bài (seed 13): `index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30` | 🟣 ⏸ | lời gọi/chunk thật, % `finish_reason=length` ở `MINIRAG_MAX_TOKENS=1024` (V-05), dự toán index đầy đủ | ✅ |
 | M1.2 | Index 609 bài → `indexes/multihop_rag-qwen-full609/`; checksum, backup, chỉ đọc | 🟣 ⏸ | index đóng băng + thống kê | ⬜ |
 | M1.3 | Ánh xạ evidence → chunk (`fact` → chunk qua `minirag_doc_id`) | 💻 | `gold_chunks.jsonl`, tỷ lệ khớp | ⬜ |
 | M1.4 | Smoke 20 câu dev × C0, C1; đọc tay 20 phán quyết (Yes/No, "Insufficient information.", từ chối) | 🟣 🔵 | judge và parser đúng trên dataset mới; 0 `parse_failed` sót | ⬜ |
 | M1.5 | C0 trên dev 400: 1 lượt sinh × 3 lượt chấm, bật `MINIRAG_CONTEXT_LOG` | 🟣 🔵 | `baseline_mhr.yaml` đóng băng + kết quả theo loại câu | ⬜ |
 | M1.6 | Evidence Recall của Sources (context log + M1.3) | 💻 | recall theo loại câu | ⬜ |
 | M1.7 | Failure taxonomy trên câu sai/neither của C0 | 💻 | phân phối lỗi + ví dụ thật | ⬜ |
+
+**Kết quả M1.1 (26/10/2026) — trần token khi index nâng từ 1024 lên 4096.** Hai pilot cùng 30 bài, cùng mọi thông số
+trừ `MINIRAG_MAX_TOKENS` (chỉ áp cho **index**; QA giữ 1024 như bản đăng ký):
+
+| Pilot | Bị cắt (`length`) trích xuất / gleaning | Relationship trung vị mỗi đầu ra (trích xuất / gleaning) | Cạnh | Node cô lập | Bản ghi trùng | Lời gọi Qwen | Thời gian |
+|---|---|---|---:|---:|---:|---:|---:|
+| `pilot30` (1024) | 32/71 · 47/70 | 5 · 1,5 | 308 | 505/847 (60%) | 2,6% | 141/141 Qwen, 0 lỗi | ≈ 9 phút + 1 lần resume |
+| `pilot30-cap4096` | **0/69 · 3/69** | **8 · 6** | **607** | **309/924 (33%)** | 9,0% | 138/138 Qwen, 0 lỗi | 13,5 phút |
+
+Ở 1024, phần bị cắt là danh sách thật (ít trùng), và vì định dạng đầu ra liệt kê entity trước relationship nên phần mất là
+relationship: 28/47 đầu ra gleaning bị cắt không có relationship nào. Đồ thị thưa ở 1024 là do **trần hạ tầng**, không phải
+do SLM (CLAUDE.md §1 đã cảnh báo). Ở 4096, vài đầu ra lặp lại danh sách tới trần (5/138 đầu ra chiếm ~80% bản ghi trùng):
+entity trùng được gộp theo tên và mô tả trùng bị loại, chỉ **trọng số của vài cạnh bị cộng dồn** — hiệu ứng đã biết, ghi
+vào Limitations. Index Qwen của LiHua dùng 1024 → so sánh cấu trúc đồ thị giữa hai dataset phải ghi khác biệt này.
+Resume trên dữ liệu thật (pilot 1024 dừng vì lỗi in Unicode của Windows; chạy lại với `PYTHONUTF8=1 --resume`) đã dọn 8 bài
+của lô dở và qua đủ 6 kiểm toàn vẹn.
+
+**Cấu hình index đầy đủ (M1.2):** `MINIRAG_MAX_TOKENS=4096 PYTHONUTF8=1 index_run.py --subset full --llm-max-async 32
+--batch-docs 32`. Song song 32 (giới hạn `@modal.concurrent` của endpoint) chỉ để giảm thời gian GPU — Modal tính tiền theo
+thời gian container chạy; nội dung yêu cầu gửi đi không đổi.
 
 **Cổng ra Phase 1:** baseline đóng băng + bảng lỗi. Luôn báo **theo loại câu**: 52% đáp án là Yes/No (comparison 96%,
 temporal 90%) → ~50% acc ở hai loại này đạt được bằng đoán.
@@ -219,7 +239,7 @@ python reproduce/research/make_mhr_split.py --check
 python -m unittest discover tests/research
 
 # M1.1 — pilot index (⏸, tốn GPU; cần MINIRAG_SLM_URL + MINIRAG_SLM_KEY)
-python reproduce/research/index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30
+PYTHONUTF8=1 MINIRAG_MAX_TOKENS=4096 python reproduce/research/index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30-cap4096
 python reproduce/research/index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30 --resume
 python reproduce/research/index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30 --verify
 

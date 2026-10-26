@@ -1,4 +1,6 @@
-"""Run one MultiHop-RAG QA config as N parallel shards, then merge (amendment 26/10/2026).
+"""Run one MultiHop-RAG QA config as N parallel shards, then merge (amendment S1, 26/10/2026).
+
+Superseded by phased_qa.py (amendment S2): kept as the record of the S1 runs.
 
 MiniRAG's retrieval on the 18.5k-node MultiHop graph costs ~20 s of CPU per
 question in one Python thread, so a single qa_run.py process uses under one
@@ -92,8 +94,9 @@ def main(argv=None):
         write_rows(shard_dir / "questions.csv", fieldnames, part)
         log = open(shard_dir / "qa.log", "w", encoding="utf-8")
         procs.append((subprocess.Popen(
-            ["bash", "reproduce/research/run_mhr_qa.sh", args.config, str(shard_dir / "questions.csv"),
-             str(shard_dir), str(args.seed)], cwd=ROOT, stdout=log, stderr=subprocess.STDOUT), log))
+            # bash drops Windows backslashes, so paths go over as forward slashes.
+            ["bash", "reproduce/research/run_mhr_qa.sh", args.config, (shard_dir / "questions.csv").as_posix(),
+             shard_dir.as_posix(), str(args.seed)], cwd=ROOT, stdout=log, stderr=subprocess.STDOUT), log))
     codes = []
     for proc, log in procs:
         codes.append(proc.wait())

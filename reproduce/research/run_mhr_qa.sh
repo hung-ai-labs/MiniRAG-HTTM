@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Superseded by phased_qa.py (amendment S2); kept as the record of the C0 smoke run.
+#
 # One MultiHop-RAG QA run with the pre-registered settings (MULTIHOP_RAG_ROADMAP.md,
 # "Thông số chạy cố định", commit 7013291). Only the retrieval switches differ
 # between C0..C3; everything else is fixed here so no run can drift.

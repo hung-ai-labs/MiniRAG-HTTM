@@ -282,3 +282,23 @@ mọi cấu hình và mọi tập**.
   hình nào khác.
 - Smoke (M1.4) chỉ kiểm kỹ thuật: smoke C0 chạy 1 tiến trình, smoke C1 chạy 8 shard để kiểm công cụ — hai lượt smoke **không**
   được dùng để so sánh.
+
+**S2 — 26/10/2026: chạy QA theo 3 pha; thay S1.** Lệnh: `reproduce/research/phased_qa.py` (A `keywords` → B `contexts` →
+C `answers`), sau đó `judge_run.py` như cũ.
+- *Lý do:* với 8 shard (S1), RAM 16 GB chỉ chịu được 3 tiến trình (5/8 shard chết vì `MemoryError`); ở 3–4 tiến trình, test
+  nội bộ vẫn cần ≈ 30 giờ GPU (≈ 34 USD), vượt trần. Gốc rễ: GPU trả tiền ngồi chờ phần truy hồi chạy CPU. Tách pha thì pha B
+  (truy hồi) chạy khi GPU tắt; GPU chỉ bật cho A và C.
+- *Nội dung yêu cầu không đổi:* pha A dựng đúng prompt từ khoá của `minirag_query`, pha C dựng đúng lời gọi trả lời
+  (`rag_response` / `naive_rag_response`, cùng `llm_model_func`, cùng hậu xử lý). `tests/research/test_phased_qa.py` chứng
+  minh trên index MiniRAG thật (LLM giả) rằng C0, C1, C3 cho **cùng các lời gọi LLM và cùng câu trả lời** như `rag.aquery`. Pha B
+  chạy với `MINIRAG_KW_CACHE_ONLY=1` và LLM bị thay bằng hàm báo lỗi.
+- *Hai điểm khác bản đăng ký, áp dụng như nhau cho mọi cấu hình:*
+  1. **Đầu ra từ khoá dùng chung cho C0–C2 cùng một seed** (C3 `naive` không có bước này). Phép so giữa các cấu hình vì thế
+     cô lập đúng phần truy hồi — không còn nhiễu lấy mẫu của bước từ khoá giữa hai cấu hình — như tầng sàng lọc của LiHua. Lời
+     gọi trả lời vẫn lấy mẫu riêng cho từng cấu hình với cùng seed.
+  2. **Danh sách entity type trong prompt từ khoá được sắp xếp** (hành vi có sẵn của chế độ `MINIRAG_KW_CACHE`) thay vì thứ tự
+     của `set` vốn đổi theo `PYTHONHASHSEED`. Truy hồi chạy với `PYTHONHASHSEED=13`.
+- *Song song:* pha C tối đa 32 yêu cầu (giới hạn endpoint), áp dụng như nhau cho mọi cấu hình; pha B 3 tiến trình CPU.
+- *Đã thấy gì trước khi sửa:* thời gian và trạng thái smoke C0 (20 câu, 1 tiến trình) và 7 câu smoke C1 (S1); **chưa chấm câu
+  nào**. Các câu trả lời smoke đó bị bỏ; M1.4 chạy lại toàn bộ bằng 3 pha.
+- `run_mhr_qa.sh` và `shard_mhr_qa.py` (S1) giữ lại làm hồ sơ, không dùng nữa.

@@ -311,3 +311,13 @@ C `answers`), sau đó `judge_run.py` như cũ.
 - *Đã thấy gì trước khi sửa:* thời gian và trạng thái smoke C0 (20 câu, 1 tiến trình) và 7 câu smoke C1 (S1); **chưa chấm câu
   nào**. Các câu trả lời smoke đó bị bỏ; M1.4 chạy lại toàn bộ bằng 3 pha.
 - `run_mhr_qa.sh` và `shard_mhr_qa.py` (S1) giữ lại làm hồ sơ, không dùng nữa.
+
+**S3 — 26/10/2026: thêm cấu hình mô tả C_orig (MiniRAG gốc ở bước hỏi đáp), chạy sau C0–C3.** Khai báo **trước khi có bất
+kỳ kết quả dev nào** (mới có smoke 20 câu).
+- *Định nghĩa:* cùng index `multihop_rag-qwen-full609`, mode `mini`, không trộn; `MINIRAG_ANSWER_TYPE_FIX=0` (so khớp
+  hoa/thường như upstream) và `MINIRAG_TRUNCATE_SOURCES=0` (không cắt bảng Sources — hành vi upstream trước A1). Các khác biệt
+  ở mức index (vá O(N²), trần 4096, Qwen qua vLLM) **không** gỡ được và phải ghi khi trích dẫn.
+- *Vai trò:* **chỉ mô tả** — đặt cạnh bài báo (RQ1) và cho thấy tác động gộp của các bản sửa của nhóm (C_orig vs C0). Không
+  thay đổi RQ2–RQ5 hay phép thử chính.
+- *Dự kiến rủi ro:* không cắt Sources thì một số prompt có thể vượt cửa sổ 32.768 token (LiHua: 5–8% câu). Câu tràn được đếm
+  và báo riêng, tính là không-`accurate` ở biến chính, không bị bỏ khỏi mẫu số.

@@ -124,10 +124,15 @@ async def judge_one(complete, prompt_text, *, invalid_tries, api_tries, api_wait
 def read_records(path):
     latest = {}
     if path.exists():
-        for line in path.read_text(encoding="utf-8").splitlines():
-            if line.strip():
+        lines = [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        for i, line in enumerate(lines):
+            try:
                 r = json.loads(line)
-                latest[(r["query_id"], r["pass"])] = r  # last record wins on resume
+            except json.JSONDecodeError:
+                if i == len(lines) - 1:
+                    break  # torn by a crash or power-off mid-write: that verdict is simply judged again
+                raise ValueError(f"{path}: corrupt record on line {i + 1}") from None
+            latest[(r["query_id"], r["pass"])] = r  # last record wins on resume
     return latest
 
 

@@ -137,6 +137,16 @@ class RunTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "refusing to resume"):
                 run(args_for(q, a, run_dir, resume=True), complete)
 
+    def test_torn_last_record_is_rejudged_but_corruption_inside_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "judge.jsonl"
+            good = json.dumps({"query_id": "q0", "pass": 1, "status": "ok", "label": "accurate"})
+            path.write_text(good + "\n" + '{"query_id": "q1", "pa', encoding="utf-8")
+            self.assertEqual(list(jr.read_records(path)), [("q0", 1)])
+            path.write_text('{"query_id": "q1", "pa\n' + good + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "corrupt record on line 1"):
+                jr.read_records(path)
+
     def test_answers_must_line_up_with_questions(self):
         with tempfile.TemporaryDirectory() as tmp:
             q, a = write_inputs(Path(tmp), ["Yes", "No"])

@@ -325,3 +325,9 @@ kỳ kết quả dev nào** (mới có smoke 20 câu).
   4096 token khi index**, **Qwen phục vụ qua vLLM** — là một phần **có chủ đích** của baseline C_orig, không phải giới hạn bất
   đắc dĩ. Lý do: vá O(N²) là sửa lỗi hiệu năng (bản gốc trích xuất lại cả corpus mỗi lần chèn), trần 4096 là điều kiện để SLM
   không mất relationship (M1.1), vLLM chỉ là cách phục vụ cùng model. C_orig = "MiniRAG gốc ở bước hỏi đáp, trên index đã vá".
+
+**Sự cố 26/10/2026 — chấm dev 400 bị dừng giữa chừng.** Câu trả lời của C0–C3 (seed 101) đã đủ 400/400 mỗi cấu hình. Lượt
+chấm bắt đầu 09:57 UTC, dừng có chủ đích lúc ≈ 10:40 UTC vì máy phải tắt; C0 mới có 602/1.200 phán quyết, C1–C3 chưa chấm.
+Để giữ luật "các cấu hình được so chấm liền nhau trong một phiên", 602 phán quyết đó được **cất nguyên trạng, không đọc,
+không dùng** (`runs/multihop_rag/dev400/C0_s101/judge_partial_unread_20261026/`), và **cả bốn cấu hình được chấm lại từ đầu
+trong một phiên**. Không có câu trả lời nào bị sinh lại.

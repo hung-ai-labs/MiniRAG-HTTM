@@ -23,3 +23,6 @@ logs/full637_fix_judged.csv       -text
 # across machines (see dataset/MultiHop-RAG/README.md).
 dataset/MultiHop-RAG/processed/** -text
 dataset/MultiHop-RAG/splits/** -text
+
+# Shell scripts run under bash on Windows too; CRLF breaks them.
+reproduce/research/*.sh text eol=lf

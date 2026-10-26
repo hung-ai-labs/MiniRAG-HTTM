@@ -53,14 +53,21 @@ import qa_run  # noqa: E402
 INDEX = ROOT / "indexes/multihop_rag-qwen-full609"
 REGISTRATION = "7013291"
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": "",
-            "MINIRAG_MAX_TOKENS": "1024"}
-FUSION = {"C0": None, "C1": "vector_bm25", "C2": "vector", "C3": None}
-MODE = {"C0": "mini", "C1": "mini", "C2": "mini", "C3": "naive"}
+            "MINIRAG_TRUNCATE_SOURCES": "1", "MINIRAG_MAX_TOKENS": "1024"}
+FUSION = {"C0": None, "C1": "vector_bm25", "C2": "vector", "C3": None, "C_orig": None}
+MODE = {"C0": "mini", "C1": "mini", "C2": "mini", "C3": "naive", "C_orig": "mini"}
+# C_orig (amendment S3): original MiniRAG at query time -- upstream answer-type matching, Sources uncapped.
+EXTRA_ENV = {"C_orig": {"MINIRAG_ANSWER_TYPE_FIX": "0", "MINIRAG_TRUNCATE_SOURCES": "0"}}
 
 
 # ---------------------------------------------------------------- shared
+def config_env(config):
+    """The retrieval switches apply_env sets for a config, as recorded in run notes."""
+    return BASE_ENV | {"MINIRAG_CHUNK_FUSION": FUSION[config] or ""} | EXTRA_ENV.get(config, {})
+
+
 def apply_env(config, seed, kw_cache=None, cache_only=False, context_log=None):
-    os.environ.update(BASE_ENV)
+    os.environ.update(BASE_ENV | EXTRA_ENV.get(config, {}))
     os.environ["MINIRAG_SLM_SEED"] = str(seed)
     for name, value in (("MINIRAG_CHUNK_FUSION", FUSION[config]), ("MINIRAG_KW_CACHE", kw_cache),
                         ("MINIRAG_CONTEXT_LOG", context_log)):
@@ -95,6 +102,15 @@ def read_jsonl(path, key="query_id"):
 def append_jsonl(handle, record):
     handle.write(json.dumps(record, ensure_ascii=False) + "\n")
     handle.flush()
+
+
+def is_context_overflow(exc):
+    """vLLM rejects a prompt longer than max_model_len with HTTP 400; only C_orig (Sources uncapped) can hit it."""
+    import openai
+
+    text = str(exc).lower()
+    return isinstance(exc, openai.BadRequestError) and ("context length" in text or "max_model_len" in text
+                                                         or "maximum model length" in text)
 
 
 def snapshot(dest, index=INDEX):
@@ -188,6 +204,7 @@ def run_context_workers(args, rows, out_dir):
         cmd = [sys.executable, __file__, "contexts-worker", "--config", args.config, "--seed", str(args.seed),
                "--questions", str(qfile), "--out-file", str(out_dir / f"contexts_part{k}.jsonl"),
                "--snapshot", str(work / f"snap{k}"), "--kw", str(args.out / f"kw_s{args.seed}.jsonl"),
+               "--index", str(args.index),
                "--context-log", str(out_dir / f"context_part{k}.jsonl")]
         procs.append(subprocess.Popen(cmd, cwd=ROOT, env=env, stdout=open(work / f"w{k}.log", "w"),
                                       stderr=subprocess.STDOUT))
@@ -239,13 +256,21 @@ async def answer_phase(llm_func, rows, contexts, mode, out_path, response_type):
             if row["query_id"] in done:
                 return
             ctx = contexts[row["query_id"]]
-            if ctx["status"] != "ok":  # MiniRAG answers these without an LLM call
+            status = ctx["status"]
+            if status != "ok":  # MiniRAG answers these without an LLM call
                 answer = PROMPTS["fail_response"]
             else:
                 prompt, system_prompt = answer_messages(mode, row["Question"], ctx["context"], response_type)
-                answer = postprocess(mode, row["Question"], system_prompt,
-                                     await llm_func(prompt, system_prompt=system_prompt))
-            append_jsonl(fh, {"query_id": row["query_id"], "answer": answer, "context_status": ctx["status"]})
+                try:
+                    answer = postprocess(mode, row["Question"], system_prompt,
+                                         await llm_func(prompt, system_prompt=system_prompt))
+                except Exception as exc:
+                    if not is_context_overflow(exc):
+                        raise
+                    # Amendment S3: counted and reported, scored as not accurate -- an empty
+                    # answer cannot convey the gold answer.
+                    answer, status = "", "context_overflow"
+            append_jsonl(fh, {"query_id": row["query_id"], "answer": answer, "context_status": status})
         await asyncio.gather(*(one(r) for r in rows))
     answers = read_jsonl(out_path)
     with open(Path(out_path).with_name("answers.csv"), "w", newline="", encoding="utf-8") as f:
@@ -279,13 +304,14 @@ def traced(out_dir, fn):
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     p.add_argument("phase", choices=("keywords", "contexts", "answers", "contexts-worker"))
-    p.add_argument("--config", choices=tuple(FUSION), default="C0")
+    p.add_argument("--config", choices=tuple(FUSION), default="C0")  # C0..C3, C_orig
     p.add_argument("--questions", type=Path, required=True)
     p.add_argument("--seed", type=int, required=True)
     p.add_argument("--out", type=Path, help="Phase directory (keyword cache + one folder per config/seed)")
     p.add_argument("--workers", type=int, default=4, help="Phase B processes (each loads the index: ~1.5 GB RAM)")
     # contexts-worker only
     p.add_argument("--out-file", type=Path)
+    p.add_argument("--index", type=Path, default=INDEX, help="Frozen index to copy (default: MultiHop full609)")
     p.add_argument("--snapshot", type=Path)
     p.add_argument("--kw", type=Path)
     p.add_argument("--context-log", type=Path)
@@ -298,7 +324,7 @@ def main(argv=None):
         mode = MODE[args.config]
         apply_env(args.config, args.seed, kw_cache=args.kw if mode == "mini" else None,
                   cache_only=True, context_log=args.context_log)
-        rag = build(snapshot(args.snapshot), llm_max_async=1)
+        rag = build(snapshot(args.snapshot, args.index), llm_max_async=1)
         asyncio.run(context_phase(rag, rows, mode, args.out_file))
         return 0
 
@@ -308,7 +334,7 @@ def main(argv=None):
         use_slm()
         apply_env("C0", args.seed, kw_cache=args.out / f"kw_s{args.seed}.jsonl")
         with tempfile.TemporaryDirectory(dir=args.out, ignore_cleanup_errors=True) as tmp:
-            rag = build(snapshot(Path(tmp) / "snap"))
+            rag = build(snapshot(Path(tmp) / "snap", args.index))
             traced(args.out, lambda: keyword_phase(rag, rows, args.out / f"kw_s{args.seed}.jsonl"))
         got = read_jsonl(args.out / f"kw_s{args.seed}.jsonl", key="query_id")
         missing = [r["query_id"] for r in rows if r["query_id"] not in got]
@@ -319,8 +345,8 @@ def main(argv=None):
     if args.phase == "contexts":
         write_note(run_dir, config=args.config, seed=args.seed, mode=MODE[args.config], phase="contexts",
                    questions=str(args.questions), questions_sha256=qa_run.file_hash(args.questions),
-                   index_manifest_sha256=qa_run.file_hash(INDEX / "index_manifest.json"),
-                   environment={k: os.environ.get(k, "") for k in BASE_ENV} | {"fusion": FUSION[args.config]},
+                   index=str(args.index), index_manifest_sha256=qa_run.file_hash(args.index / "index_manifest.json"),
+                   environment=config_env(args.config),
                    python_hash_seed=13, workers=args.workers,
                    kw_cache_sha256=qa_run.file_hash(args.out / f"kw_s{args.seed}.jsonl")
                    if MODE[args.config] == "mini" else None)

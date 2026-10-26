@@ -92,6 +92,11 @@ class GuardTests(unittest.TestCase):
                 ir.check_workingdir(ok, False, root)
             with self.assertRaisesRegex(ValueError, "Nothing to resume"):
                 ir.check_workingdir(ok, True, root)
+            # Another dataset gets its own prefix and cannot reach MultiHop's directories.
+            self.assertEqual(ir.check_workingdir(root / "2wiki-qwen-pool500", False, root, prefix="2wiki-"),
+                             (root / "2wiki-qwen-pool500").resolve())
+            with self.assertRaisesRegex(ValueError, "direct child"):
+                ir.check_workingdir(root / "multihop_rag-x", False, root, prefix="2wiki-")
 
     def test_refuses_gemini_as_indexer(self):
         gemini = "https://generativelanguage.googleapis.com/v1beta/openai/"

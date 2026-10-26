@@ -63,13 +63,13 @@ class WrongBackend(RuntimeError):
     pass
 
 
-def check_workingdir(path, resume, index_root=INDEX_ROOT):
+def check_workingdir(path, resume, index_root=INDEX_ROOT, prefix=PREFIX):
     path = Path(path)
     if path.is_symlink():
         raise ValueError("The index directory must not be a symlink")
     resolved = path.resolve()
-    if resolved.parent != Path(index_root).resolve() or not resolved.name.startswith(PREFIX):
-        raise ValueError(f"The index must be a direct child of {index_root} named {PREFIX}*: {path}")
+    if resolved.parent != Path(index_root).resolve() or not resolved.name.startswith(prefix):
+        raise ValueError(f"The index must be a direct child of {index_root} named {prefix}*: {path}")
     if resolved.exists() and not resume:
         raise ValueError("Index directory already exists; a fresh run never writes into it (use --resume)")
     if resume and not (resolved / "index_manifest.json").is_file():
@@ -282,6 +282,8 @@ async def run_index(args, docs, rag_factory, identity, chunks):
 def parser():
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     p.add_argument("--docs", type=Path, default=ROOT / "dataset/MultiHop-RAG/processed/docs.jsonl")
+    p.add_argument("--dataset-id", default="multihop_rag",
+                   help="Index directories must be indexes/<dataset-id>-*; e.g. 2wiki for 2WikiMultiHopQA")
     p.add_argument("--workingdir", type=Path, required=True, help="indexes/multihop_rag-<name>")
     p.add_argument("--subset", choices=("pilot", "full"), required=True)
     p.add_argument("--pilot-size", type=int, default=30)
@@ -307,7 +309,7 @@ def main(argv=None):
         print(json.dumps({"verification": checks, "counts": counts}, indent=2))
         return 0 if all(checks.values()) else 1
 
-    args.workingdir = check_workingdir(args.workingdir, args.resume)
+    args.workingdir = check_workingdir(args.workingdir, args.resume, prefix=f"{args.dataset_id}-")
     from dotenv import load_dotenv
     load_dotenv(ROOT / ".env")
     args.backend = "modal"
@@ -319,7 +321,7 @@ def main(argv=None):
     sources = list((ROOT / "minirag").rglob("*.py")) + [ROOT / "reproduce/gemini_common.py", Path(__file__),
                                                          Path(__file__).with_name("llm_trace.py")]
     identity = {
-        "dataset": "MultiHop-RAG", "subset": args.subset,
+        "dataset": args.dataset_id, "subset": args.subset,
         "docs_jsonl_sha256": qa_run.file_hash(args.docs),
         "selected_doc_ids_sha256": qa_run.digest(sorted(d["doc_id"] for d in docs)),
         "settings": settings | {"model": args.model, "embedmodel": "local",

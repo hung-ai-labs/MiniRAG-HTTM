@@ -127,7 +127,8 @@ vào đề xuất: hai file `per_question.csv` của `judge_run.py` ghép theo `
 | `requests.jsonl` | phased A/C | như `index_requests.jsonl`, không có `response_text` |
 | `judge/judge.jsonl` | judge_run | `query_id, pass, status (ok/parse_failed/judge_failed), label, type, attempts[{ok, raw, label, error_type, requests[…]}]` |
 | `judge/per_question.csv`, `summary.json` | judge_run | `query_id, Type, pass1..3, majority`; summary chỉ ghi khi mọi bản ghi `ok` |
-| `run_note.json` | phased B | config, seed, mode, commit đăng ký + HEAD, sha256 câu hỏi / manifest index / cache từ khoá (trường `environment` hiện ghi rỗng — lỗi ghi chép đã biết, sửa sau dev 400; giá trị thật = bảng §4) |
+| `run_note.json` | phased B | config, seed, mode, index, commit đăng ký + HEAD, sha256 câu hỏi / manifest index / cache từ khoá, `environment` (= `config_env(config)`). Note của smoke và dev 400 MultiHop ghi rỗng trường này do lỗi ghi chép; đã điền lại và đánh dấu `environment_corrected`, đối chiếu khớp với trường `fusion` trong `context.jsonl` |
+| `answers.jsonl` → `context_status` | phased C | `ok` / `no_context` / `early_exit` / **`context_overflow`** (prompt vượt 32k, chỉ có thể ở C_orig; đáp án rỗng, tính là không-`accurate`) |
 
 ## 8. Cách ly, lưu trữ, backup
 
@@ -144,5 +145,5 @@ vào đề xuất: hai file `per_question.csv` của `judge_run.py` ghép theo `
 | 1 | Ký protocol này (hoặc sửa) | Người 2 review, cả hai ký |
 | 2 | Nơi backup chung | nhóm |
 | 3 | Judge cho 2Wiki: theo Flash-Lite (đề xuất) hay Flash | Người 2 |
-| 4 | Tham số hoá runner cho dataset khác: `index_run.py` (đường dẫn `docs.jsonl`, tiền tố thư mục), `phased_qa.py` (hằng `INDEX`) đang gắn MultiHop | Người 1 sửa sau dev 400 MultiHop (đang chạy) |
+| 4 | ~~Tham số hoá runner cho dataset khác~~ — **xong 26/10**: `index_run.py --docs … --dataset-id 2wiki` (thư mục phải là `indexes/2wiki-*`), `phased_qa.py --index indexes/2wiki-…` | Người 1 ✅ |
 | 5 | `metrics.py`, fixture offline chung, công tắc ablation S-07 | Người 2 (theo EXECUTION_PLAN) |

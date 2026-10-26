@@ -125,6 +125,43 @@ class PhasedEquivalenceTests(unittest.TestCase):
     def test_naive_C3_matches_minirag(self):
         self.check("C3")
 
+    def test_original_minirag_C_orig_matches_minirag(self):
+        self.check("C_orig")
+
+    def test_run_note_environment_is_what_apply_env_sets(self):
+        self.assertEqual(pq.config_env("C1")["MINIRAG_CHUNK_FUSION"], "vector_bm25")
+        self.assertEqual((pq.config_env("C_orig")["MINIRAG_ANSWER_TYPE_FIX"],
+                          pq.config_env("C_orig")["MINIRAG_TRUNCATE_SOURCES"]), ("0", "0"))
+        self.assertEqual(pq.config_env("C0")["MINIRAG_TRUNCATE_SOURCES"], "1")
+        with patch.dict(os.environ, {}, clear=False):
+            pq.apply_env("C_orig", 101)
+            self.assertEqual({k: os.environ.get(k, "") for k in pq.config_env("C_orig")}, pq.config_env("C_orig"))
+            pq.apply_env("C0", 101)  # switching back must restore the fixes
+            self.assertEqual({k: os.environ.get(k, "") for k in pq.config_env("C0")}, pq.config_env("C0"))
+
+    def test_context_overflow_is_recorded_not_fatal_and_other_errors_still_fail(self):
+        import httpx
+        import openai
+
+        def error(message):
+            return openai.BadRequestError(message, response=httpx.Response(
+                400, request=httpx.Request("POST", "http://x")), body=None)
+
+        async def overflow(prompt, system_prompt=None, **kwargs):
+            raise error("This model's maximum context length is 32768 tokens. However, you requested 40000")
+
+        async def other(prompt, system_prompt=None, **kwargs):
+            raise error("invalid temperature")
+
+        contexts = {r["query_id"]: {"status": "ok", "context": "ctx"} for r in ROWS}
+        work = Path(self.tmp.name) / "overflow"
+        work.mkdir()
+        asyncio.run(pq.answer_phase(overflow, ROWS, contexts, "mini", work / "answers.jsonl", "x"))
+        got = pq.read_jsonl(work / "answers.jsonl")
+        self.assertEqual({(g["answer"], g["context_status"]) for g in got.values()}, {("", "context_overflow")})
+        with self.assertRaises(openai.BadRequestError):
+            asyncio.run(pq.answer_phase(other, ROWS, contexts, "mini", work / "other.jsonl", "x"))
+
     def test_context_phase_never_calls_the_llm(self):
         from minirag.base import QueryParam
 

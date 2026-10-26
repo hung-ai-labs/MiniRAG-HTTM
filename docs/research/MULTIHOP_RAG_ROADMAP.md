@@ -159,10 +159,19 @@ M0.1–M0.6 không cần key. Làm đúng thứ tự.
 | M1.1 | Pilot index 30 bài (seed 13): `index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30` | 🟣 ⏸ | lời gọi/chunk thật, % `finish_reason=length` ở `MINIRAG_MAX_TOKENS=1024` (V-05), dự toán index đầy đủ | ✅ |
 | M1.2 | Index 609 bài → `indexes/multihop_rag-qwen-full609/`; checksum, backup, chỉ đọc | 🟣 ⏸ | index `completed`, 6/6 kiểm đạt, file chỉ đọc; manifest + sha256 từng file: [`artifacts/multihop_rag-qwen-full609.index_manifest.json`](artifacts/multihop_rag-qwen-full609.index_manifest.json). **Backup ngoài máy: chưa** (chưa có `<BACKUP_ROOT>`) | ✅ |
 | M1.3 | Ánh xạ evidence → chunk (`fact` → chunk qua `minirag_doc_id`): `map_mhr_evidence.py` | 💻 | `processed/gold_chunks.jsonl` — 6.084/6.084 fact nằm trọn trong chunk, 139 fact nằm ở 2 chunk (vùng chồng lấn), 0 chunk thiếu trong index | ✅ |
-| M1.4 | Smoke 20 câu dev × C0, C1; đọc tay 20 phán quyết (Yes/No, "Insufficient information.", từ chối) | 🟣 🔵 | judge và parser đúng trên dataset mới; 0 `parse_failed` sót | ⬜ |
+| M1.4 | Smoke 20 câu dev × C0, C1; đọc tay 20 phán quyết (Yes/No, "Insufficient information.", từ chối) | 🟣 🔵 | 3 pha (S2) chạy trọn: 40/40 câu trả lời do Qwen, 0 thoát sớm; 1/120 phán quyết `parse_failed` (judge viết lập luận thay vì một từ, 3 lần) → `--resume` chấm lại được, 0 sót. Đọc tay: xem ghi chú dưới | ✅ |
 | M1.5 | C0 trên dev 400: 1 lượt sinh × 3 lượt chấm, bật `MINIRAG_CONTEXT_LOG` | 🟣 🔵 | `baseline_mhr.yaml` đóng băng + kết quả theo loại câu | ⬜ |
 | M1.6 | Evidence Recall của Sources (context log + M1.3) | 💻 | recall theo loại câu | ⬜ |
 | M1.7 | Failure taxonomy trên câu sai/neither của C0 | 💻 | phân phối lỗi + ví dụ thật | ⬜ |
+
+**Kết quả M1.4 (26/10/2026) — đọc tay 20 phán quyết** (10 câu C0, 10 câu C1, đủ 4 loại; smoke chỉ kiểm kỹ thuật, số của nó
+**không** dùng để so sánh). 16/20 rõ ràng đúng. 3 ca ranh giới nhưng bảo vệ được: một câu trả lời lưỡng lự nghiêng về "không
+đổi" được chấm `neither` (`mhr-0241`); một câu "có lẽ đã đổi… khó khẳng định" được chấm `accurate` (`mhr-0574`); một câu kết
+luận đúng "Yes" nhưng bằng lý do bịa ("Taylor Swift đính hôn với Will Smith" — dấu hiệu gộp nhầm thực thể) bị chấm `error`
+cả 3 lượt (`mhr-2226`) — judge chấm cả lập luận chứ không chỉ chữ Yes/No. **1 ca không nhất quán:** lời từ chối đúng cho câu
+Null bị chấm `neither` (`mhr-0048`, 2/3 lượt) trong khi 3 lời từ chối Null khác được chấm `accurate` — đúng mơ hồ của rubric
+đã gặp ở LiHua (Đ6). Rubric đã đăng ký nên giữ nguyên; hệ quả: acc của nhóm Null có nhiễu từ judge. RQ5 dùng biến `error`
+nên không bị ảnh hưởng bởi nhầm lẫn `accurate`/`neither` này. Ghi vào Limitations.
 
 **Kết quả M1.1 (26/10/2026) — trần token khi index nâng từ 1024 lên 4096.** Hai pilot cùng 30 bài, cùng mọi thông số
 trừ `MINIRAG_MAX_TOKENS` (chỉ áp cho **index**; QA giữ 1024 như bản đăng ký):

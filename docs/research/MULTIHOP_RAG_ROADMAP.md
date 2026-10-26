@@ -257,9 +257,28 @@ PYTHONUTF8=1 MINIRAG_MAX_TOKENS=4096 python reproduce/research/index_run.py --su
 python reproduce/research/index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30 --resume
 python reproduce/research/index_run.py --subset pilot --workingdir indexes/multihop_rag-qwen-pilot30 --verify
 
-# M1.5 — QA rồi chấm (⏸)
-python reproduce/research/qa_run.py --questions dataset/MultiHop-RAG/splits/dev400.csv \
-    --workingdir indexes/multihop_rag-qwen-full609 --run-dir runs/multihop_rag/c0_dev400_g1
+# M1.5 trở đi — QA (8 shard, xem sửa đổi S1) rồi chấm (⏸)
+python reproduce/research/shard_mhr_qa.py C0 dataset/MultiHop-RAG/splits/dev400.csv \
+    runs/multihop_rag/dev400/c0_s101 101 --shards 8 --drop-snapshots
 python reproduce/research/judge_run.py --questions dataset/MultiHop-RAG/splits/dev400.csv \
-    --answers runs/multihop_rag/c0_dev400_g1/answers.csv --run-dir runs/multihop_rag/c0_dev400_g1/judge
+    --answers runs/multihop_rag/dev400/c0_s101/answers.csv --run-dir runs/multihop_rag/dev400/c0_s101/judge
 ```
+
+---
+
+## Sửa đổi có ghi ngày (sau đăng ký `7013291`)
+
+**S1 — 26/10/2026: chạy QA thành 8 shard song song.** Thay dòng "Song song" của bảng thông số cố định:
+`qa_run.py --concurrency 4 --llm-max-async 4` **trong mỗi shard**, câu hỏi chia round-robin thành **8 shard chạy song song**
+(`shard_mhr_qa.py`), tối đa 32 yêu cầu đồng thời tại endpoint (`@modal.concurrent(max_inputs=32)`). Áp dụng **như nhau cho
+mọi cấu hình và mọi tập**.
+- *Lý do:* smoke C0 (20 câu, 1 tiến trình) cho thấy truy hồi trên đồ thị 18.561 node mất ≈ 20 s CPU/câu trong một luồng
+  Python (≈ 5.800 đường đi/câu, `retrieval_ms` trung vị 59 s khi 4 câu tranh nhau) → 1,9 câu/phút trong khi GPU trả tiền
+  ngồi chờ. Theo tốc độ đó dev cần ≈ 14 giờ và test ≈ 110 giờ GPU, vượt trần ngân sách. Máy có 12 nhân.
+- *Không đổi:* nội dung từng yêu cầu, seed, cấu hình truy hồi, `MINIRAG_MAX_TOKENS=1024`, index, judge. Chỉ đổi số yêu cầu
+  chạy cùng lúc — theo `QA_PARALLEL.md`, điều này có thể đổi kết quả lấy mẫu của vLLM, nên nó được giữ **giống nhau** giữa các
+  cấu hình được so.
+- *Đã thấy gì trước khi sửa:* chỉ số đo thời gian và trạng thái của smoke C0 (20/20 `ok`). Chưa chấm câu nào, chưa chạy cấu
+  hình nào khác.
+- Smoke (M1.4) chỉ kiểm kỹ thuật: smoke C0 chạy 1 tiến trình, smoke C1 chạy 8 shard để kiểm công cụ — hai lượt smoke **không**
+  được dùng để so sánh.

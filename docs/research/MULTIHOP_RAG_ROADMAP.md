@@ -321,3 +321,7 @@ kỳ kết quả dev nào** (mới có smoke 20 câu).
   thay đổi RQ2–RQ5 hay phép thử chính.
 - *Dự kiến rủi ro:* không cắt Sources thì một số prompt có thể vượt cửa sổ 32.768 token (LiHua: 5–8% câu). Câu tràn được đếm
   và báo riêng, tính là không-`accurate` ở biến chính, không bị bỏ khỏi mẫu số.
+- *Làm rõ 26/10/2026 (quyết định của nhóm, vẫn trước mọi kết quả dev):* ba khác biệt ở mức index — **vá O(N²)**, **trần
+  4096 token khi index**, **Qwen phục vụ qua vLLM** — là một phần **có chủ đích** của baseline C_orig, không phải giới hạn bất
+  đắc dĩ. Lý do: vá O(N²) là sửa lỗi hiệu năng (bản gốc trích xuất lại cả corpus mỗi lần chèn), trần 4096 là điều kiện để SLM
+  không mất relationship (M1.1), vLLM chỉ là cách phục vụ cùng model. C_orig = "MiniRAG gốc ở bước hỏi đáp, trên index đã vá".

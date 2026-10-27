@@ -1,0 +1,56 @@
+{
+  "status": "verified",
+  "at": "2026-10-27T17:05:07.739351+00:00",
+  "completed_queries": 400,
+  "total_queries": 400,
+  "logical_answer_contexts": 800,
+  "mismatches": [],
+  "elapsed_this_invocation_s": 5621.17,
+  "original_per_query_worker_seconds": 44122.4,
+  "shared_pair_worker_seconds": 15952.5098,
+  "worker_time_ratio_old_over_new": 2.766,
+  "timing_caveat": "Historical dev vs current run; not a controlled same-load timing experiment. CPU worker seconds are not wall seconds or GPU billing.",
+  "llm_calls": 0,
+  "validation_scope": "all_dev400",
+  "test_questions_opened": false,
+  "scope": "Historical full dev400 validation of the original workspace implementation before packaging. This summary does not unlock the portable runner; each checkout must validate its own code/runtime/artifacts.",
+  "source_hashes": {
+    "minirag/operate.py": "919ab934ca8b66047aa8e87f996522969f9592f73d9790205a0f1695f2c00e36",
+    "minirag/minirag.py": "3bb746c5b5561dbbe75dd6dec9f6a9a7aa81273f7f909c4c497b0d9ccfc5d52f",
+    "minirag/base.py": "1422c5a2f5b9c316a13c2b0429ec131ffaf879a319699cbfcb9d068b422e122c",
+    "minirag/prompt.py": "d34d32e8acf25259369f4d17854d33f315e886f0b06955445b7d801b6ad52e72",
+    "minirag/kg/networkx_impl.py": "78d195e1ebec27a09f89106031c42f33c4382ee2b87ed2f8fcc445f5c3198d35",
+    "minirag/kg/nano_vector_db_impl.py": "58d9f988b432bd7339558057f3deaf6f648f37ee2498d37dadfbaef80761516f",
+    "minirag/bm25.py": "ce57fc53fd4427da99a9a87842dc220643b2cf6a9461cb65cbdbed8ed35aeca9",
+    "minirag/llm/gemini.py": "2a5227e4935ef62a5651270a50baf5ea3b63723778b74435b44668ada38a2419",
+    "reproduce/research/phased_qa.py": "5bf121238d4e8687c4e032f13f7e7dfeea2ba94efd6875fcac80600d4c08aee7",
+    "reproduce/research/judge_run.py": "c6e7295a6869aa35940cdd4b253e72f422b44d5cb006d844b20ad2098cd0307a",
+    "reproduce/research/qa_run.py": "8da8c087009ad8f27e3e27bcab234c3efb4f3fd369a86449f00afdd62b2bde49",
+    "reproduce/gemini_common.py": "d0bfc03438d632b640733246e170268b2e215cbdfbd77fbe6bcb21a2ef12dc0c",
+    "reproduce/Step_2_evaluate.py": "47da83d33cd8099c0497dc7a2f8dee094743355f563af5b263b3a012cacb3d28"
+  },
+  "original_engineering_hashes": {
+    "adapter_sha256": "dd155ffe2b8b82729886f192f38f65d2ff95d52840564057db223c92ab57479e",
+    "validator_sha256": "eedc1b7635cd905f83967505ab669a17b97483ae3d65ee7ef9c9ee6a2a6dfafb",
+    "common_sha256": "8c65b5eaa4c554ee8bbcf16dd42d0881d8153acf4afee489e101852a96c07d8d"
+  },
+  "original_runtime": {
+    "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "packages": {
+      "numpy": "2.5.3",
+      "networkx": "3.6.1",
+      "torch": "2.14.0",
+      "sentence-transformers": "6.0.1",
+      "transformers": "5.16.1",
+      "tiktoken": "0.14.0",
+      "nano-vectordb": "0.0.4.3",
+      "openai": "3.10.0",
+      "json-repair": "0.63.4"
+    }
+  },
+  "packaging_changes": [
+    "Repository-relative paths",
+    "Python package/module entry points",
+    "Team artifact-path options and validation guards"
+  ]
+}

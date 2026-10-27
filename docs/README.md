@@ -7,6 +7,7 @@
 
 | Bạn cần | Đọc |
 |---|---|
+| Nhận runner GPU dùng chung và chạy thử trên **2Wiki** | [`research/SHARED_GPU_RUNNERS_2WIKI.md`](research/SHARED_GPU_RUNNERS_2WIKI.md), kèm [`bàn giao 2Wiki`](research/HANDOFF_2WIKI_QWEN.md) |
 | **Báo cáo tổng hợp 18/09** — chốt B2, chuỗi kiểm nhóm Null, điều phải ghi khi viết bài | [`BAO_CAO_NHOM_18_09_2026.md`](BAO_CAO_NHOM_18_09_2026.md) |
 | Kết quả hiện tại so với baseline (acc / err / neither / Null) | [`KET_QUA_HIEN_TAI.md`](KET_QUA_HIEN_TAI.md) |
 | Việc của **thành viên 1** — cắt tỉa và chấm lại đường đi | [`phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md`](phan-cong/THANH_VIEN_1_CAT_TIA_DUONG_DI.md) |

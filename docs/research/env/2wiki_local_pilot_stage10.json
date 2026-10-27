@@ -1,0 +1,106 @@
+{
+  "all_responses_local_qwen": true,
+  "config_hash": "7b6b4db7929052d1059d73420bcdfb65080fb473c7f12b5a90990f730c85058a",
+  "corpus_id": "2wiki-n2000-s13-4267adcf3ef6",
+  "counts": {
+    "chunks": 10,
+    "chunks_without_graph_sources": 0,
+    "docs": 10,
+    "edges": 32,
+    "nodes": 77
+  },
+  "diagnostic_chunks_without_relationship_markers": 0,
+  "diagnostic_note": "regex marker counts are diagnostics, not exact extracted graph records",
+  "docs_done": 10,
+  "docs_expected": 200,
+  "measured_document_seconds": {
+    "max": 59.00417390000075,
+    "median": 15.645632250001654,
+    "min": 2.5565812999993796,
+    "n": 10,
+    "sum": 184.18625330002396
+  },
+  "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+  "next_action": "review_stage_estimates_before_resume",
+  "preliminary_estimates": {
+    "full_pool11657_total_hours": 59.640532075510535,
+    "limitations": "small non-time-stratified sample; disk/graph growth, thermal throttling and restarts can change throughput",
+    "pilot200_total_seconds": 3683.7250660004793,
+    "seconds_per_doc": 18.418625330002396
+  },
+  "provenance": {
+    "index_manifest_sha256": "ce6181f5f7066d6fe84e48f7162d28d4f32b3c601b5c6af8cc38a492f0b1186f",
+    "requests_sha256": "a64c77987dd803bca896886fab858fe1e2aed67ae32fbb4cd4c92c48a53aaeb6",
+    "script_sha256": "58f338ddfbbd3ccded1e0e0dfb96665a3c0b34a23a951d8b4a01aee2e28ed758"
+  },
+  "purpose": "preliminary_local_pilot_stage_not_QA_benchmark",
+  "requests_by_phase": {
+    "extract": {
+      "failed": 0,
+      "latency_seconds": {
+        "max": 58.14299080001365,
+        "median": 4.755276249998133,
+        "min": 1.3738266000000294,
+        "n": 10,
+        "sum": 103.6752889000054
+      },
+      "length_truncated": 1,
+      "ok": 10,
+      "output_tokens": {
+        "max": 4096,
+        "median": 357.0,
+        "min": 101,
+        "n": 10,
+        "sum": 7045
+      },
+      "prompt_tokens": {
+        "max": 2610,
+        "median": 2289.0,
+        "min": 2229,
+        "n": 10,
+        "sum": 23117
+      },
+      "requests": 10
+    },
+    "glean": {
+      "failed": 0,
+      "latency_seconds": {
+        "max": 18.25905249999778,
+        "median": 7.0878378999987035,
+        "min": 0.3854185999953188,
+        "n": 10,
+        "sum": 78.48576359999424
+      },
+      "length_truncated": 0,
+      "ok": 10,
+      "output_tokens": {
+        "max": 1366,
+        "median": 535.5,
+        "min": 21,
+        "n": 10,
+        "sum": 5876
+      },
+      "prompt_tokens": {
+        "max": 6432,
+        "median": 2678.5,
+        "min": 2364,
+        "n": 10,
+        "sum": 30443
+      },
+      "requests": 10
+    }
+  },
+  "requests_missing_chunk_id": 0,
+  "requests_total": 20,
+  "status": "stage_complete",
+  "test_questions_or_answers_included": false,
+  "verification": {
+    "all_chunks_extracted": true,
+    "all_docs_processed": true,
+    "chunk_doc_links": true,
+    "chunk_vectors_match": true,
+    "expected_chunks_match": true,
+    "full_docs_match": true,
+    "graph_sources_exist": true
+  }
+}

@@ -1,0 +1,73 @@
+status: local_pilot_stage10_verified_200doc_pilot_incomplete
+dataset_id: 2wiki
+base_commit: 9c59062a9cfaaab47b4e8b303829ce0d00624e91
+protocol_reference_commit: 790e0171a9e4e7c542aabc41993f48a37bff41ca
+python_version: "3.13.5"
+generation:
+  model: Qwen/Qwen2.5-3B-Instruct
+  backend: ollama_native_local
+  local_model_alias: qwen2.5:3b
+  quantization: GGUF_Q4_K_M
+  model_digest: 357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b
+  serving_config: configs/research/2wiki/local_qwen.json
+  study_condition: local_quantized_distinct_from_multihop_Modal_bf16
+  revision_reference: aa8e72537993ba99e69dfaafa59ed015b17504d1
+  revision_provenance: inferred_from_multihop_reference_not_verified_from_2wiki_server
+  endpoint_id: loopback_ollama_127_0_0_1_11434
+  index_max_tokens_proposed: 4096
+  qa_max_tokens_proposed: 1024
+judge:
+  family: Gemini Flash
+  verified_model_id: null
+  rubric_version: null
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  dimension: 384
+data:
+  source: official_dev
+  normalized_queries: 12576
+  candidate_docs: 54957
+  unmapped_supporting_facts: 70
+  manifest: dataset/2WikiMultiHopQA/processed/manifest.json
+  corpus_is_selected: true
+  selected_n: 2000
+  selected_pool_directory: dataset/2WikiMultiHopQA/processed/pools/n2000_seed13
+  selected_docs: 11657
+  selected_chunks_measured: 11661
+  nominal_index_calls: 23322
+  pilot_docs_selected: 200
+  split_frozen: false
+  sampling_seed: 13
+  candidate_sizes: [200, 500, 1000, 2000]
+  exploratory_test_fraction: 0.2
+validation:
+  offline_preparation_tests_passed: 7
+  offline_metrics_tests_passed: 17
+  offline_local_adapter_tests_passed: 9
+  offline_local_index_tests_passed: 5
+  total_offline_tests_passed: 38
+  metrics_inputs_used_for_validation: synthetic_only
+  normalized_outputs_recomputed: true
+  shared_fixture_S08_complete: false
+  cross_review_S09_complete: false
+  local_runtime_smoke_passed: true
+  synthetic_local_canary_passed: true
+  real_2wiki_pilot_started: true
+  real_2wiki_pilot_docs_done: 10
+  real_2wiki_pilot_docs_expected: 200
+  pilot_integrity_checks_passed: 7
+pilot:
+  run_directory: runs/2wiki/local/pilot200/20261026_01
+  index_directory: indexes/2wiki-local-q4km-pilot200-n2000-s13
+  docs_done: 10
+  requests_ok: 20
+  requests_failed: 0
+  length_truncated: 1
+  full_corpus_started: false
+  public_report: docs/research/env/2wiki_local_pilot_stage10.json
+protocol_status: review_pending_shared_decisions
+corpus_id: 2wiki-n2000-s13-4267adcf3ef6
+split_hash: null
+index_hash: null
+backup_root: null
+benchmark_results: []

@@ -1,0 +1,267 @@
+{
+  "limitations": [
+    "not a semantic paraphrase detector",
+    "all-context distractor bodies not near-duplicate grouped",
+    "shared corpus allows supporting titles to occur as distractors across the split"
+  ],
+  "normalization": "Unicode NFKC + casefold + replace non-alphanumeric with space + collapse whitespace",
+  "provenance": {
+    "measurement_report_sha256": "e2b46f6fe4b3aed099e1065e55532f8c807c2345b355118ef709bfcb2924305c",
+    "python_version": "3.13.5",
+    "script_sha256": "23d92b566c1742502e6133d460e4081c9075c8dc1373b8cceed693a161755daa",
+    "source_sha256": "79f77ae104088ea8e25b1a65dbece768d45771194663bc5660ec9a98070dadf5",
+    "split_script_sha256": "835b9611596996cd39f5028dc56ce21de58b2d956a0fa7f6302dd8272a2f8af0"
+  },
+  "requested_test_fraction": 0.2,
+  "results": [
+    {
+      "actual_test_fraction": 0.2,
+      "all_context_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 679,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 50
+      },
+      "baseline_cross_split_gold_body_near_duplicates": 0,
+      "baseline_cross_split_question_near_duplicates": 0,
+      "combined_components": 192,
+      "combined_cross_split_gold_body_near_duplicates": 0,
+      "combined_cross_split_question_near_duplicates": 0,
+      "exact_pair_comparisons": {
+        "gold_bodies": 48,
+        "questions": 0
+      },
+      "gold_body_documents_checked": 509,
+      "gold_body_near_duplicate_pairs": 0,
+      "gold_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 0,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 0
+      },
+      "internal_dev_count": 160,
+      "internal_test_count": 40,
+      "largest_combined_component": 2,
+      "n_queries": 200,
+      "query_ids_sha256": "9e626837ea3ddaf55347eac4f813945225ad1dfe010cc3a9e97c7377aea5f779",
+      "question_near_duplicate_pairs": 0,
+      "types": {
+        "bridge_comparison": {
+          "absolute_distribution_gap_pp": 0.625,
+          "dev_percent": 29.375,
+          "internal_dev": 47,
+          "internal_test": 12,
+          "test_percent": 30.0
+        },
+        "comparison": {
+          "absolute_distribution_gap_pp": 0.625,
+          "dev_percent": 25.625,
+          "internal_dev": 41,
+          "internal_test": 10,
+          "test_percent": 25.0
+        },
+        "compositional": {
+          "absolute_distribution_gap_pp": 0.0,
+          "dev_percent": 35.0,
+          "internal_dev": 56,
+          "internal_test": 14,
+          "test_percent": 35.0
+        },
+        "inference": {
+          "absolute_distribution_gap_pp": 0.0,
+          "dev_percent": 10.0,
+          "internal_dev": 16,
+          "internal_test": 4,
+          "test_percent": 10.0
+        }
+      }
+    },
+    {
+      "actual_test_fraction": 0.2,
+      "all_context_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 5226,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 160
+      },
+      "baseline_cross_split_gold_body_near_duplicates": 0,
+      "baseline_cross_split_question_near_duplicates": 0,
+      "combined_components": 480,
+      "combined_cross_split_gold_body_near_duplicates": 0,
+      "combined_cross_split_question_near_duplicates": 0,
+      "exact_pair_comparisons": {
+        "gold_bodies": 956,
+        "questions": 4
+      },
+      "gold_body_documents_checked": 1217,
+      "gold_body_near_duplicate_pairs": 0,
+      "gold_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 0,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 0
+      },
+      "internal_dev_count": 400,
+      "internal_test_count": 100,
+      "largest_combined_component": 3,
+      "n_queries": 500,
+      "query_ids_sha256": "7f766640c226ca7dd76264a9165222eac46c6f8a8c75a7caee2321435a9c5641",
+      "question_near_duplicate_pairs": 0,
+      "types": {
+        "bridge_comparison": {
+          "absolute_distribution_gap_pp": 0.25,
+          "dev_percent": 23.75,
+          "internal_dev": 95,
+          "internal_test": 24,
+          "test_percent": 24.0
+        },
+        "comparison": {
+          "absolute_distribution_gap_pp": 0.75,
+          "dev_percent": 26.75,
+          "internal_dev": 107,
+          "internal_test": 26,
+          "test_percent": 26.0
+        },
+        "compositional": {
+          "absolute_distribution_gap_pp": 0.5,
+          "dev_percent": 38.5,
+          "internal_dev": 154,
+          "internal_test": 39,
+          "test_percent": 39.0
+        },
+        "inference": {
+          "absolute_distribution_gap_pp": 0.0,
+          "dev_percent": 11.0,
+          "internal_dev": 44,
+          "internal_test": 11,
+          "test_percent": 11.0
+        }
+      }
+    },
+    {
+      "actual_test_fraction": 0.2,
+      "all_context_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 20765,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 281
+      },
+      "baseline_cross_split_gold_body_near_duplicates": 0,
+      "baseline_cross_split_question_near_duplicates": 0,
+      "combined_components": 916,
+      "combined_cross_split_gold_body_near_duplicates": 0,
+      "combined_cross_split_question_near_duplicates": 0,
+      "exact_pair_comparisons": {
+        "gold_bodies": 4391,
+        "questions": 25
+      },
+      "gold_body_documents_checked": 2369,
+      "gold_body_near_duplicate_pairs": 0,
+      "gold_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 0,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 0
+      },
+      "internal_dev_count": 800,
+      "internal_test_count": 200,
+      "largest_combined_component": 6,
+      "n_queries": 1000,
+      "query_ids_sha256": "3bfa88af5a7701af1f0deeba1961d9cc9f38c5af2701e01d232795a7eb05f037",
+      "question_near_duplicate_pairs": 0,
+      "types": {
+        "bridge_comparison": {
+          "absolute_distribution_gap_pp": 0.125,
+          "dev_percent": 23.125,
+          "internal_dev": 185,
+          "internal_test": 46,
+          "test_percent": 23.0
+        },
+        "comparison": {
+          "absolute_distribution_gap_pp": 0.375,
+          "dev_percent": 26.375,
+          "internal_dev": 211,
+          "internal_test": 52,
+          "test_percent": 26.0
+        },
+        "compositional": {
+          "absolute_distribution_gap_pp": 0.25,
+          "dev_percent": 39.25,
+          "internal_dev": 314,
+          "internal_test": 79,
+          "test_percent": 39.5
+        },
+        "inference": {
+          "absolute_distribution_gap_pp": 0.25,
+          "dev_percent": 11.25,
+          "internal_dev": 90,
+          "internal_test": 23,
+          "test_percent": 11.5
+        }
+      }
+    },
+    {
+      "actual_test_fraction": 0.2005,
+      "all_context_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 97189,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 437
+      },
+      "baseline_cross_split_gold_body_near_duplicates": 0,
+      "baseline_cross_split_question_near_duplicates": 0,
+      "combined_components": 1667,
+      "combined_cross_split_gold_body_near_duplicates": 0,
+      "combined_cross_split_question_near_duplicates": 0,
+      "exact_pair_comparisons": {
+        "gold_bodies": 18387,
+        "questions": 208
+      },
+      "gold_body_documents_checked": 4581,
+      "gold_body_near_duplicate_pairs": 0,
+      "gold_title_overlap": {
+        "cross_split_query_pairs_sharing_a_title_sum": 0,
+        "pair_count_note": "sum over shared titles; a query pair sharing multiple titles is counted multiple times",
+        "shared_unique_titles": 0
+      },
+      "internal_dev_count": 1599,
+      "internal_test_count": 401,
+      "largest_combined_component": 21,
+      "n_queries": 2000,
+      "query_ids_sha256": "3ba582359b60919c5f1343c328eef425dd4b062dde82a548c1eb6c76c54193b5",
+      "question_near_duplicate_pairs": 0,
+      "types": {
+        "bridge_comparison": {
+          "absolute_distribution_gap_pp": 0.175,
+          "dev_percent": 24.015,
+          "internal_dev": 384,
+          "internal_test": 97,
+          "test_percent": 24.19
+        },
+        "comparison": {
+          "absolute_distribution_gap_pp": 0.075,
+          "dev_percent": 24.015,
+          "internal_dev": 384,
+          "internal_test": 96,
+          "test_percent": 23.94
+        },
+        "compositional": {
+          "absolute_distribution_gap_pp": 0.187,
+          "dev_percent": 39.837,
+          "internal_dev": 637,
+          "internal_test": 159,
+          "test_percent": 39.651
+        },
+        "inference": {
+          "absolute_distribution_gap_pp": 0.087,
+          "dev_percent": 12.133,
+          "internal_dev": 194,
+          "internal_test": 49,
+          "test_percent": 12.219
+        }
+      }
+    }
+  ],
+  "scope": [
+    "question text",
+    "gold paragraph body text excluding title"
+  ],
+  "seed": 13,
+  "selected_n": null,
+  "similarity": "exact Jaccard of character 5-gram sets; threshold >= 0.85; lossless prefix filter verified against exhaustive fixture",
+  "status": "exploratory_audit_not_a_frozen_split",
+  "test_content_exported": false
+}

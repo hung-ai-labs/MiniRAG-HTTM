@@ -1,0 +1,203 @@
+{
+  "chunking": {
+    "chunk_size": 1200,
+    "chunker_function_sha256": "846c90fe7b83e311255bdfd6a79842c104b836e59ddbfc69dc4f6ac3f0c873dc",
+    "encoding": "o200k_base",
+    "overlap": 100,
+    "tokenizer_model": "gpt-4o-mini"
+  },
+  "dataset": "2WikiMultiHopQA",
+  "provenance": {
+    "processed_manifest_sha256": "2943b938c3684c5ffbeb985cac8e610798fb192c16133ca93ca8c5e3527f3716",
+    "python_version": "3.13.5",
+    "raw_dev_sha256": "79f77ae104088ea8e25b1a65dbece768d45771194663bc5660ec9a98070dadf5",
+    "script_sha256": "a9c6e8d71c372ec7fb6b921db86ebf847e78dc08513bccca44a0dbe13d2a5a41",
+    "tiktoken_version": "0.14.0"
+  },
+  "results": [
+    {
+      "calls_note": "static count before retry/cache; runtime must be measured in pilot",
+      "chunk_occurrences": 1535,
+      "components_all_context_titles": {
+        "count": 81,
+        "largest": 94,
+        "size_histogram": {
+          "1": 65,
+          "2": 8,
+          "3": 4,
+          "4": 2,
+          "5": 1,
+          "94": 1
+        }
+      },
+      "components_gold_titles": {
+        "count": 192,
+        "largest": 2,
+        "size_histogram": {
+          "1": 184,
+          "2": 8
+        }
+      },
+      "doc_ids_sha256": "0828e4a35a168518ba4e9c84233e7e1a8bdaa45a3929a0a7a75eafb2c8c2d35c",
+      "doc_tokens": 151949,
+      "docs_with_multiple_chunks": 0,
+      "n_queries": 200,
+      "nominal_index_calls_extract_plus_one_glean": 3070,
+      "query_ids_sha256": "9e626837ea3ddaf55347eac4f813945225ad1dfe010cc3a9e97c7377aea5f779",
+      "types": {
+        "bridge_comparison": 59,
+        "comparison": 51,
+        "compositional": 70,
+        "inference": 20
+      },
+      "unique_chunks": 1535,
+      "unique_docs": 1535,
+      "unmapped_supporting_facts": 0
+    },
+    {
+      "calls_note": "static count before retry/cache; runtime must be measured in pilot",
+      "chunk_occurrences": 3446,
+      "components_all_context_titles": {
+        "count": 121,
+        "largest": 328,
+        "size_histogram": {
+          "1": 99,
+          "2": 12,
+          "3": 1,
+          "4": 3,
+          "5": 2,
+          "6": 1,
+          "7": 1,
+          "11": 1,
+          "328": 1
+        }
+      },
+      "components_gold_titles": {
+        "count": 480,
+        "largest": 3,
+        "size_histogram": {
+          "1": 463,
+          "2": 14,
+          "3": 3
+        }
+      },
+      "doc_ids_sha256": "521875d039ae75eac709fd40f9205823fa1d2a2a925832ddacc646ba4f0d3bbd",
+      "doc_tokens": 351569,
+      "docs_with_multiple_chunks": 0,
+      "n_queries": 500,
+      "nominal_index_calls_extract_plus_one_glean": 6892,
+      "query_ids_sha256": "7f766640c226ca7dd76264a9165222eac46c6f8a8c75a7caee2321435a9c5641",
+      "types": {
+        "bridge_comparison": 119,
+        "comparison": 133,
+        "compositional": 193,
+        "inference": 55
+      },
+      "unique_chunks": 3446,
+      "unique_docs": 3446,
+      "unmapped_supporting_facts": 1
+    },
+    {
+      "calls_note": "static count before retry/cache; runtime must be measured in pilot",
+      "chunk_occurrences": 6388,
+      "components_all_context_titles": {
+        "count": 191,
+        "largest": 738,
+        "size_histogram": {
+          "1": 166,
+          "2": 9,
+          "3": 5,
+          "4": 4,
+          "6": 2,
+          "7": 2,
+          "9": 1,
+          "12": 1,
+          "738": 1
+        }
+      },
+      "components_gold_titles": {
+        "count": 916,
+        "largest": 6,
+        "size_histogram": {
+          "1": 852,
+          "2": 51,
+          "3": 10,
+          "5": 2,
+          "6": 1
+        }
+      },
+      "doc_ids_sha256": "37533ecf0f77d72fd623d568494aea543a8010d6e65562877240491e8e32c748",
+      "doc_tokens": 668649,
+      "docs_with_multiple_chunks": 1,
+      "n_queries": 1000,
+      "nominal_index_calls_extract_plus_one_glean": 12776,
+      "query_ids_sha256": "3bfa88af5a7701af1f0deeba1961d9cc9f38c5af2701e01d232795a7eb05f037",
+      "types": {
+        "bridge_comparison": 231,
+        "comparison": 263,
+        "compositional": 393,
+        "inference": 113
+      },
+      "unique_chunks": 6388,
+      "unique_docs": 6387,
+      "unmapped_supporting_facts": 3
+    },
+    {
+      "calls_note": "static count before retry/cache; runtime must be measured in pilot",
+      "chunk_occurrences": 11661,
+      "components_all_context_titles": {
+        "count": 243,
+        "largest": 1679,
+        "size_histogram": {
+          "1": 207,
+          "2": 19,
+          "3": 6,
+          "4": 4,
+          "5": 1,
+          "6": 2,
+          "8": 2,
+          "9": 1,
+          "1679": 1
+        }
+      },
+      "components_gold_titles": {
+        "count": 1667,
+        "largest": 21,
+        "size_histogram": {
+          "1": 1492,
+          "2": 106,
+          "3": 37,
+          "4": 11,
+          "5": 11,
+          "6": 5,
+          "7": 2,
+          "8": 1,
+          "13": 1,
+          "21": 1
+        }
+      },
+      "doc_ids_sha256": "e9308c04e5fba71143a869561853e0ea6ebe1779892509cfcbc30527801b4598",
+      "doc_tokens": 1248590,
+      "docs_with_multiple_chunks": 4,
+      "n_queries": 2000,
+      "nominal_index_calls_extract_plus_one_glean": 23322,
+      "query_ids_sha256": "3ba582359b60919c5f1343c328eef425dd4b062dde82a548c1eb6c76c54193b5",
+      "types": {
+        "bridge_comparison": 481,
+        "comparison": 480,
+        "compositional": 796,
+        "inference": 243
+      },
+      "unique_chunks": 11661,
+      "unique_docs": 11657,
+      "unmapped_supporting_facts": 6
+    }
+  ],
+  "sampling": {
+    "algorithm": "sort by original _id; Python random.Random(seed).shuffle; nested prefixes",
+    "seed": 13
+  },
+  "selected_n": null,
+  "source_split": "official_dev",
+  "status": "candidate_measurements_only_no_pool_or_split_selected"
+}

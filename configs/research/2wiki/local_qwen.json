@@ -1,0 +1,31 @@
+{
+  "status": "local_serving_and_synthetic_canary_verified_not_benchmark_ready",
+  "backend": "ollama_native_local",
+  "base_url": "http://127.0.0.1:11434",
+  "ollama_version_verified": "0.40.10",
+  "python_client_version": "3.13.5",
+  "server_python": "not_applicable_native_ollama",
+  "model": "qwen2.5:3b",
+  "architecture": "Qwen2.5-3B-Instruct",
+  "quantization": "GGUF Q4_K_M",
+  "model_manifest_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+  "weight_blob_digest": "5ee4f07cdb9beadbbb293e85803c569b01bd37ed059d2715faa7bb405f31caa6",
+  "hf_revision_verified": false,
+  "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU 6GB",
+  "smoke_verified_full_gpu": true,
+  "smoke_model_vram_bytes": 3367879311,
+  "options": {
+    "num_ctx": 32768,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repeat_penalty": 1.05,
+    "seed": 101
+  },
+  "max_output_tokens": {"extract": 4096, "glean": 4096, "kw_parse": 1024, "answer": 1024},
+  "client_concurrency": 1,
+  "embedding": {"model": "sentence-transformers/all-MiniLM-L6-v2", "dimension": 384, "device": "cpu", "implementation": "existing minirag.llm.hf.hf_embed"},
+  "study_condition": "local_quantized_Qwen_distinct_from_Modal_bf16",
+  "comparison_rule": "all compared retrieval configurations must use this same local model, digest, sampling and rebuilt index",
+  "judge": {"family": "Gemini Flash", "local": false, "verified_id": null, "called_in_this_check": false}
+}

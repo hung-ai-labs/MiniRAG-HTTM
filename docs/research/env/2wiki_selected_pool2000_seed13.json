@@ -1,0 +1,34 @@
+{
+  "benchmark_started": false,
+  "corpus_id": "2wiki-n2000-s13-4267adcf3ef6",
+  "corpus_manifest_sha256": "9a93f5d941f2fa92d8cd76ccb6195b10ba92c0c0ab5fe0f43c36b45a92f1d767",
+  "counts": {
+    "chunks_measured": 11661,
+    "docs": 11657,
+    "nominal_index_calls": 23322,
+    "pilot_docs": 200,
+    "queries": 2000,
+    "queries_by_type": {
+      "bridge_comparison": 481,
+      "comparison": 480,
+      "compositional": 796,
+      "inference": 243
+    }
+  },
+  "file_sha256": {
+    "corpus_manifest.json": "9a93f5d941f2fa92d8cd76ccb6195b10ba92c0c0ab5fe0f43c36b45a92f1d767",
+    "docs.jsonl": "4267adcf3ef62e903c0f3a501f3b51226fe08f6c08699cba4f4618f85b1c18b1",
+    "gold.jsonl": "f7ea66b3c150a2abf23f1167bfc018fb6220bec687046d0456228ff8651b33bd",
+    "pilot_docs.jsonl": "053e74cd394aa04f7672c5e09e9e2af40ba5564e54cf8600834f4076866c820c",
+    "pilot_manifest.json": "72c6c91045ddddbfc9d7f8788b872b82d88c1aa3e26854ee19f3f0d3ecc5d526",
+    "queries.jsonl": "ac0f5573129a4f9a55c6cea565046c36c098a6a28e8e17e6756d8315e88e1e0e",
+    "questions.csv": "8eb113537a434dd8a90de4b50c813ec689727785d719ccdb9aa2b145fe2ae623"
+  },
+  "full_ids_location": "ignored processed pool directory only",
+  "local_model_condition": "Qwen2.5-3B-Instruct GGUF Q4_K_M",
+  "pilot_manifest_sha256": "72c6c91045ddddbfc9d7f8788b872b82d88c1aa3e26854ee19f3f0d3ecc5d526",
+  "seed": 13,
+  "selection_authority": "user shared team message choosing 2000 questions; 80/20 split remains a proposal",
+  "split_frozen": false,
+  "status": "corpus_materialized_split_not_frozen_index_not_started"
+}

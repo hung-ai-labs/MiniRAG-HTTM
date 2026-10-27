@@ -77,7 +77,32 @@ Các đầu ra cần theo dõi:
 - `runs/multihop_rag/test_phase3/JUDGE_STATUS.json`: tiến độ consumer chấm.
 - `runs/multihop_rag/test_phase3/qa/s<seed>/<config>_s<seed>/`: context, đáp án và journal judge cho từng cấu hình.
 
-Chạy lại cùng lệnh sẽ dùng checkpoint; phiếu judge hợp lệ không được chấm lại. Nếu một consumer cũ còn sống, runner từ chối mở consumer trùng. Lỗi hash hoặc journal hỏng cần được kiểm tra trước khi chạy tiếp, không xóa checkpoint để vượt kiểm tra. Trạng thái `raw_runs_completed_analysis_pending` chỉ xác nhận các lượt chạy và phiếu đã đủ, chưa phải kết luận thống kê hay báo cáo nghiên cứu hoàn tất.
+Chạy lại cùng lệnh sẽ dùng checkpoint; phiếu judge hợp lệ không được chấm lại. Nếu một consumer cũ còn sống, runner từ chối mở consumer trùng. Lỗi hash hoặc journal hỏng cần được kiểm tra trước khi chạy tiếp, không xóa checkpoint để vượt kiểm tra. Sau khi đủ phiếu, trạng thái chuyển sang `analyzing`; chỉ `completed` mới xác nhận bước phân tích tự động đã xuất thành công.
+
+Tổng wall time các pha Qwen bị chặn ở tám giờ theo mặc định (`--gpu-stage-budget-hours`). Guard này ghi cả pha bị lỗi/timeout; pha trước mất dấu kết thúc cần được đối chiếu trước khi resume. Đây là giới hạn thời gian của tiến trình phía client, không phải bộ đo hay trần billing của Modal; thời gian load/idle, CPU và memory của server có thể được tính tiền riêng.
+
+## Phân tích và báo cáo sau lượt chạy
+
+Runner tự gọi `analysis.py` sau khi cả sáu bộ đáp án/judge hoàn tất. Bước này kiểm các query ID, hash input/prompt, nhãn nguyên văn, đa số, nguồn thực tế và tổng số phiếu; không gọi model. Nó tính McNemar và bootstrap 10.000 lần riêng từng seed, phân tích Null, SD sinh/judge tách riêng, Evidence Recall và request/token/coverage. Trường usage không được provider trả lại giữ là unknown, không ghi thành 0.
+
+Các đầu ra chính trong `runs/multihop_rag/phase3_acceleration/report/`:
+
+- `MULTIHOP_RAG_REPORT.md`: bảng kết quả và kết luận theo tiêu chí đã đăng ký.
+- `TEST_RESULTS.json`: toàn bộ bảng theo seed/loại câu, recall, thống kê, hiệu năng và provenance.
+- `test_per_question.csv`, `test_retrieval.csv`: dữ liệu để tái tính.
+- `ANALYSIS_COMPLETED.json`: dấu hoàn tất cùng checksum các artifact.
+
+Truyền `--dev-report-dir` trỏ tới thư mục đã đóng băng chứa `dev_results.json`, `C1_vs_C0.json`, `C1_vs_C2.json`, `C2_vs_C0.json` để đính kèm ablation dev trong báo cáo. Các file này được kiểm hash trước và sau test. Có thể chỉ định vị trí báo cáo bằng `--report-out`.
+
+Nếu chỉ cần tính lại sau khi raw đã đủ:
+
+```sh
+python -m reproduce.research.mhr_phase3.analysis \
+  --run-root runs/multihop_rag/test_phase3 \
+  --out runs/multihop_rag/phase3_acceleration/report
+```
+
+Không dùng lệnh phân tích để xem test giữa chừng rồi điều chỉnh seed, tham số hay quyết định chạy thêm ablation. Chi phí billing thực và các metric như EM/F1/RAGAS/faithfulness không được suy diễn từ log này.
 
 ## Tính đúng và phạm vi bằng chứng
 

@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 
 from .common import DEFAULT_REPO, DEFAULT_OUTPUT, alive, now, read_json, run_lock, runtime_identity, sha, source_hashes, write_json
 
@@ -72,12 +73,56 @@ def child(command, cwd, log):
         subprocess.run(command, cwd=cwd, env=env, stdout=handle, stderr=subprocess.STDOUT, check=True)
 
 
+def gpu_child(command, cwd, log, budget_path, stage, limit_seconds):
+    """Bound the wall time of paid Qwen stages, including interrupted stages.
+
+    This is a conservative local runtime guard, not a provider billing meter.
+    An unclosed active stage refuses automatic resume until reconciled.
+    """
+    budget_path = Path(budget_path)
+    budget = read_json(budget_path) if budget_path.exists() else {"consumed_stage_s": 0, "stages": []}
+    if budget.get("active"):
+        raise RuntimeError("Previous GPU stage has no end marker; reconcile it before resume")
+    remaining = limit_seconds - budget["consumed_stage_s"]
+    if remaining <= 0:
+        raise RuntimeError("Qwen stage runtime budget exhausted")
+    started = time.monotonic()
+    budget["active"] = {"stage": stage, "started_at": now()}
+    write_json(budget_path, budget)
+    env = os.environ | {"PYTHONUTF8": "1", "PYTHONUNBUFFERED": "1", "PYTHONDONTWRITEBYTECODE": "1", "PYTHONHASHSEED": "13"}
+    proc = None
+    try:
+        with Path(log).open("a", encoding="utf-8") as handle:
+            proc = subprocess.Popen(command, cwd=cwd, env=env, stdout=handle, stderr=subprocess.STDOUT)
+            code = proc.wait(timeout=remaining)
+            if code:
+                raise subprocess.CalledProcessError(code, command)
+    except BaseException:
+        if proc is not None and proc.poll() is None:
+            if sys.platform == "win32":
+                subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], capture_output=True)
+            else:
+                proc.kill()
+            proc.wait()
+        raise
+    finally:
+        elapsed = time.monotonic() - started
+        budget["consumed_stage_s"] += elapsed
+        budget["stages"].append(budget.pop("active") | {"elapsed_s": round(elapsed, 3), "finished_at": now(),
+                                                       "exit_code": proc.returncode if proc else None})
+        write_json(budget_path, budget)
+
+
 def execute(args):
     from .validate import index_check, run_pairs
     validation = verify_validation(args.repo, args.validation)
     frozen = plan(args.repo, args.validation)
     index = Path(validation["identity"]["index_path"])
+    frozen["index_path"] = str(index)
     frozen["index_manifest_sha256"] = index_check(index)
+    frozen["gpu_stage_budget_hours"] = args.gpu_stage_budget_hours
+    frozen["dev_report_hashes"] = {name: sha(args.dev_report_dir / name)
+        for name in ("dev_results.json", "C1_vs_C0.json", "C1_vs_C2.json", "C2_vs_C0.json")} if args.dev_report_dir else {}
     args.run_root.mkdir(parents=True, exist_ok=True)
     with run_lock(args.run_root):
         consumer_lock = args.run_root / "judge_consumer/RUNNING.lock"
@@ -89,7 +134,7 @@ def execute(args):
         manifest = args.run_root / "RUN_MANIFEST.json"
         if manifest.exists():
             old = read_json(manifest)
-            for key in ("source_hashes", "engineering_hashes", "seeds", "configs", "index_manifest_sha256"):
+            for key in ("source_hashes", "engineering_hashes", "seeds", "configs", "index_manifest_sha256", "gpu_stage_budget_hours", "dev_report_hashes"):
                 if old[key] != frozen[key]:
                     raise ValueError("Cannot resume Phase 3 with changed identity: " + key)
         else:
@@ -125,9 +170,10 @@ def execute(args):
                 folder = args.run_root / "qa" / f"s{seed}"
                 folder.mkdir(parents=True, exist_ok=True)
                 write_json(args.status, {"status": "running", "at": now(), "stage": "keywords", "seed": seed})
-                child([sys.executable, str(args.repo / "reproduce/research/phased_qa.py"), "keywords",
+                gpu_child([sys.executable, str(args.repo / "reproduce/research/phased_qa.py"), "keywords",
                        "--questions", str(questions), "--seed", str(seed), "--out", str(folder)],
-                      args.run_root, folder / "keywords.log")
+                      args.run_root, folder / "keywords.log", args.run_root / "GPU_STAGE_BUDGET.json",
+                      f"keywords_s{seed}", args.gpu_stage_budget_hours * 3600)
                 write_json(args.status, {"status": "running", "at": now(), "stage": "shared_contexts", "seed": seed})
                 code = run_pairs(args.repo, questions, folder / f"kw_s{seed}.jsonl", index, folder, seed=seed,
                                  status_path=args.run_root / f"CONTEXT_STATUS_s{seed}.json")
@@ -136,9 +182,10 @@ def execute(args):
                 ready = {"seed": seed, "questions_sha256": qhash, "answers": {}}
                 for config in ("C0", "C1"):
                     write_json(args.status, {"status": "running", "at": now(), "stage": "answers", "seed": seed, "config": config})
-                    child([sys.executable, str(args.repo / "reproduce/research/phased_qa.py"), "answers",
+                    gpu_child([sys.executable, str(args.repo / "reproduce/research/phased_qa.py"), "answers",
                            "--config", config, "--questions", str(questions), "--seed", str(seed), "--out", str(folder)],
-                          args.run_root, folder / f"answers_{config}.log")
+                          args.run_root, folder / f"answers_{config}.log", args.run_root / "GPU_STAGE_BUDGET.json",
+                          f"answers_{config}_s{seed}", args.gpu_stage_budget_hours * 3600)
                     ready["answers"][config] = sha(folder / f"{config}_s{seed}/answers.csv")
                 write_json(args.run_root / f"READY_s{seed}.json", ready)
             write_json(args.status, {"status": "judging", "at": now(), "stage": "all_qa_completed"})
@@ -146,8 +193,18 @@ def execute(args):
             if code:
                 raise RuntimeError("Judge consumer incomplete; resume without changing the run identity")
             final = read_json(args.run_root / "JUDGE_STATUS.json")
-            write_json(args.status, {"status": "raw_runs_completed_analysis_pending", "at": now(),
-                                    "judge": final, "run_root": str(args.run_root)})
+            write_json(args.status, {"status": "analyzing", "at": now(), "judge": final, "run_root": str(args.run_root)})
+            analysis_cmd = [sys.executable, "-m", "reproduce.research.mhr_phase3.analysis", "--repo", str(args.repo),
+                            "--run-root", str(args.run_root), "--out", str(args.report_out)]
+            if args.dev_report_dir:
+                for name, expected in frozen["dev_report_hashes"].items():
+                    if sha(args.dev_report_dir / name) != expected:
+                        raise ValueError("Frozen dev report changed during test")
+                analysis_cmd.extend(["--dev-report-dir", str(args.dev_report_dir)])
+            child(analysis_cmd, DEFAULT_REPO, args.run_root / "analysis.log")
+            write_json(args.status, {"status": "completed", "at": now(), "judge": final,
+                       "run_root": str(args.run_root), "report_out": str(args.report_out),
+                       "analysis_completed_sha256": sha(args.report_out / "ANALYSIS_COMPLETED.json")})
         except Exception as exc:
             write_json(args.run_root / "QA_FAILED.json", {"at": now(), "error_type": type(exc).__name__})
             write_json(args.status, {"status": "needs_attention", "at": now(), "error_type": type(exc).__name__,
@@ -165,10 +222,17 @@ def main():
     p.add_argument("--run-root", type=Path, default=DEFAULT_REPO / "runs/multihop_rag/test_phase3")
     p.add_argument("--status", type=Path, default=DEFAULT_OUTPUT / "PHASE3_STATUS.json")
     p.add_argument("--plan-out", type=Path, default=DEFAULT_OUTPUT / "EXECUTION_PLAN.json")
+    p.add_argument("--report-out", type=Path, default=DEFAULT_OUTPUT / "report")
+    p.add_argument("--dev-report-dir", type=Path)
+    p.add_argument("--gpu-stage-budget-hours", type=float, default=8.0,
+                   help="Local total Qwen stage wall-time cap; not a provider billing limit")
     p.add_argument("--execute-test", action="store_true")
     args = p.parse_args()
     args.repo = args.repo.resolve()
     args.run_root = args.run_root.resolve()
+    args.report_out = args.report_out.resolve()
+    if args.gpu_stage_budget_hours <= 0:
+        p.error("GPU stage budget must be positive")
     if args.execute_test:
         execute(args)
     else:

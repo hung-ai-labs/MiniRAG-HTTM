@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import threading
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -89,6 +90,19 @@ def ready_seed(args, seed):
 
 
 def ensure_consumer(args, state, event):
+    with state.setdefault('_lock', threading.RLock()):
+        return _ensure_consumer(args, state, event)
+
+
+def consumer_command(args):
+    if getattr(args, 'fair_judge', False):
+        return [sys.executable, str(Path(__file__).with_name('mhr_phase3_fair_judge.py')),
+                '--repo', str(args.repo), '--run-root', str(args.run_root)]
+    return [sys.executable, '-m', 'reproduce.research.mhr_phase3.judge_worker',
+            '--repo', str(args.repo), '--run-root', str(args.run_root)]
+
+
+def _ensure_consumer(args, state, event):
     lock = args.run_root / "judge_consumer/RUNNING.lock"
     if lock.exists():
         pid = read_json(lock)["pid"]
@@ -97,11 +111,13 @@ def ensure_consumer(args, state, event):
                 raise RuntimeError("Unexpected live judge owner; refusing duplicate")
             state["pid"] = pid
             return pid
+    status = args.run_root / 'JUDGE_STATUS.json'
+    if getattr(args, 'fair_judge', False) and status.exists() and read_json(status).get('status') == 'needs_adjudication':
+        return None  # bounded technical retries exhausted; never silently restart the budget
     if state.get("starts", 0) >= 3:
         raise RuntimeError("Judge process restart limit reached")
     with (args.run_root / "judge_worker.log").open("a", encoding="utf-8") as log:
-        proc = subprocess.Popen([sys.executable, "-m", "reproduce.research.mhr_phase3.judge_worker",
-                                 "--repo", str(args.repo), "--run-root", str(args.run_root)],
+        proc = subprocess.Popen(consumer_command(args),
                                 cwd=original.DEFAULT_REPO,
                                 env=os.environ | {"PYTHONUTF8": "1", "PYTHONUNBUFFERED": "1",
                                                   "PYTHONDONTWRITEBYTECODE": "1"},
@@ -145,11 +161,26 @@ def execute(args):
         manifest, index = verify_frozen(args)
         state = {"pid": args.expected_consumer_pid, "starts": 0}
         pid = ensure_consumer(args, state, event)
+        supervisor_stop = threading.Event()
+        supervisor_errors = []
+        def supervise():
+            while not supervisor_stop.wait(10):
+                try:
+                    ensure_consumer(args, state, event)
+                except Exception as exc:
+                    supervisor_errors.append(type(exc).__name__)
+                    write_status(args.audit_out / 'SUPERVISOR_ERROR.json',
+                                 {'at':now(),'error_type':type(exc).__name__,'reason':str(exc)})
+                    return
+        if getattr(args, 'fair_judge', False):
+            threading.Thread(target=supervise, daemon=True).start()
         write_status(args.audit_out / "RECOVERY_PROVENANCE.json", {
             "at": now(), "controller": str(Path(__file__).resolve()), "controller_sha256": sha(__file__),
             "original_manifest_sha256": sha(args.run_root / "RUN_MANIFEST.json"),
             "original_engineering_hashes": manifest["engineering_hashes"],
             "adopted_consumer_pid": pid, "frozen_package_modified": False,
+            "fair_judge":getattr(args,'fair_judge',False),
+            "fair_judge_sha256":sha(Path(__file__).with_name('mhr_phase3_fair_judge.py')) if getattr(args,'fair_judge',False) else None,
             "reason": "WinError5 replacing worker STATUS.json; retry unchanged context checkpoints only"})
         failed = args.run_root / "QA_FAILED.json"
         if failed.exists():
@@ -192,6 +223,14 @@ def execute(args):
                 final = read_json(args.run_root / "JUDGE_STATUS.json")
                 if final.get("status") == "completed" and final.get("valid_votes") == 38808:
                     break
+                if final.get('status') == 'needs_adjudication':
+                    pending={'status':'needs_attention','stage':'pending_judge_slots','at':now(),
+                             'valid_votes':final.get('valid_votes'),'target_votes':38808,
+                             'pending_file':final.get('pending_file'),
+                             'note':'All QA produced; original retry budgets exhausted for pending slots. No labels forced or denominator changed.'}
+                    write_status(args.status,pending)
+                    write_status(args.audit_out / 'RECOVERY_STATUS.json',pending)
+                    return
                 ensure_consumer(args, state, event)
                 time.sleep(20)
             write_status(args.status, {"status": "analyzing", "at": now()})
@@ -209,6 +248,8 @@ def execute(args):
             write_status(args.audit_out / "RECOVERY_STATUS.json", {"status": "needs_attention", "at": now(),
                          "error_type": type(exc).__name__, "reason": str(exc)})
             raise
+        finally:
+            supervisor_stop.set()
 
 
 def main():
@@ -217,6 +258,7 @@ def main():
         p.add_argument("--" + name, type=Path, required=True)
     p.add_argument("--expected-consumer-pid", type=int, required=True)
     p.add_argument("--gpu-stage-budget-hours", type=float, default=8)
+    p.add_argument('--fair-judge',action='store_true',help='Process unseen ready cohorts before bounded format-error retries')
     p.add_argument("--execute-test", action="store_true")
     args = p.parse_args()
     if not args.execute_test:

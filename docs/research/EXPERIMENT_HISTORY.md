@@ -81,3 +81,11 @@
 - Nền 2Wiki `0d7a18c`, PR #1 head `77ae1af`; ghép không xung đột trên `research/2wiki-shared-gpu` riêng. PR vẫn Draft/chưa merge vào dev tại thời điểm kiểm tra.
 - Python 3.13.5, toàn bộ 78 test research offline đạt. Giữ code chuẩn hóa/metrics/local adapter/config và index/checkpoint local.
 - Chưa gọi Modal/Gemini hoặc chạy benchmark. Ba phát hiện cần xử lý trước live run: resume index phải so endpoint, khóa chống hai writer, lưu request thô và nối ID/attempt. Chi tiết `SHARED_GPU_INTEGRATION_REVIEW.md`.
+
+## INFRA-002 — Sửa guard và request audit (29/10/2026)
+
+- Trên nhánh tích hợp riêng: bắt buộc so endpoint hash khi resume; khóa OS xuyên suốt phiên ghi index; trace schema 2 lưu provider request/response và query/doc/chunk ID, phase, request ID/attempt, lỗi/hủy.
+- Không thay prompt, retrieval, giới hạn sinh hoặc lựa chọn model/judge. Không sửa manifest của index cũ để vượt source/endpoint guard.
+- Thêm test endpoint thay đổi không được sửa index, writer thứ hai bị từ chối, raw trace/retry attribution giữa task song song, cancellation và raw provider JSON. Cần nhóm review bản sửa trước đưa vào runner chung.
+- Kết quả bản cuối: 86 passed trên Python 3.13.5 (38,87 giây), diff whitespace đạt; test dùng mock/fake và Hugging Face offline.
+- Không chạy index/QA/judge thật, không phát sinh chi phí model.

@@ -56,7 +56,8 @@ import qa_run  # noqa: E402  (light: helpers only, heavy imports are deferred th
 INDEX_ROOT = ROOT / "indexes"
 PREFIX = "multihop_rag-"
 GEMINI_HOST = "generativelanguage.googleapis.com"
-IDENTITY_KEYS = ("docs_jsonl_sha256", "selected_doc_ids_sha256", "settings", "source_sha256")
+IDENTITY_KEYS = ("docs_jsonl_sha256", "selected_doc_ids_sha256", "settings", "source_sha256",
+                 "endpoint_sha256")
 
 
 class WrongBackend(RuntimeError):
@@ -113,8 +114,9 @@ def index_settings():
     return {name: defaults[name] for name in names}
 
 
-def annotator(chunks):
+def annotator(chunks, docs=None):
     contents = [(cid, content) for cid, (_, content) in chunks.items()]
+    doc_ids = {d["minirag_doc_id"]: d["doc_id"] for d in docs} if docs is not None else None
 
     def annotate(messages):
         turns = [m for m in messages if m.get("role") != "system"]
@@ -123,8 +125,13 @@ def annotator(chunks):
         # A tail chunk no longer than the overlap is a substring of the chunk before it, so a
         # prompt about the longer chunk matches both: the longest match is the one asked about.
         # The first turn is extraction; gleaning replays it as history plus a continue prompt.
-        return {"phase": "extract" if len(turns) == 1 else "glean",
-                "chunk_id": max(found)[1] if found else None}
+        cid = max(found)[1] if found else None
+        result = {"phase": "extract" if len(turns) == 1 else "glean", "chunk_id": cid}
+        if doc_ids is not None:
+            if cid is None:
+                raise ValueError("Cannot attribute index request to its source chunk")
+            result |= {"minirag_doc_id": chunks[cid][0], "doc_id": doc_ids[chunks[cid][0]]}
+        return result
 
     return annotate
 
@@ -217,7 +224,16 @@ def verify(workdir, docs, chunks):
 
 
 async def run_index(args, docs, rag_factory, identity, chunks):
-    """Insert docs batch by batch into args.workingdir. Returns 0 when complete and verified."""
+    """Hold one OS writer lock through identity checks, reconciliation and writes."""
+    workdir = Path(args.workingdir)
+    if not args.resume:
+        workdir.mkdir(parents=True, exist_ok=False)
+    with qa_run.run_lock(workdir):
+        return await _run_index_locked(args, docs, rag_factory, identity, chunks)
+
+
+async def _run_index_locked(args, docs, rag_factory, identity, chunks):
+    """Insert docs batch by batch; caller owns the writer lock."""
     import llm_trace
 
     workdir = Path(args.workingdir)
@@ -229,8 +245,6 @@ async def run_index(args, docs, rag_factory, identity, chunks):
         changed = [k for k in IDENTITY_KEYS if stored.get(k) != identity[k]]
         if changed:
             raise ValueError(f"Index identity differs from the existing run ({', '.join(changed)}); refusing to resume")
-    else:
-        workdir.mkdir(parents=True)
     manifest = identity | {"status": "running", "updated_at": qa_run.utc_now()}
     qa_run.atomic_json(manifest_path, manifest)
 
@@ -250,7 +264,7 @@ async def run_index(args, docs, rag_factory, identity, chunks):
     todo = [d for d in docs if d["minirag_doc_id"] not in done_docs]
     rag = rag_factory(str(workdir))
     try:
-        with llm_trace.trace(sink, annotator(chunks)):
+        with llm_trace.trace(sink, annotator(chunks, docs)):
             for start in range(0, len(todo), args.batch_docs):
                 batch = todo[start:start + args.batch_docs]
                 started = time.perf_counter()

@@ -2,6 +2,19 @@
 
 Ngày kiểm tra: 29/10/2026. Chỉ kiểm offline; không gọi Modal/Gemini.
 
+## Bản sửa trên nhánh 2Wiki — 29/10/2026
+
+Ba phát hiện bên dưới đã có bản sửa trên `research/2wiki-shared-gpu`, chưa gửi vào PR chung. Cần người giữ runner review trước khi dùng chung.
+
+Kiểm tra bản cuối: **86 passed**, Python 3.13.5, 38,87 giây; `git diff --check` đạt. Gồm 78 test cũ và 8 test hồi quy guard/audit mới. Không cần API hoặc model thật.
+
+- `endpoint_sha256` nằm trong identity bắt buộc so khi resume. Nếu đổi endpoint, từ chối trước reconcile hoặc ghi manifest. Manifest cũ thiếu trường này cũng không được tự nâng cấp để vượt guard.
+- `run_index()` giữ OS lock từ trước khi đọc identity/reconcile đến hết insert, verify và lưu checkpoint. Fresh run vẫn từ chối thư mục có sẵn; resume đồng thời bị từ chối. Test kiểm khóa trong cùng tiến trình và giữa hai tiến trình.
+- Trace schema 2 lưu request với messages/model/cap/seed/sampling đã truyền, response provider JSON khi SDK hỗ trợ, raw reply, usage/finish reason/latency, lỗi hoặc hủy. Không ghi credential, header, endpoint hay chuỗi exception. Sampling được server áp mặc định vẫn phải khai báo/xác minh riêng, không suy ra từ request.
+- QA gắn `query_id`, phase, `request_id` và attempt bằng ContextVar riêng từng task; retry của cùng lời gọi giữ request ID. Index gắn doc/minirag-doc/chunk ID và phase. Counter attempt nằm trong phiên trace/lời gọi, không thay bộ đếm resume toàn run.
+- Sink QA giữ raw reply và fsync mỗi bản ghi. Context trả lời nằm trong system message được lưu; input không thay đổi. Lỗi cũ chỉ có metadata không thể được bổ sung request thô hồi tố.
+- Chưa chạy live smoke, index hay judge. Bản sửa hạ tầng không chốt protocol, judge model hoặc các ablation.
+
 ## Nhánh và trạng thái
 
 - Nền 2Wiki: `0d7a18cce17d8623e0aba901e1eea866fc70cd2c`.
@@ -19,9 +32,9 @@ Ngày kiểm tra: 29/10/2026. Chỉ kiểm offline; không gọi Modal/Gemini.
 - Không thay nội dung adapter local, chuẩn hóa dữ liệu, metrics, config local hoặc `baseline.yaml` so với `0d7a18c`.
 - Không sửa/xóa index hoặc checkpoint local. Không sinh answer, chấm judge hay công bố metrics benchmark mới.
 
-## Phát hiện cần xử lý trước khi chạy thật
+## Phát hiện tại bản tích hợp đầu tiên (lịch sử review)
 
-Các điểm dưới đây được phát hiện bằng đọc code; bộ test đang có chưa bao phủ hết các trường hợp này. Chưa sửa code chung trong nhánh tích hợp, cần thống nhất với người giữ runner.
+Các điểm dưới đây được phát hiện bằng đọc code tại `69e6723`; bản sửa mới ở mục đầu trang bổ sung test hồi quy. Việc nhận vào runner chung vẫn cần review của nhóm.
 
 1. **Resume index không so endpoint.** `index_run.py` ghi `endpoint_sha256` vào manifest nhưng `IDENTITY_KEYS` chỉ gồm hash docs, hash tập doc, settings và source. `run_index()` chỉ so các khóa này trước resume. Vì vậy đổi endpoint nhưng giữ nguyên serving declaration có thể tiếp tục cùng index. Cần đối chiếu endpoint khi resume và thêm test từ chối endpoint khác.
 2. **Index thiếu khóa chống ghi đồng thời.** `qa_run.py`/`phased_qa.py` có `run_lock`, còn `index_run.py` chưa giữ khóa trong quá trình kiểm identity, reconcile, insert và lưu checkpoint. Hai lượt `--resume` đồng thời có thể ghi cùng index. Cần khóa toàn bộ phiên ghi và test tiến trình thứ hai bị từ chối.
@@ -38,4 +51,4 @@ Các điểm dưới đây được phát hiện bằng đọc code; bộ test �
 
 ## Bước tiếp theo
 
-Người giữ runner xử lý các phát hiện trên PR chung; sau khi PR được review/merge vào `dev`, fetch và tích hợp bản chính thức, chạy lại bộ test khi code thay đổi. Khi protocol/serving đã chốt và người dùng cho phép chi phí, mới chạy smoke 2Wiki nhỏ trên index Modal mới trước pilot lớn. Hướng dẫn lệnh nằm ở `SHARED_GPU_RUNNERS_2WIKI.md`; các placeholder chưa phải cấu hình chạy thật.
+Người giữ runner review bản sửa guard/trace trên nhánh tích hợp để đưa vào PR chung; sau khi PR được review/merge vào `dev`, fetch và tích hợp bản chính thức, chạy lại bộ test khi code thay đổi. Khi protocol/serving đã chốt và người dùng cho phép chi phí, mới chạy smoke 2Wiki nhỏ trên index Modal mới trước pilot lớn. Hướng dẫn lệnh nằm ở `SHARED_GPU_RUNNERS_2WIKI.md`; các placeholder chưa phải cấu hình chạy thật.

@@ -103,6 +103,7 @@ def read_jsonl(path, key="query_id"):
 def append_jsonl(handle, record):
     handle.write(json.dumps(record, ensure_ascii=False) + "\n")
     handle.flush()
+    os.fsync(handle.fileno())
 
 
 def is_context_overflow(exc):
@@ -198,6 +199,7 @@ def ensure_phase_identity(path, identity):
 async def keyword_phase(rag, rows, cache_path, out_requests=None):
     """Same prompt as minirag_query builds under MINIRAG_KW_CACHE (TYPE_POOL sorted)."""
     from minirag.prompt import PROMPTS
+    import llm_trace
 
     types, _ = await rag.chunk_entity_relation_graph.get_types()
     pool = sorted(types)
@@ -208,7 +210,8 @@ async def keyword_phase(rag, rows, cache_path, out_requests=None):
             key = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
             if key in done:
                 return
-            result = await rag.llm_model_func(prompt)
+            with llm_trace.request_context(query_id=row["query_id"], phase="kw_parse"):
+                result = await rag.llm_model_func(prompt)
             append_jsonl(fh, {"prompt_sha256": key, "result": result, "query_id": row["query_id"]})
         await asyncio.gather(*(one(r) for r in rows))
 
@@ -300,6 +303,7 @@ def postprocess(mode, query, system_prompt, response):
 
 async def answer_phase(llm_func, rows, contexts, mode, out_path, response_type):
     from minirag.prompt import PROMPTS
+    import llm_trace
 
     done = read_jsonl(out_path)
     with open(out_path, "a", encoding="utf-8") as fh:
@@ -313,8 +317,9 @@ async def answer_phase(llm_func, rows, contexts, mode, out_path, response_type):
             else:
                 prompt, system_prompt = answer_messages(mode, row["Question"], ctx["context"], response_type)
                 try:
-                    answer = postprocess(mode, row["Question"], system_prompt,
-                                         await llm_func(prompt, system_prompt=system_prompt))
+                    with llm_trace.request_context(query_id=row["query_id"], phase="answer"):
+                        answer = postprocess(mode, row["Question"], system_prompt,
+                                             await llm_func(prompt, system_prompt=system_prompt))
                 except Exception as exc:
                     if not is_context_overflow(exc):
                         raise
@@ -340,7 +345,6 @@ def traced(out_dir, fn):
     handle = open(Path(out_dir) / "requests.jsonl", "a", encoding="utf-8")
 
     def sink(record):
-        record.pop("response_text", None)
         append_jsonl(handle, record | {"at": qa_run.utc_now()})
         if "gemini" in str(record.get("response_model") or "").lower():
             raise RuntimeError(f"endpoint answered as {record['response_model']}")

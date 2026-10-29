@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import subprocess
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -67,7 +68,7 @@ def factory(llm):
 
 def identity(chunks):
     return {"docs_jsonl_sha256": "x", "selected_doc_ids_sha256": "y", "settings": {"s": 1},
-            "source_sha256": "z", "expected": {"chunks": len(chunks)}}
+            "source_sha256": "z", "endpoint_sha256": "endpoint-one", "expected": {"chunks": len(chunks)}}
 
 
 def run_index(workdir, llm, resume=False, ident=None):
@@ -171,6 +172,49 @@ class TraceTests(unittest.TestCase):
 
 
 class ResumeTests(unittest.TestCase):
+    def test_writer_lock_rejects_a_second_process(self):
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
+            workdir = Path(tmp) / "process-lock"
+            workdir.mkdir()
+            child = (
+                "import sys; from pathlib import Path; "
+                "sys.path.insert(0, sys.argv[1]); import qa_run\n"
+                "try:\n"
+                "    with qa_run.run_lock(Path(sys.argv[2])): pass\n"
+                "except OSError:\n"
+                "    print('writer-blocked'); sys.exit(3)\n"
+            )
+            with ir.qa_run.run_lock(workdir):
+                result = subprocess.run([sys.executable, "-c", child, str(ROOT / "reproduce/research"), str(workdir)],
+                                        capture_output=True, text=True, timeout=15)
+            self.assertEqual((result.returncode, result.stdout.strip()), (3, "writer-blocked"), result.stderr)
+
+    def test_changed_endpoint_refused_without_mutating_index(self):
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
+            workdir = Path(tmp) / "endpoint-test"
+            run_index(workdir, FakeLLM())
+            before = {p.name: p.read_bytes() for p in workdir.iterdir() if p.name != ".qa.lock"}
+            chunks = ir.chunk_map(DOCS, ir.index_settings())
+            with self.assertRaisesRegex(ValueError, "endpoint_sha256"):
+                run_index(workdir, FakeLLM(), resume=True,
+                          ident=identity(chunks) | {"endpoint_sha256": "different-endpoint"})
+            self.assertEqual(before, {p.name: p.read_bytes() for p in workdir.iterdir() if p.name != ".qa.lock"})
+
+    def test_second_index_writer_refused_before_reconcile_or_factory(self):
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
+            workdir = Path(tmp) / "locked-index"
+            run_index(workdir, FakeLLM())
+            before = (workdir / "index_manifest.json").read_bytes()
+            chunks = ir.chunk_map(DOCS, ir.index_settings())
+            args = argparse.Namespace(workingdir=workdir, resume=True, batch_docs=1)
+            with ir.qa_run.run_lock(workdir), patch.object(ir, "reconcile_checkpoint") as reconcile:
+                with self.assertRaises(OSError):
+                    asyncio.run(ir.run_index(args, DOCS, lambda _: self.fail("factory called"), identity(chunks), chunks))
+                reconcile.assert_not_called()
+            self.assertEqual(before, (workdir / "index_manifest.json").read_bytes())
+            # The released OS lock permits an ordinary resume again.
+            self.assertEqual(run_index(workdir, FakeLLM(), resume=True)[0], 0)
+
     def test_kill_then_resume_never_reextracts_finished_batches(self):
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
             workdir = Path(tmp) / "multihop_rag-test"

@@ -4,7 +4,7 @@
 
 - Nhánh thử tích hợp `research/2wiki-shared-gpu` ghép nền 2Wiki `0d7a18c` với PR #1 tại `77ae1af`; không xung đột, **78 test offline đạt trên Python 3.13.5**.
 - PR chung vẫn Draft/chưa merge tại thời điểm kiểm tra. Nhánh `research/2wiki-qwen` gốc giữ nguyên; không cập nhật `dev`/`main`.
-- Chưa chạy Modal/Gemini. Cần xử lý guard endpoint khi resume index, khóa ghi index và trace request đầy đủ trước live run. Xem [báo cáo review](SHARED_GPU_INTEGRATION_REVIEW.md).
+- Chưa chạy Modal/Gemini. Đã bổ sung bản sửa guard endpoint khi resume index, khóa ghi index và trace request đầy đủ trên nhánh tích hợp; **86 test offline đạt** sau sửa, cần nhóm review trước dùng chung. Xem [báo cáo review](SHARED_GPU_INTEGRATION_REVIEW.md).
 - Pilot/index local giữ nguyên; resume pilot cũ phải giữ source đã pin, không sửa manifest để vượt kiểm tra hash.
 
 ## Snapshot trước tích hợp

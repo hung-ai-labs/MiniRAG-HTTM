@@ -75,3 +75,9 @@
 - Gemini Flash exact ID/project/quota; nhóm review điều kiện Qwen Q4_K_M local. Client Python 3.13.5; server native Ollama đã kiểm, không còn phụ thuộc Python server Modal.
 - V-01/MR_FULL, V-02 cách paper dựng corpus vẫn chưa xác minh đủ.
 - N=2.000 đã chọn; đã chạy lô kỹ thuật10 đoạn theo đồng ý tiếp tục của người dùng. Trước mở rộng cần review vòng lặp/cap và thời gian máy local; backup, split và cổng QA/benchmark chung vẫn còn mở.
+
+## INFRA-001 — Review và thử tích hợp runner chung (29/10/2026)
+
+- Nền 2Wiki `0d7a18c`, PR #1 head `77ae1af`; ghép không xung đột trên `research/2wiki-shared-gpu` riêng. PR vẫn Draft/chưa merge vào dev tại thời điểm kiểm tra.
+- Python 3.13.5, toàn bộ 78 test research offline đạt. Giữ code chuẩn hóa/metrics/local adapter/config và index/checkpoint local.
+- Chưa gọi Modal/Gemini hoặc chạy benchmark. Ba phát hiện cần xử lý trước live run: resume index phải so endpoint, khóa chống hai writer, lưu request thô và nối ID/attempt. Chi tiết `SHARED_GPU_INTEGRATION_REVIEW.md`.

@@ -1,5 +1,14 @@
 # Trạng thái benchmark 2WikiMultiHopQA
 
+## Cập nhật tích hợp 29/10/2026
+
+- Nhánh thử tích hợp `research/2wiki-shared-gpu` ghép nền 2Wiki `0d7a18c` với PR #1 tại `77ae1af`; không xung đột, **78 test offline đạt trên Python 3.13.5**.
+- PR chung vẫn Draft/chưa merge tại thời điểm kiểm tra. Nhánh `research/2wiki-qwen` gốc giữ nguyên; không cập nhật `dev`/`main`.
+- Chưa chạy Modal/Gemini. Cần xử lý guard endpoint khi resume index, khóa ghi index và trace request đầy đủ trước live run. Xem [báo cáo review](SHARED_GPU_INTEGRATION_REVIEW.md).
+- Pilot/index local giữ nguyên; resume pilot cũ phải giữ source đã pin, không sửa manifest để vượt kiểm tra hash.
+
+## Snapshot trước tích hợp
+
 Cập nhật 26/10/2026. Nhánh `research/2wiki-qwen`, commit nền `9c59062a9cfaaab47b4e8b303829ce0d00624e91`.
 Handoff/kế hoạch gốc: `c45ac1f458e07c7d750404043048ae2dc0e2a2bc`; protocol tham chiếu MultiHop: `790e0171a9e4e7c542aabc41993f48a37bff41ca`.
 

@@ -226,10 +226,10 @@ chạy test như đã chốt.
 
 | # | Task | Loại | Đầu ra | ✓ |
 |---|---|---|---|---|
-| M3.1 | Dự toán GPU + Gemini từ số đo thật; kiểm quota thật; dừng nếu vượt trần | 💻 ⏸ | dự toán | ⬜ |
-| M3.2 | C0, C1 trên test 2.156 câu (`make_mhr_split.py --emit-test`): 3 lượt sinh (seed 101/202/303) × 3 lượt chấm | 🟣 🔵 | kết quả chính | ⬜ |
-| M3.3 | Thống kê: RQ2 (chính), RQ5 (phụ), RQ1 (mô tả); sd sinh và sd judge báo riêng | 💻 | bảng kết quả | ⬜ |
-| M3.4 | `docs/research/MULTIHOP_RAG_REPORT.md`: RQ1–RQ5 đúng vai trò, theo loại câu, so với LiHua, Limitations | 💻 | báo cáo | ⬜ |
+| M3.1 | Dự toán GPU + Gemini từ số đo thật; kiểm quota thật; dừng nếu vượt trần | 💻 ⏸ | dự toán trước chạy trong `phase3_test/EFFICIENCY_AND_BUDGET.json` | ✅ |
+| M3.2 | C0, C1 trên test 2.156 câu (`make_mhr_split.py --emit-test`): 3 lượt sinh (seed 101/202/303) × 3 lượt chấm | 🟣 🔵 | 12.936 đáp án, 38.808 phiếu (V1 + A1) — Codex, `codex/mhr-phase3-acceleration` `b640765` | ✅ |
+| M3.3 | Thống kê: RQ2 (chính), RQ5 (phụ), RQ1 (mô tả); sd sinh và sd judge báo riêng | 💻 | RQ2 xác nhận (+9,37 / +9,51 / +9,88, p < 10⁻¹³ từng seed); RQ5 chưa xác nhận (Null err tăng có ý nghĩa chỉ ở seed 303) | ✅ |
+| M3.4 | `docs/research/MULTIHOP_RAG_REPORT.md`: RQ1–RQ5 đúng vai trò, theo loại câu, so với LiHua, Limitations | 💻 | [`results/multihop_rag/`](../../results/multihop_rag/README.md) + `phase3_test/MULTIHOP_RAG_REPORT.md` | ✅ |
 
 **Limitations ghi sẵn:** judge Gemini thay GPT-4o, qua bí danh trôi `gemini-flash-lite-latest`; C0 là baseline đã sửa; RQ3/RQ4 chỉ có bằng chứng dev một lượt sinh;
 corpus dùng chung giữa dev và test; 63% chunk không có header; định dạng metadata là lựa chọn của nhóm; `Step_2_evaluate.py`
@@ -379,3 +379,8 @@ Nguồn: `runs/multihop_rag/dev400/<cfg>_s101/judge/summary.json`, `runs/multiho
 - Nhiễu judge nhỏ (sd 0,25–0,89 giữa 3 lượt); nhiễu sinh chưa đo (dev chỉ một lượt).
 - *Đối chiếu bài báo (tham chiếu, không đối chứng):* C0 55,25 / 29,0 vs MiniRAG–Qwen 50,94 / 35,49 (GPT-4o chấm, cấu hình
   gốc). RQ1 chỉ báo trên test.
+
+
+**Phase 3 xong 30/10/2026** (Codex, nhánh `codex/mhr-phase3-acceleration`). Kết quả, kiểm độc lập và giới hạn:
+[`results/multihop_rag/README.md`](../../results/multihop_rag/README.md). Sửa đổi A1 (chấm lại 3 lượt bằng JSON schema, người
+dùng duyệt) được mô tả ở `results/multihop_rag/phase3_test/STRUCTURED_REJUDGE_AMENDMENT.json`.

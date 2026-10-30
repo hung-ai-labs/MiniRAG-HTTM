@@ -160,7 +160,7 @@ M0.1–M0.6 không cần key. Làm đúng thứ tự.
 | M1.2 | Index 609 bài → `indexes/multihop_rag-qwen-full609/`; checksum, backup, chỉ đọc | 🟣 ⏸ | index `completed`, 6/6 kiểm đạt, file chỉ đọc; manifest + sha256 từng file: [`artifacts/multihop_rag-qwen-full609.index_manifest.json`](artifacts/multihop_rag-qwen-full609.index_manifest.json). **Backup ngoài máy: chưa** (chưa có `<BACKUP_ROOT>`) | ✅ |
 | M1.3 | Ánh xạ evidence → chunk (`fact` → chunk qua `minirag_doc_id`): `map_mhr_evidence.py` | 💻 | `processed/gold_chunks.jsonl` — 6.084/6.084 fact nằm trọn trong chunk, 139 fact nằm ở 2 chunk (vùng chồng lấn), 0 chunk thiếu trong index | ✅ |
 | M1.4 | Smoke 20 câu dev × C0, C1; đọc tay 20 phán quyết (Yes/No, "Insufficient information.", từ chối) | 🟣 🔵 | 3 pha (S2) chạy trọn: 40/40 câu trả lời do Qwen, 0 thoát sớm; 1/120 phán quyết `parse_failed` (judge viết lập luận thay vì một từ, 3 lần) → `--resume` chấm lại được, 0 sót. Đọc tay: xem ghi chú dưới | ✅ |
-| M1.5 | C0 trên dev 400: 1 lượt sinh × 3 lượt chấm, bật `MINIRAG_CONTEXT_LOG` | 🟣 🔵 | `baseline_mhr.yaml` đóng băng + kết quả theo loại câu | ⬜ |
+| M1.5 | C0 trên dev 400: 1 lượt sinh × 3 lượt chấm, bật `MINIRAG_CONTEXT_LOG` | 🟣 🔵 | [`baseline_mhr.yaml`](baseline_mhr.yaml) đóng băng 31/10 — xem "Kết quả dev 400" | ✅ |
 | M1.6 | Evidence Recall của Sources (context log + M1.3) | 💻 | recall theo loại câu | ⬜ |
 | M1.7 | Failure taxonomy trên câu sai/neither của C0 | 💻 | phân phối lỗi + ví dụ thật | ⬜ |
 
@@ -214,9 +214,9 @@ temporal 90%) → ~50% acc ở hai loại này đạt được bằng đoán.
 
 | # | Task | Loại | Đầu ra | ✓ |
 |---|---|---|---|---|
-| M2.1 | Kiểm mọi run mang đúng hash đăng ký M0.6 | 💻 | ghi vào roadmap | ⬜ |
-| M2.2 | C1, C2, C3 trên dev 400: 1 lượt sinh × 3 lượt chấm, cùng index | 🟣 🔵 | 3 bộ kết quả | ⬜ |
-| M2.3 | Phân tích theo quy tắc đăng ký: RQ3, RQ4, xem trước RQ2; Evidence Recall từng cấu hình | 💻 | `b lên / c xuống, p` + khoảng tin cậy | ⬜ |
+| M2.1 | Kiểm mọi run mang đúng hash đăng ký M0.6 | 💻 | 4/4 run note mang `7013291`; HEAD lúc chạy `ebc8e7a` (C0), `ff9531a` (C1, C2), `790e017` (C3) — giữa chúng chỉ có commit tài liệu, code không đổi | ✅ |
+| M2.2 | C1, C2, C3 trên dev 400: 1 lượt sinh × 3 lượt chấm, cùng index | 🟣 🔵 | xong; chấm C0→C3 liền nhau 26–27/10, 4 lượt `parse_failed` chấm lại 30/10 rồi thành phiếu trống (S4) | ✅ |
+| M2.3 | Phân tích theo quy tắc đăng ký: RQ3, RQ4, xem trước RQ2; Evidence Recall từng cấu hình | 💻 | phép so xong (`compare_mhr.py`); **Evidence Recall (M1.6) còn thiếu** | 🔄 |
 | M2.4 | Cấu hình vào test: **C0 và C1** — đã chốt, không đổi theo dev | 💻 | ghi vào roadmap | ⬜ |
 
 Không chỉnh tham số theo dev. C1 không hơn C0 có ý nghĩa trên dev → "chưa có bằng chứng chuyển giao ở lượt thăm dò", vẫn
@@ -342,3 +342,40 @@ phép so nào** (chưa đọc kết quả của cấu hình nào).
   lại `no_majority` (tính là không-`accurate`). Câu vẫn ở trong mẫu số. Mean ± sd theo lượt tính trên các câu có nhãn ở lượt
   đó (n từng lượt được báo). `judge_failed` (lỗi API) **không** bao giờ thành phiếu trống — phải chấm lại.
 - *Cài đặt:* `judge_run.py --abstain-after 3`.
+
+
+---
+
+## Kết quả dev 400 (31/10/2026) — **thăm dò, một lượt sinh (seed 101)**
+
+Nguồn: `runs/multihop_rag/dev400/<cfg>_s101/judge/summary.json`, `runs/multihop_rag/dev400/compare/*.json`
+(`compare_mhr.py`). Judge `gemini-flash-lite-latest`, 3 lượt, phán quyết đa số; phiếu trống S4: C1 1, C2 1, C3 2.
+
+| Cấu hình | acc | err | neither | acc/(acc+err) | mean ± sd 3 lượt judge (acc) | comparison | inference | null (47) | temporal |
+|---|---:|---:|---:|---:|---|---:|---:|---:|---:|
+| C0 baseline nhóm | 55,25 | 29,00 | 15,25 | 65,6 | 55,58 ± 0,38 | 49,25 | 67,19 | 51,06 | 49,45 |
+| C1 B2 | **67,75** | 27,00 | 5,00 | 71,5 | 67,39 ± 0,67 | 60,45 | 85,16 | 59,57 | 58,24 |
+| C2 vector | 64,25 | 25,25 | 10,50 | 71,8 | 63,89 ± 0,32 | 60,45 | 77,34 | 53,19 | 57,14 |
+| C3 naive | 64,75 | 25,25 | 9,50 | 71,9 | 64,27 ± 0,25 | 61,94 | 82,03 | 44,68 | 54,95 |
+
+| Phép so | Vai trò | Δ acc | lên / xuống | p | CI 95% | biến phụ `error` |
+|---|---|---:|---|---:|---|---|
+| C1 vs C0 | xem trước RQ2 (khẳng định trên test) | **+12,50** | 92 / 42 | 1,9·10⁻⁵ | [7,0; 18,0] | 29,0 → 27,0 (62 / 54, p = 0,52) |
+| C1 vs C2 | RQ3 (thăm dò) | +3,50 | 54 / 40 | 0,18 | [−1,25; 8,25] | 25,25 → 27,0 (p = 0,52) |
+| C2 vs C0 | RQ4 (thăm dò) | **+9,00** | 87 / 51 | 0,0028 | [3,5; 14,75] | 29,0 → 25,25 (p = 0,19) |
+| C3 vs C0 | mô tả | +9,50 | 94 / 56 | 0,0024 | [3,75; 15,5] | 29,0 → 25,25 (p = 0,24) |
+| C1 vs C0, chỉ Null | mô tả (RQ5 khẳng định trên test) | +8,51 | 11 / 7 | 0,48 | [−8,5; 25,5] | 25,5 → 27,7 (6 / 7, p = 1) |
+
+**Đọc theo luật đã đăng ký:**
+- *RQ2 (xem trước):* trên dev, C1 hơn C0 rõ — một lượt sinh, chưa phải xác nhận; xác nhận là việc của test (3 lượt sinh).
+- *RQ3:* **chưa có bằng chứng BM25 góp phần ở lượt thăm dò** (+3,50, p = 0,18; riêng inference +7,8, p = 0,052).
+- *RQ4:* thay xếp hạng Sources của đồ thị bằng vector **không làm giảm** acc mà tăng +9,00 (p = 0,003; cận dưới CI 3,5 > −3)
+  — kết luận chỉ về xếp hạng Sources, không phải "đồ thị vô ích" (Entities vẫn từ đồ thị).
+- *Mô tả:* C3 `naive` (không đồ thị) cũng hơn C0 +9,50 — cùng hướng với LiHua (vector thuần ngang V3).
+- Phần tăng của C1 chủ yếu đến từ **`neither` giảm** (15,25 → 5,00) chứ không phải `error` giảm (29,0 → 27,0, không có ý
+  nghĩa); acc/(acc+err) cũng tăng 65,6 → 71,5.
+- C0 ở comparison (49,25) và temporal (49,45) **ngang mức đoán Yes/No**; mọi cấu hình đều yếu nhất ở hai loại này — ứng viên
+  chính cho failure taxonomy (63% chunk không có header nguồn/ngày, M0.4).
+- Nhiễu judge nhỏ (sd 0,25–0,89 giữa 3 lượt); nhiễu sinh chưa đo (dev chỉ một lượt).
+- *Đối chiếu bài báo (tham chiếu, không đối chứng):* C0 55,25 / 29,0 vs MiniRAG–Qwen 50,94 / 35,49 (GPT-4o chấm, cấu hình
+  gốc). RQ1 chỉ báo trên test.

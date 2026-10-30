@@ -1,0 +1,26 @@
+# MultiHop-RAG baseline C0 -- frozen 31/10/2026 (M1.5). Do not edit; a new baseline is a new file.
+# Registration: MULTIHOP_RAG_ROADMAP.md, commit 7013291 (+ amendments S1-S4).
+dataset: MultiHop-RAG
+split: dev400            # dataset/MultiHop-RAG/splits/dev400.csv, sha256 4633ef777b747ef0...
+config: C0               # GROUP_BASE: MINIRAG_ANSWER_TYPE_FIX=1 MINIRAG_PATH2CHUNK_FIX=0 MINIRAG_CHUNK_CUT= ,
+                         # MINIRAG_TRUNCATE_SOURCES=1 (A1@4000), mode mini, no fusion
+index: indexes/multihop_rag-qwen-full609   # manifest: docs/research/artifacts/multihop_rag-qwen-full609.index_manifest.json
+generation:
+  model: Qwen/Qwen2.5-3B-Instruct@aa8e7253  # reproduce/research/serving_qwen_modal.json
+  runner: reproduce/research/phased_qa.py    # amendment S2; keyword output shared by C0-C2 for the seed
+  seed: 101
+  max_tokens: 1024
+judge:
+  model: gemini-flash-lite-latest
+  runner: reproduce/research/judge_run.py
+  passes: 3
+  judged: 2026-10-26 14:45-16:49 UTC (C0); C1-C3 back to back after it
+results_dev400_seed101:
+  majority:        {accurate: 55.25, error: 29.00, neither: 15.25, no_majority: 0.50}
+  pass_mean_sd:    {accurate: 55.58 +- 0.38, error: 29.08 +- 0.76}   # judge noise only
+  by_type_majority_accurate: {comparison: 49.25, inference: 67.19, null: 51.06, temporal: 49.45}
+  early_exit: 0
+  blank_votes_S4: 0
+artifacts:                # runs/ is gitignored; sha256 prefixes of the files these numbers come from
+  answers_csv: 902a9fe3f552585d
+  per_question_csv: 3ace58df52fccece

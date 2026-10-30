@@ -1,7 +1,7 @@
 # Kết quả nghiên cứu MultiHop-RAG — Qwen2.5-3B (MiniRAG + B2)
 
 Thư mục gom **kết quả đã xong** của đợt MultiHop-RAG. Kế hoạch, đăng ký trước và các sửa đổi:
-[`docs/research/MULTIHOP_RAG_ROADMAP.md`](../../docs/research/MULTIHOP_RAG_ROADMAP.md) (đăng ký `7013291`, sửa đổi S1–S4).
+[`docs/research/multihop_rag/MULTIHOP_RAG_ROADMAP.md`](../../docs/research/multihop_rag/MULTIHOP_RAG_ROADMAP.md) (đăng ký `7013291`, sửa đổi S1–S4).
 Mọi file ở đây được giữ nguyên byte (`-text` trong `.gitattributes`) để các mã sha256 kiểm lại được.
 
 | Thư mục | Nội dung | Nguồn |
@@ -9,8 +9,8 @@ Mọi file ở đây được giữ nguyên byte (`-text` trong `.gitattributes`
 | [`phase3_test/`](phase3_test/) | **Phase 3 — xác nhận trên test nội bộ 2.156 câu**, C0 vs C1, 3 seed sinh × 3 lượt chấm. Báo cáo: [`MULTIHOP_RAG_REPORT.md`](phase3_test/MULTIHOP_RAG_REPORT.md) | Codex, nhánh `codex/mhr-phase3-acceleration` commit `b640765`; chép nguyên trạng từ `x20-x20/outputs/phase3_test`, 21/21 sha256 khớp `ANALYSIS_COMPLETED.json` |
 | [`dev400/`](dev400/) | Phase 1–2 — dev 400 câu, C0–C3, một seed (101): `summary.json`, `per_question.csv`, `run_note.json` mỗi cấu hình và các phép so `compare_mhr.py` | nhánh `research/mhr-qwen`, `runs/multihop_rag/dev400/` |
 
-Index, dữ liệu và baseline nằm ở chỗ cũ: [`docs/research/baseline_mhr.yaml`](../../docs/research/baseline_mhr.yaml),
-[`docs/research/artifacts/multihop_rag-qwen-full609.index_manifest.json`](../../docs/research/artifacts/multihop_rag-qwen-full609.index_manifest.json),
+Index, dữ liệu và baseline: [`docs/research/multihop_rag/baseline_mhr.yaml`](../../docs/research/multihop_rag/baseline_mhr.yaml),
+[`docs/research/multihop_rag/artifacts/multihop_rag-qwen-full609.index_manifest.json`](../../docs/research/multihop_rag/artifacts/multihop_rag-qwen-full609.index_manifest.json),
 [`dataset/MultiHop-RAG/`](../../dataset/MultiHop-RAG/).
 
 ---

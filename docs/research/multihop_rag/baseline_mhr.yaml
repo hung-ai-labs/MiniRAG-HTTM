@@ -4,7 +4,7 @@ dataset: MultiHop-RAG
 split: dev400            # dataset/MultiHop-RAG/splits/dev400.csv, sha256 4633ef777b747ef0...
 config: C0               # GROUP_BASE: MINIRAG_ANSWER_TYPE_FIX=1 MINIRAG_PATH2CHUNK_FIX=0 MINIRAG_CHUNK_CUT= ,
                          # MINIRAG_TRUNCATE_SOURCES=1 (A1@4000), mode mini, no fusion
-index: indexes/multihop_rag-qwen-full609   # manifest: docs/research/artifacts/multihop_rag-qwen-full609.index_manifest.json
+index: indexes/multihop_rag-qwen-full609   # manifest: docs/research/multihop_rag/artifacts/multihop_rag-qwen-full609.index_manifest.json
 generation:
   model: Qwen/Qwen2.5-3B-Instruct@aa8e7253  # reproduce/research/serving_qwen_modal.json
   runner: reproduce/research/phased_qa.py    # amendment S2; keyword output shared by C0-C2 for the seed

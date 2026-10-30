@@ -20,6 +20,10 @@
 | Môi trường Phase 1 (đường Gemini, Windows) | [`phase1/ENVIRONMENT.md`](phase1/ENVIRONMENT.md) |
 | Schema `logs/results.json` của runner HD1 | [`phase1/HD_SCHEMA.md`](phase1/HD_SCHEMA.md) |
 | Tài liệu cũ đã được thay thế | [`archive/`](archive/README.md) |
+| **MultiHop-RAG (đợt Qwen, 10/2026) — kết quả** (Phase 3 xác nhận B2 +9,6 điểm trên test) | [`../results/multihop_rag/README.md`](../results/multihop_rag/README.md) |
+| MultiHop-RAG — kế hoạch, đăng ký trước, sửa đổi S1–S4, baseline, báo cáo index | [`research/multihop_rag/`](research/multihop_rag/MULTIHOP_RAG_ROADMAP.md) |
+| Protocol chung MultiHop-RAG / 2Wiki, kế hoạch hai người, bàn giao 2Wiki | [`research/PROTOCOL_QWEN_NEW_DATASETS.md`](research/PROTOCOL_QWEN_NEW_DATASETS.md) |
+| Bản đồ script của đợt Qwen (index, QA 3 pha, chấm, Phase 3) | [`../reproduce/research/README.md`](../reproduce/research/README.md) |
 
 ## Ai đang làm gì — ranh giới để không đụng nhau
 
@@ -42,5 +46,10 @@ docs/
 ├── KET_QUA_HIEN_TAI.md     ← bảng kết quả; cập nhật mỗi khi có lượt chính thức mới
 ├── phan-cong/              ← việc giao cho từng thành viên
 ├── phase1/                 ← tài liệu tham khảo Phase 1: đọc code, trace, môi trường
+├── research/               ← đợt Qwen trên dataset mới
+│   ├── PROTOCOL_…, EXECUTION_PLAN_…, HANDOFF_2WIKI_…   ← dùng chung với 2Wiki
+│   └── multihop_rag/       ← mọi tài liệu riêng của MultiHop-RAG (+ artifacts/)
 └── archive/                ← tài liệu đã lỗi thời, giữ để tra cứu
+
+results/multihop_rag/       ← kết quả MultiHop-RAG đã xong (dev400/, phase3_test/)
 ```

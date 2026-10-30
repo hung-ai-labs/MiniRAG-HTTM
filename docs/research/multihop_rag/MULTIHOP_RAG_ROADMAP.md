@@ -1,8 +1,8 @@
 # MultiHop-RAG — Roadmap tái hiện và kiểm chuyển giao (Qwen2.5-3B)
 
-> Một người làm · nhánh `research/mhr-qwen` · theo khuôn [`ROADMAP.md`](../../ROADMAP.md) của LiHua-World.
-> Chi tiết giao thức gốc cho hai người: [`EXECUTION_PLAN_QWEN_NEW_DATASETS.md`](EXECUTION_PLAN_QWEN_NEW_DATASETS.md).
-> Dữ liệu và cách dựng: [`dataset/MultiHop-RAG/README.md`](../../dataset/MultiHop-RAG/README.md).
+> Một người làm · nhánh `research/mhr-qwen` · theo khuôn [`ROADMAP.md`](../../../ROADMAP.md) của LiHua-World.
+> Chi tiết giao thức gốc cho hai người: [`EXECUTION_PLAN_QWEN_NEW_DATASETS.md`](../EXECUTION_PLAN_QWEN_NEW_DATASETS.md).
+> Dữ liệu và cách dựng: [`dataset/MultiHop-RAG/README.md`](../../../dataset/MultiHop-RAG/README.md).
 
 ## Ký hiệu
 
@@ -139,7 +139,7 @@ M0.1–M0.6 không cần key. Làm đúng thứ tự.
 | M0.4 | Đếm chunk thật: `count_mhr_chunks.py` | 💻 | `processed/chunk_stats.json` — **1.656 chunk**, ≈ 3.312 lời gọi index | ✅ |
 | M0.5 | `index_run.py` + `llm_trace.py`: chặn Gemini, chặn thư mục ngoài `indexes/multihop_rag-*`, log từng request, resume theo lô, kiểm toàn vẹn | 💻 | script + 8 test offline (gồm ngắt-rồi-resume trên MiniRAG thật với LLM giả) | ✅ |
 | M0.6 | **Đăng ký trước + commit**: đóng băng mục trên, commit trước mọi lượt sinh thật | ⏸ | commit "Pre-register the MultiHop-RAG transfer study" | ✅ |
-| M0.7 | Key + revision: `MINIRAG_SLM_KEY`, gói `modal`, 1 lời gọi thử, ghim HF revision / vLLM / sampling (V-04) | 🟣 ⏸ | [`serving_qwen_modal.json`](../../reproduce/research/serving_qwen_modal.json) (revision `aa8e7253…`, bf16, 32k, sampling của `generation_config`); `slm_smoke.py` 26/10: vLLM 0.11.0, phục vụ `Qwen/Qwen2.5-3B-Instruct` + `minirag-slm`, `response.model` = `Qwen/Qwen2.5-3B-Instruct`, khởi động lạnh 53 s — 3/3 kiểm đạt | ✅ |
+| M0.7 | Key + revision: `MINIRAG_SLM_KEY`, gói `modal`, 1 lời gọi thử, ghim HF revision / vLLM / sampling (V-04) | 🟣 ⏸ | [`serving_qwen_modal.json`](../../../reproduce/research/serving_qwen_modal.json) (revision `aa8e7253…`, bf16, 32k, sampling của `generation_config`); `slm_smoke.py` 26/10: vLLM 0.11.0, phục vụ `Qwen/Qwen2.5-3B-Instruct` + `minirag-slm`, `response.model` = `Qwen/Qwen2.5-3B-Instruct`, khởi động lạnh 53 s — 3/3 kiểm đạt | ✅ |
 
 **Phát hiện ở Phase 0 (ghi vào Limitations / failure taxonomy):**
 - Bài ngắn nhất 1.113 token, vượt bước nhảy 1.100 của bộ chunk → **cả 609 bài đều ≥ 2 chunk**, **1.047 chunk (63%) không có
@@ -229,7 +229,7 @@ chạy test như đã chốt.
 | M3.1 | Dự toán GPU + Gemini từ số đo thật; kiểm quota thật; dừng nếu vượt trần | 💻 ⏸ | dự toán trước chạy trong `phase3_test/EFFICIENCY_AND_BUDGET.json` | ✅ |
 | M3.2 | C0, C1 trên test 2.156 câu (`make_mhr_split.py --emit-test`): 3 lượt sinh (seed 101/202/303) × 3 lượt chấm | 🟣 🔵 | 12.936 đáp án, 38.808 phiếu (V1 + A1) — Codex, `codex/mhr-phase3-acceleration` `b640765` | ✅ |
 | M3.3 | Thống kê: RQ2 (chính), RQ5 (phụ), RQ1 (mô tả); sd sinh và sd judge báo riêng | 💻 | RQ2 xác nhận (+9,37 / +9,51 / +9,88, p < 10⁻¹³ từng seed); RQ5 chưa xác nhận (Null err tăng có ý nghĩa chỉ ở seed 303) | ✅ |
-| M3.4 | `docs/research/MULTIHOP_RAG_REPORT.md`: RQ1–RQ5 đúng vai trò, theo loại câu, so với LiHua, Limitations | 💻 | [`results/multihop_rag/`](../../results/multihop_rag/README.md) + `phase3_test/MULTIHOP_RAG_REPORT.md` | ✅ |
+| M3.4 | `docs/research/MULTIHOP_RAG_REPORT.md`: RQ1–RQ5 đúng vai trò, theo loại câu, so với LiHua, Limitations | 💻 | [`results/multihop_rag/`](../../../results/multihop_rag/README.md) + `phase3_test/MULTIHOP_RAG_REPORT.md` | ✅ |
 
 **Limitations ghi sẵn:** judge Gemini thay GPT-4o, qua bí danh trôi `gemini-flash-lite-latest`; C0 là baseline đã sửa; RQ3/RQ4 chỉ có bằng chứng dev một lượt sinh;
 corpus dùng chung giữa dev và test; 63% chunk không có header; định dạng metadata là lựa chọn của nhóm; `Step_2_evaluate.py`
@@ -382,5 +382,5 @@ Nguồn: `runs/multihop_rag/dev400/<cfg>_s101/judge/summary.json`, `runs/multiho
 
 
 **Phase 3 xong 30/10/2026** (Codex, nhánh `codex/mhr-phase3-acceleration`). Kết quả, kiểm độc lập và giới hạn:
-[`results/multihop_rag/README.md`](../../results/multihop_rag/README.md). Sửa đổi A1 (chấm lại 3 lượt bằng JSON schema, người
+[`results/multihop_rag/README.md`](../../../results/multihop_rag/README.md). Sửa đổi A1 (chấm lại 3 lượt bằng JSON schema, người
 dùng duyệt) được mô tả ở `results/multihop_rag/phase3_test/STRUCTURED_REJUDGE_AMENDMENT.json`.

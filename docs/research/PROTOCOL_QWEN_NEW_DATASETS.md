@@ -3,7 +3,7 @@
 > **Trạng thái: ĐỀ XUẤT v1 của Người 1 (MultiHop-RAG), chờ Người 2 (2Wiki) review và ký.** Soạn 26/10/2026 trên nhánh
 > `research/mhr-qwen`. Mọi giá trị dưới đây đã **chạy thật** trên MultiHop-RAG (pilot, index 609 bài, smoke, dev 400) trừ
 > chỗ ghi "chưa chốt". Chỗ nào **khác** [`EXECUTION_PLAN_QWEN_NEW_DATASETS.md`](EXECUTION_PLAN_QWEN_NEW_DATASETS.md) đều ghi
-> lý do. Kế hoạch riêng của MultiHop: [`MULTIHOP_RAG_ROADMAP.md`](MULTIHOP_RAG_ROADMAP.md) (đăng ký trước + sửa đổi S1–S3).
+> lý do. Kế hoạch riêng của MultiHop: [`MULTIHOP_RAG_ROADMAP.md`](multihop_rag/MULTIHOP_RAG_ROADMAP.md) (đăng ký trước + sửa đổi S1–S3).
 
 **Ký:** Người 1 ☐ ngày … · Người 2 ☐ ngày …
 

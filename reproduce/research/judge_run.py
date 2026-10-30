@@ -54,8 +54,21 @@ def parse_label(reply):
 
 
 def majority(labels):
-    label, votes = collections.Counter(labels).most_common(1)[0]
-    return label if votes * 2 > len(labels) else "no_majority"
+    """Majority over valid votes. An abstained pass (amendment S4) casts no vote; at least two votes are needed."""
+    valid = [x for x in labels if x in LABELS]
+    if len(valid) < 2:
+        return "no_majority"
+    label, votes = collections.Counter(valid).most_common(1)[0]
+    return label if votes * 2 > len(valid) else "no_majority"
+
+
+def parse_failed_cycles(path):
+    """How many resume cycles ended parse_failed for each (query_id, pass)."""
+    cycles = collections.Counter()
+    for r in read_records_all(path):
+        if r["status"] == "parse_failed":
+            cycles[(r["query_id"], r["pass"])] += 1
+    return cycles
 
 
 def sha256_file(path):
@@ -121,6 +134,20 @@ async def judge_one(complete, prompt_text, *, invalid_tries, api_tries, api_wait
             return "parse_failed", None, attempts
 
 
+def read_records_all(path):
+    if not path.exists():
+        return []
+    out = []
+    lines = [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    for i, line in enumerate(lines):
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            if i != len(lines) - 1:
+                raise ValueError(f"{path}: corrupt record on line {i + 1}") from None
+    return out
+
+
 def read_records(path):
     latest = {}
     if path.exists():
@@ -138,10 +165,16 @@ def read_records(path):
 
 def summarize(rows, latest, passes):
     def rates(labels):
+        labels = [x for x in labels if x != "abstain"]  # per-pass rates: questions with a label in that pass
         n = len(labels)
+        if not n:  # every question of a small group abstained in this pass
+            return {k: None for k in (*LABELS, "no_majority")} | {"n": 0}
         return {k: round(100 * sum(1 for x in labels if x == k) / n, 2) for k in (*LABELS, "no_majority")} | {"n": n}
 
     def mean_sd(values):
+        values = [v for v in values if v is not None]
+        if not values:
+            return {"mean": None, "sd": None}
         return {"mean": round(statistics.mean(values), 2),
                 "sd": round(statistics.stdev(values), 2) if len(values) > 1 else 0.0}
 
@@ -199,15 +232,27 @@ async def run(args, rows, complete):
             os.fsync(fh.fileno())
         latest[(row["query_id"], pass_id)] = record
 
+    def apply_abstentions():
+        """Amendment S4: parse_failed after --abstain-after resume cycles becomes a blank vote."""
+        if not getattr(args, "abstain_after", 0):
+            return
+        cycles = parse_failed_cycles(journal)
+        for key, record in latest.items():
+            if record["status"] == "parse_failed" and cycles[key] >= args.abstain_after:
+                latest[key] = dict(record, status="abstain", label="abstain")
+
+    apply_abstentions()
     with journal.open("a", encoding="utf-8") as fh:
         for pass_id in range(1, args.passes + 1):
             order = list(rows)
             random.Random(args.seed + pass_id).shuffle(order)  # Step_2_evaluate's order randomisation
-            todo = [r for r in order if latest.get((r["query_id"], pass_id), {}).get("status") != "ok"]
+            todo = [r for r in order
+                    if latest.get((r["query_id"], pass_id), {}).get("status") not in ("ok", "abstain")]
             if todo:
                 print(f"pass {pass_id}: judging {len(todo)}")
                 await asyncio.gather(*(one(r, pass_id, fh) for r in todo))
 
+    apply_abstentions()
     statuses = collections.Counter(latest[(r["query_id"], p)]["status"]
                                    for r in rows for p in range(1, args.passes + 1))
     with (args.run_dir / "per_question.csv").open("w", newline="", encoding="utf-8") as f:
@@ -216,13 +261,15 @@ async def run(args, rows, complete):
         for r in rows:
             labels = [latest[(r["query_id"], p)]["label"] or latest[(r["query_id"], p)]["status"]
                       for p in range(1, args.passes + 1)]
-            done = all(latest[(r["query_id"], p)]["status"] == "ok" for p in range(1, args.passes + 1))
+            done = all(latest[(r["query_id"], p)]["status"] in ("ok", "abstain") for p in range(1, args.passes + 1))
             w.writerow([r["query_id"], r["type"], *labels, majority(labels) if done else "incomplete"])
 
-    if set(statuses) != {"ok"}:
+    if not set(statuses) <= {"ok", "abstain"}:
         print(f"INCOMPLETE: {dict(statuses)} -- rerun with --resume; no summary written")
         return 1
     summary = {"status": "completed", "n_questions": len(rows), "passes": args.passes,
+               "abstain_after": getattr(args, "abstain_after", 0),
+               "abstained": sorted([q, p] for (q, p), r in latest.items() if r["status"] == "abstain"),
                "groups": summarize(rows, latest, args.passes)}
     (args.run_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     overall = summary["groups"]["all"]
@@ -246,6 +293,8 @@ def parser():
     p.add_argument("--invalid-tries", type=int, default=3, help="Asks per record before parse_failed")
     p.add_argument("--api-tries", type=int, default=6, help="API failures per record before judge_failed")
     p.add_argument("--api-wait", type=float, default=60.0, help="Seconds x failure count between API retries")
+    p.add_argument("--abstain-after", type=int, default=0,
+                   help="Amendment S4: a pass still parse_failed after this many resume cycles is a blank vote")
     return p
 
 

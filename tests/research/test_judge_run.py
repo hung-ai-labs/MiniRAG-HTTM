@@ -92,6 +92,11 @@ class LabelContractTests(unittest.TestCase):
         self.assertEqual(jr.majority(["accurate", "error", "accurate"]), "accurate")
         self.assertEqual(jr.majority(["accurate", "error", "neither"]), "no_majority")
 
+    def test_majority_with_a_blank_vote(self):
+        self.assertEqual(jr.majority(["error", "abstain", "error"]), "error")
+        self.assertEqual(jr.majority(["accurate", "abstain", "error"]), "no_majority")
+        self.assertEqual(jr.majority(["accurate", "abstain", "abstain"]), "no_majority")  # needs two votes
+
     def test_refuses_a_non_gemini_endpoint(self):
         with patch.dict(os.environ, {"GEMINI_API_BASE": "https://x--minirag-slm-serve.modal.run/v1"}):
             with self.assertRaisesRegex(ValueError, "not the Gemini endpoint"):
@@ -136,6 +141,30 @@ class RunTests(unittest.TestCase):
             write_inputs(Path(tmp), ["Yes", "Changed"])
             with self.assertRaisesRegex(ValueError, "refusing to resume"):
                 run(args_for(q, a, run_dir, resume=True), complete)
+
+    def test_parse_failed_becomes_a_blank_vote_only_after_enough_cycles(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            q, a = write_inputs(Path(tmp), ["Yes", "No"])
+            run_dir = Path(tmp) / "judge"
+
+            def stubborn(prompt_text, n):  # q1 pass 3 never gets a valid label
+                if "q1" in prompt_text and n > 2:  # passes share the prompt: calls 1-2 are passes 1-2
+                    return "Let me reason... error"
+                return "error" if "q1" in prompt_text else "accurate"
+
+            complete, _ = scripted(stubborn)
+            self.assertEqual(run(args_for(q, a, run_dir), complete), 1)
+            for cycle in (2, 3):
+                args = args_for(q, a, run_dir, resume=True)
+                args.abstain_after = 3
+                code = run(args, complete)
+                self.assertEqual(code, 0 if cycle == 3 else 1)  # blank only once 3 cycles have failed
+            summary = json.loads((run_dir / "summary.json").read_text())
+            self.assertEqual((summary["abstained"], summary["abstain_after"]), ([["mhr-0001", 3]], 3))
+            with open(run_dir / "per_question.csv", encoding="utf-8") as f:
+                row = list(csv.DictReader(f))[1]
+            self.assertEqual((row["pass3"], row["majority"]), ("abstain", "error"))
+            self.assertEqual(summary["groups"]["all"]["per_pass"][2]["n"], 1)  # pass 3 rates over labeled only
 
     def test_torn_last_record_is_rejudged_but_corruption_inside_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:

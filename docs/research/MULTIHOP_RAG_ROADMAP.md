@@ -331,3 +331,14 @@ chấm bắt đầu 09:57 UTC, dừng có chủ đích lúc ≈ 10:40 UTC vì m�
 Để giữ luật "các cấu hình được so chấm liền nhau trong một phiên", 602 phán quyết đó được **cất nguyên trạng, không đọc,
 không dùng** (`runs/multihop_rag/dev400/C0_s101/judge_partial_unread_20261026/`), và **cả bốn cấu hình được chấm lại từ đầu
 trong một phiên**. Không có câu trả lời nào bị sinh lại.
+
+**S4 — 31/10/2026: lượt chấm không bao giờ ra nhãn hợp lệ được tính là phiếu trống.** Khai báo **trước khi chạy bất kỳ
+phép so nào** (chưa đọc kết quả của cấu hình nào).
+- *Sự việc:* sau khi chấm lại (30/10), còn 4/4.800 lượt `parse_failed` (C1 `mhr-1811`, C2 `mhr-0682`, C3 `mhr-0150`,
+  `mhr-1820`, đều ở lượt 3): mỗi lượt đã hỏi 9 lần (3 vòng resume × 3), lần nào judge cũng viết lập luận rồi mới nêu nhãn,
+  và các lần tự mâu thuẫn nhau. Đều là câu khó: Yes/No hai vế, phủ định kép, câu Null bị bịa đáp án.
+- *Quy tắc:* một lượt `parse_failed` sau **≥ 3 vòng** resume được ghi `abstain` — không phải nhãn, không suy từ lập luận.
+  Phán quyết đa số lấy trên các lượt có nhãn: cần **≥ 2** phiếu hợp lệ, nhãn được > một nửa số phiếu hợp lệ thì thắng, còn
+  lại `no_majority` (tính là không-`accurate`). Câu vẫn ở trong mẫu số. Mean ± sd theo lượt tính trên các câu có nhãn ở lượt
+  đó (n từng lượt được báo). `judge_failed` (lỗi API) **không** bao giờ thành phiếu trống — phải chấm lại.
+- *Cài đặt:* `judge_run.py --abstain-after 3`.

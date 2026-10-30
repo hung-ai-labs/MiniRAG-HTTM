@@ -1,0 +1,24 @@
+{
+  "registration_commit": "7013291",
+  "head_commit": "790e0171a9e4e7c542aabc41993f48a37bff41ca",
+  "written_at": "2026-10-26T09:51:29.876614+00:00",
+  "config": "C3",
+  "seed": 101,
+  "mode": "naive",
+  "phase": "contexts",
+  "questions": "dataset\\MultiHop-RAG\\splits\\dev400.csv",
+  "questions_sha256": "4633ef777b747ef0fb8cca86457454eed64680432d899a3d5410afce2b63ef77",
+  "index_manifest_sha256": "39b2a8e52b8e90c1cd9b5c92a30f0fecac69adf14bef4bbe842ddfc79b71764d",
+  "environment": {
+    "MINIRAG_ANSWER_TYPE_FIX": "1",
+    "MINIRAG_PATH2CHUNK_FIX": "0",
+    "MINIRAG_CHUNK_CUT": "",
+    "MINIRAG_MAX_TOKENS": "1024",
+    "MINIRAG_CHUNK_FUSION": "",
+    "MINIRAG_TRUNCATE_SOURCES": "1 (code default, not set explicitly)"
+  },
+  "python_hash_seed": 13,
+  "workers": 3,
+  "kw_cache_sha256": null,
+  "environment_corrected": "26/10/2026: the note was written before apply_env ran, so this field was empty; filled from the config table that the worker processes applied"
+}

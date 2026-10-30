@@ -1,0 +1,206 @@
+{
+  "a": "C0",
+  "b": "C1",
+  "types": "all",
+  "overall": {
+    "n": 400,
+    "primary_accurate": {
+      "acc_a": 55.25,
+      "acc_b": 67.75,
+      "diff": 12.5,
+      "up": 92,
+      "down": 42,
+      "p": 1.8706159525938798e-05,
+      "ci95": [
+        7.0,
+        18.0
+      ],
+      "noninferior_at_-3": true
+    },
+    "secondary_error": {
+      "err_a": 29.0,
+      "err_b": 27.0,
+      "fewer_errors": 62,
+      "more_errors": 54,
+      "p": 0.5159130749957945
+    },
+    "described": {
+      "a": {
+        "neither": 15.25,
+        "no_majority": 0.5
+      },
+      "b": {
+        "neither": 5.0,
+        "no_majority": 0.25
+      }
+    }
+  },
+  "by_type": {
+    "comparison": {
+      "n": 134,
+      "primary_accurate": {
+        "acc_a": 49.25,
+        "acc_b": 60.45,
+        "diff": 11.2,
+        "up": 34,
+        "down": 19,
+        "p": 0.053438810537711046,
+        "ci95": [
+          0.75,
+          21.64
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 37.31,
+        "err_b": 37.31,
+        "fewer_errors": 26,
+        "more_errors": 26,
+        "p": 1.0
+      },
+      "described": {
+        "a": {
+          "neither": 13.43,
+          "no_majority": 0.0
+        },
+        "b": {
+          "neither": 2.24,
+          "no_majority": 0.0
+        }
+      }
+    },
+    "inference": {
+      "n": 128,
+      "primary_accurate": {
+        "acc_a": 67.19,
+        "acc_b": 85.16,
+        "diff": 17.97,
+        "up": 29,
+        "down": 6,
+        "p": 0.0001168418675661087,
+        "ci95": [
+          9.38,
+          26.56
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 17.97,
+        "err_b": 13.28,
+        "fewer_errors": 17,
+        "more_errors": 11,
+        "p": 0.34492845088243484
+      },
+      "described": {
+        "a": {
+          "neither": 14.84,
+          "no_majority": 0.0
+        },
+        "b": {
+          "neither": 1.56,
+          "no_majority": 0.0
+        }
+      }
+    },
+    "null": {
+      "n": 47,
+      "primary_accurate": {
+        "acc_a": 51.06,
+        "acc_b": 59.57,
+        "diff": 8.51,
+        "up": 11,
+        "down": 7,
+        "p": 0.480682373046875,
+        "ci95": [
+          -8.51,
+          25.53
+        ],
+        "noninferior_at_-3": false
+      },
+      "secondary_error": {
+        "err_a": 25.53,
+        "err_b": 27.66,
+        "fewer_errors": 6,
+        "more_errors": 7,
+        "p": 1.0
+      },
+      "described": {
+        "a": {
+          "neither": 21.28,
+          "no_majority": 2.13
+        },
+        "b": {
+          "neither": 10.64,
+          "no_majority": 2.13
+        }
+      }
+    },
+    "temporal": {
+      "n": 91,
+      "primary_accurate": {
+        "acc_a": 49.45,
+        "acc_b": 58.24,
+        "diff": 8.79,
+        "up": 18,
+        "down": 10,
+        "p": 0.1849333420395851,
+        "ci95": [
+          -2.2,
+          19.78
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 34.07,
+        "err_b": 30.77,
+        "fewer_errors": 13,
+        "more_errors": 10,
+        "p": 0.6776394844055176
+      },
+      "described": {
+        "a": {
+          "neither": 15.38,
+          "no_majority": 1.1
+        },
+        "b": {
+          "neither": 10.99,
+          "no_majority": 0.0
+        }
+      }
+    }
+  },
+  "pass_mean_sd": {
+    "C0": {
+      "accurate": {
+        "mean": 55.58,
+        "sd": 0.38
+      },
+      "error": {
+        "mean": 29.08,
+        "sd": 0.76
+      },
+      "neither": {
+        "mean": 15.33,
+        "sd": 0.52
+      }
+    },
+    "C1": {
+      "accurate": {
+        "mean": 67.39,
+        "sd": 0.67
+      },
+      "error": {
+        "mean": 27.27,
+        "sd": 0.89
+      },
+      "neither": {
+        "mean": 5.34,
+        "sd": 0.52
+      }
+    }
+  },
+  "early_exit": {
+    "C0": 0,
+    "C1": 0
+  }
+}

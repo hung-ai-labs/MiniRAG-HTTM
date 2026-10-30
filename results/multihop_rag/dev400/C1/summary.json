@@ -1,0 +1,249 @@
+{
+  "status": "completed",
+  "n_questions": 400,
+  "passes": 3,
+  "abstain_after": 3,
+  "abstained": [
+    [
+      "mhr-1811",
+      3
+    ]
+  ],
+  "groups": {
+    "all": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 67.75,
+        "error": 27.0,
+        "neither": 5.0,
+        "no_majority": 0.25,
+        "n": 400
+      },
+      "per_pass": [
+        {
+          "accurate": 67.5,
+          "error": 27.75,
+          "neither": 4.75,
+          "no_majority": 0.0,
+          "n": 400
+        },
+        {
+          "accurate": 68.0,
+          "error": 26.25,
+          "neither": 5.75,
+          "no_majority": 0.0,
+          "n": 400
+        },
+        {
+          "accurate": 66.67,
+          "error": 27.82,
+          "neither": 5.51,
+          "no_majority": 0.0,
+          "n": 399
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 67.39,
+          "sd": 0.67
+        },
+        "error": {
+          "mean": 27.27,
+          "sd": 0.89
+        },
+        "neither": {
+          "mean": 5.34,
+          "sd": 0.52
+        }
+      }
+    },
+    "comparison": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 60.45,
+        "error": 37.31,
+        "neither": 2.24,
+        "no_majority": 0.0,
+        "n": 134
+      },
+      "per_pass": [
+        {
+          "accurate": 59.7,
+          "error": 38.06,
+          "neither": 2.24,
+          "no_majority": 0.0,
+          "n": 134
+        },
+        {
+          "accurate": 62.69,
+          "error": 35.07,
+          "neither": 2.24,
+          "no_majority": 0.0,
+          "n": 134
+        },
+        {
+          "accurate": 60.15,
+          "error": 37.59,
+          "neither": 2.26,
+          "no_majority": 0.0,
+          "n": 133
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 60.85,
+          "sd": 1.61
+        },
+        "error": {
+          "mean": 36.91,
+          "sd": 1.61
+        },
+        "neither": {
+          "mean": 2.25,
+          "sd": 0.01
+        }
+      }
+    },
+    "inference": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 85.16,
+        "error": 13.28,
+        "neither": 1.56,
+        "no_majority": 0.0,
+        "n": 128
+      },
+      "per_pass": [
+        {
+          "accurate": 85.16,
+          "error": 13.28,
+          "neither": 1.56,
+          "no_majority": 0.0,
+          "n": 128
+        },
+        {
+          "accurate": 85.16,
+          "error": 13.28,
+          "neither": 1.56,
+          "no_majority": 0.0,
+          "n": 128
+        },
+        {
+          "accurate": 83.59,
+          "error": 14.06,
+          "neither": 2.34,
+          "no_majority": 0.0,
+          "n": 128
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 84.64,
+          "sd": 0.91
+        },
+        "error": {
+          "mean": 13.54,
+          "sd": 0.45
+        },
+        "neither": {
+          "mean": 1.82,
+          "sd": 0.45
+        }
+      }
+    },
+    "null": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 59.57,
+        "error": 27.66,
+        "neither": 10.64,
+        "no_majority": 2.13,
+        "n": 47
+      },
+      "per_pass": [
+        {
+          "accurate": 63.83,
+          "error": 27.66,
+          "neither": 8.51,
+          "no_majority": 0.0,
+          "n": 47
+        },
+        {
+          "accurate": 53.19,
+          "error": 29.79,
+          "neither": 17.02,
+          "no_majority": 0.0,
+          "n": 47
+        },
+        {
+          "accurate": 57.45,
+          "error": 29.79,
+          "neither": 12.77,
+          "no_majority": 0.0,
+          "n": 47
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 58.16,
+          "sd": 5.36
+        },
+        "error": {
+          "mean": 29.08,
+          "sd": 1.23
+        },
+        "neither": {
+          "mean": 12.77,
+          "sd": 4.26
+        }
+      }
+    },
+    "temporal": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 58.24,
+        "error": 30.77,
+        "neither": 10.99,
+        "no_majority": 0.0,
+        "n": 91
+      },
+      "per_pass": [
+        {
+          "accurate": 56.04,
+          "error": 32.97,
+          "neither": 10.99,
+          "no_majority": 0.0,
+          "n": 91
+        },
+        {
+          "accurate": 59.34,
+          "error": 29.67,
+          "neither": 10.99,
+          "no_majority": 0.0,
+          "n": 91
+        },
+        {
+          "accurate": 57.14,
+          "error": 31.87,
+          "neither": 10.99,
+          "no_majority": 0.0,
+          "n": 91
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 57.51,
+          "sd": 1.68
+        },
+        "error": {
+          "mean": 31.5,
+          "sd": 1.68
+        },
+        "neither": {
+          "mean": 10.99,
+          "sd": 0.0
+        }
+      }
+    }
+  }
+}

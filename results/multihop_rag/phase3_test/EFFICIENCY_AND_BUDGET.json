@@ -1,0 +1,175 @@
+{
+  "at": "2026-10-30T15:03:48.317459+00:00",
+  "request_trace_totals": {
+    "keywords": {
+      "attempts": 6789,
+      "successful_http": 6468,
+      "http_errors": 321,
+      "prompt_tokens_known_sum": 15748599,
+      "completion_tokens_known_sum": 361517,
+      "http_latency_known_sum_s": 28280.369000000002
+    },
+    "generation": {
+      "attempts": 12939,
+      "successful_http": 12936,
+      "http_errors": 3,
+      "prompt_tokens_known_sum": 54212527,
+      "completion_tokens_known_sum": 3495321,
+      "http_latency_known_sum_s": 317759.227
+    },
+    "judge": {
+      "attempts": 49289,
+      "successful_http": 39680,
+      "http_errors": 9609,
+      "prompt_tokens_known_sum": 18199221,
+      "completion_tokens_known_sum": 202184,
+      "http_latency_known_sum_s": 139852.071
+    }
+  },
+  "phase3_elapsed_to_new_votes_s": 244456.256843,
+  "qwen_stage_budget": {
+    "consumed_stage_s": 12210.752614599975,
+    "stages": [
+      {
+        "stage": "keywords_s101",
+        "started_at": "2026-10-27T18:54:56.569007+00:00",
+        "elapsed_s": 578.756,
+        "finished_at": "2026-10-27T19:04:35.325276+00:00",
+        "exit_code": "terminated_for_sandbox_network_recovery",
+        "reconciled": true,
+        "note": "Charged elapsed wall time conservatively; preserved journal/checkpoint; no budget increase."
+      },
+      {
+        "stage": "keywords_s101",
+        "started_at": "2026-10-27T19:05:17.591816+00:00",
+        "elapsed_s": 315.22,
+        "finished_at": "2026-10-27T19:10:32.812148+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C0_s101",
+        "started_at": "2026-10-27T22:25:24.576789+00:00",
+        "elapsed_s": 1680.799,
+        "finished_at": "2026-10-27T22:53:25.375878+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C1_s101",
+        "started_at": "2026-10-27T22:53:25.432441+00:00",
+        "elapsed_s": 1619.96,
+        "finished_at": "2026-10-27T23:20:25.392708+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "keywords_s202",
+        "started_at": "2026-10-27T23:20:25.508656+00:00",
+        "elapsed_s": 316.917,
+        "finished_at": "2026-10-27T23:25:42.426071+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "keywords_s101",
+        "started_at": "2026-10-28T01:05:38.966247+00:00",
+        "elapsed_s": 62.509,
+        "finished_at": "2026-10-28T01:06:41.475385+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C0_s101",
+        "started_at": "2026-10-28T01:07:32.834357+00:00",
+        "elapsed_s": 34.513,
+        "finished_at": "2026-10-28T01:08:07.347666+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C1_s101",
+        "started_at": "2026-10-28T01:08:07.404370+00:00",
+        "elapsed_s": 18.482,
+        "finished_at": "2026-10-28T01:08:25.886036+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "keywords_s202",
+        "started_at": "2026-10-28T01:08:25.987052+00:00",
+        "elapsed_s": 21.51,
+        "finished_at": "2026-10-28T01:08:47.496925+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "keywords_s202",
+        "started_at": "2026-10-28T02:15:48.150781+00:00",
+        "elapsed_s": 28.044,
+        "finished_at": "2026-10-28T02:16:16.195291+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C0_s202",
+        "started_at": "2026-10-28T06:57:23.011296+00:00",
+        "elapsed_s": 1797.705,
+        "finished_at": "2026-10-28T07:27:20.716212+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C1_s202",
+        "started_at": "2026-10-28T07:27:20.800489+00:00",
+        "elapsed_s": 1703.584,
+        "finished_at": "2026-10-28T07:55:44.385701+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "keywords_s303",
+        "started_at": "2026-10-28T07:55:44.508295+00:00",
+        "elapsed_s": 385.81,
+        "finished_at": "2026-10-28T08:02:10.317954+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "keywords_s303",
+        "started_at": "2026-10-28T11:10:10.854049+00:00",
+        "elapsed_s": 57.011,
+        "finished_at": "2026-10-28T11:11:07.864758+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C0_s303",
+        "started_at": "2026-10-28T14:33:13.373472+00:00",
+        "elapsed_s": 1906.304,
+        "finished_at": "2026-10-28T15:04:59.678688+00:00",
+        "exit_code": 0
+      },
+      {
+        "stage": "answers_C1_s303",
+        "started_at": "2026-10-28T15:04:59.766982+00:00",
+        "elapsed_s": 1683.628,
+        "finished_at": "2026-10-28T15:33:03.395159+00:00",
+        "exit_code": 0
+      }
+    ]
+  },
+  "frozen_planning_estimate": {
+    "status": "estimate_with_runtime_guard",
+    "at": "2026-10-27T18:36:08.021983+00:00",
+    "total_ceiling_vnd": 1000000,
+    "gpu_stage_wall_time_cap_hours": 8,
+    "gpu_idle_load_reserve_hours": 1,
+    "modal_gpu_usd_per_second": 0.000306,
+    "official_price_source": "https://modal.com/pricing",
+    "cpu_memory_overhead_factor_assumption": 1.5,
+    "fx_vnd_per_usd_conservative_assumption": 40000,
+    "prior_study_spend_reserve_vnd_assumption": 350000,
+    "expected_phase3_qwen_stage_hours_from_dev": 4.71625,
+    "estimated_phase3_vnd_with_assumptions": 594864,
+    "estimated_total_vnd_with_assumptions": 944864,
+    "billing_actual_known": false,
+    "caveats": [
+      "Runtime cap and arithmetic estimate are not a provider-enforced billing ceiling.",
+      "CPU/memory multiplier, FX bound and prior spend reserve are planning assumptions, not observed billing or exchange quotes.",
+      "Model load and configured 300-second container idle periods can be billed.",
+      "No credits are bought and no billing tier is activated.",
+      "Gemini continues with the configured credentials/limiter; successful preflight requests do not reveal remaining RPD."
+    ]
+  },
+  "actual_billing_known": false,
+  "unknown_token_usage_is_not_zero": true,
+  "note_vi": "Số token là tổng quan sát ở request thành công, không bao gồm usage chưa biết của request lỗi. Tổng latency HTTP không phải wall-time. Elapsed gồm CPU, quota wait và gián đoạn; không phải giờ GPU billing. Không mua credits hay tăng paid tier."
+}

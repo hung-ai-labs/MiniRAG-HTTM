@@ -1,0 +1,206 @@
+{
+  "a": "C0",
+  "b": "C2",
+  "types": "all",
+  "overall": {
+    "n": 400,
+    "primary_accurate": {
+      "acc_a": 55.25,
+      "acc_b": 64.25,
+      "diff": 9.0,
+      "up": 87,
+      "down": 51,
+      "p": 0.002754339804126484,
+      "ci95": [
+        3.5,
+        14.75
+      ],
+      "noninferior_at_-3": true
+    },
+    "secondary_error": {
+      "err_a": 29.0,
+      "err_b": 25.25,
+      "fewer_errors": 65,
+      "more_errors": 50,
+      "p": 0.19149593512028196
+    },
+    "described": {
+      "a": {
+        "neither": 15.25,
+        "no_majority": 0.5
+      },
+      "b": {
+        "neither": 10.5,
+        "no_majority": 0.0
+      }
+    }
+  },
+  "by_type": {
+    "comparison": {
+      "n": 134,
+      "primary_accurate": {
+        "acc_a": 49.25,
+        "acc_b": 60.45,
+        "diff": 11.2,
+        "up": 34,
+        "down": 19,
+        "p": 0.053438810537711046,
+        "ci95": [
+          0.75,
+          21.64
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 37.31,
+        "err_b": 31.34,
+        "fewer_errors": 29,
+        "more_errors": 21,
+        "p": 0.3222363203575469
+      },
+      "described": {
+        "a": {
+          "neither": 13.43,
+          "no_majority": 0.0
+        },
+        "b": {
+          "neither": 8.21,
+          "no_majority": 0.0
+        }
+      }
+    },
+    "inference": {
+      "n": 128,
+      "primary_accurate": {
+        "acc_a": 67.19,
+        "acc_b": 77.34,
+        "diff": 10.15,
+        "up": 25,
+        "down": 12,
+        "p": 0.04703102743951604,
+        "ci95": [
+          0.78,
+          19.53
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 17.97,
+        "err_b": 15.62,
+        "fewer_errors": 15,
+        "more_errors": 12,
+        "p": 0.7011080384254456
+      },
+      "described": {
+        "a": {
+          "neither": 14.84,
+          "no_majority": 0.0
+        },
+        "b": {
+          "neither": 7.03,
+          "no_majority": 0.0
+        }
+      }
+    },
+    "null": {
+      "n": 47,
+      "primary_accurate": {
+        "acc_a": 51.06,
+        "acc_b": 53.19,
+        "diff": 2.13,
+        "up": 10,
+        "down": 9,
+        "p": 1.0,
+        "ci95": [
+          -14.89,
+          21.28
+        ],
+        "noninferior_at_-3": false
+      },
+      "secondary_error": {
+        "err_a": 25.53,
+        "err_b": 23.4,
+        "fewer_errors": 4,
+        "more_errors": 3,
+        "p": 1.0
+      },
+      "described": {
+        "a": {
+          "neither": 21.28,
+          "no_majority": 2.13
+        },
+        "b": {
+          "neither": 23.4,
+          "no_majority": 0.0
+        }
+      }
+    },
+    "temporal": {
+      "n": 91,
+      "primary_accurate": {
+        "acc_a": 49.45,
+        "acc_b": 57.14,
+        "diff": 7.69,
+        "up": 18,
+        "down": 11,
+        "p": 0.26493089646101,
+        "ci95": [
+          -3.3,
+          19.78
+        ],
+        "noninferior_at_-3": false
+      },
+      "secondary_error": {
+        "err_a": 34.07,
+        "err_b": 30.77,
+        "fewer_errors": 17,
+        "more_errors": 14,
+        "p": 0.720100131817162
+      },
+      "described": {
+        "a": {
+          "neither": 15.38,
+          "no_majority": 1.1
+        },
+        "b": {
+          "neither": 12.09,
+          "no_majority": 0.0
+        }
+      }
+    }
+  },
+  "pass_mean_sd": {
+    "C0": {
+      "accurate": {
+        "mean": 55.58,
+        "sd": 0.38
+      },
+      "error": {
+        "mean": 29.08,
+        "sd": 0.76
+      },
+      "neither": {
+        "mean": 15.33,
+        "sd": 0.52
+      }
+    },
+    "C2": {
+      "accurate": {
+        "mean": 63.89,
+        "sd": 0.32
+      },
+      "error": {
+        "mean": 25.77,
+        "sd": 0.47
+      },
+      "neither": {
+        "mean": 10.34,
+        "sd": 0.59
+      }
+    }
+  },
+  "early_exit": {
+    "C0": 0,
+    "C2": 0
+  }
+}

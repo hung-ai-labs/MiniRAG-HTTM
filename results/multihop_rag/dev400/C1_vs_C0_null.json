@@ -1,0 +1,74 @@
+{
+  "a": "C0",
+  "b": "C1",
+  "types": [
+    "null"
+  ],
+  "overall": {
+    "n": 47,
+    "primary_accurate": {
+      "acc_a": 51.06,
+      "acc_b": 59.57,
+      "diff": 8.51,
+      "up": 11,
+      "down": 7,
+      "p": 0.480682373046875,
+      "ci95": [
+        -8.51,
+        25.53
+      ],
+      "noninferior_at_-3": false
+    },
+    "secondary_error": {
+      "err_a": 25.53,
+      "err_b": 27.66,
+      "fewer_errors": 6,
+      "more_errors": 7,
+      "p": 1.0
+    },
+    "described": {
+      "a": {
+        "neither": 21.28,
+        "no_majority": 2.13
+      },
+      "b": {
+        "neither": 10.64,
+        "no_majority": 2.13
+      }
+    }
+  },
+  "pass_mean_sd": {
+    "C0": {
+      "accurate": {
+        "mean": 55.58,
+        "sd": 0.38
+      },
+      "error": {
+        "mean": 29.08,
+        "sd": 0.76
+      },
+      "neither": {
+        "mean": 15.33,
+        "sd": 0.52
+      }
+    },
+    "C1": {
+      "accurate": {
+        "mean": 67.39,
+        "sd": 0.67
+      },
+      "error": {
+        "mean": 27.27,
+        "sd": 0.89
+      },
+      "neither": {
+        "mean": 5.34,
+        "sd": 0.52
+      }
+    }
+  },
+  "early_exit": {
+    "C0": 0,
+    "C1": 0
+  }
+}

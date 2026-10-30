@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-30T15:01:16.967687+00:00",
+  "tests_passed": 12,
+  "tests": {
+    "structured_rejudge": 7,
+    "amended_audit": 5
+  },
+  "production_new_http_requests": 3,
+  "production_valid_new_votes": 3,
+  "source_files": {
+    "reproduce/research/mhr_phase3_structured_rejudge.py": "20e3632b523973cc4fe01b108a8fae98eda81af0c2f2f128ab38624f5e156b0c",
+    "reproduce/research/mhr_phase3_amended_analysis.py": "3efe8c2c64ce1fe529519b47d5ea0e67480b41c773920e6e51b3bda97ee61ad1",
+    "tests/research/test_mhr_phase3_structured_rejudge.py": "ac2b5e86a6ffb81b8ced0e00a9dcf4ee29c0b59c7fa4d59c0d1fb8dddbe5e63f",
+    "tests/research/test_mhr_phase3_amended_analysis.py": "2be940fd33f70511ccdeb742685d0ff6b9e6b1ff0d260dcb142b97f07f1c9f7a"
+  },
+  "original_files_modified": false
+}

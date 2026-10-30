@@ -1,0 +1,13 @@
+{
+  "primary_seed101_positive_significant_for_every_hypothetical_majority": true,
+  "seed101_primary_effect_range_pp": [
+    9.369202226345083,
+    9.415584415584416
+  ],
+  "new_labels_from_api": {
+    "1": "error",
+    "2": "error",
+    "3": "error"
+  },
+  "hypothetical_labels_are_not_observed_votes": true
+}

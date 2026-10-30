@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-30T15:03:48.370109+00:00",
+  "status": "passed",
+  "valid_votes": 38808,
+  "answer_rows": 12936,
+  "per_question_coverage_and_majority_verified": true,
+  "independent_exact_mcnemar_all_groups_verified": true,
+  "effect_size_arithmetic_verified": true,
+  "original_journals_unchanged": true,
+  "jsonl_journals_checked": 109,
+  "original_source_hashes_match": true,
+  "new_unit_tests_passed": 12,
+  "model_calls_during_analysis": 0
+}

@@ -1,0 +1,49 @@
+MULTIHOP-RAG PHASE3 — GEMINI V1 + A1
+Code repository: https://github.com/hung-ai-labs/MiniRAG-HTTM
+Branch: codex/mhr-phase3-acceleration
+Commit: b640765fb6ac46a817d3d221e2d652240f9e0c6c
+Python used: E:/Project/MiniRAG/.venv/Scripts/python.exe
+Workspace: C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20
+Read-only original repository: E:/Project/MiniRAG
+Frozen original run: C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20\work\phase3\test_run
+Amendment: C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20\outputs\phase3_acceleration\structured_rejudge_20261030
+
+Original V1 strict remains38805/38808valid. The separately versioned evaluation
+uses3new Gemini schema-constrained responses and is complete38808/38808.
+All12936QA records and original valid votes are preserved. No extra ablations.
+No semantic ground-truth/human calibration is implied by schema validity.
+
+From work/phase3-share, set PYTHONUTF8=1 and PYTHONDONTWRITEBYTECODE=1.
+Keep source bytes with LF when restoring code: source hashes are byte-level.
+
+OFFLINE TESTS (zero API calls):
+python -m unittest tests.research.test_mhr_phase3_structured_rejudge
+python -m unittest tests.research.test_mhr_phase3_amended_analysis
+12 tests passed. Original85pre-test checks and22recovery/queue checks remain
+historical passed validation; unchanged packages were not unnecessarily rerun.
+
+OFFLINE ANALYSIS (saved native rejudge ledger required; no API calls):
+python reproduce/research/mhr_phase3_amended_analysis.py
+  --workspace "C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20"
+  --repo "E:/Project/MiniRAG"
+  --run-root "C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20\work\phase3\test_run"
+  --amendment "C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20\outputs\phase3_acceleration\structured_rejudge_20261030"
+  --out "A_NEW_EMPTY_OUTPUT_DIRECTORY"
+
+The extra publication tables about elapsed time, budget and complete JSONL
+journal hashes are delivery audits, not changes to the statistical engine.
+All paired tests use the frozen compare_mhr.py and bootstrap10,000,seed13,
+separately per generation seed. No query is dropped or denominator reduced.
+
+PLOT (optional plotting dependencies isolated from the research runtime):
+python reproduce/research/plot_mhr_phase3_report.py
+  --results "A_NEW_EMPTY_OUTPUT_DIRECTORY/TEST_RESULTS.json"
+  --out "A_NEW_EMPTY_OUTPUT_DIRECTORY/figures"
+  --plot-dependencies "C:\Users\nguye\Documents\Codex\2026-10-26\x20-x20\work\phase3\plot_dependencies"
+
+Do not reexecute network judging to reproduce statistics. The structured
+rejudge CLI has idempotent resume and persisted six-request budget; all three
+slots are complete and no further network judging is authorized here.
+Use RAW_DATA_REFERENCES.json for raw journal/QA/hash locations and
+structured_rejudge_20261030/AMENDMENT.json plus events.jsonl for provenance.
+All CPU/HTTP wall and frozen budget estimates are distinct from actual billing.

@@ -1,0 +1,96 @@
+{
+  "at": "2026-10-30T14:49:12.817959+00:00",
+  "identity_sha256": "141e0a6cbb73524fb70c0f180b8b01bff9589528c31d2e5c62b5e6f249ffb820",
+  "votes": [
+    {
+      "query_id": "mhr-1114",
+      "pass": 1,
+      "seed": 101,
+      "config": "C1",
+      "at": "2026-10-30T14:49:01.566104+00:00",
+      "event": "response",
+      "attempt": 1,
+      "identity_sha256": "141e0a6cbb73524fb70c0f180b8b01bff9589528c31d2e5c62b5e6f249ffb820",
+      "ok": true,
+      "raw": "{\n  \"label\": \"error\"\n}",
+      "finish_reason": "stop",
+      "response_model": "gemini-flash-lite-latest",
+      "requests": [
+        {
+          "request_model": "gemini-flash-lite-latest",
+          "max_tokens": null,
+          "seed": null,
+          "prompt_sha256": "65dd0e6a52dbe2e5fca58a28d168874ca1206139610669c4945a1cf0d8540f35",
+          "ok": true,
+          "latency_s": 10.535,
+          "response_model": "gemini-flash-lite-latest",
+          "finish_reason": "stop",
+          "prompt_tokens": 681,
+          "completion_tokens": 11,
+          "response_text": "{\n  \"label\": \"error\"\n}"
+        }
+      ],
+      "label": "error"
+    },
+    {
+      "query_id": "mhr-1114",
+      "pass": 2,
+      "seed": 101,
+      "config": "C1",
+      "at": "2026-10-30T14:49:07.083195+00:00",
+      "event": "response",
+      "attempt": 1,
+      "identity_sha256": "141e0a6cbb73524fb70c0f180b8b01bff9589528c31d2e5c62b5e6f249ffb820",
+      "ok": true,
+      "raw": "{\n  \"label\": \"error\"\n}",
+      "finish_reason": "stop",
+      "response_model": "gemini-flash-lite-latest",
+      "requests": [
+        {
+          "request_model": "gemini-flash-lite-latest",
+          "max_tokens": null,
+          "seed": null,
+          "prompt_sha256": "65dd0e6a52dbe2e5fca58a28d168874ca1206139610669c4945a1cf0d8540f35",
+          "ok": true,
+          "latency_s": 5.473,
+          "response_model": "gemini-flash-lite-latest",
+          "finish_reason": "stop",
+          "prompt_tokens": 681,
+          "completion_tokens": 11,
+          "response_text": "{\n  \"label\": \"error\"\n}"
+        }
+      ],
+      "label": "error"
+    },
+    {
+      "query_id": "mhr-1114",
+      "pass": 3,
+      "seed": 101,
+      "config": "C1",
+      "at": "2026-10-30T14:49:12.749951+00:00",
+      "event": "response",
+      "attempt": 1,
+      "identity_sha256": "141e0a6cbb73524fb70c0f180b8b01bff9589528c31d2e5c62b5e6f249ffb820",
+      "ok": true,
+      "raw": "{\n  \"label\": \"error\"\n}",
+      "finish_reason": "stop",
+      "response_model": "gemini-flash-lite-latest",
+      "requests": [
+        {
+          "request_model": "gemini-flash-lite-latest",
+          "max_tokens": null,
+          "seed": null,
+          "prompt_sha256": "65dd0e6a52dbe2e5fca58a28d168874ca1206139610669c4945a1cf0d8540f35",
+          "ok": true,
+          "latency_s": 5.635,
+          "response_model": "gemini-flash-lite-latest",
+          "finish_reason": "stop",
+          "prompt_tokens": 681,
+          "completion_tokens": 11,
+          "response_text": "{\n  \"label\": \"error\"\n}"
+        }
+      ],
+      "label": "error"
+    }
+  ]
+}

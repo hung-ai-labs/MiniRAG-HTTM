@@ -1,0 +1,169 @@
+{
+  "status": "hypothetical_sensitivity_not_substitute_labels",
+  "affected_query": "mhr-1114",
+  "affected_seed": 101,
+  "scenarios": [
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "accurate",
+      "group": "all",
+      "metric": "accurate",
+      "n": 2156,
+      "C1_minus_C0_pp": 9.415584415584416,
+      "up": 457,
+      "down": 254,
+      "exact_two_sided_mcnemar_p": 2.3994575931622812e-14
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "accurate",
+      "group": "all",
+      "metric": "error",
+      "n": 2156,
+      "C1_minus_C0_pp": -3.014842300556586,
+      "up": 273,
+      "down": 338,
+      "exact_two_sided_mcnemar_p": 0.009564615352145997
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "accurate",
+      "group": "null",
+      "metric": "accurate",
+      "n": 254,
+      "C1_minus_C0_pp": 0.3937007874015748,
+      "up": 46,
+      "down": 45,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "accurate",
+      "group": "null",
+      "metric": "error",
+      "n": 254,
+      "C1_minus_C0_pp": 0.0,
+      "up": 34,
+      "down": 34,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "error",
+      "group": "all",
+      "metric": "accurate",
+      "n": 2156,
+      "C1_minus_C0_pp": 9.369202226345083,
+      "up": 456,
+      "down": 254,
+      "exact_two_sided_mcnemar_p": 3.0926718326321683e-14
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "error",
+      "group": "all",
+      "metric": "error",
+      "n": 2156,
+      "C1_minus_C0_pp": -2.968460111317254,
+      "up": 273,
+      "down": 337,
+      "exact_two_sided_mcnemar_p": 0.010688497684941206
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "error",
+      "group": "null",
+      "metric": "accurate",
+      "n": 254,
+      "C1_minus_C0_pp": 0.0,
+      "up": 45,
+      "down": 45,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "error",
+      "group": "null",
+      "metric": "error",
+      "n": 254,
+      "C1_minus_C0_pp": 0.3937007874015748,
+      "up": 34,
+      "down": 33,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "neither",
+      "group": "all",
+      "metric": "accurate",
+      "n": 2156,
+      "C1_minus_C0_pp": 9.369202226345083,
+      "up": 456,
+      "down": 254,
+      "exact_two_sided_mcnemar_p": 3.0926718326321683e-14
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "neither",
+      "group": "all",
+      "metric": "error",
+      "n": 2156,
+      "C1_minus_C0_pp": -3.014842300556586,
+      "up": 273,
+      "down": 338,
+      "exact_two_sided_mcnemar_p": 0.009564615352145997
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "neither",
+      "group": "null",
+      "metric": "accurate",
+      "n": 254,
+      "C1_minus_C0_pp": 0.0,
+      "up": 45,
+      "down": 45,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "neither",
+      "group": "null",
+      "metric": "error",
+      "n": 254,
+      "C1_minus_C0_pp": 0.0,
+      "up": 34,
+      "down": 34,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "no_majority",
+      "group": "all",
+      "metric": "accurate",
+      "n": 2156,
+      "C1_minus_C0_pp": 9.369202226345083,
+      "up": 456,
+      "down": 254,
+      "exact_two_sided_mcnemar_p": 3.0926718326321683e-14
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "no_majority",
+      "group": "all",
+      "metric": "error",
+      "n": 2156,
+      "C1_minus_C0_pp": -3.014842300556586,
+      "up": 273,
+      "down": 338,
+      "exact_two_sided_mcnemar_p": 0.009564615352145997
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "no_majority",
+      "group": "null",
+      "metric": "accurate",
+      "n": 254,
+      "C1_minus_C0_pp": 0.0,
+      "up": 45,
+      "down": 45,
+      "exact_two_sided_mcnemar_p": 1.0
+    },
+    {
+      "hypothetical_C1_s101_mhr1114_majority": "no_majority",
+      "group": "null",
+      "metric": "error",
+      "n": 254,
+      "C1_minus_C0_pp": 0.0,
+      "up": 34,
+      "down": 34,
+      "exact_two_sided_mcnemar_p": 1.0
+    }
+  ],
+  "max_accuracy_shift_pp": 0.04638218923933209,
+  "max_null_error_shift_pp": 0.3937007874015748
+}

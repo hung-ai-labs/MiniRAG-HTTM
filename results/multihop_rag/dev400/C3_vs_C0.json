@@ -1,0 +1,206 @@
+{
+  "a": "C0",
+  "b": "C3",
+  "types": "all",
+  "overall": {
+    "n": 400,
+    "primary_accurate": {
+      "acc_a": 55.25,
+      "acc_b": 64.75,
+      "diff": 9.5,
+      "up": 94,
+      "down": 56,
+      "p": 0.0024055162156063517,
+      "ci95": [
+        3.75,
+        15.5
+      ],
+      "noninferior_at_-3": true
+    },
+    "secondary_error": {
+      "err_a": 29.0,
+      "err_b": 25.25,
+      "fewer_errors": 77,
+      "more_errors": 62,
+      "p": 0.23493150329059706
+    },
+    "described": {
+      "a": {
+        "neither": 15.25,
+        "no_majority": 0.5
+      },
+      "b": {
+        "neither": 9.5,
+        "no_majority": 0.5
+      }
+    }
+  },
+  "by_type": {
+    "comparison": {
+      "n": 134,
+      "primary_accurate": {
+        "acc_a": 49.25,
+        "acc_b": 61.94,
+        "diff": 12.69,
+        "up": 37,
+        "down": 20,
+        "p": 0.033143967787505446,
+        "ci95": [
+          1.49,
+          23.13
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 37.31,
+        "err_b": 27.61,
+        "fewer_errors": 34,
+        "more_errors": 21,
+        "p": 0.10478948242660335
+      },
+      "described": {
+        "a": {
+          "neither": 13.43,
+          "no_majority": 0.0
+        },
+        "b": {
+          "neither": 9.7,
+          "no_majority": 0.75
+        }
+      }
+    },
+    "inference": {
+      "n": 128,
+      "primary_accurate": {
+        "acc_a": 67.19,
+        "acc_b": 82.03,
+        "diff": 14.84,
+        "up": 28,
+        "down": 9,
+        "p": 0.0025632079923525453,
+        "ci95": [
+          6.25,
+          24.22
+        ],
+        "noninferior_at_-3": true
+      },
+      "secondary_error": {
+        "err_a": 17.97,
+        "err_b": 15.62,
+        "fewer_errors": 15,
+        "more_errors": 12,
+        "p": 0.7011080384254456
+      },
+      "described": {
+        "a": {
+          "neither": 14.84,
+          "no_majority": 0.0
+        },
+        "b": {
+          "neither": 2.34,
+          "no_majority": 0.0
+        }
+      }
+    },
+    "null": {
+      "n": 47,
+      "primary_accurate": {
+        "acc_a": 51.06,
+        "acc_b": 44.68,
+        "diff": -6.38,
+        "up": 7,
+        "down": 10,
+        "p": 0.629058837890625,
+        "ci95": [
+          -23.4,
+          10.64
+        ],
+        "noninferior_at_-3": false
+      },
+      "secondary_error": {
+        "err_a": 25.53,
+        "err_b": 34.04,
+        "fewer_errors": 6,
+        "more_errors": 10,
+        "p": 0.454498291015625
+      },
+      "described": {
+        "a": {
+          "neither": 21.28,
+          "no_majority": 2.13
+        },
+        "b": {
+          "neither": 19.15,
+          "no_majority": 2.13
+        }
+      }
+    },
+    "temporal": {
+      "n": 91,
+      "primary_accurate": {
+        "acc_a": 49.45,
+        "acc_b": 54.95,
+        "diff": 5.5,
+        "up": 22,
+        "down": 17,
+        "p": 0.5223973804968409,
+        "ci95": [
+          -8.79,
+          18.68
+        ],
+        "noninferior_at_-3": false
+      },
+      "secondary_error": {
+        "err_a": 34.07,
+        "err_b": 30.77,
+        "fewer_errors": 22,
+        "more_errors": 19,
+        "p": 0.755228657504631
+      },
+      "described": {
+        "a": {
+          "neither": 15.38,
+          "no_majority": 1.1
+        },
+        "b": {
+          "neither": 14.29,
+          "no_majority": 0.0
+        }
+      }
+    }
+  },
+  "pass_mean_sd": {
+    "C0": {
+      "accurate": {
+        "mean": 55.58,
+        "sd": 0.38
+      },
+      "error": {
+        "mean": 29.08,
+        "sd": 0.76
+      },
+      "neither": {
+        "mean": 15.33,
+        "sd": 0.52
+      }
+    },
+    "C3": {
+      "accurate": {
+        "mean": 64.27,
+        "sd": 0.25
+      },
+      "error": {
+        "mean": 25.79,
+        "sd": 0.26
+      },
+      "neither": {
+        "mean": 9.93,
+        "sd": 0.12
+      }
+    }
+  },
+  "early_exit": {
+    "C0": 0,
+    "C3": 0
+  }
+}

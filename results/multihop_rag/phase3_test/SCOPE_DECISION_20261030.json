@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-30T11:55:53.769965+00:00",
+  "user_direction_vi": "Ưu tiên làm ablation LiHua-World trước; MultiHop hiện chỉ so B2 với baseline, không mở thêm ablation.",
+  "current_chat_scope": "MultiHop-RAG only",
+  "current_multihop_phase3": {
+    "configs": [
+      "C0",
+      "C1/B2"
+    ],
+    "test_queries": 2156,
+    "generation_seeds": [
+      101,
+      202,
+      303
+    ],
+    "judge_passes": 3,
+    "target_valid_votes": 38808,
+    "continue_original_gemini_v1": true,
+    "finish_audit_statistics_and_report": true
+  },
+  "followup_multihop_ablation": {
+    "execution_state": "DEFERRED_BY_USER_PENDING_PHASE3_REVIEW",
+    "priority": "After LiHua ablation; no additional configurations opened now",
+    "candidate_matrix_is_not_a_requirement": true,
+    "new_calls_authorized": false
+  },
+  "lihua": {
+    "priority": "Ablation first",
+    "execution_location": "Separate user-owned LiHua window",
+    "cross_thread_message_sent": false,
+    "no_new_lihua_job_started_here": true
+  },
+  "claim_scope": "MultiHop comparison estimates overall effect of B2 Sources ranking versus fixed C0 baseline; component contributions measured on LiHua must be described as LiHua evidence, not established on MultiHop.",
+  "judge_selection": "This scope clarification does not by itself change the stored future reporting-judge decision or authorize bulk Luna calls.",
+  "calls_by_this_scope_update": 0
+}

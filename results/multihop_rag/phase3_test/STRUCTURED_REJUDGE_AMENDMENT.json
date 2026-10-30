@@ -1,0 +1,54 @@
+{
+  "at": "2026-10-30T14:47:50.591774+00:00",
+  "identity": {
+    "evaluation_version": "Gemini-V1-plus-A1-structured-rejudge",
+    "model": "gemini-flash-lite-latest",
+    "source_manifest_sha256": "78476e5d89c55b8dc0754fafdeefd014c688163b0cd660a70ff047d3f50eb403",
+    "proof_sha256": "f83510abe04d9536ccc4174a840b96e7d4144c61fc9657c56edb3a5f219d46ba",
+    "script_sha256": "20e3632b523973cc4fe01b108a8fae98eda81af0c2f2f128ab38624f5e156b0c",
+    "prompt_template_sha256": "d1e49a3517ee71886412c643e239f6f1c82bcc51f10adbeba7c0aa31c12c5057",
+    "prompt_sha256": "65dd0e6a52dbe2e5fca58a28d168874ca1206139610669c4945a1cf0d8540f35",
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "phase3_judge_label",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "enum": [
+                "accurate",
+                "error",
+                "neither"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "passes": [
+      1,
+      2,
+      3
+    ],
+    "query_id": "mhr-1114",
+    "seed": 101,
+    "config": "C1",
+    "type": "null",
+    "max_http_per_slot": 2,
+    "max_http_total": 6,
+    "sampling": "provider defaults, as in original traces",
+    "authorization_vi": "ừm chấm lại 3 slot gemini nhé",
+    "original_38805_valid_votes_unchanged": true,
+    "first_valid_schema_response_per_slot": true,
+    "old_freeform_replies_not_reinterpreted": true,
+    "scope": "post-hoc output-format and bounded retry amendment; original rubric/input/model unchanged"
+  },
+  "identity_sha256": "141e0a6cbb73524fb70c0f180b8b01bff9589528c31d2e5c62b5e6f249ffb820"
+}

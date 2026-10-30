@@ -1,0 +1,55 @@
+MultiHop-RAG Phase3: authorized three-slot output-format amendment A1
+
+Original V1 is frozen and preserved at38805/38808valid votes. Its only terminal
+missing slots are C1/B2,s101,mhr-1114,passes1/2/3,after32outer cycles each.
+The user explicitly authorized new Gemini judgments on30Oct2026. This does not
+authorize old-response reparsing, another model, QA regeneration or more ablations.
+
+mhr_phase3_structured_rejudge.py verifies the original manifest, seven package
+files, source repo hashes, input/READY/answers and all six original judge journals.
+AMENDMENT.json freezes the same literal rubric, formatted input prompt hash and
+model alias. The first actual slot request also serves as schema compatibility
+check; no unrelated probe. response_format=json_schema restricts label to the
+three original categories. No sampling options are added. The adapter uses the
+existing backend's pool/client because the frozen high-level function strips
+response_format. Endpoint must still be generativelanguage.googleapis.com.
+
+Exactly three slots, at most two HTTP reservations each/six total; first valid
+schema response wins regardless of its label. No hidden SDK retries. Every
+reservation precedes the call and every response is flushed/fsynced. Reservations
+survive interrupted execution; a saved valid slot is never requested again.
+Unsupported schema stops the run rather than switching model/format. The
+structured response and native metadata remain in a separate amendment ledger.
+JSON shape validation is not human validation of semantic correctness.
+
+Reproduction (paths below are placeholders for the same frozen data):
+python reproduce/research/mhr_phase3_structured_rejudge.py --workspace WORKSPACE
+  --repo READ_ONLY_REPO --run-root ORIGINAL_RUN --out AMENDMENT_DIR
+Add --execute only for a user-authorized production run. Repeating the same
+command after completion makes zero new HTTP requests. Do not delete/recreate
+AMENDMENT_DIR to reset the budget. Default tests make zero network calls:
+python -m unittest tests.research.test_mhr_phase3_structured_rejudge
+python -m unittest tests.research.test_mhr_phase3_amended_analysis
+
+Offline analysis:
+python reproduce/research/mhr_phase3_amended_analysis.py --workspace WORKSPACE
+  --repo READ_ONLY_REPO --run-root ORIGINAL_RUN --amendment AMENDMENT_DIR --out OUT
+
+The analysis adapter preserves the frozen V1 audit for all original valid votes.
+For the three missing slots, it independently validates JSON against the schema,
+native response receipt/raw text, prompt/model identity and ledger reservation.
+It does not pass normalized labels off as original raw API replies. It invokes
+the unchanged per-seed statistical/recall engine with this explicitly versioned
+audit adapter. The effect-size display uses exact discordant counts before
+rounding, preserving the frozen legacy difference-of-rounded-rates field too;
+McNemar probabilities/bootstrap intervals are unchanged. All2156queries remain.
+
+The output must disclose original V1 incomplete versus the completed amended
+evaluation, human validation deferred, alias revision uncertainty, all operational
+incidents and the post-hoc amendment. Sensitivity enumerates all four possible
+majority outcomes for the affected case. SD between generation seeds is separate
+from judge SD. ActualSources recall, Null error, coverage, tokens and requests
+are exported. Client Qwen-stage wall time/HTTP latency sums are not cloud bills.
+
+No changes to mhr_phase3/{__init__,analysis,common,judge_worker,pipeline,
+shared_context,validate}.py, original RUN_MANIFEST or E:/Project/MiniRAG.

@@ -1475,6 +1475,10 @@ async def _build_mini_query_context(
 
     entites_section_list.insert(0, ["entity", "score", "description"])
     entities_context = list_of_list_to_csv(entites_section_list)
+    # MINIRAG_DROP_ENTITIES=1: ablation LiHua v2 (docs/research/lihua_world/LIHUA_ABLATION_V2.md) -- bảng Entities chỉ còn
+    # header; truy hồi đồ thị, Sources và đường thoát sớm giữ nguyên. Không đặt biến thì không đổi gì.
+    if os.environ.get("MINIRAG_DROP_ENTITIES", "") == "1":
+        entities_context = list_of_list_to_csv([["entity", "score", "description"]])
 
     scorednode2chunk(ent_from_query_dict, scored_edged_reasoning_path)
 
@@ -1504,7 +1508,8 @@ async def _build_mini_query_context(
     fusion = os.environ.get("MINIRAG_CHUNK_FUSION", "")
     graph_chunk_ids = list(final_chunk_id)
     bm25_ids, bm25_ms = None, None
-    if fusion in ("rrf_bm25", "vector_bm25"):
+    # MINIRAG_CHUNK_FUSION=bm25: ablation LiHua v2 -- Sources chỉ từ BM25 (B2 bỏ vector), đối xứng với `vector`.
+    if fusion in ("rrf_bm25", "vector_bm25", "bm25"):
         _tb = time.perf_counter()
         bm25_ids = _bm25_index(text_chunks_db).rank(originalquery, int(query_param.top_k / 2))
         bm25_ms = 1000 * (time.perf_counter() - _tb)
@@ -1516,6 +1521,8 @@ async def _build_mini_query_context(
         final_chunk_id = _rrf_fuse(final_chunk_id, chunks_ids, bm25_ids)
     elif fusion == "vector_bm25":
         final_chunk_id = _rrf_fuse(chunks_ids, bm25_ids)
+    elif fusion == "bm25":
+        final_chunk_id = list(bm25_ids)
     elif fusion:
         raise ValueError(f"MINIRAG_CHUNK_FUSION không hợp lệ: {fusion!r}")
 
@@ -1629,6 +1636,64 @@ async def _build_mini_query_context(
     return context
 
 
+async def _build_no_graph_context(originalquery, chunks_vdb, text_chunks_db, query_param):
+    """MINIRAG_NO_GRAPH=1 (ablation LiHua v2): Sources như B2 -- RRF(vector top_k/2, BM25 top_k/2) trên nguyên câu hỏi, cùng
+    cách lấy text unit, cùng cắt A1, cùng định dạng -- nhưng không gọi parser từ khoá, không truy hồi đồ thị, bảng Entities chỉ
+    có header và không có đường thoát sớm vì đồ thị rỗng. Trên mọi câu B2 không thoát sớm, phần Sources trùng từng byte với B2
+    (tests/research/test_lihua_ablation_switches.py)."""
+    if os.environ.get("MINIRAG_RERANK", "").strip():
+        raise ValueError("MINIRAG_NO_GRAPH không hỗ trợ MINIRAG_RERANK")
+    _t0 = time.perf_counter()
+    results = await chunks_vdb.query(originalquery, top_k=int(query_param.top_k / 2))
+    chunks_ids = [r["id"] for r in results]
+    _tb = time.perf_counter()
+    bm25_ids = _bm25_index(text_chunks_db).rank(originalquery, int(query_param.top_k / 2))
+    bm25_ms = 1000 * (time.perf_counter() - _tb)
+    final_chunk_id = _rrf_fuse(chunks_ids, bm25_ids)
+    entities_context = list_of_list_to_csv([["entity", "score", "description"]])
+
+    use_text_units = await asyncio.gather(*[text_chunks_db.get_by_id(id) for id in final_chunk_id])
+    text_units_section_list, kept_ids = [], []
+    for i, t in enumerate(use_text_units):
+        if t is not None:
+            text_units_section_list.append([i, t["content"]])
+            kept_ids.append(final_chunk_id[i])
+    if os.environ.get("MINIRAG_TRUNCATE_SOURCES", "1") != "0":  # A1, như _build_mini_query_context
+        budget = os.environ.get("MINIRAG_MAX_TOKEN_TEXT_UNIT", "").strip()
+        text_units_section_list = truncate_list_by_token_size(
+            text_units_section_list, key=lambda x: x[1],
+            max_token_size=int(budget) if budget else query_param.max_token_for_text_unit,
+        )
+    kept_ids = kept_ids[: len(text_units_section_list)]
+    sources_tok = sum(len(encode_string_by_tiktoken(x[1])) for x in text_units_section_list)
+    text_units_section_list.insert(0, ["id", "content"])
+    text_units_context = list_of_list_to_csv(text_units_section_list)
+
+    context = f"""
+-----Entities-----
+```csv
+{entities_context}
+```
+-----Sources-----
+```csv
+{text_units_context}
+```
+"""
+    _ctx_log = os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()
+    if _ctx_log:
+        _rec = {
+            "query": originalquery, "n_chunks": len(text_units_section_list) - 1, "sources_tok": sources_tok,
+            "entities_tok": len(encode_string_by_tiktoken(entities_context)), "fusion": "no_graph",
+            "chunk_ids": kept_ids, "ranked_ids": list(final_chunk_id), "graph_ids": [], "vector_ids": chunks_ids,
+            "context_sha256": hashlib.sha256(context.encode("utf-8")).hexdigest(), "graph_seeds": 0,
+            "graph_paths": 0, "retrieval_ms": round(1000 * (time.perf_counter() - _t0), 2),
+            "bm25_ids": bm25_ids, "bm25_ms": round(bm25_ms, 3),
+        }
+        with open(_ctx_log, "a", encoding="utf-8") as _fh:
+            _fh.write(json.dumps(_rec, ensure_ascii=False) + "\n")
+    return context
+
+
 async def minirag_query(  # MiniRAG
     query,
     knowledge_graph_inst: BaseGraphStorage,
@@ -1642,6 +1707,13 @@ async def minirag_query(  # MiniRAG
     global_config: dict,
 ) -> str:
     use_model_func = global_config["llm_model_func"]
+    if os.environ.get("MINIRAG_NO_GRAPH", "") == "1":
+        # Ablation LiHua v2: không parser từ khoá, không đồ thị; lời gọi trả lời giống hệt bên dưới.
+        context = await _build_no_graph_context(query, chunks_vdb, text_chunks_db, query_param)
+        if query_param.only_need_context:
+            return context
+        sys_prompt = PROMPTS["rag_response"].format(context_data=context, response_type=query_param.response_type)
+        return await use_model_func(query, system_prompt=sys_prompt)
     kw_prompt_temp = PROMPTS["minirag_query2kwd"]
     TYPE_POOL, TYPE_POOL_w_CASE = await knowledge_graph_inst.get_types()
     if os.environ.get("MINIRAG_KW_CACHE", "").strip():

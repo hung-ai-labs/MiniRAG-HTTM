@@ -53,11 +53,18 @@ import qa_run  # noqa: E402
 INDEX = ROOT / "indexes/multihop_rag-qwen-full609"
 REGISTRATION = "7013291"
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": "",
-            "MINIRAG_TRUNCATE_SOURCES": "1", "MINIRAG_MAX_TOKENS": "1024"}
-FUSION = {"C0": None, "C1": "vector_bm25", "C2": "vector", "C3": None, "C_orig": None}
-MODE = {"C0": "mini", "C1": "mini", "C2": "mini", "C3": "naive", "C_orig": "mini"}
+            "MINIRAG_TRUNCATE_SOURCES": "1", "MINIRAG_MAX_TOKENS": "1024",
+            "MINIRAG_DROP_ENTITIES": "", "MINIRAG_NO_GRAPH": ""}  # empty = off; set so no config inherits them
+FUSION = {"C0": None, "C1": "vector_bm25", "C2": "vector", "C3": None, "C_orig": None,
+          # LiHua ablation v2 (docs/research/lihua_world/LIHUA_ABLATION_V2.md)
+          "L-C0": None, "L-B2": "vector_bm25", "L-VEC": "vector", "L-BM25": "bm25", "L-B1": "rrf_bm25",
+          "L-NOENT": "vector_bm25", "L-NOGRAPH": None}
+MODE = {name: "mini" for name in FUSION} | {"C3": "naive"}
 # C_orig (amendment S3): original MiniRAG at query time -- upstream answer-type matching, Sources uncapped.
-EXTRA_ENV = {"C_orig": {"MINIRAG_ANSWER_TYPE_FIX": "0", "MINIRAG_TRUNCATE_SOURCES": "0"}}
+EXTRA_ENV = {"C_orig": {"MINIRAG_ANSWER_TYPE_FIX": "0", "MINIRAG_TRUNCATE_SOURCES": "0"},
+             "L-NOENT": {"MINIRAG_DROP_ENTITIES": "1"}, "L-NOGRAPH": {"MINIRAG_NO_GRAPH": "1"}}
+# Configs whose answer path never calls the keyword parser: no phase A cache is read or needed.
+NO_KEYWORDS = {"C3", "L-NOGRAPH"}
 
 
 # ---------------------------------------------------------------- shared
@@ -121,6 +128,15 @@ def snapshot(dest, index=INDEX):
         if path.is_file() and path.suffix != ".log":
             shutil.copyfile(path, dest / path.name)  # copyfile: no read-only flag carried over
     return dest
+
+
+def index_fingerprint(index):
+    """sha256 of index_manifest.json when the index has one (index_run.py); older indexes such as LiHua's are hashed
+    file by file with qa_run.index_hash (log and LLM cache excluded)."""
+    manifest = Path(index) / "index_manifest.json"
+    if manifest.is_file():
+        return {"index_manifest_sha256": qa_run.file_hash(manifest)}
+    return {"index_files_sha256": qa_run.index_hash(Path(index))}
 
 
 def build(workdir, llm_max_async=32):
@@ -322,7 +338,7 @@ def main(argv=None):
 
     if args.phase == "contexts-worker":
         mode = MODE[args.config]
-        apply_env(args.config, args.seed, kw_cache=args.kw if mode == "mini" else None,
+        apply_env(args.config, args.seed, kw_cache=None if args.config in NO_KEYWORDS else args.kw,
                   cache_only=True, context_log=args.context_log)
         rag = build(snapshot(args.snapshot, args.index), llm_max_async=1)
         asyncio.run(context_phase(rag, rows, mode, args.out_file))
@@ -345,11 +361,11 @@ def main(argv=None):
     if args.phase == "contexts":
         write_note(run_dir, config=args.config, seed=args.seed, mode=MODE[args.config], phase="contexts",
                    questions=str(args.questions), questions_sha256=qa_run.file_hash(args.questions),
-                   index=str(args.index), index_manifest_sha256=qa_run.file_hash(args.index / "index_manifest.json"),
+                   index=str(args.index), index_fingerprint=index_fingerprint(args.index),
                    environment=config_env(args.config),
                    python_hash_seed=13, workers=args.workers,
                    kw_cache_sha256=qa_run.file_hash(args.out / f"kw_s{args.seed}.jsonl")
-                   if MODE[args.config] == "mini" else None)
+                   if args.config not in NO_KEYWORDS else None)
         code = run_context_workers(args, rows, run_dir)
         if code == 0:
             stats = {}

@@ -29,3 +29,6 @@ reproduce/research/*.sh text eol=lf
 
 # MultiHop-RAG results: byte-exact so the sha256 in phase3_test/ANALYSIS_COMPLETED.json stay checkable.
 results/multihop_rag/** -text
+
+# LiHua ablation v2 inputs: question keys and evidence mapping byte-exact.
+dataset/LiHua-World/splits/** -text

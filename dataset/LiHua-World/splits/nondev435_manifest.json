@@ -1,0 +1,39 @@
+{
+  "source": {
+    "path": "reproduce/stage_d/nondev435.csv",
+    "sha256": "b0906aadcd36468fb4510fc5e658c9791108b86acda5c7509958a26e57e7340c"
+  },
+  "index": "LiHua-World-qwen-modal",
+  "query_id": "lh-NNNN = row position in the source file",
+  "counts": {
+    "questions": 435,
+    "by_type": {
+      "Multi": 43,
+      "Null": 45,
+      "Single": 347
+    }
+  },
+  "evidence_mapping": {
+    "timestamps": 457,
+    "timestamps_matched": 456,
+    "timestamps_with_chunks": 455,
+    "null_questions_skipped": 45,
+    "unmatched_timestamps": [
+      [
+        "lh-0206",
+        "What"
+      ]
+    ],
+    "evidence_docs_without_chunks": [
+      "doc-62f43652820788c18735cdb4a02bb873"
+    ]
+  },
+  "outputs": {
+    "nondev435.csv": {
+      "sha256": "72da5461b5d2ea6c4b63ad21d12fadd6152d2d3d2ad1c6b44f881baf74951013"
+    },
+    "nondev435_gold_chunks.jsonl": {
+      "sha256": "e8921a6ecd0beb0caa87795b663ec97f0e0647346fa9e36450514e8a2538bec1"
+    }
+  }
+}

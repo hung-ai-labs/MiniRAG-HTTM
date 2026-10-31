@@ -1,0 +1,436 @@
+Question,Gold Answer,Type,query_id
+Did Adam Smith send a message to Li Hua about the upcoming building maintenance schedule before the administrators announced a temporary change in the construction schedule due to weather conditions?,Yes,Multi,lh-0000
+Did Li Hua agree to go out for dinner after Wolfgang first asked him if he wanted to go out for dinner?,Yes,Multi,lh-0001
+Did Li Hua send a message to Jennifer thanking her for the new training schedule before he requested a change in his training schedule for Thursday?,Yes,Multi,lh-0002
+Did Li Hua send a message to Jennifer asking for her opinion on protein supplements before he consulted her about his daily protein powder consumption?,Yes,Multi,lh-0003
+"Did Yuriko ask Li Hua for help with her studio's homepage before she booked a seat at the ""Central Perk"" cafe?",Yes,Multi,lh-0004
+Did Li Hua discuss his progress with the fitness plan before he shared a blog post about his recent fitness achievements?,Yes,Multi,lh-0005
+"Did Wolfgang Schulz recommend the band learns ""Viva la Vida"" by Coldplay after he and Li Hua discussed what song to play this Sunday?",Yes,Multi,lh-0006
+Did Turalyon announce the construction updates and feedback from residents after Illidan Stormrage complained about the construction noise?,Yes,Multi,lh-0007
+Did Li Hua ask Jennifer Moore for book recommendations on fitness nutrition before she announced the special guest speaker at the gym?,No,Multi,lh-0008
+Did Jennifer remind Li Hua about proper nutrition and hydration before Jake shared his tips for staying hydrated during the match?,Yes,Multi,lh-0009
+Did the group members talk about their favorite characters in the TV series Game of Thrones after Emily started a vote on the most hateable character?,Yes,Multi,lh-0010
+Did Li Hua ask Thane about his opinion on The Last of Us before he asked about Sekiro: Shadows Die Twice?,No,Multi,lh-0011
+Did Jake Watson and Li Hua discuss the classic matches between FC Barcelona and FC Bayern Munich before the group members discussed the classic matches between FC Barcelona and Real Madrid?,Yes,Multi,lh-0012
+Did the group members debate about the best football manager in the Premier League history after they debated if Pep Guardiola is the greatest soccer manager in football history?,Yes,Multi,lh-0013
+Did the discussion about Jaime Lannister's character occur after the discussion about Cersei Lannister's character?,Yes,Multi,lh-0014
+Did Jennifer challenge Li Hua to do 60 pull-ups in a training session after she challenged him to do 100 pushups?,Yes,Multi,lh-0015
+Did Jake share common knowledge about offside in soccer with Li Hua before he passed practical techniques to Li Hua on how to avoid offside for a forward?,Yes,Multi,lh-0016
+Did Wolfgang arrive in Hong Kong after he informed Li Hua about his upcoming trip?,Yes,Multi,lh-0017
+"Who does Li Hua go to watch the movie ""Overwatch 3"" with?",Wolfgang,Multi,lh-0018
+Has Wolfgang ever been to Hong Kong?,Yes,Multi,lh-0019
+Who knows about Wolfgang going to Hong Kong?,LiHua & Chae & Yuriko,Multi,lh-0020
+Who wished Li Hua a happy Lunar New Year?,Adam Smith & Jennifer Moore & Wolfgang Schulz,Multi,lh-0021
+Who introduced the bread delivery service and recommend Alice for the delivery?,HaileyJohnson,Multi,lh-0022
+What opportunity did LiHua create for Chae to meet Wolfgang and Yuriko?,LiHua introduced Chae to Wolfgang and Yuriko during the band's gathering on Sunday evening,Multi,lh-0023
+What special offerings did Hailey have for her backery shop in the month of May?,a special Mother's Day bakery promotion & a special summer promotion on ice cream & a free baking class at the end of May & banana durian cheesecake,Multi,lh-0024
+How long does it take in total from LiHua planning on getting the air-conditioner to the air-conditioner been installed?,about 27 days,Multi,lh-0025
+Did it take more than 3 weeks from LiHua planning on getting the air-conditioner to the air-conditioner been actually installed?,Yes,Multi,lh-0026
+Did it take more than a week from Adam asking LiHua about the ideal installation date to Adam reminding LiHua about the contractor team installing air-conditioner at 18:00?,Yes,Multi,lh-0027
+Is the time interval more than 3 days between LiHua asking Adam to help him install a curtain on the basement window and Adam asking LiHua to measure the size of the window?,Yes,Multi,lh-0028
+Is the time interval more than 7 days between Adam asking LiHua to measure the size of the window and Adam informing Li Hua that he has booked the curtain of the right size?,Yes,Multi,lh-0029
+Is the time interval more than 3 days between LiHua confirming that he has received the curtain and Adam asking LiHua if the curtain is all good?,Yes,Multi,lh-0030
+Wolfgang suddenly becomes very concerned about good body shape and healthy food choices in December. What are the two conversations he had with LiHua in December that reflect this?,20261202_14:00 & 20261209_19:00,Multi,lh-0031
+Did Li Hua agree to have dinner with Wolfgang after he told Wolfgang about the lunch arrangement?,Yes,Multi,lh-0032
+Did Li Hua ask Wolfgang Schulz for a recommendation on a gym or fitness center before asking Jennifer Moore for book recommendations on fitness nutrition?,Yes,Multi,lh-0033
+Did Li Hua ask Wolfgang Schulz if he wants to go to the gym together before Jennifer reminded Li Hua to participate in the gym's membership feedback activity?,Yes,Multi,lh-0034
+Did Li Hua send a message to Wolfgang Schulz saying that he has prepared all the delicious food for tonight's Chinese Lunar New Year before Wolfgang sent a message to Li Hua wishing him a happy Lunar New Year?,Yes,Multi,lh-0035
+Did Li Hua's complaint about the customer who modifies their requirements occur before Wolfgang comforted him?,No,Multi,lh-0036
+Did Li Hua share a blog post about his recent fitness achievements after Jennifer sent him a motivational message?,Yes,Multi,lh-0037
+Did Li Hua send a follow-up message to Jennifer before she asked him about his latest sleeping schedule?,Yes,Multi,lh-0038
+Did Li Hua ask Adam Smith about placing potted plants in the basement before he asked about decorating the basement?,No,Multi,lh-0039
+Did Li Hua ask Wolfgang for advice on renovating the basement before he invited Adam Smith to check the progress of the basement renovation?,Yes,Multi,lh-0040
+Did Li Hua tell Wolfgang about making a new friend before Yuriko reminded the group members to meet for the music festival?,Yes,Multi,lh-0041
+What time does Li Hua check in with Adam about moving in?,5:30 PM,Single,lh-0042
+What time is Li Hua's lunch with Wolfgang Schulz at the cozy café downtown?,20260108,Single,lh-0043
+What is the Wi-Fi password at Li Hua's house?,Family123,Single,lh-0044
+What does Adam say about having friends over?,having friends over occasionally is fine,Single,lh-0045
+What house rule does Adam mention?,keep noise to a minimum during late hours,Single,lh-0046
+What does Li Hua report to Adam on January 6th?,the water tab in the apartment is broken,Single,lh-0047
+When does Adam confirm the plumber will arrive?,tomorrow at 10 AM,Single,lh-0048
+What does Li Hua ask Adam about the door hinge?,a small repair,Single,lh-0049
+What is the name of the gym that Wolfgang recommended LiHua to go to?,FitZone,Single,lh-0050
+When does Li Hua plan to celebrate Chinese Lunar New Year?,20260118,Single,lh-0051
+What does Li Hua plan to celebrate Chinese Lunar New Year?,dumplings,Single,lh-0052
+Who does Li Hua plan to celebrate Chinese Lunar New Year with?,Wolfgang,Single,lh-0053
+Li Hua accidentally broke a light fixture once. What did Adam say about the light fixture?,I'll arrange for a professional to take a look,Single,lh-0054
+Li Hua has a difficult client. When did he solve that client's project?,20260209,Multi,lh-0055
+When did Li Hua express frustration about a client changing requirements?,20260131_14:00,Single,lh-0056
+What did Wolfgang Schulz suggest Li Hua to do when Li Hua face a difficult client?,keep a clear log of all the changes requested by the client,Single,lh-0057
+Can Li Hua hang his artworks on the wall?,Yes,Single,lh-0058
+When did Li Hua change the training plan?,20260204,Single,lh-0059
+What days does Li Hua takes for the training sessions?,Tuesdays and Thursdays,Single,lh-0060
+When did Li Hua ask Jennifer Moore for tips on dealing with muscle soreness?,20260206_16:00,Single,lh-0061
+What are some of Jennifer Moore's tips for dealing with muscle soreness?,hydration&active recovery&stretching&foam rolling&rest,Single,lh-0062
+Why did Li Hua ask for extra exercises to do at home?,to complement his training schedule,Single,lh-0063
+What exercises did Jennifer Moore suggest Li Hua do at home?,bodyweight squats& plank holds&push-ups&lunges&glute bridges,Single,lh-0064
+What is Adam Smith's condition for Li Hua to add decorations to the basement?,must be reversible and not damage anything,Single,lh-0065
+When was the first time Wolfgang went to Li Hua's basement?,20260221,Single,lh-0066
+What ideas did Wolfgang Schulz suggest for Li Hua's basement practice spot?,good lighting&soundproofing&a comfy chair,Single,lh-0067
+Why did Adam remind Li Hua not to play guitar late at night?,a few neighbors have mentioned they're hearing guitar music late at night,Single,lh-0068
+What type of ambiance does YurikoYamamoto want for her studio's homepage?,more welcoming and engaging,Single,lh-0069
+When did Li Hua invite Adam Smith to check the basement renovation progress?,20260223_19:00,Single,lh-0070
+What is the essence of YurikoYamamoto Li Hua is helping with her homepage?,speech therapy,Single,lh-0071
+When did Adam Smith inform Li Hua about potential issues with the pipes in the basement?,20260301_13:00,Single,lh-0072
+When is the music concert that Wolfgang invites Li Hua to?,20260307_18:00,Single,lh-0073
+What dish does Li Hua agree to bring to the neighborhood potluck dinner?,Homemade pasta salad,Single,lh-0074
+Who is Li Hua meeting with to discuss homepage design updates?,Yuriko Yamamoto,Single,lh-0075
+What new feature does Yuriko Yamamoto consider adding to her studio's homepage?,A blog section,Single,lh-0076
+What time is the power outage in the neighborhood?,2 PM to 3 PM,Single,lh-0077
+What suggestions does Li Hua give for promoting the new scheduling feature?,Showcase it on social media platforms and include a short tutorial and send out a newsletter to clients,Single,lh-0078
+Who invites Li Hua to join the community bake sale?,Adam Smith,Single,lh-0079
+When does Li Hua request a delivery from Hailey Johnson?,Tuesday,Single,lh-0080
+What is the address where Li Hua wants the bread delivery to be made?,123 Sunny Street,Single,lh-0081
+What service does Hailey Johnson offer to Li Hua?,Doorstep delivery service for fresh milk and bread,Single,lh-0082
+What time does Hailey Johnson start baking?,4 AM,Single,lh-0083
+Where does Li Hua plan to meet Yuriko Yamamoto to show the final website?,Central Perk café,Single,lh-0084
+What does Li Hua suggest to Hailey regarding the frequency of bread delivery?,Twice a week on Mondays and Fridays at 8am,Single,lh-0085
+What does Li Hua agree to bring to the bonfire singing party hosted by Chae Song-hwa?,Li Hua will bring his guitar,Single,lh-0086
+What is the focus of Li Hua's next month's fitness plan according to Jennifer?,Strengthening lower limbs,Single,lh-0087
+What is the building's policy that Adam reminds Li Hua about?,Recycling policy,Single,lh-0088
+What is Wolfgang looking for in his new drums?,Something versatile that sounds good for both rock and softer tunes like The Beatles,Single,lh-0089
+What song does Li Hua suggest for the jam session on 20260405?,Viva la Vida,Single,lh-0090
+When does Li Hua confirm the rent transfer to Adam?,20260331_17:00,Single,lh-0091
+Who is delivering the bread to Li Hua on 20260403?,Alice,Single,lh-0092
+When is ChaeSong-hwa hosting the community medical knowledge lecture?,7 PM on Saturday,Single,lh-0093
+What is Li Hua's feedback on Chae Song-hwa's medical knowledge lecture?,It is insightful and makes complex topics easy to understand,Single,lh-0094
+Why does Li Hua ask ChaeSong-hwa about whether neurosurgeons actually use test tubes in their work?,Li Hua is trying to get some insights for a website design,Single,lh-0095
+What suggestions does Li Hua propose to Adam Smith about the upcoming community garden renovation?,Add more seating areas for people to relax and enjoy the space and some flower beds with native plants,Single,lh-0096
+What kinds of flowers does Li Hua recommend to Adam Smith for the flower beds?,Lavender and coneflowers and fresh herbs,Single,lh-0097
+What will be a gift for Li Hua if he chooses to renew the fitness contract with Jennifer Moore?,A cool fitness bag as a gift for all the gym activities,Single,lh-0098
+When is the karaoke activity organized by ChaeSong-hwa?,Saturday at 7 PM,Single,lh-0099
+Who is Li Hua bringing to the band's jam session according to their discussion on 20260425?,ChaeSong-hwa,Single,lh-0100
+What garden-related activity is Thrall planning to organize?,A community planting day,Single,lh-0101
+What is the main topic of the conversation on 2026-04-28 at 5 PM?,Breathing techniques and tips for squats during workouts,Single,lh-0102
+What is the name of the Italian restaurant where Wolfgang and Li Hua are having dinner to celebrate Wolfgang's promotion?,Venedia Grancaffe,Single,lh-0103
+What is Li Hua's suggestion for scheduling the water pipe repairs in the garden?,During off-peak hours,Single,lh-0104
+Which two specific pastries does Hailey Johnson recommend for Mother's Day?,Raspberry-filled croissants and chocolate eclairs,Single,lh-0105
+What type of stretches does JenniferMoore suggest before and after workouts?,Dynamic stretches before and static stretches after,Single,lh-0106
+When is the web design seminar at Wolfgang's company happening?,Thursday at 3 PM,Single,lh-0107
+What is Li Hua looking forward to trying from the summer promotion?,Fruity ice cream flavors and a mango-coconut pastry,Single,lh-0108
+What type of lighting is preferred for the seating area in the community garden?,Soft white lights,Single,lh-0109
+Which flowers does RexxarRemar suggest for a vibrant vibe?,Bluebell and Camellia and Tulip,Single,lh-0110
+How does RexxarRemar plan to spend time in the garden once it's done?,For family gatherings and relaxing afternoons,Single,lh-0111
+What does LiHua find as a perfect place to work in his conversation with Chae?,The Lighthouse Cafe,Single,lh-0112
+What songs does Chae propose to the Jolly band to try out on Sunday according to the conversation on 20260521?,"The Yellow Wind Rises and ""To the West""",Single,lh-0113
+What time does Turalyon plan to limit noisy activities?,From 2-3 pm,Single,lh-0114
+Why does WolfgangSchulz inquire of the band members about health products?,Wolfgang is feeling very tired lately with the overtime and wants to boost up his energy,Single,lh-0115
+What is the name of the song LiHua suggests revisiting for the band's music session according to their conversation on 20260529?,The History of Everything,Single,lh-0116
+When did Li Hua inform Adam Smith that the rent for last month (implied to be May) had been transferred?,2026-06-02 at 10:00,Single,lh-0117
+What is the name of Hailey Johnson's new weekly flavor cheese?,Hazelnut Basque Roasted Cheese,Single,lh-0118
+What is the phone number for the maintenance worker that Adam Smith provided to Li Hua for the broken streetlight?,314159,Single,lh-0119
+When is the Freelancer Group Meeting scheduled for according to the conversation between LiHua and Yuriko?,This Wednesday at 3 pm,Single,lh-0120
+What suggestions does Jennifer give to LiHua to help boost his endurance?,try incorporating longer cardio sessions and interval training into your routine,Single,lh-0121
+What new pastry does Hailey think is perfect for a fitness lover like Li Hua?,high-protein breads,Single,lh-0122
+Who proposes adding some outdoor games or a small water feature to the children's play areain the community discussion?,Thrall,Single,lh-0123
+Who proposes adding picnic tables for families to enjoy some snacks after playing?,Li Hua,Single,lh-0124
+What event does LiHua think is an opportunity for the Jolly band to perform in front of the crowd?,the poster saying that the town is holding a local music festival,Single,lh-0125
+What dietary restrictions does LiHua have in his conversation with Hailey?,No dietary restrictions,Single,lh-0126
+What will special guest speaker be talking about as Jennifer mentions to LiHua?,about nutrition for athletes,Single,lh-0127
+What is the survey that Jennifer wants LiHua to fill out about?,the experience with our training sessions so far,Single,lh-0128
+Waht song does Wolfgang propose adding to the band's practice set on 20260625?,Viva la Vida by Coldplay,Single,lh-0129
+What is the main topic of the conversation between LiHua and ChaeSong-hwa on 20260626?,Chae and her team making a breakthrough in the research study and LiHua congratulating her,Single,lh-0130
+Waht songs does Chae recommend in the band's group discussion on 20260629?,"Uptown Funk or ""Happy""",Single,lh-0131
+What tip does Jennifer give to the gym members on 20260630?,Staying hydrated during workout is very important,Single,lh-0132
+Why deoes the construction have to be postponed according to Tirion Fordring?,the storm and the rain have been going on for days,Single,lh-0133
+What kinds of Thai food does Wolfgang want to try out at the Thai restaurant on 20260702?,pad thai and maybe some spring rolls,Single,lh-0134
+Why are LiHua and Adam concerned about the basement in their conversation on 20260707?,They want to check if there were any issues in the basement after those rainstorms,Single,lh-0135
+Why is Jennifer checking in in the gym group chat on 20260708?,She wants to hear how the members are all doing and offer some personalized advice.,Single,lh-0136
+What is the article that Chae shares with LiHua about?,how to fall asleep faster at night,Single,lh-0137
+What is LiHua's feeback on Hailey's new artisanal donuts?,The flavors are so unique and delicious,Single,lh-0138
+Which performance does Chae want the band members to check out in their discussion on 20260715?,"the amazing live performance of ""Bohemian Rhapsody"" by Queen",Single,lh-0139
+Why is LiHua praising Chae in their conversation on 20260717?,LiHua was really amazed by Chae's performance in the band last Sunday because Chae's singing has really leveled up,Single,lh-0140
+What tips on balancing work and personal hobbies does LiHua give to Chae?,try setting specific hours for work and separate times for your hobbies and don't forget to schedule some fun time for yourself,Single,lh-0141
+What is the size of the basement?,The basement is approximately 15 feet by 20 feet,Single,lh-0142
+What is Wolfgang's favorite superhero?,Iron Man,Single,lh-0143
+What is LiHua's favorite superhero?,Spider-Man,Single,lh-0144
+What sports would LiHua like to see on the community sports day?,some team sports like soccer or basketball,Single,lh-0145
+What new hobbies does Wolfgang Schulz propose to Li Hua?,Wolfgang Schulz proposes pottery or painting as a hobby to Li Hua,Single,lh-0146
+What brands of air-conditioners does LiHua recommend to Wolfgang?,Mitsubishi and Daikin,Single,lh-0147
+Who is recommended by Jennifer to share some fitness tips in the gym group chat on 20260730?,LiHua,Single,lh-0148
+What does Hailey Johnson want Li Hua to help with at the bakery according to their discussion on 20260731?,Hailey Johnson wants Li Hua to help gather feedback from customers at the bread-tasting event,Single,lh-0149
+What day do Li Hua and Wolfgang Schulz plan to visit the photography exhibition?,Li Hua and Wolfgang Schulz plan to visit the photography exhibition on Friday evening,Single,lh-0150
+When is Wolfgang and LiHua going to the photography exhibition on 20260805?,19:00,Single,lh-0151
+When is the installation of the air-conditioner for the basement?,It's set for Wednesday next week,Single,lh-0152
+Why does Adam reach out to LiHua on 20260810?,To check if LiHua had a chance to look over the warranty and maintenance plans for the air conditioner,Single,lh-0153
+When is the contractor team going to install the air-conditioner?,20260812 6PM,Single,lh-0154
+When is the garage sale being discussed?,20260814_15:00,Single,lh-0155
+What is the reason Thrall cannot participate in the garage sale?,Thrall has a lot happening with the garden renovations,Single,lh-0156
+What does RexxarRemar suggest to make the garage sale more enjoyable?,RexxarRemar suggests having snacks or drinks at the garage sale,Single,lh-0157
+What does JenniferMoore suggest to improve performance and prevent injuries?,JenniferMoore suggests incorporating stretching techniques,Single,lh-0158
+What does Viper plan to do to increase their stamina?,Viper plans to focus on cardio,Single,lh-0159
+How much discount is Hailey willing to give to LiHua according to their conversation on 20260816?,15% off,Single,lh-0160
+Who does Li Hua mention as their favorite character from The Witcher 3?,Geralt,Single,lh-0161
+Why does LiHua like Geralt from The Witcher 3?,He's such a complex character with that no-nonsense attitude but deep down he has a great sense of morality & his monster-slaying skills are just epic,Single,lh-0162
+What is Li Hua's opinion about Yennefer's character?,Intense & fiercely independent & her relationship with Geralt evolves,Single,lh-0163
+Which scene stood out for Li Hua in The Witcher 3?,"The ""Battle of Kaer Morhen""",Single,lh-0164
+Which scene in The Witcher 3 does ThaneChambers consider as one of his favorites involving Yennefer?,The scene when Geralt is looking for Yennefer in the early part of the game,Single,lh-0165
+What is Li Hua's impression of the Blood and Wine expansion?,Incredible & new area is stunning & story feels like a mini-epic,Single,lh-0166
+What TV show does EmilyBurnett recommend to Li Hua after discussing Succession?,The Crown and Ted Lasso,Single,lh-0167
+When does Li Hua plan to meet JakeWatson for soccer practice?,Saturday afternoon at 3 PM,Single,lh-0168
+Which UCL match does Jasper recommend as a classic must-watch?,The 2005 final between Liverpool and AC Milan,Single,lh-0169
+Who shared a music theory tutorial with the group?,Chae Song-hwa,Single,lh-0170
+What is Kendall's relationship with Logan like according to the group's discussion?,Toxic,Single,lh-0171
+What is the topic of discussion between Li Hua and Wolfgang Schulz on burger preferences?,Medium rare vs. well-done meat patty in a classic American,Single,lh-0172
+Why does Wolfgang prefer a well-done meat patty in a burger?,It is safer and more flavorful & he likes a little char on his burger,Single,lh-0173
+What toppings does Wolfgang Schulz prefer on his burger?,Cheese and bacon,Single,lh-0174
+What is the main theme of game group's discussion on 20260901_13:00?,Dutch van der Linde's character and leadership,Single,lh-0175
+Who is the most hateable character in Game of Thrones in Orion's opinion?,Ramsay Bolton,Single,lh-0176
+What kind of songs are Li Hua and Chae Song-hwa considering adding to their playlist for babies?,Lullabies,Single,lh-0177
+What makes Wolfgang feel under a lot of pressure according to his conversation with LiHua on 20260905?,this new software project,Single,lh-0178
+Why does AdamSmith ask LiHua about the basement on 20260907?,check in and see how the basement held up after the storm,Single,lh-0179
+How is the basement after the storm?,The basement is all good no water leakage at all,Single,lh-0180
+What is the latest good news from Wolfgang as of 20260908?,software project finally made some significant progress,Single,lh-0181
+What new songs are LiHua working on lately on his guitar as of 20260908?,"Blackbird and ""Hotel California""",Single,lh-0182
+What mission does Gavriel mention that shows Arthur's growth in the game?,the scene where Arthur tells John to take care of his family,Single,lh-0183
+What side mission in Red Dead Redemption 2 resonated with Jareth?,the side mission with the widow in the honor system,Single,lh-0184
+What was ThaneChambers' favorite horse-related side quest in Red Dead Redemption 2?,the “troubled” horse,Single,lh-0185
+What was the final showdown that Elara found unforgettable in Red Dead Redemption 2?,with Dutch and Micah,Single,lh-0186
+How does Bronwyn describe the epilogue of the game Red Dead Redemption 2?,captivating after seeing John try to make a life for himself,Single,lh-0187
+Has LiHua ever met anyone like Shedlon Cooper in his real life?,No,Single,lh-0188
+Has EmilyBurnett ever met anyone like Shedlon Cooper in her real life?,No,Single,lh-0189
+What games are LiHua and ThaneChambers planning to check out during their shopping trip according to their discussion on 20260911?,"Spider-Man: Miles Morales and ""Demon's Souls""",Single,lh-0190
+How many servings of vegetables should LiHua aim for each day to keep body in good shape according to Jennifer?,at least 5 servings of veggies a day,Single,lh-0191
+What does LiHua ask Jake about soccer?,the best strategies for soccer players to avoid injuries during games,Single,lh-0192
+What does Jake suggest to improve flexibility and prevent muscle issues?,staying hydrated,Single,lh-0193
+Why is wearing the right footwear important in soccer?,to avoid slips or sprains,Single,lh-0194
+How does strength training help prevent soccer injuries?,It builds muscles around joints & reduces injury risk & improves stability and endurance,Single,lh-0195
+What type of exercises does Jake recommend for strength training?,squats & lunges & planks & balance exercises like single-leg stands,Single,lh-0196
+What is the purpose of starting with bodyweight exercises?,for those who are new to strength training,Single,lh-0197
+What does Lachlan appreciate about Arya Stark's character development?,Her transition from an innocent girl to a fierce assassin,Single,lh-0198
+What memorable quote is mentioned by Phaedra?,"Jon Snow's ""You know nothing"" scene with Ygritte",Single,lh-0199
+"What does Rowan love about Tyrion's ""I drink and I know things"" line?",It captures his cleverness,Single,lh-0200
+What aspect of Jaime Lannister's storyline does Rowan find intriguing?,His transformation after meeting Brienne of Tarth,Single,lh-0201
+How does Phaedra view Jaime's character arc?,"Fascinating as he goes from ""Kingslayer"" to someone who values honor",Single,lh-0202
+How does Saffron feel about Jaime's choice to protect Cersei?,Conflicted because it seems like he was slipping back into old ways,Single,lh-0203
+How does Niamh think Jaime could've ended up differently?,By staying true to the lessons he learned from Brienne,Single,lh-0204
+"What is LiHua curious about regarding the ""Man in Black"" in Westworld?",The motive behind his character,Single,lh-0205
+"What does EmilyBurnett think is the main motive for the ""Man in Black""?",To find deeper meaning and fulfillment in Westworld	20260916_16:00,Single,lh-0206
+"How does LiHua feel about the ""Man in Black's"" search for meaning?",Intrigued as it adds depth to the story,Single,lh-0207
+"What is EmilyBurnett's favorite moment of the ""Man in Black""?",When he confronts the truth about himself and his choices,Single,lh-0208
+"Which moment does LiHua find memorable for the ""Man in Black""?",When he shows vulnerability,Single,lh-0209
+Which theme of Westworld resonates the most for LiHua?,The exploration of free will and choice,Single,lh-0210
+What does WolfgangSchulz suggest incorporating into practice sessions according to the discussion on 20260916?,Improvisational solos,Single,lh-0211
+How does LiHua feel about the idea of improvisation based on the chat on 20260916?,It will make sessions more fun and creative,Single,lh-0212
+What does LiHua think about Gerard Piqué as a defender?,He deserves a mention for his skill and intelligence,Single,lh-0213
+What is JakeWatson's favorite memory of Puyol and Piqué playing together?,The comeback against PSG in the Champions League,Single,lh-0214
+What match does JakeWatson cherish from the Champions League final against Manchester United?,The 2009 final,Single,lh-0215
+What is LiHua's favorite match involving Barcelona?,The 2013 Champions League match against AC Milan,Single,lh-0216
+Which goal does JakeWatson never forget from Messi?,Messi's solo goal against Getafe in 2007,Single,lh-0217
+What is LiHua's favorite player moment from Messi?,When Messi scored a header against Manchester United in 2011,Single,lh-0218
+What does LiHua think makes Messi the best?,His ability to create chances as well as his vision and work ethic and humility,Single,lh-0219
+How does JakeWatson view Messi's impact on future generations of players?,His dedication and consistency set the bar high for young players,Single,lh-0220
+Who suggests hitting Starbucks after work on 20260918?,WolfgangSchulz,Single,lh-0221
+Why is protein important according to JenniferMoore?,For keeping the body in shape,Single,lh-0222
+What is ThaneChambers' question to LiHua on 20260920?,LiHua's favorite first-person shooter game,Single,lh-0223
+"What does ThaneChambers say about ""Warzone""?",It's a blast,Single,lh-0224
+"What does LiHua like most about ""Warzone""?",The strategy involved and the adrenaline rush,Single,lh-0225
+"What is ThaneChambers' memorable ""Warzone"" experience?",Coming back from a tough spot to win at the last second,Single,lh-0226
+"What was LiHua's unforgettable match in ""Warzone""?",Being down to the last two and outsmarting the last team,Single,lh-0227
+"How does ThaneChambers feel about upcoming ""Warzone"" updates?",He's looking forward to them,Single,lh-0228
+"Does LiHua plan to play ""Warzone"" after the updates?",Yes because he loves exploring fresh content,Single,lh-0229
+"What does ThaneChambers propose to do with the ""Warzone"" updates?",Hop on together and tackle the new stuff,Single,lh-0230
+Who initiated the discussion about the community garden renovation and its benefits to local businesses?,Turalyon,Single,lh-0231
+What idea did IllidanStormrage propose to help involve the community in supporting local businesses?,Putting together a flyer with a list of local businesses,Single,lh-0232
+What does ArthasMenethil describe the outcome of the garden project and supporting local vendors as?,A win-win,Single,lh-0233
+What does AdamSmith agree is crucial to align with the garden project schedule?,Support for local businesses,Single,lh-0234
+When does AdamSmith say he is available to help with the curtain installation?,Wednesday or Thursday afternoon,Single,lh-0235
+On which day do LiHua and AdamSmith agree to install the curtain?,Thursday afternoon,Single,lh-0236
+Who suggests exploring the PS5 settings for accessibility features and Game Help?,ThaneChambers,Single,lh-0237
+How does Fionnuala describe the convenience of the Control Center's audio settings adjustment?,You can adjust audio settings on the fly without having to pause the game,Single,lh-0238
+What aspect does ThaneChambers enjoy about sharing clips on the PS5?,It's a great way to relive intense moments with friends,Single,lh-0239
+Which game is LiHua currently obsessed with for its graphics and storytelling?,God of War,Single,lh-0240
+"How does Dyllan describe the combat in ""Horizon Forbidden West""?",It can be tricky sometimes,Single,lh-0241
+"What strategy does Helios recommend for dealing with flying machines in ""Horizon Forbidden West""?",Using a bow with elemental arrows and focus to track their movements,Single,lh-0242
+What type of combat does Gavriel prefer in games?,Turn-based combat,Single,lh-0243
+"Who is ThaneChambers' favorite character in ""Octopath Traveler""?",Primrose,Single,lh-0244
+"How does Dyllan describe the importance of a balanced party in ""Octopath Traveler""?",It allows for more flexibility in battles and helps adapt to different challenges,Single,lh-0245
+What does Elara enjoy doing to unwind after intense battles in games?,Wander around and collect items or side quests,Single,lh-0246
+Who asks Emily if she has read The Lord of the Rings novels?,LiHua,Single,lh-0247
+What TV series does LiHua mention that they are curious about in relation to The Lord of the Rings?,The Rings of Power,Single,lh-0248
+"What aspect of ""The Rings of Power"" does Emily appreciate in terms of visuals?",How they are bringing Middle-earth to life,Single,lh-0249
+What aspect of Elrond's character does Emily appreciate?,His mix of wisdom and vulnerability,Single,lh-0250
+What do LiHua and Emily agree on regarding the anticipation for the next episode?,They both can't wait for the next episode,Single,lh-0251
+What does LiHua suggest they should do as the series unfolds?,Keep sharing their thoughts,Single,lh-0252
+What does Emily say about the series making her feel like she is really getting to know the characters?,The emphasis on character development and their backstories,Single,lh-0253
+What is the purpose of going to the grocery store on 20260923 according to WolfgangSchulz?,To grab some snacks for their next jam,Single,lh-0254
+What exercises does JakeWatson recommend for leg strength?,Squats and lunges,Single,lh-0255
+What additional advice does JakeWatson give for maintaining muscle flexibility?,Stretch after workouts,Single,lh-0256
+How long should each stretch be held according to JakeWatson?,About 30 seconds,Single,lh-0257
+What is LiHua's response to the suggestion of taking a warm shower before bed?,LiHua plans to try it tonight,Single,lh-0258
+Why does AdamSmith want the window measured?,To get some curtains made,Single,lh-0259
+What are the dimensions of the window that LiHua measures?,150 cm wide and 120 cm high,Single,lh-0260
+Who initiates the discussion about binaural tones?,ChaeSong-hwa,Single,lh-0261
+How does YurikoYamamoto feel about adding a new dimension to their music with binaural tones?,Excited to give it a try,Single,lh-0262
+Who congratulates LiHua on pushing their limits with the bench press?,JenniferMoore,Single,lh-0263
+What does LiHua express feeling after the encouragement from Jennifer?,Strong and motivated,Single,lh-0264
+What is the focus for the next session suggested by JenniferMoore on 20260930?,Form and control,Single,lh-0265
+What technique does JenniferMoore suggest to gradually increase weight of the bench press exercise?,Progressive overload,Single,lh-0266
+What type of hot pot does WolfgangSchulz prefer?,Sichuan,Single,lh-0267
+Who comes up with the idea of picking up drinks on the way to hot pot?,LiHua,Single,lh-0268
+What does Ivor do the day before a game to help with hydration?,Hydrate well,Single,lh-0269
+What practice idea does Dacey suggest to improve passing skills?,Target practice with cones,Single,lh-0270
+What does Briar remind everyone to bring to practice?,Water bottles,Single,lh-0271
+Who is considering buying Sekiro: Shadows Die Twice and asks for ThaneChambers' opinion?,LiHua,Single,lh-0272
+Does ThaneChambers recommend Sekiro: Shadows Die Twice to those who love a challenge?,Yes,Single,lh-0273
+What game is ThaneChambers currently playing?,Black Myth: Wukong,Single,lh-0274
+What does LiHua think about the graphics and gameplay of Black Myth: Wukong?,The graphics look insane and the gameplay seems really fluid,Single,lh-0275
+What part of Black Myth: Wukong does ThaneChambers like the most?,The fresh take on the classic tale and the unique combat mechanics,Single,lh-0276
+Which aspect of Black Myth: Wukong does LiHua find immersive?,The combat style and how it blends with the storyline,Single,lh-0277
+What is LiHua's reaction to the news about the new software?,LiHua is excited to check it out,Single,lh-0278
+Who asks Jake to play as the goalkeeper for soccer training?,LiHua,Single,lh-0279
+Who discusses classic matches between Barca and Bayern with Jake?,LiHua,Single,lh-0280
+In which year did Barca lose 4-0 against Bayern as mentioned in the conversation?,2013,Single,lh-0281
+Which goal does Jake consider incredible from the 2015 match?,Neymar's goal,Single,lh-0282
+What is LiHua looking forward to in the upcoming matches?,Seeing how Pedri and the team perform and if they can go far in the UCL,Single,lh-0283
+What are Jake's go-to snacks for match days?,Chips and dip & pizza,Single,lh-0284
+Who does LiHua pick as the best football manager of all time?,Pep Guardiola,Single,lh-0285
+"Which team's style of play does Farrah remember as ""Total football""?",Barcelona,Single,lh-0286
+Which player's development under Guardiola does Jasper mention?,Phil Foden,Single,lh-0287
+What will LiHua bring for everyone to enjoy after the match?,Snacks,Single,lh-0288
+Which match does Jasper mention that Manchester City played recently?,Against Chelsea in the Premier League,Single,lh-0289
+Who scored a stunner in the Manchester City vs. Chelsea match as mentioned in the conversation?,Phil Foden,Single,lh-0290
+What aspect of Rodri's performance does Henley praise?,His interceptions and passing,Single,lh-0291
+Who checks in with LiHua about their arm muscles after the bench press session?,JenniferMoore,Single,lh-0292
+What snack does LiHua agree to bring for the movie?,Chips,Single,lh-0293
+Who will pick up the snacks and drinks on their way before the movie?,LiHua,Single,lh-0294
+What significant event in Cersei's life does Saffron highlight as a turning point?,Losing her kids,Single,lh-0295
+What idea does Rowan say Cersei represents?,Power comes at a cost,Single,lh-0296
+What aspect of Cersei's character does Quillan say often shadows her vulnerability?,Her desperation for control,Single,lh-0297
+What relationship could have potentially changed Cersei's path according to Phaedra?,Her relationship with Tyrion,Single,lh-0298
+How does Kieran describe Tywin's influence on Cersei?,He taught her ruthless methods,Single,lh-0299
+What does Orion say about Cersei's mix of loyalty and fear towards Tywin?,It was a mix of both,Single,lh-0300
+What does Rowan say about Cersei's independence?,It made her stronger but also more isolated,Single,lh-0301
+What relationship could have shown Cersei a different perspective on power according to Lachlan?,Her relationship with Tyrion,Single,lh-0302
+What does Tamara say Cersei's love led to?,Her downfall,Single,lh-0303
+What does EmilyBurnett say Cersei's choices led to?,Her isolation,Single,lh-0304
+What does Quillan suggest could have been a game-changer for Cersei?,Accepting Tyrion's advice,Single,lh-0305
+Who initiates the discussion about game storytelling?,ThaneChambers,Single,lh-0306
+What game does ThaneChambers consider their top choice for storytelling?,The Last of Us,Single,lh-0307
+What game does Gavriel mention for its characters and plot twists?,Final Fantasy VII Remake,Single,lh-0308
+Which game does ThaneChambers recommend for its choice-based storytelling?,Life is Strange,Single,lh-0309
+What game does Elara mention for making her emotional?,Bioshock Infinite,Single,lh-0310
+What game does Dyllan describe as epic for its samurai culture?,Ghost of Tsushima,Single,lh-0311
+Which game does Helios call a masterpiece for making players feel connected to the characters?,Red Dead Redemption 2,Single,lh-0312
+"What scene from ""Red Dead Redemption 2"" does Bronwyn mention as emotional?",The scene with Arthur and John on the mountain,Single,lh-0313
+What game does Ileana say made her question the morality of her actions?,Red Dead Redemption 2,Single,lh-0314
+Which game does Caelum mention for encouraging emotional engagement with the narrative?,Red Dead Redemption 2,Single,lh-0315
+What game does Bronwyn say mixes daily life with deep story arcs?,Persona 5,Single,lh-0316
+What game does LiHua mention for exploring themes of choice & consciousness & humanity?,Detroit: Become Human,Single,lh-0317
+Which game does Dyllan say raised interesting questions and moral dilemmas?,Detroit: Become Human,Single,lh-0318
+What game does Dyllan recall for its intimate feel and dialogue?,Firewatch,Single,lh-0319
+Which game does LiHua mention for playing with various storytelling tropes?,The Stanley Parable,Single,lh-0320
+What does Li Hua like about the curtains?,the patterns,Single,lh-0321
+What does MalfurionStormrage suggest for sunny days?,umbrellas for shade,Single,lh-0322
+Who proposes the idea of adding tables near the benches?,RexxarRemar,Single,lh-0323
+What does GromHellscream suggest to brighten the area in the evening?,lanterns or string lights,Single,lh-0324
+What type of lanterns does MalfurionStormrage recommend?,solar-powered lanterns,Single,lh-0325
+Who is excited to see how the garden evolves?,Thrall,Single,lh-0326
+What does Turalyon think about the suggestions?,They are going to make the garden a fantastic community spot,Single,lh-0327
+What kind of activities does MalfurionStormrage suggest for the gathering?,games for kids & flower planting workshops & good food,Single,lh-0328
+Who offers to check with friends for live music performance?,ArthasMenethil,Single,lh-0329
+What does MuradinBronzebeard think about live music?,It would really enhance the experience,Single,lh-0330
+Who suggests doing a group purchase of the new games?,ThaneChambers,Single,lh-0331
+What does ThaneChambers think about the new games?,excited and interested,Single,lh-0332
+What feature are they hoping for in the new game?,co-op missions and shared loot system,Single,lh-0333
+What does Helios want to know about the game?,whether it will feature crossplay,Single,lh-0334
+What does Dyllan think about crossplay?,it was awesome and makes playing together much easier,Single,lh-0335
+What does Ileana think is essential for the new game?,a robust matchmaking system,Single,lh-0336
+What does Helios think would be awesome for character development?,a deep skill tree or upgrade system,Single,lh-0337
+What does Gavriel think about crafting systems?,they offer a chance to create unique weapons and gear,Single,lh-0338
+What does Elara think about resource management?,it always makes it feel more immersive,Single,lh-0339
+What does Fionnuala think about potions and temporary boosts?,they are always helpful,Single,lh-0340
+What does ThaneChambers think about stealth boosts?,they add a whole new layer to gameplay,Single,lh-0341
+What does LiHua think about the potential for stealth in the game?,it could lead to some really engaging and strategic gameplay,Single,lh-0342
+What is one characteristic of Real Madrid that JakeWatson mentions?,they thrive under pressure,Single,lh-0343
+What was special about the match against Manchester City in 2022 according to the group discussion?,Rodrygo's stoppage-time goal,Single,lh-0344
+What does Aurora say about the atmosphere at the Bernabéu during tough games?,It was electric,Single,lh-0345
+What does Evangeline say about Real Madrid's history in the Champions League?,They have a legendary history and a winning culture,Single,lh-0346
+Who is Real Madrid's coach according to Ivor?,Ancelotti,Single,lh-0347
+What does Dacey propose to practice on Saturday?,soccer shooting skills,Single,lh-0348
+What time do they plan to meet for soccer practice?,3 PM,Single,lh-0349
+Who offers to bring cones for the soccer practice?,Aurora,Single,lh-0350
+What else does Henley plan to work on during the practice?,dribbling skills,Single,lh-0351
+Who suggests getting pizza for dinner?,WolfgangSchulz,Single,lh-0352
+What drink does WolfgangSchulz usually have with his pizza?,soda or craft beer,Single,lh-0353
+What do LiHua and Wolfgang plan to do together according to their conversation on 20261017?,plan a pizza night,Single,lh-0354
+What songs does ChaeSong-hwa suggest starting with according to the discussion on 20261019?,"Sweet Home Alabama or ""Let It Be""",Single,lh-0355
+What type of songs does YurikoYamamoto want to try according to the discussion on 2026101?,upbeat pop songs,Single,lh-0356
+What songs does ChaeSong-hwa suggest adding to the mix according to the discussion on 2026101?,"Shallow or ""Shake It Off""",Single,lh-0357
+What does ChaeSong-hwa plan to bring to karaoke night?,snacks,Single,lh-0358
+What does WolfgangSchulz suggest the group do before the upcoming karaoke night?,pick their songs,Single,lh-0359
+How does LiHua feel about the upcoming karaoke night?,excited and can't wait,Single,lh-0360
+What does ChaeSong-hwa say about the karaoke night?,it's going to be a blast,Single,lh-0361
+What is the current status of the curtains according to LiHua?,They are perfect and more than satisfies him,Single,lh-0362
+What game does ThaneChambers remember as LiHua's favorite?,Black Myth: Wukong,Single,lh-0363
+"What does ThaneChambers like about the game ""Black Myth: Wukong""?",the storytelling,Single,lh-0364
+"What memorable moment does LiHua share from the game ""Black Myth: Wukong""?",an amazing battle scene where he had to outsmart a giant enemy,Single,lh-0365
+"What memorable moment does ThaneChambers share from the game ""Black Myth: Wukong""?",a moment where he faced a tricky puzzle,Single,lh-0366
+"How does LiHua describe the balance of combat and puzzles in the game ""Black Myth: Wukong""?",It's refreshing to switch between action and thinking,Single,lh-0367
+Would LiHua be interested in playing co-op with the group?,Yes,Single,lh-0368
+What TV series does EmilyBurnett remember LiHua likes?,Chernobyl,Single,lh-0369
+What is EmilyBurnett's favorite TV show?,Game of Thrones,Single,lh-0370
+"What memorable scene from ""Chernobyl"" does LiHua mention?",the scene where they're trying to contain the radiation,Single,lh-0371
+"Who is LiHua's favorite actor in ""Chernobyl""?",Stellan Skarsgård as Boris Shcherbina,Single,lh-0372
+What TV series is EmilyBurnett currently watching?,The Last of Us,Single,lh-0373
+What TV show does EmilyBurnett recommend LiHua to watch?,The Last of Us,Single,lh-0374
+"What does LiHua's plan about wathcing ""The Last of Us""?",binge it that weekend,Single,lh-0375
+What does JakeWatson suggest for refueling after a soccer game?,a snack with carbs and protein and staying hydrated,Single,lh-0376
+What are LiHua's usual recovery snacks after a game?,a protein shake and a fruit smoothie,Single,lh-0377
+What is the purpose of the community picnic?,to bring the community together and get to know each other better,Single,lh-0378
+What type of food event did Turalyon suggest?,a potluck,Single,lh-0379
+What does RexxarRemar suggest for the community picnic atmosphere?,organizing some music,Single,lh-0380
+What does TirionFordring suggest bringing for seating?,blankets or chairs,Single,lh-0381
+What day did the community members decide on for the picnic?,next Saturday,Single,lh-0382
+What does RexxarRemar suggest for keeping everyone energized during the picnic?,a mix of snacks and drinks,Single,lh-0383
+What does IllidanStormrage say he will bring to keep everyone entertained during the picnic?,some epic games,Single,lh-0384
+What places in Europe does WolfgangSchulz remember as stunning in Europe?,the fjords in Norway and the lavender fields in Provence,Single,lh-0385
+What does WolfgangSchulz like about Prague?,its architecture and the vibe of the old town,Single,lh-0386
+What is WolfgangSchulz's favorite risotto memory?,having seafood risotto in Venice,Single,lh-0387
+What does WolfgangSchulz want to check out in Italy?,Cinque Terre,Single,lh-0388
+What does LiHua say about the seafood in Cinque Terre?,it's supposed to be fresh and delicious,Single,lh-0389
+What time will Li Hua and Wolfgang meet for breakfast on the morning of the 9th?,Insufficient information,Null,lh-0390
+"What type of exercise does Li Hua prefer to do at the gym, and what time does Wolfgang usually go to the gym?",Insufficient information,Null,lh-0391
+What type of traditional games did Wolfgang Schulz play with Li Hua during the Lunar New Year celebration?,Insufficient information,Null,lh-0392
+"What did Li Hua eat for dinner on January 20, 2026?",Insufficient information,Null,lh-0393
+What movie did Li Hua and Wolfgang decide to watch together on New Year's Eve 2026?,Insufficient information,Null,lh-0394
+What dish did Li Hua order for dessert after having Sichuan hot pot with Wolfgang Schulz?,Insufficient information,Null,lh-0395
+What specific diet did Li Hua follow to achieve his fitness results that Jennifer Moore recommended?,Insufficient information,Null,lh-0396
+What alternative training sports does Li Hua consider besides the current routine mentioned in his conversation with Jennifer?,Insufficient information,Null,lh-0397
+What type of diet is Li Hua following to support his training regimen and sleep schedule?,Insufficient information,Null,lh-0398
+What type of protein shake does Li Hua prefer to drink before his workout sessions?,Insufficient information,Null,lh-0399
+What specific colors of paint does Li Hua plan to use for the basement walls after decorating with potted plants?,Insufficient information,Null,lh-0400
+"What specific design features did Li Hua suggest for Yuriko's studio homepage during their meeting at ""Central Perk""?",Insufficient information,Null,lh-0401
+What is the name of the concert that Wolfgang and Li Hua will attend on March 7th?,Insufficient information,Null,lh-0402
+What type of cake does Li Hua plan to bring to the meeting with Yuriko to celebrate her studio's homepage redesign?,Insufficient information,Null,lh-0403
+What color did Li Hua paint his house before the community garden renovation began?,Insufficient information,Null,lh-0404
+What specific dietary changes did Li Hua implement in his training regimen as a result of Jennifer's advice on endurance and flexibility?,Insufficient information,Null,lh-0405
+What is the exact reason for Li Hua's unexpected work meeting on Thursday?,Insufficient information,Null,lh-0406
+"What toppings did Hailey put on the bread for Li Hua's next delivery, and what is the name of the bakery she gets her bread from?",Insufficient information,Null,lh-0407
+What is the favorite type of music that Li Hua and Yuriko plan to play together?,Insufficient information,Null,lh-0408
+What are the specific reasons why Li Hua prefers classical music over pop music in their discussions?,Insufficient information,Null,lh-0409
+What is the name of the last song Wolfgang played using the new drum practice app?,Insufficient information,Null,lh-0410
+What flavor of new bread products did Li Hua really enjoy at the bakery's anniversary event?,Insufficient information,Null,lh-0411
+What flavor of cake did Hailey plan to bake for the bakery's anniversary celebration in February?,Insufficient information,Null,lh-0412
+What type of dessert did Wolfgang plan to order for Li Hua during their dinner celebration?,Insufficient information,Null,lh-0413
+What were Raze's personal reasons for becoming a fitness coach before discussing pull-up techniques?,Insufficient information,Null,lh-0414
+What specific construction projects were discussed at the meeting between Turalyon and the residents regarding noise control?,Insufficient information,Null,lh-0415
+What is the amount of rent Li Hua owes to Adam Smith for the months of April and May?,Insufficient information,Null,lh-0416
+What song did Li Hua perform at the local music festival in 2026?,Insufficient information,Null,lh-0417
+"What is the name of the restaurant where Li Hua and Wolfgang had dinner on the night of June 9, 2026?",Insufficient information,Null,lh-0418
+What is the nutritional value of the new line of high-protein breads compared to traditional white bread?,Insufficient information,Null,lh-0419
+What specific sleep techniques did Li Hua use to improve her study habits after reading the neuroscience article and discussing the warm shower with Chae?,Insufficient information,Null,lh-0420
+What type of special dietary restrictions does Li Hua follow when preparing meals for his family?,Insufficient information,Null,lh-0421
+"What is the total cost of the air conditioner installation, including labor and materials, if Li Hua had previously discussed a budget of $2,000 with a different contractor?",Insufficient information,Null,lh-0422
+What type of fusion music does Wolfgang Schulz plan to create with Li Hua during their weekend trip to the music store?,Insufficient information,Null,lh-0423
+What type of flowers were planted in the garden based on the residents' suggestions discussed by Turalyon?,Insufficient information,Null,lh-0424
+"What type of air-conditioner did Li Hua select for Adam's living room, and how does its temperature regulation compare to the one in the basement?",Insufficient information,Null,lh-0425
+What are the sales figures for the PS5 exclusive games released in 2026 that Thane discussed with group members?,Insufficient information,Null,lh-0426
+"What specific techniques did Li Hua use to prepare for a marathon race that took place on September 1, 2026?",Insufficient information,Null,lh-0427
+What type of dessert did Wolfgang plan to have with Li Hua after their hot pot dinner on a different day?,Insufficient information,Null,lh-0428
+What did Jennifer say to Li Hua about their plan for a team swimming competition in December?,Insufficient information,Null,lh-0429
+What strategy did Li Hua use to score a goal in the championship match against their rival team?,Insufficient information,Null,lh-0430
+What is Li Hua's favorite type of exercise outside of pull-ups?,Insufficient information,Null,lh-0431
+What time did Chae first suggest they visit the music festival in the morning?,Insufficient information,Null,lh-0432
+What are the reasons behind Jennifer and Li Hua's decision to change their training routine for the following month?,Insufficient information,Null,lh-0433
+What specific gifts did Wolfgang buy for Li Hua during his trip to Hong Kong?,Insufficient information,Null,lh-0434

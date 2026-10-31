@@ -90,17 +90,17 @@ class PhasedEquivalenceTests(unittest.TestCase):
         work = Path(self.tmp.name) / config
         with patch.dict(os.environ, {}, clear=False), contextlib.redirect_stdout(io.StringIO()):
             # Reference: MiniRAG's own path (keyword cache in write mode, as amendment S2 runs it).
-            pq.apply_env(config, 101, kw_cache=work / "ref_kw.jsonl" if mode == "mini" else None)
+            pq.apply_env(config, 101, kw_cache=None if config in pq.NO_KEYWORDS else work / "ref_kw.jsonl")
             ref_llm = QueryLLM()
             ref_rag = rag_at(pq.snapshot(work / "ref", self.index), ref_llm)
             ref_answers = [asyncio.run(ref_rag.aquery(r["Question"], param=QueryParam(mode=mode))) for r in ROWS]
 
             phased_llm = QueryLLM()
             kw = work / "kw.jsonl"
-            if mode == "mini":
+            if config not in pq.NO_KEYWORDS:
                 pq.apply_env(config, 101, kw_cache=kw)
                 asyncio.run(pq.keyword_phase(rag_at(pq.snapshot(work / "a", self.index), phased_llm), ROWS, kw))
-            pq.apply_env(config, 101, kw_cache=kw if mode == "mini" else None, cache_only=True)
+            pq.apply_env(config, 101, kw_cache=None if config in pq.NO_KEYWORDS else kw, cache_only=True)
             asyncio.run(pq.context_phase(rag_at(pq.snapshot(work / "b", self.index), phased_llm), ROWS, mode,
                                          work / "contexts.jsonl"))
             contexts = pq.read_jsonl(work / "contexts.jsonl")
@@ -127,6 +127,13 @@ class PhasedEquivalenceTests(unittest.TestCase):
 
     def test_original_minirag_C_orig_matches_minirag(self):
         self.check("C_orig")
+
+    def test_lihua_ablation_switches_match_minirag(self):
+        for config in ("L-BM25", "L-NOENT", "L-NOGRAPH"):
+            with self.subTest(config):
+                calls = self.check(config)
+                if config == "L-NOGRAPH":
+                    self.assertTrue(all(system for _, system in calls))  # answer calls only, no keyword call
 
     def test_run_note_environment_is_what_apply_env_sets(self):
         self.assertEqual(pq.config_env("C1")["MINIRAG_CHUNK_FUSION"], "vector_bm25")

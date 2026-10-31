@@ -270,6 +270,10 @@ async def run(args, rows, complete):
     summary = {"status": "completed", "n_questions": len(rows), "passes": args.passes,
                "abstain_after": getattr(args, "abstain_after", 0),
                "abstained": sorted([q, p] for (q, p), r in latest.items() if r["status"] == "abstain"),
+               # Model that actually answered each counted verdict; pinned IDs echo their real version.
+               "response_models": dict(collections.Counter(
+                   req.get("response_model") for r in latest.values() if r["status"] == "ok"
+                   for req in r["attempts"][-1].get("requests", [])[-1:])),
                "groups": summarize(rows, latest, args.passes)}
     (args.run_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     overall = summary["groups"]["all"]

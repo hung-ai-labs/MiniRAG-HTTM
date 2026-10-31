@@ -79,3 +79,20 @@ Ghép cặp theo câu, **riêng từng seed sinh**. Biến chính: `accurate` vs
 - `lh-0206`: cột Evidence gốc ghi `What` — lỗi dữ liệu, không ánh xạ.
 - Index LiHua được dựng với trần sinh 1024 (khác MultiHop 4096) và giữ nguyên để nhất quán với mọi kết quả LiHua.
 - Judge mô hình, chưa có nhãn người; rubric Null có mơ hồ đã biết (MultiHop smoke M1.4).
+
+---
+
+## Sửa đổi có ghi ngày
+
+**LA1 — 31/10/2026: quy tắc phiên chấm và cách chạy.** Khai báo trước mọi lượt sinh, kể cả smoke; chưa có kết quả nào.
+- *Phiên chấm (như MultiHop):* 7 nhánh của một seed được chấm trong **một phiên** — một tiến trình
+  `reproduce/research/judge_session.py` sống suốt phiên. Phiên bị ngắt (tiến trình chết, máy tắt) → phần chấm dở của seed đó
+  được đổi tên thành `judge_partial_unread_<thời điểm>`, **không đọc, không dùng**, và cả 7 nhánh của seed được chấm lại từ đầu
+  trong một phiên mới. Không có câu trả lời nào bị sinh lại vì lý do này.
+- *Chịu lỗi trong một phiên:* quota Gemini cạn không làm phiên kết thúc — bản ghi `judge_failed` được chấm lại trong cùng phiên
+  với chờ tăng dần (tối đa 1 giờ mỗi lần, tổng tối đa 36 giờ; quá thì phiên `interrupted`); `parse_failed` được hỏi lại tới 3
+  vòng rồi thành phiếu trống (S4). Phiên chạy tách khỏi phiên Claude (PowerShell `Start-Process`); khoá file theo seed.
+- *Sinh tách khỏi chấm:* cả 3 seed được sinh trước (`run_phased_dev.sh` với `SKIP_JUDGE=1`), rồi chấm từng seed 101 → 202 → 303.
+  Pha B dùng 6 tiến trình (index LiHua 15 MB). Không đổi nội dung yêu cầu, cấu hình hay luật đọc.
+- *Smoke:* 20 câu (10 Single / 5 Multi / 5 Null, chọn với seed 13) × 7 nhánh × seed 101 — chỉ kiểm kỹ thuật và đo thông lượng
+  judge; số smoke không dùng để kết luận và không gộp vào đợt chính.

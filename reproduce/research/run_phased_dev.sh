@@ -17,6 +17,9 @@ export PYTHONUTF8=1 PYTHONUNBUFFERED=1
 PY=.venv/Scripts/python.exe; [ -x "$PY" ] || PY=.venv/bin/python
 stamp() { echo "=== $* $(date -u +%FT%TZ)"; }
 idx=(); [ -n "${INDEX:-}" ] && idx=(--index "$INDEX")
+for config in "$@"; do  # LiHua ablation v2 judges only through judge_session.py, with the pinned model
+  case "$config" in L-*) [ -n "${SKIP_JUDGE:-}" ] || { echo "L-* configs need SKIP_JUDGE=1 (judge with judge_session.py)" >&2; exit 2; };; esac
+done
 jm=(--judgemodel "${JUDGE_MODEL:-gemini-flash-lite-latest}")
 
 stamp "keywords seed $seed"

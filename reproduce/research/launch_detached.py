@@ -13,6 +13,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import time
@@ -22,12 +23,26 @@ CREATE_NEW_PROCESS_GROUP = 0x00000200
 CREATE_BREAKAWAY_FROM_JOB = 0x01000000
 
 
+def resolve_shell(name, which=shutil.which):
+    """CreateProcess searches System32 before PATH, so a bare "bash" starts WSL's bash -- which drops every
+    Windows environment variable (the LiHua smoke ran on the wrong index that way). Use the PATH's bash and
+    refuse the WSL launcher."""
+    path = which(name)
+    if not path:
+        raise SystemExit(f"{name} not found on PATH")
+    if "system32" in path.lower() or Path(path).name.lower() == "wsl.exe":
+        raise SystemExit(f"{name} resolves to {path} (WSL); install or put Git Bash first on PATH")
+    return path
+
+
 def launch(command, log, cwd, env=None):
     log = Path(log)
     log.parent.mkdir(parents=True, exist_ok=True)
     exe = Path(cwd) / command[0]
     if exe.exists():  # CreateProcess does not resolve a relative program against cwd
         command = [str(exe.resolve())] + list(command[1:])
+    elif os.name == "nt" and command[0] in ("bash", "sh"):
+        command = [resolve_shell(command[0])] + list(command[1:])
     out = open(log, "ab")
     kwargs = {"cwd": cwd, "stdout": out, "stderr": subprocess.STDOUT, "stdin": subprocess.DEVNULL, "env": env}
     if os.name == "nt":

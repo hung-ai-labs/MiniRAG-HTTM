@@ -135,6 +135,17 @@ def snapshot(dest, index=INDEX):
     return dest
 
 
+def check_family(rows, index, config=None):
+    """Questions, index and config must belong to the same dataset. The first LiHua smoke silently ran on the
+    MultiHop index (default --index) when the launcher lost its environment; this makes that impossible."""
+    lihua_index = "lihua" in str(index).lower()
+    lihua_questions = rows[0]["query_id"].startswith("lh-")
+    if lihua_questions != lihua_index:
+        raise SystemExit(f"questions ({rows[0]['query_id']}...) and index {index} belong to different datasets")
+    if config is not None and config.startswith("L-") != lihua_index:
+        raise SystemExit(f"config {config} does not run on index {index}")
+
+
 def index_fingerprint(index):
     """sha256 of index_manifest.json when the index has one (index_run.py); older indexes such as LiHua's are hashed
     file by file with qa_run.index_hash (log and LLM cache excluded)."""
@@ -340,6 +351,8 @@ def main(argv=None):
     sys.path.insert(0, str(ROOT))
     sys.path.insert(0, str(ROOT / "reproduce"))
     rows = read_questions(args.questions)
+    if args.phase in ("keywords", "contexts", "contexts-worker"):  # the phases that read the index
+        check_family(rows, args.index, None if args.phase == "keywords" else args.config)
 
     if args.phase == "contexts-worker":
         mode = MODE[args.config]

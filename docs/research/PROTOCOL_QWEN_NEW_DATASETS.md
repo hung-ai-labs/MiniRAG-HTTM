@@ -43,6 +43,11 @@ Khoá: `MINIRAG_SLM_URL`, `MINIRAG_SLM_KEY` trong `.env` (gitignored), không ba
 | Thứ tự chấm | các cấu hình được so trên cùng seed chấm **liền nhau trong một phiên**; ghi thời điểm |
 | Thoát sớm | câu trả lời = `PROMPTS["fail_response"]` được chấm như thường **và** đếm riêng (`early_exit`) |
 
+**Quyết định 31/10/2026 — huỷ kế hoạch judge Luna.** Kế hoạch dùng `gpt-6-luna` làm judge báo cáo cho ablation MultiHop-RAG
+và LiHua-World (bàn giao Codex 28/10, `x20-x20/outputs/luna_ablation_shared/`, `ablation_single_slm/`) **bị huỷ**; không có
+lượt chấm Luna nào được dùng. Judge của mọi báo cáo vẫn là `gemini-flash-lite-latest` theo giao thức ở bảng trên. Pilot Luna
+100 câu (28/10) chỉ là thử nghiệm, không thuộc kết quả.
+
 **Vì sao Flash-Lite thay Flash.** (a) cùng judge với LiHua; (b) quota free tier rộng hơn cho ~40k lời gọi của đợt test.
 **Rủi ro đã biết:** `-latest` là bí danh trôi và `response.model` chỉ trả tên bí danh — đổi model phía sau không phát hiện được
 → luật "chấm liền nhau". **Nếu 2Wiki muốn Flash:** được, nhưng khi đó số của hai dataset không đặt cùng bảng judge, và phải

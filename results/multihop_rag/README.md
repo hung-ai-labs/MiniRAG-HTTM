@@ -58,6 +58,7 @@ so C0/C1 — quyết định phạm vi 30/10/2026: ưu tiên ablation LiHua, ch�
 
 - **Judge:** `gemini-flash-lite-latest` (bí danh có thể đổi model phía sau), prompt V1 của `Step_2_evaluate.py`, hợp đồng nhãn
   chặt; chưa có nhãn người để hiệu chuẩn, rubric Null còn mơ hồ (smoke M1.4).
+  Kế hoạch chuyển sang judge Luna (28/10) **đã huỷ 31/10/2026** — không số nào ở đây dùng Luna.
 - **Phase 3 — sửa đổi A1:** 3/38.808 lượt (C1, seed 101, `mhr-1114`, lượt 1–3) không ra nhãn hợp lệ với V1; được chấm lại bằng
   cùng model/rubric/input với **JSON schema** (người dùng duyệt 30/10), cả 3 ra `error`. V1 nguyên gốc: 38.805/38.808; bản có
   A1: 38.808/38.808. Kiểm độ nhạy: với cả 4 khả năng đa số của câu này, kết luận seed 101 không đổi (Δ ∈ [9,37; 9,42]).

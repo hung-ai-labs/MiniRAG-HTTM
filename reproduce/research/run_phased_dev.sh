@@ -4,7 +4,8 @@
 #   reproduce/research/run_phased_dev.sh <questions.csv> <out-dir> <seed> C0 C1 C2 C3
 #
 # Optional: INDEX=<frozen index dir> (default: MultiHop full609), JUDGE_MODEL=<Gemini id> (default
-# gemini-flash-lite-latest; LiHua ablation v2 pins gemini-3.5-flash-lite), WORKERS=<phase B processes>.
+# gemini-flash-lite-latest; LiHua ablation v2 pins gemini-3.5-flash-lite), WORKERS=<phase B processes>,
+# SKIP_JUDGE=1 (phases A-C only; LiHua ablation v2 judges each seed in one judge_session.py session).
 #
 # Phase A once (keywords, GPU), then per config phase B (CPU only) and C (GPU),
 # then every config is judged back to back in one session, as registered.
@@ -27,6 +28,10 @@ for config in "$@"; do
   stamp "answers $config"
   "$PY" reproduce/research/phased_qa.py answers --config "$config" --questions "$questions" --seed "$seed" --out "$out"
 done
+if [ -n "${SKIP_JUDGE:-}" ]; then  # generation only; judge later in one session (judge_session.py)
+  stamp "generation done, judging skipped"
+  exit 0
+fi
 for config in "$@"; do
   run="$out/${config}_s$seed"
   resume=(); [ -f "$run/judge/manifest.json" ] && resume=(--resume)

@@ -28,6 +28,7 @@ if not pm.is_installed("openai"):
 
 from openai import (
     AsyncOpenAI,
+    BadRequestError,
     APIConnectionError,
     RateLimitError,
     APITimeoutError,
@@ -237,6 +238,23 @@ def _get_pool(kind: str = "chat", api_key: str = None) -> _KeyPool:
 _clients = {}
 
 
+def _reject_invalid_key(pool, key, error):
+    """Google reports invalid credentials as HTTP 400, unlike most providers."""
+    if "API_KEY_INVALID" not in str(error) and "API key not valid" not in str(error):
+        raise error
+    pool.disable(key)
+    if key in pool.keys:
+        raise ValueError(
+            "No usable Gemini API keys remain. Replace the invalid keys in .env "
+            "and restart the server."
+        ) from error
+    # Reuse the existing auth retry policy, and keep ordinary request errors fatal.
+    raise AuthenticationError(
+        "Gemini rejected an API key; retrying with another configured key.",
+        response=error.response, body=error.body,
+    ) from error
+
+
 def _client(key: str, base_url: str = None) -> AsyncOpenAI:
     # One client per (key, base_url) so httpx connection pools are reused across
     # the thousands of requests an indexing run makes.
@@ -320,6 +338,8 @@ async def gemini_complete_if_cache(
     except RateLimitError:
         pool.penalize(key)
         raise
+    except BadRequestError as error:
+        _reject_invalid_key(pool, key, error)
     except (AuthenticationError, PermissionDeniedError):
         pool.disable(key)
         raise
@@ -428,6 +448,8 @@ async def gemini_embed(
     except RateLimitError:
         pool.penalize(key)
         raise
+    except BadRequestError as error:
+        _reject_invalid_key(pool, key, error)
     except (AuthenticationError, PermissionDeniedError):
         pool.disable(key)
         raise

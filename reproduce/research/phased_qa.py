@@ -51,7 +51,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import qa_run  # noqa: E402
 
 INDEX = ROOT / "indexes/multihop_rag-qwen-full609"
-REGISTRATION = "7013291"
+REGISTRATION = "7013291"  # MultiHop-RAG (MULTIHOP_RAG_ROADMAP.md)
+LIHUA_REGISTRATION = "860f20f"  # LiHua ablation v2 (docs/research/lihua_world/LIHUA_ABLATION_V2.md), configs L-*
+
+
+def registration_for(config):
+    return LIHUA_REGISTRATION if config.startswith("L-") else REGISTRATION
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": "",
             "MINIRAG_TRUNCATE_SOURCES": "1", "MINIRAG_MAX_TOKENS": "1024",
             "MINIRAG_DROP_ENTITIES": "", "MINIRAG_NO_GRAPH": ""}  # empty = off; set so no config inherits them
@@ -360,6 +365,7 @@ def main(argv=None):
     run_dir.mkdir(exist_ok=True)
     if args.phase == "contexts":
         write_note(run_dir, config=args.config, seed=args.seed, mode=MODE[args.config], phase="contexts",
+                   registration_commit=registration_for(args.config),
                    questions=str(args.questions), questions_sha256=qa_run.file_hash(args.questions),
                    index=str(args.index), index_fingerprint=index_fingerprint(args.index),
                    environment=config_env(args.config),

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ablation LiHua-World</title>
+<!-- Fonts: Plus Jakarta Sans (all text) + JetBrains Mono (code); both carry Vietnamese glyphs -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   CSS CUSTOM PROPERTIES (THEME) — Pastel rounded cards
+   Change these to restyle the whole deck.
+   =========================================== */
+:root {
+    --stage-bg: #b9cddc;
+    --slide-bg: #c8d9e6;
+    --bg: #c8d9e6;
+    --card: #faf9f7;
+    --text: #1d2433;
+    --muted: #6a7385;
+    --hint: #9aa3b3;
+    --line: #e6eaf0;
+    --violet: #7c6aad;
+    --lav: #b3a8d6;
+    --lav-soft: #ece8f7;
+    --mint: #a8d4c4;
+    --mint-soft: #e2f3ec;
+    --pink: #f0b4d4;
+    --pink-soft: #fde8f1;
+    --sage: #5a7c6a;
+    --rose: #e07aa9;
+    --mist: #eef2f7;
+    --mist-2: #cfd8e4;
+    --good: #3f7a5f;
+    --bad: #c2417a;
+    /* aliases used by inline legend swatches in the slide markup */
+    --ink: #6fae98;      /* default bar */
+    --red: #7c6aad;      /* highlighted configuration (B2 / C1) */
+    --grey-2: #c9d3e0;   /* baseline / comparison bar */
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur: 0.6s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* ===========================================
+   SLIDE FRAME — white rounded card on pastel blue,
+   pastel pills on the right edge (injected by JS)
+   =========================================== */
+.slide { font-family: var(--font-body); color: var(--text); background: var(--bg); }
+.slide::before { content: ""; position: absolute; left: 32px; top: 28px; right: 112px; bottom: 28px; background: var(--card); border-radius: 40px; box-shadow: 0 30px 60px -32px rgba(40, 60, 90, .35); }
+.pills { position: absolute; right: 26px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 16px; }
+.pills i { display: block; width: 60px; border-radius: 999px; }
+.frame { position: absolute; inset: 60px 172px 84px 92px; display: flex; flex-direction: column; gap: 24px; }
+.kicker { display: flex; justify-content: space-between; align-items: center; font: 700 18px var(--font-body); }
+.kicker .sec { background: var(--mint-soft); color: #2f5d4d; padding: 8px 18px; border-radius: 999px; }
+.kicker .num { color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+h2 { font: 800 56px/1.1 var(--font-body); letter-spacing: -.03em; max-width: 1560px; text-wrap: balance; }
+h2 em { font-style: normal; color: var(--violet); }
+.foot { position: absolute; left: 92px; right: 172px; bottom: 46px; display: flex; justify-content: space-between; font: 600 16px var(--font-body); color: var(--hint); }
+.body { flex: 1; min-height: 0; display: grid; gap: 30px 96px; align-content: safe center; padding-bottom: 12px; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: 1fr 1fr 1fr; gap: 30px 72px; }
+.cols-32 { grid-template-columns: 1.35fr 1fr; }
+.cols-23 { grid-template-columns: 1fr 1.25fr; }
+.rows { grid-template-rows: auto 1fr; }
+.cell { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.cell h3 { font: 800 25px var(--font-body); letter-spacing: -.01em; padding-bottom: 10px; border-bottom: 2px solid var(--line); }
+.cell h3 small { font: 600 17px var(--font-body); color: var(--muted); letter-spacing: 0; margin-left: 10px; }
+/* Breathing room: title → body, and before a second heading inside a column */
+/* Fixed header band: kicker + a title area two lines tall, closed by a hairline,
+   so the body starts at the same height on every slide */
+.frame > h2 { flex: none; box-sizing: content-box; max-width: none; padding-right: 120px; height: 124px; padding-bottom: 26px; margin-bottom: 18px; border-bottom: 2px solid var(--line); }
+.cell > * + h3 { margin-top: 16px; }
+.note { font-size: 20px; line-height: 1.45; color: var(--muted); }
+.note b { color: var(--text); }
+code { font: 500 16px var(--font-mono); background: var(--mist); padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+
+/* ===========================================
+   TABLES — soft separators, lavender highlight row
+   =========================================== */
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 22.5px; font-variant-numeric: tabular-nums; }
+th { font: 700 15px var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--hint); text-align: right; padding: 8px 12px; border-bottom: 2px solid var(--line); }
+td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { text-align: left; }
+table.tl th, table.tl td { text-align: left; }
+table.sm { font-size: 19px; }
+table.sm td { padding: 7px 12px; }
+tr.hl td { background: var(--lav-soft); font-weight: 700; border-bottom-color: transparent; }
+tr.hl td:first-child { border-radius: 14px 0 0 14px; }
+tr.hl td:last-child { border-radius: 0 14px 14px 0; }
+td.pos { color: var(--good); font-weight: 700; }
+td.neg { color: var(--bad); font-weight: 700; }
+td.mute { color: var(--muted); }
+.pill { display: inline-block; font: 700 15px var(--font-body); padding: 7px 14px; border-radius: 999px; white-space: nowrap; background: var(--mist); color: var(--muted); }
+.pill.ok { background: var(--mint-soft); color: #2f5d4d; }
+.pill.no { background: var(--pink-soft); color: #9b2f63; }
+.pill.mid { background: var(--mist); color: var(--muted); }
+
+/* ===========================================
+   BARS — rounded tracks, every bar on one 0–100 % scale
+   =========================================== */
+.bars { display: flex; flex-direction: column; gap: 14px; }
+.brow { display: grid; grid-template-columns: 240px 1fr 100px; align-items: center; gap: 18px; font-size: 22px; }
+.brow .lab { font-weight: 700; }
+.brow .lab.red { color: var(--violet); }
+.brow .val { text-align: right; font: 800 24px var(--font-body); font-variant-numeric: tabular-nums; }
+.track { position: relative; height: 22px; background: var(--mist); border-radius: 999px; overflow: hidden; }
+.track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); border-radius: 999px; transform-origin: left; }
+.track i.r { background: var(--violet); }
+.track i.g { background: var(--grey-2); }
+.pair .track { height: 14px; }
+.pair .track + .track { margin-top: 5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 19px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -1px; border-radius: 50%; background: var(--c, var(--ink)); }
+.legend span.hollow::before { background: #fff; border: 3px solid var(--violet); width: 10px; height: 10px; }
+
+/* Stacked bar: accurate / error / neither on one 100 % row */
+.sbar { display: flex; height: 30px; border-radius: 999px; overflow: hidden; transform-origin: left; }
+.sbar i { display: block; height: 100%; }
+.sbar i.a { background: var(--violet); } .sbar i.e { background: var(--rose); } .sbar i.n { background: var(--mist-2); }
+.sbar i + i { border-left: 3px solid var(--card); }
+
+/* ===========================================
+   FOREST PLOT — Δ acc with CI 95 %, scale −8 … +16 points
+   left = (value + 8) / 24
+   =========================================== */
+.forest { display: flex; flex-direction: column; }
+.fhead, .frow { display: grid; grid-template-columns: 150px 1fr 330px; align-items: center; gap: 20px; }
+.fhead { height: 34px; font: 700 14px var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--hint); border-bottom: 2px solid var(--line); }
+.frow { height: 36px; font-size: 19px; font-variant-numeric: tabular-nums; }
+.frow.first { border-top: 2px solid var(--line); margin-top: 8px; }
+.frow .fl { font-weight: 800; }
+.frow .fl small { font: 600 17px var(--font-body); color: var(--muted); margin-left: 8px; }
+.frow .fn { text-align: right; color: var(--muted); }
+.frow .fn b { color: var(--text); }
+.fplot { position: relative; height: 100%; }
+.fplot .zero, .fplot .ni { position: absolute; top: 0; bottom: 0; }
+.fplot .zero { left: calc(8 / 24 * 100%); border-left: 2px solid var(--text); }
+.fplot .ni { left: calc(5 / 24 * 100%); border-left: 2px dashed var(--grey-2); }
+.fplot .ci { position: absolute; top: 50%; height: 6px; margin-top: -3px; border-radius: 999px; background: var(--lav); left: calc((var(--lo) + 8) / 24 * 100%); width: calc((var(--hi) - var(--lo)) / 24 * 100%); transform-origin: left; }
+.fplot .dot { position: absolute; top: 50%; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; border: 3px solid var(--violet); background: #fff; left: calc((var(--d) + 8) / 24 * 100%); }
+.fplot .dot.sig { background: var(--violet); }
+.fhead .fplot span { position: absolute; bottom: 4px; transform: translateX(-50%); }
+
+/* ===========================================
+   TILES — pastel number cards
+   =========================================== */
+.tiles { display: grid; gap: 14px; }
+.tiles.t4 { grid-template-columns: repeat(4, 1fr); }
+.tiles.t3 { grid-template-columns: repeat(3, 1fr); }
+.tiles.t2 { grid-template-columns: repeat(2, 1fr); }
+.tile { padding: 18px 20px 16px; border-radius: 22px; background: var(--mist); }
+.tile:nth-child(3n+1) { background: var(--pink-soft); }
+.tile:nth-child(3n+2) { background: var(--mint-soft); }
+.tile:nth-child(3n) { background: var(--lav-soft); }
+.tile b { display: block; font: 800 46px/1 var(--font-body); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.tile b.red { color: var(--violet); }
+.tile span { display: block; font-size: 18px; color: var(--muted); margin-top: 8px; line-height: 1.3; }
+.list { display: flex; flex-direction: column; gap: 12px; font-size: 22px; line-height: 1.42; }
+.list li { list-style: none; padding-left: 28px; position: relative; }
+.list li::before { content: ""; position: absolute; left: 2px; top: 10px; width: 12px; height: 12px; border-radius: 50%; background: var(--violet); }
+.list.no li::before { background: #fff; border: 3px solid var(--rose); width: 8px; height: 8px; }
+.list.ok li::before { background: var(--ink); }
+.list.mid li::before { background: var(--grey-2); }
+.list li b { font-weight: 700; }
+.cfg { display: grid; grid-template-columns: 100px 1fr; gap: 6px 20px; font-size: 22px; line-height: 1.4; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.cfg .k { font: 800 30px var(--font-body); }
+.cfg .k.red { color: var(--violet); }
+.funnel { display: flex; flex-direction: column; gap: 12px; }
+.tline { display: grid; grid-template-columns: 200px 1fr; gap: 6px 22px; font-size: 22px; line-height: 1.4; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.tline .k { font: 800 21px var(--font-body); font-variant-numeric: tabular-nums; }
+.tline .k.red { color: var(--violet); }
+.verdict { display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center; font-size: 20px; line-height: 1.35; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.verdict .id { font: 800 28px var(--font-body); color: var(--violet); }
+
+/* ===========================================
+   TITLE SLIDE — badges, headline, donut, stat cards
+   =========================================== */
+.t-left { position: absolute; left: 120px; top: 104px; width: 1010px; }
+.t-badges { display: flex; gap: 14px; }
+.badge { font: 700 18px var(--font-body); padding: 10px 18px; border-radius: 999px; background: var(--mist); color: var(--muted); }
+.badge.m { background: var(--mint); color: #1f3d33; }
+.badge.p { background: var(--pink); color: #5a2341; }
+.t-h1 { margin-top: 56px; font: 800 82px/1.07 var(--font-body); letter-spacing: -.03em; }
+.t-h1 span { color: var(--violet); }
+.t-lede { margin-top: 28px; width: 920px; font-size: 25px; line-height: 1.55; color: var(--muted); }
+.t-stats { position: absolute; left: 120px; bottom: 112px; display: flex; gap: 20px; }
+.t-stat { width: 270px; padding: 24px 26px; border-radius: 28px; background: var(--mist); }
+.t-stat:nth-child(1) { background: var(--pink-soft); } .t-stat:nth-child(2) { background: var(--mint-soft); } .t-stat:nth-child(3) { background: var(--lav-soft); }
+.t-stat b { display: block; font: 800 48px/1 var(--font-body); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.t-stat span { display: block; margin-top: 10px; font: 600 17px var(--font-body); color: var(--muted); }
+.t-donut { position: absolute; right: 196px; top: 170px; width: 470px; text-align: center; }
+.ring { width: 400px; height: 400px; margin: 0 auto; border-radius: 50%; background: conic-gradient(var(--violet) 0 var(--pct), var(--lav-soft) var(--pct) 100%); display: grid; place-items: center; }
+.ring > div { width: 290px; height: 290px; border-radius: 50%; background: var(--card); display: grid; place-items: center; }
+.ring b { display: block; font: 800 94px/1 var(--font-body); letter-spacing: -.04em; color: var(--violet); }
+.ring small { display: block; font: 600 20px var(--font-body); color: var(--muted); margin-top: 6px; }
+.t-donut p { margin-top: 22px; font: 700 24px var(--font-body); }
+.t-donut p span { color: var(--good); }
+
+/* ===========================================
+   ANIMATIONS — triggered by .visible on the active slide
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity var(--dur) var(--ease-out-expo), transform var(--dur) var(--ease-out-expo); }
+.slide.visible .reveal { opacity: 1; transform: none; }
+.slide.visible .reveal.d1 { transition-delay: .08s; } .slide.visible .reveal.d2 { transition-delay: .16s; }
+.slide.visible .reveal.d3 { transition-delay: .24s; } .slide.visible .reveal.d4 { transition-delay: .32s; }
+.track i, .sbar, .fplot .ci { transform: scaleX(0); transition: transform 1s var(--ease-out-expo) .25s; }
+.slide.visible .track i, .slide.visible .sbar, .slide.visible .fplot .ci { transform: scaleX(1); }
+.ring { transform: rotate(-90deg) scale(.9); opacity: 0; transition: transform 1.1s var(--ease-out-expo) .2s, opacity .6s .2s; }
+.slide.visible .ring { transform: none; opacity: 1; }
+
+/* ===========================================
+   DECK CHROME — progress + counter (outside the slide design)
+   =========================================== */
+.progress { position: fixed; left: 0; top: 0; height: 4px; background: var(--violet); z-index: 1000; transition: width .3s; }
+.deck-controls { display: flex; gap: 10px; align-items: center; font: 700 15px var(--font-body); color: var(--muted); background: rgba(255,255,255,.92); padding: 6px 14px; border-radius: 999px; opacity: 0; transition: opacity .3s; }
+body.pointer-active .deck-controls, .deck-controls:focus-within { opacity: 1; }
+/* Bottom-right corner, clear of the footer text */
+.deck-controls { left: auto; right: 24px; bottom: 18px; transform: none; }
+.deck-controls button { font: inherit; border: 0; background: var(--lav-soft); color: var(--text); width: 34px; height: 30px; border-radius: 999px; cursor: pointer; }
+.deck-controls button:focus-visible, .edit-toggle:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+
+/* ===========================================
+   INLINE EDITING — hotzone top-left or press E
+   =========================================== */
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 16px; left: 16px; z-index: 10001; font: 700 15px var(--font-body); padding: 8px 14px; border: 0; border-radius: 999px; background: #fff; box-shadow: 0 6px 20px -8px rgba(40,60,90,.4); opacity: 0; pointer-events: none; transition: opacity .3s; cursor: pointer; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { background: var(--violet); color: #fff; }
+body.editing [contenteditable="true"] { outline: 2px dashed var(--lav); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="edit-hotzone" aria-hidden="true"></div>
+<button class="edit-toggle" id="editToggle" title="Chế độ sửa (E)">Sửa chữ</button>
+
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+<!-- ======================= 01 · TITLE ======================= -->
+<section class="slide title" aria-label="Trang mở đầu">
+    <div class="t-left">
+        <div class="t-badges reveal"><span class="badge">MiniRAG · Qwen2.5-3B · LiHua-World</span><span class="badge m">Ablation v2</span><span class="badge p">01/11/2026</span></div>
+        <h1 class="t-h1 reveal d1">B2 thắng đậm, nhưng <span>chưa thành phần nào</span> đạt tiêu chí</h1>
+        <p class="t-lede reveal d2">435 câu ngoài dev × 7 nhánh × 3 seed sinh × 3 phiếu Gemini. Thiết kế đăng ký trước (860f20f), cùng index Qwen, cùng ngân sách 4.000 token; mỗi nhánh chỉ bật hoặc tắt một thành phần.</p>
+    </div>
+    <div class="t-donut reveal d2"><div class="ring" style="--pct:73.64%"><div><span><b>73,6</b><small>% acc · L-B2</small></span></div></div><p>Hơn C0 <span>+24,7 điểm</span>, cả 3 seed</p></div>
+    <div class="t-stats reveal d3">
+        <div class="t-stat"><b>48,89</b><span>L-C0 baseline</span></div>
+        <div class="t-stat"><b>75,02</b><span>L-BM25 một mình</span></div>
+        <div class="t-stat"><b>0 / 5</b><span>thành phần đạt "có đóng góp"</span></div>
+    </div>
+    <div class="foot"><span>Ablation v2 · LiHua-World</span><span>01/11/2026</span><span>01 / 14</span></div>
+</section>
+
+<!-- ======================= 02 · QUESTION & REGISTRATION ======================= -->
+<section class="slide" aria-label="Câu hỏi và đăng ký trước">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Câu hỏi nghiên cứu</span><span class="num">Đăng ký 860f20f · sửa đổi LA1 9a448c1</span></div>
+    <h2 class="reveal d1">Stage D cho thấy B2 hơn. Đợt này hỏi: <em>lợi ích đó đến từ thành phần nào?</em></h2>
+    <div class="body cols-23">
+        <div class="cell reveal d2">
+            <h3>Năm thành phần cần tách</h3>
+            <ul class="list">
+                <li><b>Kênh BM25</b> trong Sources (L2).</li>
+                <li><b>Kênh vector</b> trong Sources (L3).</li>
+                <li><b>Bỏ xếp hạng đồ thị</b> khỏi Sources (L4).</li>
+                <li><b>Bảng Entities</b> trong context (L5).</li>
+                <li><b>Phần đồ thị còn lại</b> khi truy vấn: parser từ khoá và cổng thoát sớm (L6).</li>
+            </ul>
+            <h3>Vì sao không dùng lại số stage D</h3>
+            <p class="note">Stage D (15/09) khác thời điểm và deployment, chấm <b>1 lượt</b> bằng parser khớp chuỗi con, log context không còn. Nó chỉ dùng để đối chiếu <b>chiều</b>: B2 − VEC (H2 <b>+8,12</b>) và B2 − B1 (H3 <b>+6,59</b>).</p>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Trình tự đã chạy</h3>
+            <div class="tline"><span class="k">31/10</span><span><b>Đăng ký trước</b>: thiết kế, phép thử và luật đọc đóng băng trước mọi lượt sinh, kể cả smoke.</span></div>
+            <div class="tline"><span class="k">31/10 · LA1</span><span><b>Một phiên chấm mỗi seed</b>, chịu lỗi quota trong phiên; sinh tách khỏi chấm. Smoke 20 câu chỉ kiểm kỹ thuật, không gộp.</span></div>
+            <div class="tline"><span class="k">31/10 → 01/11</span><span><b>Sinh 3 seed</b> qua Modal vLLM, 17:11 → 02:04.</span></div>
+            <div class="tline"><span class="k">31/10 → 01/11</span><span><b>Chấm 3 phiên</b> theo thứ tự 101 → 202 → 303, cả 3 phiên <code>completed</code>.</span></div>
+            <div class="tline"><span class="k red">01/11</span><span><b>Phân tích</b> bằng <code>analyze_lihua_ablation.py</code>, rồi tính lại L1–L6 bằng script độc lập: mọi Δ, lên / xuống, p đều khớp.</span></div>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: LIHUA_ABLATION_V2.md</span><span>02 / 14</span></div>
+</section>
+
+<!-- ======================= 03 · SEVEN ARMS ======================= -->
+<section class="slide" aria-label="Bảy nhánh">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Thiết kế · bảy nhánh</span><span class="num">Nền chung: vá answer-type, A1@4000</span></div>
+    <h2 class="reveal d1">Bảy nhánh, mỗi phép so L1–L6 <em>chỉ khác một công tắc</em></h2>
+    <div class="body rows">
+        <div class="cell reveal d2">
+            <table class="tl">
+                <thead><tr><th>Nhánh</th><th>Sources</th><th>Entities</th><th>Đồ thị khi truy vấn</th><th>Công tắc</th></tr></thead>
+                <tbody>
+                    <tr><td><b>L-C0</b></td><td>xếp hạng đồ thị gốc</td><td>đồ thị</td><td>có</td><td>—</td></tr>
+                    <tr class="hl"><td>L-B2</td><td>RRF(vector, BM25)</td><td>đồ thị</td><td>có</td><td><code>CHUNK_FUSION=vector_bm25</code></td></tr>
+                    <tr><td><b>L-VEC</b></td><td>vector</td><td>đồ thị</td><td>có</td><td><code>CHUNK_FUSION=vector</code></td></tr>
+                    <tr><td><b>L-BM25</b></td><td>BM25</td><td>đồ thị</td><td>có</td><td><code>CHUNK_FUSION=bm25</code></td></tr>
+                    <tr><td><b>L-B1</b></td><td>RRF(đồ thị, vector, BM25)</td><td>đồ thị</td><td>có</td><td><code>CHUNK_FUSION=rrf_bm25</code></td></tr>
+                    <tr><td><b>L-NOENT</b></td><td>như L-B2, byte-giống</td><td>chỉ header</td><td>có</td><td><code>vector_bm25</code> + <code>DROP_ENTITIES=1</code></td></tr>
+                    <tr><td><b>L-NOGRAPH</b></td><td>như L-B2</td><td>chỉ header</td><td>không parser, không đồ thị, không thoát sớm</td><td><code>NO_GRAPH=1</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="body cols-2 reveal d3">
+            <div class="cell">
+                <h3>Cố định cho mọi nhánh</h3>
+                <ul class="list">
+                    <li><b>435 câu ngoài dev</b>: Single 347, Multi 43, Null 45.</li>
+                    <li><b>Index <code>LiHua-World-qwen-modal</code></b> do Qwen dựng, chỉ đọc qua bản sao.</li>
+                    <li><b>Qwen2.5-3B-Instruct</b> qua Modal vLLM, seed 101 / 202 / 303; từ khoá dùng chung giữa các nhánh cùng seed.</li>
+                    <li><b>Giám khảo <code>gemini-3.5-flash-lite</code></b> (bản ghim), 3 phiếu, lấy đa số.</li>
+                </ul>
+            </div>
+            <div class="cell">
+                <h3>Dễ hiểu nhầm</h3>
+                <ul class="list">
+                    <li><b>L-C0 không phải "chỉ đồ thị"</b>: <code>kwd2chunk</code> nhân điểm ×10 khi chunk đầu đường nằm trong top vector.</li>
+                    <li><b>L-NOGRAPH không phải index chưa từng dùng đồ thị</b>: index vẫn do pipeline có đồ thị dựng, chỉ tắt đồ thị lúc truy vấn.</li>
+                    <li>C0 là baseline nhóm đã sửa, <b>không</b> phải MiniRAG gốc.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Công tắc viết tắt, bỏ tiền tố MINIRAG_</span><span>03 / 14</span></div>
+</section>
+
+<!-- ======================= 04 · TESTS & READING RULES ======================= -->
+<section class="slide" aria-label="Phép thử và luật đọc">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Phép thử · luật đọc đã đăng ký</span><span class="num">McNemar chính xác · riêng từng seed</span></div>
+    <h2 class="reveal d1">Một phép thử chính, năm phép thử thành phần, <em>một luật chung cho cả họ</em></h2>
+    <div class="body" style="grid-template-columns:1.7fr 1fr">
+        <div class="cell reveal d2">
+            <h3>Bảy phép so <small>ghép cặp theo câu</small></h3>
+            <table class="tl">
+                <thead><tr><th>ID</th><th>Phép so</th><th>Trả lời câu hỏi</th><th>Vai trò</th><th>Dự đoán</th></tr></thead>
+                <tbody>
+                    <tr class="hl"><td>L1</td><td>B2 vs C0</td><td>hiệu ứng tổng của B2</td><td>chính</td><td>B2 hơn</td></tr>
+                    <tr><td><b>L2</b></td><td>B2 vs VEC</td><td>kênh BM25</td><td>thành phần</td><td>B2 hơn</td></tr>
+                    <tr><td><b>L3</b></td><td>B2 vs BM25</td><td>kênh vector</td><td>thành phần</td><td>—</td></tr>
+                    <tr><td><b>L4</b></td><td>B2 vs B1</td><td>xếp hạng đồ thị trong Sources</td><td>thành phần</td><td>B2 hơn</td></tr>
+                    <tr><td><b>L5</b></td><td>B2 vs NOENT</td><td>bảng Entities</td><td>thành phần</td><td>—</td></tr>
+                    <tr><td><b>L6</b></td><td>NOENT vs NOGRAPH</td><td>parser + cổng thoát sớm</td><td>thành phần</td><td>—</td></tr>
+                    <tr><td><b>L7</b></td><td>B2 vs C0, 45 câu Null</td><td>rủi ro Null, biến <code>error</code></td><td>phụ</td><td>B2 tăng lỗi</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Biến chính: <b>accurate</b> so với không-accurate trên phán quyết đa số 3 phiếu (<code>no_majority</code> tính là không đúng). CI 95% bootstrap ghép cặp 10.000 lần, seed 13. Cột dự đoán lấy từ stage D.</p>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Luật đọc</h3>
+            <ul class="list">
+                <li><b>L1 xác nhận</b> khi cả 3 seed cùng chiều và p &lt; 0,05 ở từng seed.</li>
+                <li><b>L2–L6 là một họ</b>: trong mỗi seed, hiệu chỉnh Holm trên 5 giá trị p.</li>
+                <li><b>"Có đóng góp"</b> khi cả 3 seed cùng chiều <b>và</b> p Holm &lt; 0,05 ở cả 3 seed.</li>
+                <li><b>"Không kém hơn"</b> chỉ khi cận dưới CI 95% &gt; −3 điểm ở cả 3 seed.</li>
+                <li><b>Không có ý nghĩa ≠ bằng 0</b>: viết "chưa có bằng chứng …".</li>
+                <li><b>L7</b>: chỉ mô tả, kèm cảnh báo cỡ mẫu nhỏ.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: LIHUA_ABLATION_V2.md, mục Phép thử</span><span>04 / 14</span></div>
+</section>
+
+<!-- ======================= 05 · OVERVIEW ======================= -->
+<section class="slide" aria-label="Tổng quan bảy nhánh">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Kết quả · bảy nhánh</span><span class="num">Đa số 3 phiếu · ± là sd giữa 3 seed sinh</span></div>
+    <h2 class="reveal d1">Bốn nhánh có BM25 và không xếp đồ thị trong Sources cùng ở <em>73–75%</em></h2>
+    <div class="body cols-2">
+        <div class="cell reveal d2">
+            <h3>accurate / error / neither <small>trung bình 3 seed, %</small></h3>
+            <div class="bars">
+                <div class="brow"><span class="lab">L-C0</span><div class="sbar"><i class="a" style="width:48.89%"></i><i class="e" style="width:28.28%"></i><i class="n" style="width:22.68%"></i></div><span class="val">48,89</span></div>
+                <div class="brow"><span class="lab red">L-B2</span><div class="sbar"><i class="a" style="width:73.64%"></i><i class="e" style="width:19.16%"></i><i class="n" style="width:6.98%"></i></div><span class="val">73,64</span></div>
+                <div class="brow"><span class="lab">L-VEC</span><div class="sbar"><i class="a" style="width:65.83%"></i><i class="e" style="width:22.07%"></i><i class="n" style="width:11.95%"></i></div><span class="val">65,83</span></div>
+                <div class="brow"><span class="lab">L-BM25</span><div class="sbar"><i class="a" style="width:75.02%"></i><i class="e" style="width:19.08%"></i><i class="n" style="width:5.60%"></i></div><span class="val">75,02</span></div>
+                <div class="brow"><span class="lab">L-B1</span><div class="sbar"><i class="a" style="width:66.90%"></i><i class="e" style="width:21.99%"></i><i class="n" style="width:10.95%"></i></div><span class="val">66,90</span></div>
+                <div class="brow"><span class="lab">L-NOENT</span><div class="sbar"><i class="a" style="width:75.09%"></i><i class="e" style="width:20.23%"></i><i class="n" style="width:4.52%"></i></div><span class="val">75,09</span></div>
+                <div class="brow"><span class="lab">L-NOGRAPH</span><div class="sbar"><i class="a" style="width:74.40%"></i><i class="e" style="width:21.46%"></i><i class="n" style="width:3.99%"></i></div><span class="val">74,40</span></div>
+            </div>
+            <div class="legend"><span style="--c:var(--violet)">accurate</span><span style="--c:var(--rose)">error</span><span style="--c:var(--mist-2)">neither</span><span style="--c:transparent">phần còn lại là no_majority (≤ 0,5)</span></div>
+        </div>
+        <div class="cell reveal d3">
+            <h3>accurate theo seed sinh</h3>
+            <table>
+                <thead><tr><th>Nhánh</th><th>s101</th><th>s202</th><th>s303</th><th>TB ± sd</th><th>err</th><th>nei</th></tr></thead>
+                <tbody>
+                    <tr><td><b>L-C0</b></td><td>48,51</td><td>48,97</td><td>49,20</td><td>48,89 ± 0,35</td><td>28,28</td><td>22,68</td></tr>
+                    <tr class="hl"><td>L-B2</td><td>73,56</td><td>72,18</td><td>75,17</td><td>73,64 ± 1,50</td><td>19,16</td><td>6,98</td></tr>
+                    <tr><td><b>L-VEC</b></td><td>66,21</td><td>67,36</td><td>63,91</td><td>65,83 ± 1,76</td><td>22,07</td><td>11,95</td></tr>
+                    <tr><td><b>L-BM25</b></td><td>74,48</td><td>75,40</td><td>75,17</td><td>75,02 ± 0,48</td><td>19,08</td><td>5,60</td></tr>
+                    <tr><td><b>L-B1</b></td><td>68,51</td><td>65,75</td><td>66,44</td><td>66,90 ± 1,44</td><td>21,99</td><td>10,95</td></tr>
+                    <tr><td><b>L-NOENT</b></td><td>75,63</td><td>75,17</td><td>74,48</td><td>75,09 ± 0,58</td><td>20,23</td><td>4,52</td></tr>
+                    <tr><td><b>L-NOGRAPH</b></td><td>73,56</td><td>75,40</td><td>74,25</td><td>74,40 ± 0,93</td><td>21,46</td><td>3,99</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Ở giữa là <b>L-VEC</b> (thiếu BM25) và <b>L-B1</b> (thêm đồ thị vào RRF), cả hai khoảng <b>66–67%</b>. Nhiễu giám khảo trong một lượt sinh nhỏ: sd giữa 3 phiếu <b>0,13–0,66</b>.</p>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: ANALYSIS.json · README.md</span><span>05 / 14</span></div>
+</section>
+
+<!-- ======================= 06 · L1 ======================= -->
+<section class="slide" aria-label="L1: B2 so với C0">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">L1 · phép thử chính · B2 − C0</span><span class="num"><span class="pill ok">Xác nhận</span></span></div>
+    <h2 class="reveal d1">B2 hơn C0 <em>23–26 điểm</em> ở cả 3 seed, đồng thời ít lỗi hơn có ý nghĩa</h2>
+    <div class="body cols-23">
+        <div class="cell reveal d2">
+            <h3>Trung bình 3 seed <small>thang 0–100%</small></h3>
+            <div class="bars">
+                <div class="brow pair"><span class="lab">Accurate</span><div><div class="track"><i class="g" style="width:48.89%"></i></div><div class="track"><i class="r" style="width:73.64%"></i></div></div><span class="val">73,64</span></div>
+                <div class="brow pair"><span class="lab">Error</span><div><div class="track"><i class="g" style="width:28.28%"></i></div><div class="track"><i class="r" style="width:19.16%"></i></div></div><span class="val">19,16</span></div>
+                <div class="brow pair"><span class="lab">Neither</span><div><div class="track"><i class="g" style="width:22.68%"></i></div><div class="track"><i class="r" style="width:6.98%"></i></div></div><span class="val">6,98</span></div>
+            </div>
+            <div class="legend"><span style="--c:var(--grey-2)">C0: 48,89 / 28,28 / 22,68</span><span style="--c:var(--red)">B2</span></div>
+            <div class="tiles t3">
+                <div class="tile"><b class="red">+24,74</b><span>Δ acc trung bình 3 seed</span></div>
+                <div class="tile"><b>−15,7</b><span>điểm neither, giảm nhiều hơn error</span></div>
+                <div class="tile"><b>−9,1</b><span>điểm error</span></div>
+            </div>
+        </div>
+        <div class="cell reveal d3">
+            <h3>accurate từng seed <small>McNemar chính xác, CI 95% bootstrap</small></h3>
+            <table>
+                <thead><tr><th>Seed</th><th>C0</th><th>B2</th><th>Δ</th><th>lên / xuống</th><th>p</th><th>CI 95%</th></tr></thead>
+                <tbody>
+                    <tr><td>101</td><td>48,51</td><td>73,56</td><td class="pos">+25,05</td><td>139 / 30</td><td>5,7·10⁻¹⁸</td><td>[19,8; 30,3]</td></tr>
+                    <tr><td>202</td><td>48,97</td><td>72,18</td><td class="pos">+23,21</td><td>129 / 28</td><td>1,1·10⁻¹⁶</td><td>[17,9; 28,5]</td></tr>
+                    <tr><td>303</td><td>49,20</td><td>75,17</td><td class="pos">+25,97</td><td>140 / 27</td><td>1,4·10⁻¹⁹</td><td>[20,7; 31,3]</td></tr>
+                </tbody>
+            </table>
+            <h3>error từng seed <small>biến phụ</small></h3>
+            <table>
+                <thead><tr><th>Seed</th><th>C0 err / nei</th><th>B2 err / nei</th><th>ít / nhiều lỗi hơn</th><th>p</th></tr></thead>
+                <tbody>
+                    <tr><td>101</td><td>26,67 / 24,60</td><td>20,00 / 5,98</td><td>64 / 35</td><td>0,0046</td></tr>
+                    <tr><td>202</td><td>29,66 / 21,15</td><td>20,23 / 7,36</td><td>76 / 35</td><td>1,2·10⁻⁴</td></tr>
+                    <tr><td>303</td><td>28,51 / 22,30</td><td>17,24 / 7,59</td><td>78 / 29</td><td>2,4·10⁻⁶</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Mức tăng lớn hơn nhiều MultiHop (+9,59), nhưng <b>không</b> đặt hai số cạnh nhau như cùng giám khảo: MultiHop dùng bí danh <code>gemini-flash-lite-latest</code>.</p>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: ANALYSIS.json, contrasts.L1</span><span>06 / 14</span></div>
+</section>
+
+<!-- ======================= 07 · FOREST PLOT L2–L6 ======================= -->
+<section class="slide" aria-label="Bản đồ thành phần L2 đến L6">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">L2–L6 · họ phép thử thành phần</span><span class="num">Holm trong từng seed</span></div>
+    <h2 class="reveal d1">Không phép so nào đạt Holm &lt; 0,05 ở <em>đủ cả ba seed</em></h2>
+    <div class="body" style="grid-template-columns:1.6fr 1fr">
+        <div class="cell reveal d2">
+            <div class="forest">
+                <div class="fhead"><span>Phép so</span><div class="fplot"><span style="left:0%">−8</span><span style="left:16.67%">−4</span><span style="left:33.33%">0</span><span style="left:50%">+4</span><span style="left:66.67%">+8</span><span style="left:83.33%">+12</span><span style="left:100%">+16</span></div><span style="text-align:right">Δ · lên/xuống · p Holm</span></div>
+
+                <div class="frow first"><span class="fl">L2<small>s101</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:3.22;--hi:11.72"></i><i class="dot sig" style="--d:7.35"></i></div><span class="fn"><b>+7,35</b> · 62/30 · 0,006</span></div>
+                <div class="frow"><span class="fl">L2<small>s202</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:0.46;--hi:8.97"></i><i class="dot" style="--d:4.82"></i></div><span class="fn"><b>+4,82</b> · 56/35 · 0,142</span></div>
+                <div class="frow"><span class="fl">L2<small>s303</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:7.36;--hi:15.17"></i><i class="dot sig" style="--d:11.26"></i></div><span class="fn"><b>+11,26</b> · 67/18 · 4·10⁻⁷</span></div>
+
+                <div class="frow first"><span class="fl">L3<small>s101</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-5.06;--hi:3.22"></i><i class="dot" style="--d:-0.92"></i></div><span class="fn"><b>−0,92</b> · 39/43 · 0,74</span></div>
+                <div class="frow"><span class="fl">L3<small>s202</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-7.13;--hi:0.69"></i><i class="dot" style="--d:-3.22"></i></div><span class="fn"><b>−3,22</b> · 30/44 · 0,28</span></div>
+                <div class="frow"><span class="fl">L3<small>s303</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-3.91;--hi:3.91"></i><i class="dot" style="--d:0"></i></div><span class="fn"><b>0,00</b> · 40/40 · 1</span></div>
+
+                <div class="frow first"><span class="fl">L4<small>s101</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:0.69;--hi:9.43"></i><i class="dot" style="--d:5.05"></i></div><span class="fn"><b>+5,05</b> · 59/37 · 0,126</span></div>
+                <div class="frow"><span class="fl">L4<small>s202</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:2.3;--hi:10.8"></i><i class="dot sig" style="--d:6.43"></i></div><span class="fn"><b>+6,43</b> · 61/33 · 0,025</span></div>
+                <div class="frow"><span class="fl">L4<small>s303</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:4.6;--hi:12.87"></i><i class="dot sig" style="--d:8.73"></i></div><span class="fn"><b>+8,73</b> · 61/23 · 2·10⁻⁴</span></div>
+
+                <div class="frow first"><span class="fl">L5<small>s101</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-5.29;--hi:1.15"></i><i class="dot" style="--d:-2.07"></i></div><span class="fn"><b>−2,07</b> · 22/31 · 0,54</span></div>
+                <div class="frow"><span class="fl">L5<small>s202</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-6.21;--hi:0.23"></i><i class="dot" style="--d:-2.99"></i></div><span class="fn"><b>−2,99</b> · 19/32 · 0,28</span></div>
+                <div class="frow"><span class="fl">L5<small>s303</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-2.53;--hi:3.91"></i><i class="dot" style="--d:0.69"></i></div><span class="fn"><b>+0,69</b> · 28/25 · 1</span></div>
+
+                <div class="frow first"><span class="fl">L6<small>s101</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:0;--hi:4.14"></i><i class="dot" style="--d:2.07"></i></div><span class="fn"><b>+2,07</b> · 15/6 · 0,24</span></div>
+                <div class="frow"><span class="fl">L6<small>s202</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-2.07;--hi:1.61"></i><i class="dot" style="--d:-0.23"></i></div><span class="fn"><b>−0,23</b> · 8/9 · 1</span></div>
+                <div class="frow"><span class="fl">L6<small>s303</small></span><div class="fplot"><i class="ni"></i><i class="zero"></i><i class="ci" style="--lo:-1.61;--hi:2.07"></i><i class="dot" style="--d:0.23"></i></div><span class="fn"><b>+0,23</b> · 9/8 · 1</span></div>
+            </div>
+            <div class="legend"><span style="--c:var(--red)">p Holm &lt; 0,05</span><span class="hollow">chấm rỗng: chưa đạt</span><span style="--c:var(--grey-2)">vạch đứt: −3, ngưỡng "không kém hơn"</span></div>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Đọc theo luật</h3>
+            <div class="verdict"><span class="id">L2</span><span><b>Kênh BM25.</b> Cùng chiều dương 3/3, lặp lại chiều stage D. Trượt ở seed 202.</span><span class="pill mid">Chưa đạt</span></div>
+            <div class="verdict"><span class="id">L3</span><span><b>Kênh vector.</b> Trái chiều; BM25 một mình ngang B2.</span><span class="pill mid">Chưa có bằng chứng</span></div>
+            <div class="verdict"><span class="id">L4</span><span><b>Đồ thị trong Sources.</b> Cùng chiều dương 3/3, lặp lại stage D. Trượt ở seed 101.</span><span class="pill mid">Chưa đạt</span></div>
+            <div class="verdict"><span class="id">L5</span><span><b>Bảng Entities.</b> Trái chiều, hai seed nghiêng về bỏ Entities.</span><span class="pill mid">Chưa có bằng chứng</span></div>
+            <div class="verdict"><span class="id">L6</span><span><b>Parser + thoát sớm.</b> Trái chiều, hiệu số quanh 0.</span><span class="pill mid">Chưa có bằng chứng</span></div>
+            <p class="note"><b>Không kém hơn</b> (cận dưới CI &gt; −3 ở cả 3 seed): đạt ở L2, L4, L6; <b>không</b> đạt ở L3 (−7,1 ở s202) và L5 (−6,2 ở s202).</p>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Δ = acc(b) − acc(a), xem bảng ở slide 04</span><span>07 / 14</span></div>
+</section>
+
+<!-- ======================= 08 · RETRIEVAL CHANNELS (L2, L3) ======================= -->
+<section class="slide" aria-label="Kênh truy hồi: L2 và L3">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">L2 · L3 · hai kênh truy hồi</span><span class="num">B2 = RRF(vector, BM25), k = 60</span></div>
+    <h2 class="reveal d1">BM25 một mình đã ngang B2; thêm vector <em>chưa cho thấy</em> phần góp nào</h2>
+    <div class="body cols-23">
+        <div class="cell reveal d2">
+            <h3>Ba cấu hình Sources <small>acc và Evidence Recall micro, TB 3 seed</small></h3>
+            <div class="bars">
+                <div class="brow pair"><span class="lab">L-VEC</span><div><div class="track"><i class="g" style="width:65.83%"></i></div><div class="track"><i style="width:58.66%"></i></div></div><span class="val">65,83</span></div>
+                <div class="brow pair"><span class="lab">L-BM25</span><div><div class="track"><i class="g" style="width:75.02%"></i></div><div class="track"><i style="width:70.18%"></i></div></div><span class="val">75,02</span></div>
+                <div class="brow pair"><span class="lab red">L-B2</span><div><div class="track"><i class="r" style="width:73.64%"></i></div><div class="track"><i style="width:69.35%"></i></div></div><span class="val">73,64</span></div>
+            </div>
+            <div class="legend"><span style="--c:var(--grey-2)">accurate (B2 tô đỏ)</span><span style="--c:var(--ink)">Evidence Recall micro: 58,7 · 70,2 · 69,4</span></div>
+            <ul class="list">
+                <li>Đổi vector → B2 nâng recall <b>+10,7 điểm</b>; đổi BM25 → B2 không nâng (69,4 so với 70,2).</li>
+                <li>BM25 có sd giữa seed thấp nhất trong bảy nhánh: <b>±0,48</b>.</li>
+                <li>Khẳng định được <b>B2 không kém VEC</b>; <b>không</b> khẳng định được B2 không kém BM25.</li>
+            </ul>
+        </div>
+        <div class="cell reveal d3">
+            <h3>L2 · B2 − VEC <small>kênh BM25</small></h3>
+            <table>
+                <thead><tr><th>Seed</th><th>Δ</th><th>lên / xuống</th><th>p</th><th>p Holm</th><th>CI 95%</th></tr></thead>
+                <tbody>
+                    <tr><td>101</td><td class="pos">+7,35</td><td>62 / 30</td><td>0,0011</td><td>0,006</td><td>[3,2; 11,7]</td></tr>
+                    <tr class="hl"><td>202</td><td>+4,82</td><td>56 / 35</td><td>0,035</td><td>0,142</td><td>[0,5; 9,0]</td></tr>
+                    <tr><td>303</td><td class="pos">+11,26</td><td>67 / 18</td><td>8,4·10⁻⁸</td><td>4,2·10⁻⁷</td><td>[7,4; 15,2]</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Seed 202 có p thô 0,035 nhưng vượt ngưỡng sau Holm. Chiều trùng stage D H2 (+8,12).</p>
+            <h3>L3 · B2 − BM25 <small>kênh vector</small></h3>
+            <table>
+                <thead><tr><th>Seed</th><th>Δ</th><th>lên / xuống</th><th>p</th><th>p Holm</th><th>CI 95%</th></tr></thead>
+                <tbody>
+                    <tr><td>101</td><td>−0,92</td><td>39 / 43</td><td>0,74</td><td>0,74</td><td>[−5,1; 3,2]</td></tr>
+                    <tr class="hl"><td>202</td><td>−3,22</td><td>30 / 44</td><td>0,13</td><td>0,28</td><td>[−7,1; 0,7]</td></tr>
+                    <tr><td>303</td><td>0,00</td><td>40 / 40</td><td>1</td><td>1</td><td>[−3,9; 3,9]</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: ANALYSIS.json, contrasts.L2 · L3</span><span>08 / 14</span></div>
+</section>
+
+<!-- ======================= 09 · GRAPH PARTS (L4, L5, L6) ======================= -->
+<section class="slide" aria-label="Các phần của đồ thị: L4, L5, L6">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">L4 · L5 · L6 · ba phần của đồ thị</span><span class="num">Sources của B2 / NOENT / NOGRAPH byte-giống</span></div>
+    <h2 class="reveal d1">B1 thấp hơn B2 ở cả 3 seed nhưng <em>chưa đạt tiêu chí</em>; Entities và parser chưa có bằng chứng</h2>
+    <div class="body cols-2">
+        <div class="cell reveal d2">
+            <h3>L4 · B2 − B1 <small>xếp hạng đồ thị trong Sources</small></h3>
+            <table>
+                <thead><tr><th>Seed</th><th>B1</th><th>B2</th><th>Δ</th><th>lên / xuống</th><th>p Holm</th><th>CI 95%</th></tr></thead>
+                <tbody>
+                    <tr class="hl"><td>101</td><td>68,51</td><td>73,56</td><td>+5,05</td><td>59 / 37</td><td>0,126</td><td>[0,7; 9,4]</td></tr>
+                    <tr><td>202</td><td>65,75</td><td>72,18</td><td class="pos">+6,43</td><td>61 / 33</td><td>0,025</td><td>[2,3; 10,8]</td></tr>
+                    <tr><td>303</td><td>66,44</td><td>75,17</td><td class="pos">+8,73</td><td>61 / 23</td><td>1,6·10⁻⁴</td><td>[4,6; 12,9]</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Cùng chiều dương cả 3 seed, trùng stage D H3 (+6,59), nhưng seed 101 trượt sau Holm. B1 đưa vào Sources ít chunk evidence hơn B2: recall micro <b>63,5</b> so với <b>69,4</b>.</p>
+            <h3>Thoát sớm: 1 câu</h3>
+            <p class="note"><b>lh-0044</b>, seed 202, ở cả 6 nhánh có đồ thị: từ khoá không khớp node nào nên MiniRAG trả lời mặc định. L-NOGRAPH trả lời đúng. Đây chính là cơ chế L6 đo, được giữ trong dữ liệu.</p>
+        </div>
+        <div class="cell reveal d3">
+            <h3>L5 · B2 − NOENT và L6 · NOENT − NOGRAPH</h3>
+            <table>
+                <thead><tr><th>Phép so</th><th>s101</th><th>s202</th><th>s303</th></tr></thead>
+                <tbody>
+                    <tr><td><b>L5</b> Δ · lên/xuống</td><td>−2,07 · 22/31</td><td>−2,99 · 19/32</td><td>+0,69 · 28/25</td></tr>
+                    <tr><td class="mute">p Holm</td><td>0,54</td><td>0,28</td><td>1</td></tr>
+                    <tr><td><b>L6</b> Δ · lên/xuống</td><td>+2,07 · 15/6</td><td>−0,23 · 8/9</td><td>+0,23 · 9/8</td></tr>
+                    <tr><td class="mute">p Holm</td><td>0,24</td><td>1</td><td>1</td></tr>
+                </tbody>
+            </table>
+            <h3>Mô tả: bỏ dần đồ thị chuyển neither sang error <small>TB 3 seed</small></h3>
+            <table>
+                <thead><tr><th>Nhánh</th><th>acc</th><th>err</th><th>neither</th></tr></thead>
+                <tbody>
+                    <tr class="hl"><td>L-B2</td><td>73,64</td><td>19,16</td><td>6,98</td></tr>
+                    <tr><td><b>L-NOENT</b></td><td>75,09</td><td>20,23</td><td>4,52</td></tr>
+                    <tr><td><b>L-NOGRAPH</b></td><td>74,40</td><td>21,46</td><td>3,99</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Xu hướng này <b>chưa được kiểm định</b> (biến chính là accurate). Chỉ nên đọc như gợi ý: bớt context từ đồ thị thì model ít nói "không biết" hơn.</p>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: ANALYSIS.json, contrasts.L4 · L5 · L6</span><span>09 / 14</span></div>
+</section>
+
+<!-- ======================= 10 · BY QUESTION TYPE ======================= -->
+<section class="slide" aria-label="Theo loại câu">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Theo loại câu · mô tả</span><span class="num">Single 347 · Multi 43 · Null 45</span></div>
+    <h2 class="reveal d1">Mức tăng nằm gần trọn ở Single: <em>48,7 → 80,2</em>. Multi vẫn sai khoảng một nửa</h2>
+    <div class="body cols-32">
+        <div class="cell reveal d2">
+            <h3>acc / err theo loại <small>đa số 3 phiếu, TB 3 seed, %</small></h3>
+            <table>
+                <thead><tr><th>Nhánh</th><th>Single acc</th><th>err</th><th>Multi acc</th><th>err</th><th>Null acc</th><th>err</th></tr></thead>
+                <tbody>
+                    <tr><td><b>L-C0</b></td><td>48,70</td><td>26,03</td><td>27,91</td><td>58,14</td><td class="pos">70,37</td><td class="pos">17,04</td></tr>
+                    <tr class="hl"><td>L-B2</td><td>80,21</td><td>14,51</td><td>37,98</td><td>51,94</td><td>57,04</td><td>23,70</td></tr>
+                    <tr><td><b>L-VEC</b></td><td>70,41</td><td>17,58</td><td>37,21</td><td>51,16</td><td>57,78</td><td>28,89</td></tr>
+                    <tr><td><b>L-BM25</b></td><td>82,04</td><td>14,41</td><td>35,66</td><td>51,16</td><td>58,52</td><td>24,44</td></tr>
+                    <tr><td><b>L-B1</b></td><td>71,85</td><td>18,16</td><td>37,21</td><td>48,84</td><td>57,04</td><td>25,93</td></tr>
+                    <tr><td><b>L-NOENT</b></td><td>82,23</td><td>14,98</td><td>39,53</td><td>53,49</td><td>54,07</td><td>28,89</td></tr>
+                    <tr><td><b>L-NOGRAPH</b></td><td>81,84</td><td>16,04</td><td>34,88</td><td>58,14</td><td>54,82</td><td>28,15</td></tr>
+                </tbody>
+            </table>
+            <p class="note">Theo loại câu là phân tích mô tả, không có phép thử đăng ký riêng (trừ L7 cho Null).</p>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Đọc cẩn thận</h3>
+            <ul class="list">
+                <li><b>Single</b> (80% số câu) gánh mức tăng: B2 hơn C0 <b>+31,5 điểm</b>, error giảm từ 26,0 xuống 14,5.</li>
+                <li><b>Multi</b> chỉ 43 câu, một câu bằng <b>2,33 điểm</b>. Acc Multi của B2 theo seed là 34,88 / 32,56 / 46,51: dao động 14 điểm giữa 3 seed sinh.</li>
+                <li>Error Multi ở <b>mọi nhánh</b> trong khoảng 49–58%: đổi Sources chưa giải quyết được câu cần nối nhiều bằng chứng.</li>
+                <li><b>Null</b>: C0 cao nhất (70,37). Cả sáu nhánh còn lại ở 54–59. Xem L7 ở slide sau.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: ANALYSIS.json, by_type_majority</span><span>10 / 14</span></div>
+</section>
+
+<!-- ======================= 11 · L7 NULL ======================= -->
+<section class="slide" aria-label="L7: nhóm Null">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">L7 · 45 câu Null · phép thử phụ</span><span class="num"><span class="pill no">Không viết "an toàn với Null"</span></span></div>
+    <h2 class="reveal d1">B2 đúng ít hơn C0 trên Null ở cả 3 seed; <em>biến đã đăng ký</em> thì chưa có ý nghĩa</h2>
+    <div class="body cols-2">
+        <div class="cell reveal d2">
+            <h3>acc trên Null <small>thang 0–100%</small></h3>
+            <div class="bars">
+                <div class="brow pair"><span class="lab">Seed 101</span><div><div class="track"><i class="g" style="width:64.44%"></i></div><div class="track"><i class="r" style="width:57.78%"></i></div></div><span class="val">57,78</span></div>
+                <div class="brow pair"><span class="lab">Seed 202</span><div><div class="track"><i class="g" style="width:68.89%"></i></div><div class="track"><i class="r" style="width:57.78%"></i></div></div><span class="val">57,78</span></div>
+                <div class="brow pair"><span class="lab">Seed 303</span><div><div class="track"><i class="g" style="width:77.78%"></i></div><div class="track"><i class="r" style="width:55.56%"></i></div></div><span class="val">55,56</span></div>
+            </div>
+            <div class="legend"><span style="--c:var(--grey-2)">C0: 64,44 · 68,89 · 77,78</span><span style="--c:var(--red)">B2</span></div>
+            <table>
+                <thead><tr><th>Seed</th><th>Δ acc</th><th>lên / xuống</th><th>p</th><th>CI 95%</th></tr></thead>
+                <tbody>
+                    <tr><td>101</td><td>−6,66</td><td>6 / 9</td><td>0,61</td><td>[−22,2; 8,9]</td></tr>
+                    <tr><td>202</td><td>−11,11</td><td>5 / 10</td><td>0,30</td><td>[−26,7; 4,4]</td></tr>
+                    <tr class="hl"><td>303</td><td>−22,22</td><td>1 / 11</td><td>0,006</td><td>[−35,6; −8,9]</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Biến đã đăng ký: error trên Null</h3>
+            <table>
+                <thead><tr><th>Seed</th><th>C0 err</th><th>B2 err</th><th>ít / nhiều lỗi hơn</th><th>p</th></tr></thead>
+                <tbody>
+                    <tr><td>101</td><td>13,33</td><td>26,67</td><td>2 / 8</td><td>0,11</td></tr>
+                    <tr><td>202</td><td>22,22</td><td>22,22</td><td>5 / 5</td><td>1</td></tr>
+                    <tr><td>303</td><td>15,56</td><td>22,22</td><td>2 / 5</td><td>0,45</td></tr>
+                </tbody>
+            </table>
+            <div class="tiles t3">
+                <div class="tile"><b>45</b><span>câu Null; một câu = 2,22 điểm</span></div>
+                <div class="tile"><b class="red">0 / 3</b><span>seed có error tăng có ý nghĩa</span></div>
+                <div class="tile"><b>1 / 3</b><span>seed có acc giảm có ý nghĩa (303)</span></div>
+            </div>
+            <ul class="list">
+                <li>Chiều acc giảm <b>lặp lại</b> ở cả 3 seed, cùng hướng với cảnh báo Null của V3 (Qwen, 14/09) và seed 303 của MultiHop.</li>
+                <li>Nhưng biến đăng ký là <b>error</b>, và trên biến đó chưa seed nào có ý nghĩa: chỉ được báo mô tả.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: ANALYSIS.json, contrasts.L7</span><span>11 / 14</span></div>
+</section>
+
+<!-- ======================= 12 · EVIDENCE RECALL ======================= -->
+<section class="slide" aria-label="Evidence Recall">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Evidence Recall của Sources · mô tả</span><span class="num">388 câu có evidence ánh xạ được</span></div>
+    <h2 class="reveal d1">Thứ hạng acc đi cùng thứ hạng recall: đồ thị gốc đưa đúng <em>40%</em> chunk evidence, B2 gần <em>70%</em></h2>
+    <div class="body cols-2">
+        <div class="cell reveal d2">
+            <h3>Recall micro <small>% chunk evidence có trong Sources, TB 3 seed</small></h3>
+            <div class="bars">
+                <div class="brow"><span class="lab">L-C0</span><div class="track"><i class="g" style="width:40.30%"></i></div><span class="val">40,3</span></div>
+                <div class="brow"><span class="lab">L-VEC</span><div class="track"><i style="width:58.66%"></i></div><span class="val">58,7</span></div>
+                <div class="brow"><span class="lab">L-B1</span><div class="track"><i style="width:63.54%"></i></div><span class="val">63,5</span></div>
+                <div class="brow"><span class="lab red">L-B2</span><div class="track"><i class="r" style="width:69.35%"></i></div><span class="val">69,4</span></div>
+                <div class="brow"><span class="lab">L-NOENT</span><div class="track"><i style="width:69.35%"></i></div><span class="val">69,4</span></div>
+                <div class="brow"><span class="lab">L-NOGRAPH</span><div class="track"><i style="width:69.41%"></i></div><span class="val">69,4</span></div>
+                <div class="brow"><span class="lab">L-BM25</span><div class="track"><i style="width:70.18%"></i></div><span class="val">70,2</span></div>
+            </div>
+            <p class="note">Bỏ khỏi mẫu số: 45 câu Null, <b>lh-0101</b> (evidence trỏ vào bài <code>doc-62f43652…</code> mà index thiếu chunk) và <b>lh-0206</b> (cột Evidence gốc ghi "What").</p>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Recall so với accuracy</h3>
+            <table>
+                <thead><tr><th>Nhánh</th><th>micro</th><th>đủ evidence</th><th>acc</th></tr></thead>
+                <tbody>
+                    <tr><td><b>L-C0</b></td><td>40,3</td><td>36,8</td><td>48,89</td></tr>
+                    <tr><td><b>L-VEC</b></td><td>58,7</td><td>52,2</td><td>65,83</td></tr>
+                    <tr><td><b>L-B1</b></td><td>63,5</td><td>60,3</td><td>66,90</td></tr>
+                    <tr class="hl"><td>L-B2</td><td>69,4</td><td>64,9</td><td>73,64</td></tr>
+                    <tr><td><b>L-NOENT</b></td><td>69,4</td><td>64,9</td><td>75,09</td></tr>
+                    <tr><td><b>L-NOGRAPH</b></td><td>69,4</td><td>65,0</td><td>74,40</td></tr>
+                    <tr><td><b>L-BM25</b></td><td>70,2</td><td>68,0</td><td>75,02</td></tr>
+                </tbody>
+            </table>
+            <ul class="list">
+                <li>Phần lớn mức tăng của B2 trùng với việc đưa được <b>nhiều chunk evidence hơn</b> vào Sources.</li>
+                <li>B2 / NOENT / NOGRAPH có Sources byte-giống nhau, nên recall gần như bằng nhau; chênh acc giữa ba nhánh này nhỏ và chưa có ý nghĩa (L5, L6).</li>
+                <li>Đây là <b>mô tả, không phải kiểm định</b>, và là tương quan, không phải nhân quả.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: MINIRAG_CONTEXT_LOG · nondev435_gold_chunks.jsonl</span><span>12 / 14</span></div>
+</section>
+
+<!-- ======================= 13 · CONDITIONS & OPERATIONS ======================= -->
+<section class="slide" aria-label="Điều kiện trích dẫn và vận hành">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Điều kiện trích dẫn · vận hành</span><span class="num">3 / 3 phiên chấm completed</span></div>
+    <h2 class="reveal d1">27.401 phiếu hợp lệ, 4 phiếu trống, <em>không phiên nào bị ngắt</em></h2>
+    <div class="body cols-2">
+        <div class="cell reveal d2">
+            <h3>Phải nêu khi trích dẫn</h3>
+            <ul class="list">
+                <li><b>Giám khảo</b> <code>gemini-3.5-flash-lite</code> bản ghim, prompt V1 của <code>Step_2_evaluate.py</code>, hợp đồng nhãn chặt; <code>response_models</code> 100% là model ghim. Chưa có nhãn người.</li>
+                <li><b>Phiếu trống 4 / 27.405</b>: lh-0026 (B2 s101), lh-0029 (BM25 s202, hai phiếu, thành <code>no_majority</code>), lh-0027 (B1 s303).</li>
+                <li><b>Index</b> Qwen dựng với trần sinh 1.024 (MultiHop dùng 4.096), thiếu chunk của một bài.</li>
+                <li><b>C0</b> là baseline nhóm đã sửa (answer-type, A1@4000), không phải MiniRAG gốc.</li>
+                <li>Không đặt cạnh stage D như cùng giao thức, không đặt cạnh MultiHop như cùng giám khảo.</li>
+            </ul>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Vận hành <small>giờ Việt Nam</small></h3>
+            <table class="sm">
+                <thead><tr><th>Mốc</th><th style="text-align:left">Thời gian</th><th>Ghi chú</th></tr></thead>
+                <tbody>
+                    <tr><td>Sinh 3 seed</td><td style="text-align:left">31/10 17:11 → 01/11 02:04</td><td>Modal vLLM, 6 worker CPU</td></tr>
+                    <tr><td>Chấm seed 101</td><td style="text-align:left">31/10 20:42 → 22:00</td><td>78 phút</td></tr>
+                    <tr class="hl"><td>Chấm seed 202</td><td style="text-align:left">31/10 23:41 → 01/11 14:44</td><td>chờ quota ngày từ ~0:30</td></tr>
+                    <tr><td>Chấm seed 303</td><td style="text-align:left">01/11 15:27 → 16:48</td><td>sau 4 lần khởi động hỏng</td></tr>
+                </tbody>
+            </table>
+            <ul class="list mid">
+                <li>4 lần khởi động hỏng của seed 303 (14:46–14:53) dừng trước khi tạo khoá, <b>chưa có phiếu nào</b>; log giữ ở <code>judge_s303_failed_start_*</code>.</li>
+                <li>Máy vào chế độ chờ vài lần khi sinh: <b>đừng dùng <code>retrieval_s</code></b> của đợt này để báo độ trễ.</li>
+                <li>Chi phí GPU <b>chưa có hoá đơn</b>; xem Modal → Usage.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>Nguồn: README.md · sessions/</span><span>13 / 14</span></div>
+</section>
+
+<!-- ======================= 14 · CONCLUSIONS ======================= -->
+<section class="slide" aria-label="Kết luận">
+<div class="frame">
+    <div class="kicker reveal"><span class="sec">Kết luận cho nhóm</span><span class="num">Theo luật đã đăng ký</span></div>
+    <h2 class="reveal d1">B2 hơn C0 đã được xác nhận; <em>vì sao</em> thì đợt này chưa trả lời được</h2>
+    <div class="body cols-3">
+        <div class="cell reveal d2">
+            <h3>Được viết</h3>
+            <ul class="list ok">
+                <li><b>L1 xác nhận</b>: B2 hơn C0 23–26 điểm ở cả 3 seed, ít lỗi hơn có ý nghĩa.</li>
+                <li>L2 và L4 <b>cùng chiều dương</b> ở cả 3 seed và lặp lại chiều stage D, nhưng <b>chưa đạt tiêu chí</b>.</li>
+                <li>B2 <b>không kém hơn</b> VEC và B1.</li>
+                <li><b>Chưa có bằng chứng</b> kênh vector, bảng Entities hay parser / thoát sớm ảnh hưởng tới acc.</li>
+            </ul>
+        </div>
+        <div class="cell reveal d3">
+            <h3>Không được viết</h3>
+            <ul class="list no">
+                <li>"Đồ thị góp phần" hay "trộn giữ lợi thế đồ thị": bốn nhánh tốt nhất không xếp đồ thị trong Sources.</li>
+                <li>"B2 an toàn với Null".</li>
+                <li>"B2 không kém BM25" (cận dưới CI −7,1 ở seed 202).</li>
+                <li>"BM25 / vector không đóng góp": chỉ được nói chưa có bằng chứng.</li>
+                <li>So trực tiếp với MultiHop hay stage D như cùng giao thức.</li>
+            </ul>
+        </div>
+        <div class="cell reveal d4">
+            <h3>Việc còn mở</h3>
+            <ul class="list mid">
+                <li><b>BM25 một mình</b> chưa được đo trên MultiHop; ablation MultiHop trên test (RQ3 / RQ4) đang hoãn.</li>
+                <li><b>Nhãn người</b> cho một mẫu câu, nhất là Null, để kiểm rubric của giám khảo.</li>
+                <li><b>Multi</b> sai khoảng một nửa ở mọi nhánh: cần failure taxonomy riêng trước khi đề xuất cơ chế.</li>
+                <li>Lấy <b>hoá đơn Modal</b> thật cho đợt này.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="foot"><span>Ablation v2 · LiHua-World</span><span>results/lihua_world/ablation_v2/</span><span>14 / 14</span></div>
+</section>
+
+</main>
+</div>
+
+<nav class="deck-controls" aria-label="Điều hướng slide">
+    <button id="prevBtn" aria-label="Slide trước">‹</button>
+    <span id="counter">1 / 14</span>
+    <button id="nextBtn" aria-label="Slide sau">›</button>
+</nav>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard (arrows, space, PgUp/PgDn, Home/End), wheel, swipe,
+   uniform stage scaling, progress bar and counter.
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.current = 0;
+        this.stage = document.getElementById('deckStage');
+        this.lock = false;
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupWheelNav();
+        this.setupTouchNav();
+        document.getElementById('prevBtn').addEventListener('click', () => this.go(this.current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => this.go(this.current + 1));
+        const start = parseInt((location.hash || '').replace('#s', ''), 10);
+        this.go(Number.isFinite(start) ? start - 1 : 0);
+    }
+    setupStageScale() {
+        const scale = () => {
+            const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * f) / 2;
+            const y = (window.innerHeight - 1080 * f) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (document.body.classList.contains('editing')) return;
+            if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); this.go(this.current + 1); }
+            if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.go(this.current - 1); }
+            if (e.key === 'Home') this.go(0);
+            if (e.key === 'End') this.go(this.slides.length - 1);
+        });
+    }
+    setupWheelNav() {
+        window.addEventListener('wheel', (e) => {
+            if (this.lock || Math.abs(e.deltaY) < 30 || document.body.classList.contains('editing')) return;
+            this.lock = true; setTimeout(() => { this.lock = false; }, 700);
+            this.go(this.current + (e.deltaY > 0 ? 1 : -1));
+        }, { passive: true });
+    }
+    setupTouchNav() {
+        let sx = 0, sy = 0;
+        window.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+        window.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) this.go(this.current + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+    }
+    go(i) {
+        this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+        this.slides.forEach((s, k) => {
+            s.classList.toggle('active', k === this.current);
+            s.classList.toggle('visible', k === this.current);
+        });
+        document.getElementById('counter').textContent = `${this.current + 1} / ${this.slides.length}`;
+        document.getElementById('progress').style.width = `${(this.current + 1) / this.slides.length * 100}%`;
+        history.replaceState(null, '', `#s${this.current + 1}`);
+    }
+}
+/* Pastel pills on the right edge of every slide (decoration, not editable). */
+document.querySelectorAll('.slide').forEach((s) => {
+    const p = document.createElement('div'); p.className = 'pills'; p.setAttribute('aria-hidden', 'true');
+    [['70px', 'var(--pink)'], ['130px', 'var(--mint)'], ['200px', 'var(--sage)'], ['130px', 'var(--lav)'], ['70px', 'var(--violet)']]
+        .forEach(([h, c]) => { const i = document.createElement('i'); i.style.height = h; i.style.background = c; p.appendChild(i); });
+    s.appendChild(p);
+});
+const deck = new SlidePresentation();
+
+/* Show the prev/next controls only while the pointer moves, so they never cover the footer. */
+let pointerTimer = null;
+window.addEventListener('mousemove', () => {
+    document.body.classList.add('pointer-active');
+    clearTimeout(pointerTimer);
+    pointerTimer = setTimeout(() => document.body.classList.remove('pointer-active'), 2000);
+});
+
+/* ===========================================
+   INLINE EDITOR
+   E or the top-left hotzone toggles edit mode; edits autosave to
+   localStorage; Ctrl+S downloads the edited HTML file.
+   =========================================== */
+const editor = {
+    isActive: false,
+    key: 'lihua-ablation-v2-edits-v2',
+    targets() { return document.querySelectorAll('.slide h1, .slide h2, .slide h3, .slide p, .slide li, .slide td, .slide th, .slide .badge, .slide .t-stat span, .slide .kicker span, .slide .tile span, .slide .tline span, .slide .verdict span'); },
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('editing', this.isActive);
+        document.getElementById('editToggle').classList.toggle('active', this.isActive);
+        this.targets().forEach((el) => el.setAttribute('contenteditable', this.isActive ? 'true' : 'false'));
+        if (!this.isActive) this.save();
+    },
+    save() {
+        try { localStorage.setItem(this.key, JSON.stringify([...this.targets()].map((el) => el.innerHTML))); } catch (e) {}
+    },
+    restore() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(this.key) || 'null');
+            const els = [...this.targets()];
+            if (saved && saved.length === els.length) els.forEach((el, i) => { el.innerHTML = saved[i]; });
+        } catch (e) {}
+    },
+    download() {
+        const was = this.isActive; if (was) this.toggleEditMode();
+        const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+        a.download = 'lihua_ablation_v2_ket_qua.html'; a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    }
+};
+editor.restore();
+document.addEventListener('input', () => editor.save());
+
+const hotzone = document.querySelector('.edit-hotzone');
+const editToggle = document.getElementById('editToggle');
+let hideTimeout = null;
+editToggle.addEventListener('click', () => editor.toggleEditMode());
+hotzone.addEventListener('click', () => editor.toggleEditMode());
+hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+editToggle.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'e' || e.key === 'E') && e.target.getAttribute('contenteditable') !== 'true') editor.toggleEditMode();
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); editor.download(); }
+});
+</script>
+</body>
+</html>

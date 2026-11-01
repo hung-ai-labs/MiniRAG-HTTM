@@ -8,7 +8,7 @@ Lợi ích của B2 (Sources = RRF(vector, BM25)) trên LiHua-World đến từ 
 | File | Nội dung |
 |---|---|
 | [`ANALYSIS.json`](ANALYSIS.json), [`ANALYSIS.md`](ANALYSIS.md) | Đầu ra của `reproduce/research/analyze_lihua_ablation.py`: tỷ lệ theo nhánh × seed × loại câu, L1–L7, Holm, cờ quyết định, Evidence Recall |
-| [`runs/<nhánh>_s<seed>/`](runs/) | 21 lượt: `per_question.csv` (3 phiếu + đa số mỗi câu), `summary.json`, `judge_manifest.json`, `run_note.json` (đăng ký, commit, index, biến môi trường) |
+| [`per_run/<nhánh>_s<seed>/`](per_run/) | 21 lượt: `per_question.csv` (3 phiếu + đa số mỗi câu), `summary.json`, `judge_manifest.json`, `run_note.json` (đăng ký, commit, index, biến môi trường) |
 | [`sessions/`](sessions/) | `judge_s<seed>_SESSION.json` — một phiên chấm mỗi seed: thời điểm, số vòng, phiếu trống, model trả lời |
 
 Dữ liệu thô (`answers.jsonl`, context, `judge.jsonl`) nằm ở `runs/lihua_world/ablation_v2/` (gitignored).
@@ -64,7 +64,7 @@ err, neither, theo loại câu và Evidence Recall là trung bình 3 seed. Evide
   B2 / BM25 khoảng 70%, vector 59%, B1 64%. Phần lớn mức tăng của B2 trùng với việc đưa được nhiều chunk evidence hơn vào
   Sources. Với bộ dữ liệu này, kênh BM25 tự nó đã truy hồi tốt bằng B2.
 
-**Kiểm độc lập (01/11/2026):** tính lại L1–L6 từ `runs/*/per_question.csv` bằng một script riêng (đếm cặp, McNemar chính
+**Kiểm độc lập (01/11/2026):** tính lại L1–L6 từ `per_run/*/per_question.csv` bằng một script riêng (đếm cặp, McNemar chính
 xác qua `math.comb`, không dùng code phân tích): mọi Δ, lên / xuống và p khớp `ANALYSIS.json` (lệch ≤ 0,01 điểm do làm tròn).
 
 ## Điều kiện cần nêu khi trích dẫn

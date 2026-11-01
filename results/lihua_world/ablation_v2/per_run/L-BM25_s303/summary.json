@@ -1,0 +1,200 @@
+{
+  "status": "completed",
+  "n_questions": 435,
+  "passes": 3,
+  "abstain_after": 3,
+  "abstained": [],
+  "response_models": {
+    "gemini-3.5-flash-lite": 1305
+  },
+  "groups": {
+    "Multi": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 32.56,
+        "error": 53.49,
+        "neither": 13.95,
+        "no_majority": 0.0,
+        "n": 43
+      },
+      "per_pass": [
+        {
+          "accurate": 32.56,
+          "error": 53.49,
+          "neither": 13.95,
+          "no_majority": 0.0,
+          "n": 43
+        },
+        {
+          "accurate": 32.56,
+          "error": 55.81,
+          "neither": 11.63,
+          "no_majority": 0.0,
+          "n": 43
+        },
+        {
+          "accurate": 32.56,
+          "error": 53.49,
+          "neither": 13.95,
+          "no_majority": 0.0,
+          "n": 43
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 32.56,
+          "sd": 0.0
+        },
+        "error": {
+          "mean": 54.26,
+          "sd": 1.34
+        },
+        "neither": {
+          "mean": 13.18,
+          "sd": 1.34
+        }
+      }
+    },
+    "Null": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 62.22,
+        "error": 22.22,
+        "neither": 13.33,
+        "no_majority": 2.22,
+        "n": 45
+      },
+      "per_pass": [
+        {
+          "accurate": 60.0,
+          "error": 22.22,
+          "neither": 17.78,
+          "no_majority": 0.0,
+          "n": 45
+        },
+        {
+          "accurate": 62.22,
+          "error": 24.44,
+          "neither": 13.33,
+          "no_majority": 0.0,
+          "n": 45
+        },
+        {
+          "accurate": 66.67,
+          "error": 22.22,
+          "neither": 11.11,
+          "no_majority": 0.0,
+          "n": 45
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 62.96,
+          "sd": 3.4
+        },
+        "error": {
+          "mean": 22.96,
+          "sd": 1.28
+        },
+        "neither": {
+          "mean": 14.07,
+          "sd": 3.4
+        }
+      }
+    },
+    "Single": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 82.13,
+        "error": 14.12,
+        "neither": 3.75,
+        "no_majority": 0.0,
+        "n": 347
+      },
+      "per_pass": [
+        {
+          "accurate": 82.42,
+          "error": 13.83,
+          "neither": 3.75,
+          "no_majority": 0.0,
+          "n": 347
+        },
+        {
+          "accurate": 82.42,
+          "error": 14.12,
+          "neither": 3.46,
+          "no_majority": 0.0,
+          "n": 347
+        },
+        {
+          "accurate": 82.42,
+          "error": 13.83,
+          "neither": 3.75,
+          "no_majority": 0.0,
+          "n": 347
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 82.42,
+          "sd": 0.0
+        },
+        "error": {
+          "mean": 13.93,
+          "sd": 0.17
+        },
+        "neither": {
+          "mean": 3.65,
+          "sd": 0.17
+        }
+      }
+    },
+    "all": {
+      "early_exit": 0,
+      "majority": {
+        "accurate": 75.17,
+        "error": 18.85,
+        "neither": 5.75,
+        "no_majority": 0.23,
+        "n": 435
+      },
+      "per_pass": [
+        {
+          "accurate": 75.17,
+          "error": 18.62,
+          "neither": 6.21,
+          "no_majority": 0.0,
+          "n": 435
+        },
+        {
+          "accurate": 75.4,
+          "error": 19.31,
+          "neither": 5.29,
+          "no_majority": 0.0,
+          "n": 435
+        },
+        {
+          "accurate": 75.86,
+          "error": 18.62,
+          "neither": 5.52,
+          "no_majority": 0.0,
+          "n": 435
+        }
+      ],
+      "pass_mean_sd": {
+        "accurate": {
+          "mean": 75.48,
+          "sd": 0.35
+        },
+        "error": {
+          "mean": 18.85,
+          "sd": 0.4
+        },
+        "neither": {
+          "mean": 5.67,
+          "sd": 0.48
+        }
+      }
+    }
+  }
+}

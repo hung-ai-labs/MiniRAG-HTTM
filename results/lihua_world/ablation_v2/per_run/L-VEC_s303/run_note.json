@@ -1,0 +1,28 @@
+{
+  "registration_commit": "860f20f",
+  "head_commit": "d1a3d2c83ba26fd226f9f6b65bb1b322e5db8286",
+  "written_at": "2026-10-31T17:49:44.719328+00:00",
+  "config": "L-VEC",
+  "seed": 303,
+  "mode": "mini",
+  "phase": "contexts",
+  "questions": "dataset\\LiHua-World\\splits\\nondev435.csv",
+  "questions_sha256": "72da5461b5d2ea6c4b63ad21d12fadd6152d2d3d2ad1c6b44f881baf74951013",
+  "index": "LiHua-World-qwen-modal",
+  "index_fingerprint": {
+    "index_files_sha256": "fc6f327b8df3713fce6c1fcb67d656f0d6a713ed19a4987ecbbce835a0568b6f"
+  },
+  "environment": {
+    "MINIRAG_ANSWER_TYPE_FIX": "1",
+    "MINIRAG_PATH2CHUNK_FIX": "0",
+    "MINIRAG_CHUNK_CUT": "",
+    "MINIRAG_TRUNCATE_SOURCES": "1",
+    "MINIRAG_MAX_TOKENS": "1024",
+    "MINIRAG_DROP_ENTITIES": "",
+    "MINIRAG_NO_GRAPH": "",
+    "MINIRAG_CHUNK_FUSION": "vector"
+  },
+  "python_hash_seed": 13,
+  "workers": 6,
+  "kw_cache_sha256": "a9da817ffad53366072424f29d4051b7e9c8cbe53dff38bdfd5a5e4aed8b92ae"
+}

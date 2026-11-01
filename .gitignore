@@ -103,3 +103,5 @@ logs/retrieval_audit/ce1_lite_on_dev_ctx.jsonl
 logs/retrieval_audit/goc_dev_ctx.jsonl
 # du_lieu.json là bản trung gian — đã nhúng sẵn trong logs/demo/ui.html
 logs/demo/du_lieu.json
+# Bản chép workspace Codex (Phase 3 MultiHop): chỉ còn journal thô, ~1,2 GB — xem results/multihop_rag/phase3_test/RAW_DATA_REFERENCES.json
+x20-x20/

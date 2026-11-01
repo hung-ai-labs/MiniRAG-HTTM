@@ -32,3 +32,5 @@ results/multihop_rag/** -text
 
 # LiHua ablation v2 inputs: question keys and evidence mapping byte-exact.
 dataset/LiHua-World/splits/** -text
+# LiHua-World ablation v2 results: byte-exact so SHA256SUMS stays checkable.
+results/lihua_world/** -text

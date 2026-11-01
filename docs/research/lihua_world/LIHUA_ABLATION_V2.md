@@ -96,3 +96,13 @@ Ghép cặp theo câu, **riêng từng seed sinh**. Biến chính: `accurate` vs
   Pha B dùng 6 tiến trình (index LiHua 15 MB). Không đổi nội dung yêu cầu, cấu hình hay luật đọc.
 - *Smoke:* 20 câu (10 Single / 5 Multi / 5 Null, chọn với seed 13) × 7 nhánh × seed 101 — chỉ kiểm kỹ thuật và đo thông lượng
   judge; số smoke không dùng để kết luận và không gộp vào đợt chính.
+
+**Ghi nhận sau khi chạy — 01/11/2026.** Không đổi thiết kế, phép thử hay luật đọc; chỉ ghi lại cách đợt chính đã thực sự chạy.
+- *Lệch so với LA1 (thời điểm, không đổi thứ tự):* phiên chấm seed 101 mở lúc 31/10 20:42, **trước** khi seed 202/303 sinh xong,
+  vì câu trả lời của seed 101 đã cố định. Phiên 202 mở khi seed 202 sinh xong. Thứ tự 101 → 202 → 303 và quy tắc một phiên mỗi
+  seed giữ nguyên. Tiến trình tách nền được khởi động bằng `reproduce/research/launch_detached.py`, không phải `Start-Process`.
+- *Phiên chấm:* cả 3 phiên `completed`, không phiên nào bị ngắt, không có phần dở bị cất. Phiên 202 kéo dài tới 01/11 14:44 vì
+  quota ngày Gemini cạn. Phiên seed 303 có 4 lần khởi động hỏng trước khi tạo khoá hay chấm phiếu nào; phiên hợp lệ là phiên
+  mở lúc 15:27.
+- *Kết quả:* [`results/lihua_world/ablation_v2/`](../../../results/lihua_world/ablation_v2/README.md). L1 xác nhận; L2–L6
+  không thành phần nào đạt "có đóng góp"; L7 không có ý nghĩa ở seed nào trên biến `error`.

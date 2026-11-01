@@ -24,7 +24,8 @@
 | MultiHop-RAG — kế hoạch, đăng ký trước, sửa đổi S1–S4, baseline, báo cáo index | [`research/multihop_rag/`](research/multihop_rag/MULTIHOP_RAG_ROADMAP.md) |
 | Protocol chung MultiHop-RAG / 2Wiki, kế hoạch hai người, bàn giao 2Wiki | [`research/PROTOCOL_QWEN_NEW_DATASETS.md`](research/PROTOCOL_QWEN_NEW_DATASETS.md) |
 | Bản đồ script của đợt Qwen (index, QA 3 pha, chấm, Phase 3) | [`../reproduce/research/README.md`](../reproduce/research/README.md) |
-| **LiHua-World ablation v2** — 7 nhánh, đăng ký trước (31/10/2026) | [`research/lihua_world/LIHUA_ABLATION_V2.md`](research/lihua_world/LIHUA_ABLATION_V2.md) |
+| **LiHua-World ablation v2 — kết quả** (01/11/2026; B2 +23–26 điểm so với C0, chưa thành phần nào đạt tiêu chí đóng góp) | [`../results/lihua_world/ablation_v2/README.md`](../results/lihua_world/ablation_v2/README.md) |
+| LiHua-World ablation v2 — đăng ký trước (31/10/2026), sửa đổi LA1, ghi nhận sau khi chạy | [`research/lihua_world/LIHUA_ABLATION_V2.md`](research/lihua_world/LIHUA_ABLATION_V2.md) |
 
 ## Ai đang làm gì — ranh giới để không đụng nhau
 

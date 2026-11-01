@@ -1,0 +1,159 @@
+{
+  "session_id": "2a1a9f1dccb44830a9ba6b9111456d0f",
+  "seed": 303,
+  "state": "completed",
+  "started_at": "2026-11-01T08:27:46.039518+00:00",
+  "heartbeat_at": "2026-11-01T09:48:00.928854+00:00",
+  "judge_model": "gemini-3.5-flash-lite",
+  "configs": [
+    "L-C0",
+    "L-B2",
+    "L-VEC",
+    "L-BM25",
+    "L-B1",
+    "L-NOENT",
+    "L-NOGRAPH"
+  ],
+  "registration_commit": "860f20f",
+  "provenance": {
+    "head_commit": "d1a3d2c83ba26fd226f9f6b65bb1b322e5db8286",
+    "dirty_judging_sources": [],
+    "source_sha256": {
+      "reproduce/research/judge_run.py": "65bb7351ebfa641536fd5aed1c7216c733f3fb8311668a42c7c7e6e151c52d0a",
+      "reproduce/research/judge_session.py": "85eccf4d091031f6b2d69e75b98383d7f129d7415882a3964b8231cd6c17f1ba",
+      "reproduce/research/llm_trace.py": "4416a863754d1b823fc8b3ca11852a65d2078dcbe84904a78aaff1b71af9922b",
+      "reproduce/Step_2_evaluate.py": "47da83d33cd8099c0497dc7a2f8dee094743355f563af5b263b3a012cacb3d28",
+      "minirag/llm/gemini.py": "2a5227e4935ef62a5651270a50baf5ea3b63723778b74435b44668ada38a2419",
+      "minirag/prompt.py": "d34d32e8acf25259369f4d17854d33f315e886f0b06955445b7d801b6ad52e72"
+    }
+  },
+  "questions_sha256": "72da5461b5d2ea6c4b63ad21d12fadd6152d2d3d2ad1c6b44f881baf74951013",
+  "answers_sha256": {
+    "L-C0": "65fa032df174bdfd397b7e2e6fe1e81c8f4da2b7c20dac8daa3a0aa2c8d8cde6",
+    "L-B2": "6185b0621c9c312624d69a543d2d180f5f2e77bd58c3d9e55dca2552db2312a2",
+    "L-VEC": "959ef17565a5106a31e4024932c45e699e7d902fdac863738c0790a4d321e210",
+    "L-BM25": "9d005695e2a3f7040a3a3f25eaabc79f0ed16484633eeade4c5e3338e76f1e28",
+    "L-B1": "cf3679972d0cecc28ee4543a798511da6eb67aa44d334215ffead73944d37c16",
+    "L-NOENT": "abaac3fdda51f4334fe277d04084877b7814c9d9f6f2509513dea898a6f6a871",
+    "L-NOGRAPH": "6346d4b6593fe15842c7e0819b00a8c4d76f6845d2c54cb84f3f77aaacfbd82d"
+  },
+  "archived_partial_unread": [],
+  "pid": 11532,
+  "arms": {
+    "L-C0": {
+      "config": "L-C0",
+      "started_at": "2026-11-01T08:27:46.047168+00:00",
+      "cycles": 1,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1305
+      },
+      "finished_at": "2026-11-01T08:37:57.595604+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1305
+      },
+      "abstained": [],
+      "summary_sha256": "6675cd01892b6f5ffe81f5740039ae5062d8256644fb61e6c0bb360c87a0ce51"
+    },
+    "L-B2": {
+      "config": "L-B2",
+      "started_at": "2026-11-01T08:37:57.600106+00:00",
+      "cycles": 1,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1305
+      },
+      "finished_at": "2026-11-01T08:48:10.707109+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1305
+      },
+      "abstained": [],
+      "summary_sha256": "b565506236502c30797cc0099c46474613573efc24af04b843ccd4386ccb5d8a"
+    },
+    "L-VEC": {
+      "config": "L-VEC",
+      "started_at": "2026-11-01T08:48:10.713846+00:00",
+      "cycles": 1,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1305
+      },
+      "finished_at": "2026-11-01T08:58:26.773455+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1305
+      },
+      "abstained": [],
+      "summary_sha256": "2df06dc7f0050ee0c08bae57f34ac8fbf7956df8a1af6684cfeea089fb84d945"
+    },
+    "L-BM25": {
+      "config": "L-BM25",
+      "started_at": "2026-11-01T08:58:26.786969+00:00",
+      "cycles": 1,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1305
+      },
+      "finished_at": "2026-11-01T09:08:56.963909+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1305
+      },
+      "abstained": [],
+      "summary_sha256": "e29823357bd4402d8014ee2c36284ba7a3df055a4743f68313105e7c10576ba1"
+    },
+    "L-B1": {
+      "config": "L-B1",
+      "started_at": "2026-11-01T09:08:56.968854+00:00",
+      "cycles": 3,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1304,
+        "parse_failed": 1
+      },
+      "finished_at": "2026-11-01T09:20:46.411141+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1304
+      },
+      "abstained": [
+        [
+          "lh-0027",
+          2
+        ]
+      ],
+      "summary_sha256": "b4b85e23309d147b85577f3fe23a7678fc05e5544a6ceba9b878f31c1e8bc653"
+    },
+    "L-NOENT": {
+      "config": "L-NOENT",
+      "started_at": "2026-11-01T09:20:46.416120+00:00",
+      "cycles": 1,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1305
+      },
+      "finished_at": "2026-11-01T09:33:31.187115+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1305
+      },
+      "abstained": [],
+      "summary_sha256": "53bb03260cdae75ba15fb6d50332ec852ac04f7365d51a3b3ef1e1e518f9a902"
+    },
+    "L-NOGRAPH": {
+      "config": "L-NOGRAPH",
+      "started_at": "2026-11-01T09:33:31.193545+00:00",
+      "cycles": 1,
+      "waits_s": [],
+      "statuses": {
+        "ok": 1305
+      },
+      "finished_at": "2026-11-01T09:48:01.051421+00:00",
+      "response_models": {
+        "gemini-3.5-flash-lite": 1305
+      },
+      "abstained": [],
+      "summary_sha256": "c61f044a3bc84fd5d7c56b36123e2b74a2af99b812f73a48e2f743c3ca61cac1"
+    }
+  },
+  "response_models": {
+    "gemini-3.5-flash-lite": 9134
+  },
+  "finished_at": "2026-11-01T09:48:01.061753+00:00"
+}

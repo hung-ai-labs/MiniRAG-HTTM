@@ -20,6 +20,7 @@ of silence, so an idle deployment costs nothing.
 import modal
 
 MODEL = "Qwen/Qwen2.5-3B-Instruct"   # the paper's row: 48.75% acc / 26.02% err
+MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"  # observed in the deployed HF cache, 30/10/2026
 GPU = "A10G"                          # 24 GB: fits the 3B in bf16 with room for KV cache
 PORT = 8000
 SCALEDOWN = 300                       # idle seconds before the GPU is released
@@ -61,11 +62,14 @@ def serve():
     import os
     import subprocess
 
-    subprocess.Popen(" ".join([
-        "vllm serve", MODEL,
+    subprocess.Popen([
+        "vllm", "serve", MODEL,
+        "--revision", MODEL_REVISION,
+        "--dtype", "bfloat16",
+        "--generation-config", "auto",
         "--served-model-name", MODEL, "minirag-slm",
-        "--host 0.0.0.0", f"--port {PORT}",
-        f"--max-model-len {MAX_MODEL_LEN}",
+        "--host", "0.0.0.0", "--port", str(PORT),
+        "--max-model-len", str(MAX_MODEL_LEN),
         "--api-key", os.environ["MINIRAG_SLM_KEY"],
         "--disable-log-requests",
-    ]), shell=True)
+    ])

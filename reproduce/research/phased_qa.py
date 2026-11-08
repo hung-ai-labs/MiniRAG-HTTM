@@ -50,10 +50,11 @@ import qa_run  # noqa: E402
 
 BASE_ENV = {"MINIRAG_ANSWER_TYPE_FIX": "1", "MINIRAG_PATH2CHUNK_FIX": "0", "MINIRAG_CHUNK_CUT": "",
             "MINIRAG_TRUNCATE_SOURCES": "1", "MINIRAG_MAX_TOKENS": "1024"}
-FUSION = {"C0": None, "C1": "vector_bm25", "C2": "vector", "C3": None, "C_orig": None}
-MODE = {"C0": "mini", "C1": "mini", "C2": "mini", "C3": "naive", "C_orig": "mini"}
+FUSION = {"C0": None, "C1": "vector_bm25", "C2": "vector", "C3": None, "C4": "bm25", "C5": "vector_bm25", "C6": "vector_bm25", "C_orig": None}
+MODE = {"C0": "mini", "C1": "mini", "C2": "mini", "C3": "naive", "C4": "mini", "C5": "mini", "C6": "mini", "C_orig": "mini"}
 # C_orig (amendment S3): original MiniRAG at query time -- upstream answer-type matching, Sources uncapped.
-EXTRA_ENV = {"C_orig": {"MINIRAG_ANSWER_TYPE_FIX": "0", "MINIRAG_TRUNCATE_SOURCES": "0"}}
+EXTRA_ENV = {"C_orig": {"MINIRAG_ANSWER_TYPE_FIX": "0", "MINIRAG_TRUNCATE_SOURCES": "0"},
+             "C5": {"MINIRAG_DROP_ENTITIES": "1"}, "C6": {"MINIRAG_NO_GRAPH": "1"}}
 
 
 # ---------------------------------------------------------------- shared
@@ -62,7 +63,13 @@ def config_env(config):
     return BASE_ENV | {"MINIRAG_CHUNK_FUSION": FUSION[config] or ""} | EXTRA_ENV.get(config, {})
 
 
+def requires_keywords(config):
+    return MODE[config] == 'mini' and EXTRA_ENV.get(config, {}).get('MINIRAG_NO_GRAPH') != '1'
+
+
 def apply_env(config, seed, kw_cache=None, cache_only=False, context_log=None):
+    os.environ.pop("MINIRAG_DROP_ENTITIES", None)
+    os.environ.pop("MINIRAG_NO_GRAPH", None)
     os.environ.update(BASE_ENV | EXTRA_ENV.get(config, {}))
     os.environ["MINIRAG_SLM_SEED"] = str(seed)
     for name, value in (("MINIRAG_CHUNK_FUSION", FUSION[config]), ("MINIRAG_KW_CACHE", kw_cache),
@@ -381,7 +388,7 @@ def main(argv=None):
 
     if args.phase == "contexts-worker":
         mode = MODE[args.config]
-        apply_env(args.config, args.seed, kw_cache=args.kw if mode == "mini" else None,
+        apply_env(args.config, args.seed, kw_cache=args.kw if requires_keywords(args.config) else None,
                   cache_only=True, context_log=args.context_log)
         rag = build(snapshot(args.snapshot, args.index), llm_max_async=1)
         asyncio.run(context_phase(rag, rows, mode, args.out_file))
@@ -399,6 +406,9 @@ def run_phase(args, rows):
     args.out.mkdir(parents=True, exist_ok=True)
     run_dir = args.out / f"{args.config}_s{args.seed}"
     if args.phase == "keywords":
+        if not requires_keywords(args.config):
+            print(f'keywords: skipped for {args.config}; no parser requests')
+            return 0
         use_slm()
         apply_env("C0", args.seed, kw_cache=args.out / f"kw_s{args.seed}.jsonl")
         with tempfile.TemporaryDirectory(dir=args.out, ignore_cleanup_errors=True) as tmp:
@@ -414,7 +424,7 @@ def run_phase(args, rows):
         ensure_phase_identity(run_dir / "context_manifest.json", {
             "config": config_env(args.config),
             "keyword_cache_sha256": qa_run.file_hash(args.out / f"kw_s{args.seed}.jsonl")
-            if MODE[args.config] == "mini" else None,
+            if requires_keywords(args.config) else None,
         })
         write_note(run_dir, args.registration, dataset_id=args.dataset_id,
                    config=args.config, seed=args.seed, mode=MODE[args.config], phase="contexts",
@@ -423,7 +433,7 @@ def run_phase(args, rows):
                    environment=config_env(args.config),
                    python_hash_seed=13, workers=args.workers,
                    kw_cache_sha256=qa_run.file_hash(args.out / f"kw_s{args.seed}.jsonl")
-                   if MODE[args.config] == "mini" else None)
+                   if requires_keywords(args.config) else None)
         code = run_context_workers(args, rows, run_dir)
         if code == 0:
             stats = {}

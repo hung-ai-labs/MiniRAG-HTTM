@@ -1,5 +1,11 @@
 \# Review protocol từ phía 2Wiki
 
+**Cập nhật 01/11/2026 theo người dùng:** judge đã chọn
+`gemini-3.5-flash-lite` thay yêu cầu Flash/ID chưa xác minh ở snapshot dưới.
+Model ID có trong docs chính thức; key local hiện trả API_KEY_INVALID khi kiểm
+metadata, chưa gọi inference. Xem JUDGE_2WIKI_3_5_FLASH_LITE.md. Qwen index/QA
+và limiter không thay đổi.
+
 
 
 Nguồn tham chiếu: nhánh research/mhr-qwen,

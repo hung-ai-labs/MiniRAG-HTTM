@@ -232,6 +232,10 @@ async def run_index(args, docs, rag_factory, identity, chunks):
         return await _run_index_locked(args, docs, rag_factory, identity, chunks)
 
 
+class RuntimeBudgetExceeded(Exception):
+    """Local invocation time limit; committed batches remain resumable."""
+
+
 async def _run_index_locked(args, docs, rag_factory, identity, chunks):
     """Insert docs batch by batch; caller owns the writer lock."""
     import llm_trace
@@ -240,6 +244,11 @@ async def _run_index_locked(args, docs, rag_factory, identity, chunks):
     manifest_path = workdir / "index_manifest.json"
     events = workdir / "events.jsonl"
     progress = workdir / "index_progress.jsonl"
+    invocation_started = time.monotonic()
+    budget = getattr(args, "max_runtime_seconds", None)
+    deadline = getattr(args, "runtime_deadline", None)
+    if budget and deadline is None:
+        deadline = invocation_started + budget
     if args.resume:
         stored = json.loads(manifest_path.read_text(encoding="utf-8"))
         changed = [k for k in IDENTITY_KEYS if stored.get(k) != identity[k]]
@@ -250,7 +259,9 @@ async def _run_index_locked(args, docs, rag_factory, identity, chunks):
 
     done_docs = {doc for rec in read_jsonl(progress) for doc in rec["minirag_doc_ids"]}
     append_jsonl(events, {"event": "resume" if args.resume else "start", "at": qa_run.utc_now(),
-                          "docs_done": len(done_docs), "docs_total": len(docs)})
+                          "docs_done": len(done_docs), "docs_total": len(docs),
+                          "max_runtime_seconds": budget, "batch_docs": args.batch_docs,
+                          "llm_max_async": getattr(args, "llm_max_async", None)})
     if args.resume:
         dropped_chunks, dropped_docs = reconcile_checkpoint(workdir, chunks, done_docs)
         append_jsonl(events, {"event": "reconcile", "at": qa_run.utc_now(),
@@ -262,19 +273,47 @@ async def _run_index_locked(args, docs, rag_factory, identity, chunks):
             raise WrongBackend(f"The endpoint answered as {record['response_model']}")
 
     todo = [d for d in docs if d["minirag_doc_id"] not in done_docs]
-    rag = rag_factory(str(workdir))
     try:
+        if deadline is not None and time.monotonic() >= deadline:
+            raise RuntimeBudgetExceeded()
+        rag = rag_factory(str(workdir))
         with llm_trace.trace(sink, annotator(chunks, docs)):
             for start in range(0, len(todo), args.batch_docs):
                 batch = todo[start:start + args.batch_docs]
                 started = time.perf_counter()
-                await rag.ainsert([d["text"] for d in batch])
+                if deadline is None:
+                    await rag.ainsert([d["text"] for d in batch])
+                else:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise RuntimeBudgetExceeded()
+                    timer = asyncio.timeout(remaining)
+                    try:
+                        async with timer:
+                            await rag.ainsert([d["text"] for d in batch])
+                    except TimeoutError:
+                        if timer.expired():
+                            raise RuntimeBudgetExceeded() from None
+                        raise
                 append_jsonl(progress, {"doc_ids": [d["doc_id"] for d in batch],
                                         "minirag_doc_ids": [d["minirag_doc_id"] for d in batch],
                                         "seconds": round(time.perf_counter() - started, 1), "at": qa_run.utc_now()})
                 done = len(docs) - len(todo) + start + len(batch)
                 append_jsonl(events, {"event": "batch", "at": qa_run.utc_now(), "docs_done": done})
-                print(f"{done}/{len(docs)} docs")
+                print(f"{done}/{len(docs)} docs", flush=True)
+    except RuntimeBudgetExceeded:
+        # The current batch may have partial stores; it gets no progress marker.
+        # Existing reconcile_checkpoint repairs it on --resume. Do not report
+        # full-corpus integrity/accuracy from an intentionally partial index.
+        completed = {doc for rec in read_jsonl(progress) for doc in rec["minirag_doc_ids"]}
+        result = {"status": "partial", "stop_reason": "time_limit",
+                  "checkpointed_docs": len(completed), "total_docs": len(docs),
+                  "max_runtime_seconds": budget, "updated_at": qa_run.utc_now(),
+                  "resume": "Repeat the same command with --resume; only the uncommitted batch may be repeated"}
+        qa_run.atomic_json(manifest_path, manifest | result)
+        append_jsonl(events, {"event": "time_limit", **result})
+        print(json.dumps(result, indent=2), flush=True)
+        return 3
     except BaseException as exc:
         append_jsonl(events, {"event": "failed", "at": qa_run.utc_now(), "error_type": type(exc).__name__})
         qa_run.atomic_json(manifest_path, manifest | {"status": "partial", "updated_at": qa_run.utc_now()})
@@ -310,12 +349,15 @@ def parser():
     p.add_argument("--max-output-tokens", type=qa_run.positive,
                    help="Explicit indexing cap from your protocol (QA uses a separate cap)")
     p.add_argument("--serving-config", type=Path, help="Actual Modal/vLLM serving declaration; required to index")
+    p.add_argument("--max-runtime-seconds", type=qa_run.positive,
+                   help="Local time limit per invocation; partial exit code 3 is resumable. Not a GPU billing cap.")
     return p
 
 
 def main(argv=None):
     p = parser()
     args = p.parse_args(argv)
+    args.runtime_deadline = time.monotonic() + args.max_runtime_seconds if args.max_runtime_seconds else None
     if not args.verify and (not args.max_output_tokens or not args.serving_config):
         p.error("Indexing requires --max-output-tokens and --serving-config from the dataset protocol")
     sys.path.insert(0, str(ROOT))

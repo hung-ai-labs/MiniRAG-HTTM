@@ -1,0 +1,27 @@
+{
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "vllm_version": "0.11.0",
+  "gpu": "A10G",
+  "dtype": "bfloat16",
+  "max_model_len": 32768,
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.05,
+    "max_tokens": 1024,
+    "seed": "MINIRAG_SLM_SEED per QA run; indexing seed not set by index_run"
+  },
+  "provenance": {
+    "scope": "Pilot declaration, not a fully verified final benchmark condition",
+    "checked_date_local": "2026-10-30",
+    "smoke": "runs/2wiki/modal/serving/smoke01.json: vLLM version and served model confirmed; all 3 checks true",
+    "model_revision": "Read refs/main and observed one snapshot with this hash in minirag-hf-cache/hub/models--Qwen--Qwen2.5-3B-Instruct. Local modal_slm.py now pins this revision; redeploy is required to apply it. Not an attested loaded-weight digest.",
+    "gpu_and_context": "Declared in deployed reproduce/modal_slm.py; not independently measured by smoke",
+    "dtype": "Local modal_slm.py now explicitly selects bfloat16; redeploy is required to apply it. Pilot used auto dtype; not independently measured by smoke.",
+    "sampling": "Expected generation_config auto defaults from existing serving_qwen_modal.json reference; not remotely verified",
+    "index_output_cap": "Pass --max-output-tokens 4096 explicitly; QA cap remains separate at 1024",
+    "before_full_benchmark": "Pin the model revision and explicitly verify serving/sampling; complete pilot and inspect truncation before full indexing"
+  }
+}

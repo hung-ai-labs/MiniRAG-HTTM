@@ -18,30 +18,48 @@ import os
 from pathlib import Path
 import sys
 import time
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import qa_run  # noqa: E402
 
 
+def endpoint_root(value):
+    url = urlsplit(value.strip())
+    if (url.scheme not in ('http', 'https') or not url.hostname or url.username or url.password
+            or url.query or url.fragment):
+        raise ValueError('MINIRAG_SLM_URL must be an HTTP API URL without credentials, query or fragment')
+    if url.hostname == 'modal.com' or url.hostname.endswith('.modal.com') or url.path.rstrip('/') not in ('', '/v1'):
+        raise ValueError('Use the serve endpoint ending in .modal.run/v1, not the Modal dashboard /apps URL')
+    return f'{url.scheme}://{url.netloc}'
+
+
 async def probe(expected, timeout):
     import httpx
     from openai import AsyncOpenAI
 
-    root = os.environ["MINIRAG_SLM_URL"].strip().rstrip("/").removesuffix("/v1")
+    root = endpoint_root(os.environ["MINIRAG_SLM_URL"])
     headers = {"Authorization": f"Bearer {os.environ['MINIRAG_SLM_KEY'].strip()}"}
     out = {"checked_at": qa_run.utc_now()}
     async with httpx.AsyncClient(timeout=timeout) as http:
         started = time.perf_counter()
+        print('[1/3] Waiting for server/version (first start may load model weights)...', flush=True)
         r = await http.get(f"{root}/version", headers=headers)
+        if r.status_code != 200:
+            raise ValueError(f'GET /version returned HTTP {r.status_code}; check API URL and authentication before retrying')
         out["first_response_s"] = round(time.perf_counter() - started, 1)  # includes any cold start
         out["vllm_version"] = r.json().get("version") if r.status_code == 200 else f"HTTP {r.status_code}"
+        print('[2/3] Checking served model...', flush=True)
         r = await http.get(f"{root}/v1/models", headers=headers)
+        if r.status_code != 200:
+            raise ValueError(f'GET /v1/models returned HTTP {r.status_code}; completion was not sent')
         out["served_models"] = sorted(m["id"] for m in r.json().get("data", [])) if r.status_code == 200 \
             else f"HTTP {r.status_code}"
     client = AsyncOpenAI(api_key=os.environ["MINIRAG_SLM_KEY"].strip(), base_url=f"{root}/v1",
                          timeout=timeout, max_retries=0)
     started = time.perf_counter()
+    print('[3/3] Requesting a short Qwen completion...', flush=True)
     resp = await client.chat.completions.create(
         model="minirag-slm", messages=[{"role": "user", "content": "Reply with exactly: ok"}],
         max_tokens=8, seed=101)
@@ -68,7 +86,11 @@ def main(argv=None):
     if not os.environ.get("MINIRAG_SLM_URL", "").strip() or not os.environ.get("MINIRAG_SLM_KEY", "").strip():
         print("MINIRAG_SLM_URL and MINIRAG_SLM_KEY must be set (in .env or the shell)")
         return 2
-    result = asyncio.run(probe(json.loads(args.serving.read_text(encoding="utf-8")), args.timeout))
+    try:
+        result = asyncio.run(probe(json.loads(args.serving.read_text(encoding="utf-8")), args.timeout))
+    except ValueError as exc:
+        print(f'Smoke setup/check failed: {exc}', file=sys.stderr)
+        return 2
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2, ensure_ascii=False))

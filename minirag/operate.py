@@ -1504,7 +1504,7 @@ async def _build_mini_query_context(
     fusion = os.environ.get("MINIRAG_CHUNK_FUSION", "")
     graph_chunk_ids = list(final_chunk_id)
     bm25_ids, bm25_ms = None, None
-    if fusion in ("rrf_bm25", "vector_bm25"):
+    if fusion in ("rrf_bm25", "vector_bm25", "bm25"):
         _tb = time.perf_counter()
         bm25_ids = _bm25_index(text_chunks_db).rank(originalquery, int(query_param.top_k / 2))
         bm25_ms = 1000 * (time.perf_counter() - _tb)
@@ -1516,6 +1516,10 @@ async def _build_mini_query_context(
         final_chunk_id = _rrf_fuse(final_chunk_id, chunks_ids, bm25_ids)
     elif fusion == "vector_bm25":
         final_chunk_id = _rrf_fuse(chunks_ids, bm25_ids)
+    elif fusion == "bm25":
+        # B2_NO_VECTOR: only Sources ranking changes; keep graph Entities,
+        # keyword parsing, early exits and the existing Sources token cap.
+        final_chunk_id = list(bm25_ids)
     elif fusion:
         raise ValueError(f"MINIRAG_CHUNK_FUSION không hợp lệ: {fusion!r}")
 
@@ -1577,6 +1581,10 @@ async def _build_mini_query_context(
             else query_param.max_token_for_text_unit,
         )
 
+    # B2_NO_ENT: keep retrieval and Sources intact, expose only the CSV header.
+    if os.environ.get("MINIRAG_DROP_ENTITIES", "0") == "1":
+        entities_context = list_of_list_to_csv([["entity", "score", "description"]])
+
     _ctx_log = os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()
     if _ctx_log:
         kept_ids = kept_ids[: len(text_units_section_list)]
@@ -1629,6 +1637,45 @@ async def _build_mini_query_context(
     return context
 
 
+async def _build_hybrid_no_graph_context(query, chunks_vdb, text_chunks_db, query_param):
+    """HYBRID_NO_GRAPH: original-query dense + BM25, no keyword/graph methods."""
+    started = time.perf_counter()
+    top_n = int(query_param.top_k / 2)
+    vectors = await chunks_vdb.query(query, top_k=top_n)
+    vector_ids = [r['id'] for r in vectors]
+    bm_started = time.perf_counter()
+    bm25_ids = _bm25_index(text_chunks_db).rank(query, top_n)
+    bm25_ms = 1000 * (time.perf_counter() - bm_started)
+    ranked_ids = _rrf_fuse(vector_ids, bm25_ids)
+    chunks = await asyncio.gather(*[text_chunks_db.get_by_id(cid) for cid in ranked_ids])
+    rows, kept_ids = [], []
+    for i, chunk in enumerate(chunks):
+        if chunk is not None:
+            rows.append([i, chunk['content']])
+            kept_ids.append(ranked_ids[i])
+    if os.environ.get('MINIRAG_TRUNCATE_SOURCES', '1') != '0':
+        budget = os.environ.get('MINIRAG_MAX_TOKEN_TEXT_UNIT', '').strip()
+        rows = truncate_list_by_token_size(rows, key=lambda r: r[1],
+            max_token_size=int(budget) if budget else query_param.max_token_for_text_unit)
+    kept_ids = kept_ids[:len(rows)]
+    entities = list_of_list_to_csv([['entity', 'score', 'description']])
+    sources = list_of_list_to_csv([['id', 'content'], *rows])
+    context = f'\n-----Entities-----\n```csv\n{entities}\n```\n-----Sources-----\n```csv\n{sources}\n```\n'
+    log = os.environ.get('MINIRAG_CONTEXT_LOG', '').strip()
+    if log:
+        record = {'query': query, 'n_chunks': len(rows),
+            'sources_tok': sum(len(encode_string_by_tiktoken(r[1])) for r in rows),
+            'entities_tok': len(encode_string_by_tiktoken(entities)), 'fusion': 'vector_bm25',
+            'chunk_ids': kept_ids, 'ranked_ids': ranked_ids, 'graph_ids': [],
+            'vector_ids': vector_ids, 'bm25_ids': bm25_ids, 'bm25_ms': round(bm25_ms, 3),
+            'context_sha256': hashlib.sha256(context.encode('utf-8')).hexdigest(),
+            'graph_seeds': 0, 'graph_paths': 0, 'no_graph': True, 'keyword_parser': False,
+            'retrieval_ms': round(1000 * (time.perf_counter() - started), 2)}
+        with open(log, 'a', encoding='utf-8') as handle:
+            handle.write(json.dumps(record, ensure_ascii=False) + '\n')
+    return context
+
+
 async def minirag_query(  # MiniRAG
     query,
     knowledge_graph_inst: BaseGraphStorage,
@@ -1642,6 +1689,12 @@ async def minirag_query(  # MiniRAG
     global_config: dict,
 ) -> str:
     use_model_func = global_config["llm_model_func"]
+    if os.environ.get('MINIRAG_NO_GRAPH', '0') == '1':
+        context = await _build_hybrid_no_graph_context(query, chunks_vdb, text_chunks_db, query_param)
+        if query_param.only_need_context:
+            return context
+        sys_prompt = PROMPTS['rag_response'].format(context_data=context, response_type=query_param.response_type)
+        return await use_model_func(query, system_prompt=sys_prompt)
     kw_prompt_temp = PROMPTS["minirag_query2kwd"]
     TYPE_POOL, TYPE_POOL_w_CASE = await knowledge_graph_inst.get_types()
     if os.environ.get("MINIRAG_KW_CACHE", "").strip():

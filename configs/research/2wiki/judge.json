@@ -1,0 +1,18 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "decision_date": "2026-11-01",
+  "authority": "User shared team instruction selecting gemini-3.5-flash-lite instead of a latest alias",
+  "scope": "2Wiki judging only; Qwen indexing and generation unchanged",
+  "passes": 3,
+  "rubric_version": "2wiki-upstream-aliases-v2",
+  "rubric_policy": "Verbatim JUDGE_PROMPT from reproduce/Step_2_evaluate.py plus accepted_aliases appendix only; preserve earlier smoke V1 and rejudge in a new directory",
+  "aliases_supported": true,
+  "free_tier_only": true,
+  "rpm_tpm_changed": false,
+  "official_model_id_verified": true,
+  "official_source": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+  "project_access_verified": false,
+  "metadata_key_check_followup": {"configured_unique_keys_before_cleanup": 8, "metadata_accepted": 7, "invalid_variable_disabled": "GEMINI_API_KEY_1", "inference_called": false, "quota_or_billing_verified": false},
+  "metadata_check": {"http_status": 400, "reason": "API_KEY_INVALID", "inference_called": false},
+  "accuracy_claim": "Choosing a stable model ID avoids latest-alias selection drift; it does not establish judge accuracy"
+}

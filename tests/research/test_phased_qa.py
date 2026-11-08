@@ -92,17 +92,17 @@ class PhasedEquivalenceTests(unittest.TestCase):
         work = Path(self.tmp.name) / config
         with patch.dict(os.environ, {}, clear=False), contextlib.redirect_stdout(io.StringIO()):
             # Reference: MiniRAG's own path (keyword cache in write mode, as amendment S2 runs it).
-            pq.apply_env(config, 101, kw_cache=work / "ref_kw.jsonl" if mode == "mini" else None)
+            pq.apply_env(config, 101, kw_cache=work / "ref_kw.jsonl" if pq.requires_keywords(config) else None)
             ref_llm = QueryLLM()
             ref_rag = rag_at(pq.snapshot(work / "ref", self.index), ref_llm)
             ref_answers = [asyncio.run(ref_rag.aquery(r["Question"], param=QueryParam(mode=mode))) for r in ROWS]
 
             phased_llm = QueryLLM()
             kw = work / "kw.jsonl"
-            if mode == "mini":
+            if pq.requires_keywords(config):
                 pq.apply_env(config, 101, kw_cache=kw)
                 asyncio.run(pq.keyword_phase(rag_at(pq.snapshot(work / "a", self.index), phased_llm), ROWS, kw))
-            pq.apply_env(config, 101, kw_cache=kw if mode == "mini" else None, cache_only=True)
+            pq.apply_env(config, 101, kw_cache=kw if pq.requires_keywords(config) else None, cache_only=True)
             asyncio.run(pq.context_phase(rag_at(pq.snapshot(work / "b", self.index), phased_llm), ROWS, mode,
                                          work / "contexts.jsonl"))
             contexts = pq.read_jsonl(work / "contexts.jsonl")
@@ -123,6 +123,128 @@ class PhasedEquivalenceTests(unittest.TestCase):
 
     def test_mini_C1_fusion_matches_minirag(self):
         self.check("C1")
+
+    def test_mini_C2_vector_matches_minirag(self):
+        self.check("C2")
+
+    def test_mini_C4_bm25_matches_minirag(self):
+        self.check("C4")
+
+    def test_mini_C5_no_entities_matches_minirag(self):
+        self.check("C5")
+
+    def test_mini_C6_hybrid_no_graph_matches_minirag(self):
+        self.check('C6')
+
+    def test_C6_keywords_phase_skips_without_model_setup(self):
+        work = Path(self.tmp.name) / 'C6_skip_keywords'
+        args = argparse.Namespace(out=work, config='C6', seed=101, phase='keywords')
+        with patch.object(pq, 'use_slm', side_effect=AssertionError('Keyword phase must not configure inference')), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(pq.run_phase(args, ROWS), 0)
+        self.assertFalse((work / 'kw_s101.jsonl').exists())
+
+    def test_C6_never_calls_keyword_or_graph_and_logs_retrieval(self):
+        from minirag.base import QueryParam
+
+        class ForbiddenGraph:
+            def __getattr__(self, name):
+                raise AssertionError(f'C6 attempted a graph operation: {name}')
+
+        async def scenario():
+            work = Path(self.tmp.name) / 'C6_control'
+            llm = QueryLLM()
+            rag = rag_at(pq.snapshot(work / 'index', self.index), llm)
+            kw = work / 'kw.jsonl'
+            pq.apply_env('C5', 101, kw_cache=kw)
+            await pq.keyword_phase(rag, ROWS[:1], kw)
+            baseline = await rag.aquery(ROWS[0]['Question'], param=QueryParam(mode='mini', only_need_context=True))
+            llm.calls.clear()
+            for attr in ['chunk_entity_relation_graph', 'entities_vdb', 'entities_name_vdb', 'relationships_vdb']:
+                setattr(rag, attr, ForbiddenGraph())
+            log = work / 'no_graph.jsonl'
+            pq.apply_env('C6', 101, kw_cache=work / 'nonexistent.jsonl', cache_only=True, context_log=log)
+            context = await rag.aquery(ROWS[0]['Question'], param=QueryParam(mode='mini', only_need_context=True))
+            self.assertEqual(llm.calls, [])
+            self.assertEqual(context, baseline)
+            await rag.aquery(ROWS[0]['Question'], param=QueryParam(mode='mini'))
+            self.assertEqual(len(llm.calls), 1)
+            self.assertIsNotNone(llm.calls[0][1])
+            record = json.loads(log.read_text().splitlines()[-1])
+            self.assertTrue(record['no_graph'])
+            self.assertFalse(record['keyword_parser'])
+            self.assertEqual(record['graph_ids'], [])
+            self.assertEqual(record['graph_paths'], 0)
+            self.assertEqual(record['fusion'], 'vector_bm25')
+            self.assertFalse((work / 'nonexistent.jsonl').exists())
+            self.assertFalse(pq.requires_keywords('C6'))
+            self.assertTrue(pq.requires_keywords('C1'))
+            pq.apply_env('C1', 101)
+            self.assertNotIn('MINIRAG_NO_GRAPH', os.environ)
+
+        with patch.dict(os.environ, {}, clear=True), contextlib.redirect_stdout(io.StringIO()):
+            asyncio.run(scenario())
+
+    def test_C5_sources_unchanged_and_flag_does_not_leak_to_C1(self):
+        from minirag.base import QueryParam
+        from reproduce.research.run_c5_dev_contexts import without_entity_rows
+
+        async def scenario():
+            work = Path(self.tmp.name) / 'C5_control'
+            rag = rag_at(pq.snapshot(work / 'index', self.index), QueryLLM())
+            kw = work / 'kw.jsonl'
+            pq.apply_env('C1', 101, kw_cache=kw)
+            await pq.keyword_phase(rag, ROWS[:1], kw)
+            rag.llm_model_func = pq._forbidden_llm
+            values = []
+            for config in ['C1', 'C5', 'C1']:
+                pq.apply_env(config, 101, kw_cache=kw, cache_only=True)
+                values.append(await rag.aquery(ROWS[0]['Question'], param=QueryParam(mode='mini', only_need_context=True)))
+            before, dropped, restored = values
+            self.assertEqual(before, restored)
+            self.assertEqual(without_entity_rows(before), dropped)
+            self.assertEqual(before.split('-----Sources-----', 1)[1], dropped.split('-----Sources-----', 1)[1])
+            self.assertNotEqual(before, dropped)
+            entities = dropped.split('-----Sources-----', 1)[0].split('```csv\n', 1)[1].rsplit('```', 1)[0]
+            reader = csv.DictReader(io.StringIO(entities))
+            self.assertEqual(reader.fieldnames, ['entity', 'score', 'description'])
+            self.assertEqual(list(reader), [])
+
+        with patch.dict(os.environ, {}, clear=True), contextlib.redirect_stdout(io.StringIO()):
+            asyncio.run(scenario())
+
+    def test_C4_sources_use_bm25_order_and_preserve_graph_gate(self):
+        from minirag.base import QueryParam
+        from minirag.bm25 import BM25Index
+
+        async def scenario():
+            work = Path(self.tmp.name) / 'C4_order'
+            rag = rag_at(pq.snapshot(work / 'index', self.index), QueryLLM())
+            kw, log = work / 'kw.jsonl', work / 'context.jsonl'
+            row = ROWS[0]
+            pq.apply_env('C1', 101, kw_cache=kw)
+            await pq.keyword_phase(rag, [row], kw)
+            chunks = json.loads((work / 'index/kv_store_text_chunks.json').read_text())
+            expected = BM25Index({c: d['content'] for c, d in chunks.items()}).rank(row['Question'], 30)
+            self.assertGreater(len(expected), 1)
+            async def reversed_vector(*args, **kwargs):
+                return [{'id': c, 'distance': 1.0} for c in reversed(expected)]
+            rag.chunks_vdb.query = reversed_vector
+            pq.apply_env('C4', 101, kw_cache=kw, cache_only=True, context_log=log)
+            rag.llm_model_func = pq._forbidden_llm
+            context = await rag.aquery(row['Question'], param=QueryParam(mode='mini', only_need_context=True))
+            record = json.loads(log.read_text().splitlines()[-1])
+            self.assertEqual(record['ranked_ids'], expected)
+            self.assertEqual(record['chunk_ids'], expected)
+            self.assertNotEqual(record['ranked_ids'], record['vector_ids'])
+            self.assertIn('-----Entities-----', context)
+            self.assertEqual(record['fusion'], 'bm25')
+            async def no_edges(*args, **kwargs):
+                return []
+            rag.relationships_vdb.query = no_edges
+            self.assertIsNone(await rag.aquery(row['Question'], param=QueryParam(mode='mini', only_need_context=True)))
+
+        with patch.dict(os.environ, {}, clear=True), contextlib.redirect_stdout(io.StringIO()):
+            asyncio.run(scenario())
 
     def test_naive_C3_matches_minirag(self):
         self.check("C3")

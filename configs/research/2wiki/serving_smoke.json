@@ -1,0 +1,7 @@
+{
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "vllm_version": "0.11.0",
+  "scope": "Smoke expectations from reproduce/modal_slm.py; not a verified benchmark serving declaration",
+  "model_revision_verified": false,
+  "sampling_verified": false
+}

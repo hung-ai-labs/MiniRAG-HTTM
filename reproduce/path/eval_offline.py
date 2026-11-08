@@ -22,7 +22,9 @@ import hashlib
 import json
 import os
 import statistics as st
+import shutil
 import sys
+import tempfile
 import time
 from collections import Counter
 
@@ -166,7 +168,7 @@ def write_report_file(metrics, mode_name, records):
     lines = [
         f"=== BÁO CÁO OFFLINE: {mode_name.upper()} ===",
         f"Thời gian tạo: {time.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Số câu đánh giá: {metrics['n_questions']} (180 câu dev có Evidence)",
+        f"Số câu đánh giá: {metrics['n_questions']} (dev có Evidence)",
         "",
         "1. HIỆU NĂNG (EFFICIENCY):",
         f"  - Thời gian truy hồi (retrieval_ms): Trung vị {fmt(metrics['retrieval_ms_med'], 1)} ms | p90 {fmt(metrics['retrieval_ms_p90'], 1)} ms",
@@ -197,17 +199,42 @@ def write_report_file(metrics, mode_name, records):
 
 
 async def main():
+    global OUT_DIR
     parser = argparse.ArgumentParser(description="Offline Evaluation cho Path Pruning / Reweighting")
     parser.add_argument("--mode", type=str, default="step0", choices=["step0", "p1", "p2", "verify"],
                         help="step0: Đo baseline | p1: Đo cắt tỉa | p2: Đo chấm điểm | verify: Kiểm tra regression")
+    parser.add_argument("--arm", choices=["C0", "C1", "C2", "C3"], default=None,
+                        help="Frozen C0/C1/C2/C3 ablation profile (overrides --mode/--score-flow)")
     parser.add_argument("--workingdir", type=str, default="./LiHua-World-qwen-modal")
     parser.add_argument("--model", type=str, default="Qwen/Qwen2.5-3B-Instruct")
+    parser.add_argument("--score-flow", action="store_true",
+                        help="Carry accumulated path scores into final chunk ranking (opt-in repair)")
+    parser.add_argument("--fusion", choices=["graph", "rrf", "rrf_bm25"], default="graph")
+    parser.add_argument("--limit", type=int, default=0, help="0 = all evidence-bearing dev questions")
+    parser.add_argument("--output-dir", type=str, default="",
+                        help="Separate directory for reports; score-flow defaults to logs/path_score_flow")
     args = parser.parse_args()
+    if args.limit < 0:
+        parser.error("--limit must be nonnegative")
+    if args.output_dir:
+        OUT_DIR = os.path.abspath(args.output_dir)
+    elif args.arm:
+        OUT_DIR = os.path.join(ROOT, "logs", "c_ablation", args.fusion, args.arm)
+    elif args.score_flow:
+        OUT_DIR = os.path.join(ROOT, "logs", "path_score_flow", args.fusion)
+    os.makedirs(os.path.join(OUT_DIR, "cache"), exist_ok=True)
     
     # Thiết lập env cơ bản
     os.environ["MINIRAG_ANSWER_TYPE_FIX"] = "1"
     os.environ["MINIRAG_PATH2CHUNK_FIX"] = "0"
+    os.environ["MINIRAG_PATH_SCORE_FLOW"] = "1" if args.score_flow else "0"
+    os.environ["MINIRAG_CHUNK_FUSION"] = "" if args.fusion == "graph" else args.fusion
     os.environ["MINIRAG_KW_CACHE"] = KW_CACHE
+    # An offline comparison must not silently obtain a new parser sample via API.
+    os.environ["MINIRAG_KW_CACHE_ONLY"] = "1"
+    for key in ("MINIRAG_LEEF", "MINIRAG_RERANK", "MINIRAG_CHUNK_CUT",
+                "MINIRAG_TRUNCATE_SOURCES", "MINIRAG_MAX_TOKEN_TEXT_UNIT"):
+        os.environ.pop(key, None)
     
     if args.mode == "p1":
         os.environ["MINIRAG_PATH_PRUNE"] = "hub_cap"
@@ -219,22 +246,42 @@ async def main():
         os.environ.pop("MINIRAG_PATH_PRUNE", None)
         os.environ.pop("MINIRAG_PATH_SCORE", None)
         
+    if args.arm:
+        from c_ablation import environment
+        os.environ.update(environment(args.arm, args.fusion))
+        args.mode = args.arm
+        args.score_flow = os.environ["MINIRAG_PATH_SCORE_FLOW"] == "1"
+
     # Nạp các câu hỏi và gold map
     rows = dev_rows()
     golds = gold_map()
     eval_rows = [r for r in rows if r["Question"] in golds]
+    if args.limit:
+        eval_rows = eval_rows[:args.limit]
     
     # Khởi tạo RAG
     print(f"Đang khởi tạo MiniRAG từ: {args.workingdir}")
-    rag_args = argparse.Namespace(
-        workingdir=args.workingdir,
-        model=args.model,
-        embedmodel="local"
-    )
-    rag = build_rag(rag_args)
-    
-    records = await evaluate_dataset(rag, eval_rows, golds, mode_name=args.mode)
+    # MiniRAG writes its runtime log inside working_dir. Run on a temporary copy
+    # so even logging/storage callbacks cannot alter the source index.
+    with tempfile.TemporaryDirectory(prefix="minirag-path-offline-") as temp_index:
+        for entry in os.scandir(args.workingdir):
+            if entry.is_file() and entry.name.endswith((".json", ".graphml")):
+                shutil.copy2(entry.path, temp_index)
+        rag_args = argparse.Namespace(
+            workingdir=temp_index,
+            model=args.model,
+            embedmodel="local"
+        )
+        rag = build_rag(rag_args)
+        records = await evaluate_dataset(rag, eval_rows, golds, mode_name=args.mode)
     metrics = analyze_records(records, golds, eval_rows)
+    metrics.update({"path_score_flow": args.score_flow, "fusion": args.fusion,
+                    "mode": args.mode, "arm": args.arm, "sources_budget": 4000,
+                    "path2chunk_fix": os.environ["MINIRAG_PATH2CHUNK_FIX"],
+                    "path_scorer": os.environ.get("MINIRAG_PATH_SCORE", "") or "P0"})
+    with open(os.path.join(OUT_DIR, f"{args.mode}_records.jsonl"), "w", encoding="utf-8") as fh:
+        for rec in records:
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
     write_report_file(metrics, args.mode, records)
 
 

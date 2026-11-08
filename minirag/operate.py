@@ -1129,6 +1129,9 @@ async def naive_query(
 async def path2chunk(
     scored_edged_reasoning_path, knowledge_graph_inst, pairs_append, query, max_chunks=5
 ):
+    # Opt-in repair: accumulate all paths AND carry their scores to kwd2chunk.
+    # Kept separate from PATH2CHUNK_FIX so historical experiments remain reproducible.
+    score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
     already_node = {}
     for k, v in scored_edged_reasoning_path.items():
         node_chunk_id = None
@@ -1213,11 +1216,16 @@ async def path2chunk(
             # trong vòng lặp, thứ tự do đồ thị trả về. Bản đúng nằm sẵn trong comment
             # bên dưới. MINIRAG_PATH2CHUNK_FIX=1 bật bản sửa; mặc định giữ upstream.
             picked = (node_chunk_id
-                      if os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") == "1"
+                      if score_flow or os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") == "1"
                       else count_dict)
             for id in picked.most_common(max_chunks):
                 v["Path"].append(id[0])
             # v['Path'] = node_chunk_id.most_common(max_chunks)
+        if score_flow:
+            # Preserve Path's list-of-IDs interface for existing callers/demo code.
+            # An isolated seed uses its source occurrence counts as fallback scores.
+            chunk_scores = node_chunk_id if node_chunk_id is not None else count_dict
+            v["PathChunkScores"] = {cid: float(chunk_scores[cid]) for cid in v["Path"]}
     return scored_edged_reasoning_path
 
 
@@ -1300,6 +1308,7 @@ async def _keyword_llm(use_model_func, kw_prompt):
 
 
 def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
+    score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
     final_chunk = Counter()
     final_chunk_id = []
     for key, list_of_dicts in ent_from_query_dict.items():
@@ -1307,7 +1316,11 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
         id_scores_list = []
         id_scores = {}
         for d in list_of_dicts:
-            if d == list_of_dicts[0]:
+            first = list_of_dicts[0]
+            # The new side channel must not change upstream's equality-based boost.
+            is_first = ((d["Score"], d["Path"]) == (first["Score"], first["Path"])
+                        if score_flow else d == first)
+            if is_first:
                 score = d["Score"] * 2
             else:
                 score = d["Score"]
@@ -1316,10 +1329,13 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
             for id in path:
                 if id == path[0] and id in chunks_ids:
                     score = score * 10
+                # Keep upstream seed/keyword/vector boosts fixed; change only
+                # whether the path-derived chunk weight survives into ranking.
+                contribution = score * d["PathChunkScores"][id] if score_flow else score
                 if id in id_scores:
-                    id_scores[id] += score
+                    id_scores[id] += contribution
                 else:
-                    id_scores[id] = score
+                    id_scores[id] = contribution
         id_scores_list.append(id_scores)
 
         for scores in id_scores_list:
@@ -1349,6 +1365,9 @@ async def _build_mini_query_context(
     embedder,
     query_param: QueryParam,
 ):
+    if (os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
+            and os.environ.get("MINIRAG_CHUNK_FUSION", "") in ("vector", "vector_bm25")):
+        raise ValueError("MINIRAG_PATH_SCORE_FLOW requires graph Sources; vector/vector_bm25 discard graph ranking")
     _t0 = time.perf_counter()
     imp_ents = []
     nodes_from_query_list = []
@@ -1618,6 +1637,13 @@ async def _build_mini_query_context(
         if bm25_ids is not None:
             _rec["bm25_ids"] = bm25_ids
             _rec["bm25_ms"] = round(bm25_ms, 3)
+        if os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1":
+            _rec["path_score_flow"] = True
+            _rec["path_score_mode"] = _path_score
+            _rec["path_chunk_scores"] = {
+                name: entry["PathChunkScores"]
+                for name, entry in scored_edged_reasoning_path.items()
+            }
         if _rr:
             # chỉ ghi khi chế độ thí nghiệm bật — bản ghi của B2 giữ nguyên đúng các trường cũ
             _rec["rerank"] = _rr

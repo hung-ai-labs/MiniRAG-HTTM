@@ -1127,13 +1127,45 @@ async def naive_query(
 
 
 async def path2chunk(
-    scored_edged_reasoning_path, knowledge_graph_inst, pairs_append, query, max_chunks=5
+    scored_edged_reasoning_path, knowledge_graph_inst, pairs_append, query, max_chunks=5,
+    *, valid_chunks=None, diagnostics=None, chunk_vectors=None, answer_nodes=None, relation_vectors=None,
 ):
     # Opt-in repair: accumulate all paths AND carry their scores to kwd2chunk.
     # Kept separate from PATH2CHUNK_FIX so historical experiments remain reproducible.
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
+    normalization = os.environ.get("MINIRAG_PATH_SCORE_NORMALIZATION", "").strip()
+    if normalization not in ("", "path_mean"):
+        raise ValueError(f"Unknown path-score normalization: {normalization!r}")
+    if normalization and not score_flow:
+        raise ValueError("Path-score normalization requires PATH_SCORE_FLOW=1")
+    enhancement = os.environ.get("MINIRAG_P2_ENHANCE", "").strip()
+    projection = os.environ.get("MINIRAG_PATH_PROJECTION", "").strip()
+    selection = os.environ.get("MINIRAG_PATH_SELECTION", "").strip()
+    if selection and (selection != "c1_affinity" or projection not in ("affinity", "p0_relation_lift") or answer_nodes is None):
+        raise ValueError("Fixed C1 selection requires affinity projection and the original answer-type list")
+    if projection:
+        if projection not in ("affinity", "p0_relation_lift") or normalization or enhancement:
+            raise ValueError("Path affinity cannot be mixed with other path projections")
+        if os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") != "1":
+            raise ValueError("Path affinity requires PATH2CHUNK_FIX=1")
+        if projection == "p0_relation_lift":
+            from .p0_path_scoring import project_p0_paths
+            result = await project_p0_paths(scored_edged_reasoning_path,knowledge_graph_inst,
+                pairs_append,query,max_chunks,valid=valid_chunks,chunk_vectors=chunk_vectors,
+                relation_vectors=relation_vectors,diagnostics=diagnostics)
+        else:
+            from .path_affinity import project_with_affinity
+            result = await project_with_affinity(scored_edged_reasoning_path, knowledge_graph_inst,
+                pairs_append, query, max_chunks, valid=valid_chunks,
+                chunk_vectors=chunk_vectors, diagnostics=diagnostics,
+                reference_answers=answer_nodes if selection else None)
+        if not score_flow:
+            for entry in result.values():
+                entry.pop("PathChunkScores")
+        return result
     already_node = {}
     for k, v in scored_edged_reasoning_path.items():
+        original_path_count = len(v["Path"])
         node_chunk_id = None
 
         for pathtuple, scorelist in v["Path"].items():
@@ -1225,7 +1257,8 @@ async def path2chunk(
             # Preserve Path's list-of-IDs interface for existing callers/demo code.
             # An isolated seed uses its source occurrence counts as fallback scores.
             chunk_scores = node_chunk_id if node_chunk_id is not None else count_dict
-            v["PathChunkScores"] = {cid: float(chunk_scores[cid]) for cid in v["Path"]}
+            divisor = max(1, original_path_count) if normalization == "path_mean" else 1
+            v["PathChunkScores"] = {cid: float(chunk_scores[cid]) / divisor for cid in v["Path"]}
     return scored_edged_reasoning_path
 
 
@@ -1309,6 +1342,11 @@ async def _keyword_llm(use_model_func, kw_prompt):
 
 def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
+    calibration = os.environ.get("MINIRAG_PATH_SCORE_CALIBRATION", "").strip()
+    if calibration:
+        if calibration != "local_mean" or not score_flow:
+            raise ValueError("Local-mean calibration requires PATH_SCORE_FLOW=1")
+        from .path_calibration import local_mean_factors
     final_chunk = Counter()
     final_chunk_id = []
     for key, list_of_dicts in ent_from_query_dict.items():
@@ -1325,13 +1363,17 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
             else:
                 score = d["Score"]
             path = d["Path"]
+            if calibration:
+                weights = local_mean_factors(path, d["PathChunkScores"]) if path else {}
+            else:
+                weights = d["PathChunkScores"] if score_flow and path else {}
 
             for id in path:
                 if id == path[0] and id in chunks_ids:
                     score = score * 10
                 # Keep upstream seed/keyword/vector boosts fixed; change only
                 # whether the path-derived chunk weight survives into ranking.
-                contribution = score * d["PathChunkScores"][id] if score_flow else score
+                contribution = score * weights[id] if score_flow else score
                 if id in id_scores:
                     id_scores[id] += contribution
                 else:
@@ -1365,6 +1407,41 @@ async def _build_mini_query_context(
     embedder,
     query_param: QueryParam,
 ):
+    _graph_flow_mode = os.environ.get("MINIRAG_GRAPH_FLOW", "").strip()
+    if _graph_flow_mode == "0":
+        _graph_flow_mode = ""
+    _path_projection = os.environ.get("MINIRAG_PATH_PROJECTION", "").strip()
+    _path_selection = os.environ.get("MINIRAG_PATH_SELECTION", "").strip()
+    _path_calibration = os.environ.get("MINIRAG_PATH_SCORE_CALIBRATION", "").strip()
+    if (_path_selection and (_path_selection != "c1_affinity" or _path_projection not in ("affinity", "p0_relation_lift"))
+            or _path_calibration and (_path_calibration != "local_mean"
+                or _path_selection != "c1_affinity" or os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") != "1")):
+        raise ValueError("Path calibration requires score flow and fixed C1-affinity selection")
+    _path_projection_trace = None
+    if _path_projection:
+        conflicts = [n for n in ("MINIRAG_P2_ENHANCE", "MINIRAG_PATH_SCORE_NORMALIZATION",
+            "MINIRAG_PATH_PRUNE", "MINIRAG_CHUNK_CUT", "MINIRAG_LEEF", "MINIRAG_RERANK")
+            if os.environ.get(n, "").strip()]
+        if (_path_projection not in ("affinity", "p0_relation_lift") or _graph_flow_mode or conflicts
+                or os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") != "1"
+                or os.environ.get("MINIRAG_PATH_SCORE", "").strip() not in ("", "weighted")
+                or os.environ.get("MINIRAG_CHUNK_FUSION", "") in ("vector", "vector_bm25")):
+            raise ValueError("Path affinity requires intact P0/P2 graph flows, FIX=1 and no competing projection")
+        if _path_projection == "p0_relation_lift" and (
+                os.environ.get("MINIRAG_PATH_SCORE", "").strip() or _path_calibration
+                or _path_selection != "c1_affinity" or os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") != "1"):
+            raise ValueError("New path scoring requires P0, fixed C1 candidates and raw dimensionless score flow")
+        _path_projection_trace = {"stages": ["entity_search", "two_hop_paths", "answer_type",
+            "path_score", "semantic_edges", "edge_vote_path", "path2chunk", "node_edge_provenance",
+            "query_chunk_affinity", "scorednode2chunk", "dense_search", "kwd2chunk", "context"]}
+        if _path_selection:
+            _path_projection_trace["stages"].append("fixed_c1_selection")
+        if _path_calibration:
+            _path_projection_trace["stages"].append("local_mean_calibration")
+        if _path_projection == "p0_relation_lift":
+            _path_projection_trace["stages"].extend(["p0_prior", "relation_path_score", "matched_source_background"])
+    if _graph_flow_mode or os.environ.get("MINIRAG_P2_ENHANCE", "").strip():
+        raise ValueError("Historical graph replacements are not available in this branch")
     if (os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
             and os.environ.get("MINIRAG_CHUNK_FUSION", "") in ("vector", "vector_bm25")):
         raise ValueError("MINIRAG_PATH_SCORE_FLOW requires graph Sources; vector/vector_bm25 discard graph ranking")
@@ -1454,15 +1531,19 @@ async def _build_mini_query_context(
         else:
             badedge.append(item)
     scored_edged_reasoning_path, pairs_append = edge_vote_path(
-        scored_reasoning_path, goodedge
+        scored_reasoning_path, goodedge, indexed=bool(_path_projection)
     )
+    _projection_kwargs = {}
+    if _path_projection:
+        _projection_kwargs = {"valid_chunks": set(await text_chunks_db.all_keys()),
+            "diagnostics": _path_projection_trace, "chunk_vectors": chunks_vdb}
+        if _path_selection:
+            _projection_kwargs["answer_nodes"] = maybe_answer_list
+        if _path_projection == "p0_relation_lift":
+            _projection_kwargs["relation_vectors"] = relationships_vdb
     scored_edged_reasoning_path = await path2chunk(
-        scored_edged_reasoning_path,
-        knowledge_graph_inst,
-        pairs_append,
-        originalquery,
-        max_chunks=3,
-    )
+        scored_edged_reasoning_path, knowledge_graph_inst, pairs_append,
+        originalquery, max_chunks=3, **_projection_kwargs)
 
     entites_section_list = []
     node_datas = await asyncio.gather(
@@ -1637,6 +1718,12 @@ async def _build_mini_query_context(
         if bm25_ids is not None:
             _rec["bm25_ids"] = bm25_ids
             _rec["bm25_ms"] = round(bm25_ms, 3)
+        if _path_projection_trace is not None:
+            _rec["path_projection"] = _path_projection_trace
+        if _path_selection:
+            _rec["path_selection"] = _path_selection
+        if _path_calibration:
+            _rec["path_score_calibration"] = _path_calibration
         if os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1":
             _rec["path_score_flow"] = True
             _rec["path_score_mode"] = _path_score

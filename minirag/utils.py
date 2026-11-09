@@ -5,6 +5,7 @@ import csv
 import json
 import logging
 import os
+from collections import defaultdict
 import re
 from dataclasses import dataclass
 from functools import wraps
@@ -413,18 +414,25 @@ def cal_path_score_list(candidate_reasoning_path, maybe_answer_list):
     return scored_reasoning_path
 
 
-def edge_vote_path(path_dict, edge_list):
+def edge_vote_path(path_dict, edge_list, *, indexed=False):
     return_dict = copy.deepcopy(path_dict)
     EDGELIST = []
     pairs_append = {}
     for i in edge_list:
         EDGELIST.append((i["src_id"], i["tgt_id"]))
+    lookup = defaultdict(list)
+    if indexed:
+        for index, pair in enumerate(EDGELIST):
+            lookup[pair].append(index)
     for i in return_dict.items():
         for j in i[1]["Path"].items():
             if j[1]:
                 count = 0
 
-                for pairs in EDGELIST:
+                indices = (sorted({index for pair in zip(j[0], j[0][1:])
+                                   for index in lookup.get(pair, [])}) if indexed else range(len(EDGELIST)))
+                for edge_index in indices:
+                    pairs = EDGELIST[edge_index]
                     if is_continuous_subsequence(pairs, j[0]):
                         count = count + 1
                         if j[0] not in pairs_append:

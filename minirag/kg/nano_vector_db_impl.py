@@ -160,6 +160,43 @@ class NanoVectorDBStorage(BaseVectorStorage):
     def client_storage(self):
         return getattr(self._client, "_NanoVectorDB__storage")
 
+    async def score_pairs(self, query: str, pairs):
+        """Score specified undirected relationships without global top-k gating.
+
+        Reuse NanoVectorDB's exact cosine implementation and stored vectors.
+        This read-only operation fails on missing vectors rather than reducing
+        the topology-discovered candidate set silently.
+        """
+        wanted = {tuple(sorted(pair)) for pair in pairs}
+        if not wanted:
+            return []
+
+        def selected(row):
+            return tuple(sorted((row["src_id"], row["tgt_id"]))) in wanted
+
+        available = {tuple(sorted((row["src_id"], row["tgt_id"])))
+                     for row in self.client_storage["data"] if selected(row)}
+        if wanted - available:
+            raise ValueError(f"P3 candidate edges missing relationship vectors: {len(wanted - available)}")
+        embedding = (await self.embedding_func([query]))[0]
+        rows = self._client.query(query=embedding, top_k=len(self.client_storage["data"]),
+                                  better_than_threshold=None, filter_lambda=selected)
+        return [{**row, "distance": float(row["__metrics__"])} for row in rows]
+
+    async def score_ids(self, query: str, ids):
+        """Read exact cosine scores for a fixed candidate ID set, without top-k."""
+        wanted = set(ids)
+        if not wanted:
+            return []
+        available = {row["__id__"] for row in self.client_storage["data"]}
+        if wanted - available:
+            raise ValueError(f"P3 evidence chunks missing vectors: {len(wanted - available)}")
+        embedding = (await self.embedding_func([query]))[0]
+        rows = self._client.query(query=embedding, top_k=len(self.client_storage["data"]),
+                                  better_than_threshold=None,
+                                  filter_lambda=lambda row: row["__id__"] in wanted)
+        return [{**row, "id": row["__id__"], "distance": float(row["__metrics__"])} for row in rows]
+
     async def delete(self, ids: list[str]):
         """Delete vectors with specified IDs
 

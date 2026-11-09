@@ -1,3 +1,5 @@
+> Historical bug-fix profiles only. Current C0–C3: [README.md](README.md).
+
 # Benchmark C0 / C1 / C2 / C3
 
 | Arm | PATH2CHUNK_FIX | PATH_SCORE_FLOW | Scorer |

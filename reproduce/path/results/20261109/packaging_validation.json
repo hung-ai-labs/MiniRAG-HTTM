@@ -1,0 +1,11 @@
+{
+  "scope": "Isolated publication checkout; validation of prior results, not independent QA experiment",
+  "tests_passed": 40,
+  "rank_checks": 600,
+  "live_context_checks": 8,
+  "all_contexts_match": true,
+  "hashes_unchanged_during_validation": true,
+  "api_calls": 0,
+  "accuracy_measured": false,
+  "profile_version": "20261109-p0-relation-lift"
+}

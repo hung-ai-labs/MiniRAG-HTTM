@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "questions": 200,
+  "exact_rank_checks": 600,
+  "exact_C1_candidate_and_vector_order_checks": 200,
+  "P2_absent_from_main_profiles": true,
+  "index_and_sources_unchanged": true,
+  "embedding_calls": 0,
+  "api_calls": 0,
+  "input_sha256": {
+    "manifest.json": "cb1590b576b4e252ab57e98c2f37e19cea4084faf89a5177ecf0bc9dec221032",
+    "inputs.jsonl": "cc7cdac640316feff92d55cd232685ee089cdf70caa2b907e17a2489c3269e87",
+    "replay.jsonl": "51f385a48b67ff77e55c6785ad3759408bf434cbcb23ddcb9f2f8899fd45fd4e",
+    "report.json": "c9dd8ab0bc44b04340e0da38da03e0ca15ae261ac6042443debf9e174c375ed8",
+    "contexts.jsonl": "9694b850bd23d2a3898e70a5e0aa8276ceac775237cb6fb5dc4556f584d9847c"
+  },
+  "verifier_sha256": "c460a191f169ef5d25f1f9562c80cdbf1e731fa3dae393acd8dc9420417e1c5d"
+}

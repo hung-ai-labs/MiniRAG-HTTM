@@ -60,4 +60,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Historical C profiles retired. Use reproduce/path/c_profiles.py for current C0-C3.")

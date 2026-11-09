@@ -55,9 +55,9 @@ def p90(xs):
     return xs[min(idx, len(xs) - 1)]
 
 
-async def run_diagnose_query(rag, question):
+async def run_diagnose_query(rag, question, top_k=60):
     """Thực thi một câu hỏi và bóc tách chi tiết từng khâu trong đồ thị."""
-    query_param = QueryParam(mode="mini", only_need_context=True)
+    query_param = QueryParam(mode="mini", only_need_context=True, top_k=top_k)
     
     # Thiết lập file log tạm cho câu này
     temp_log = os.path.join(OUT_DIR, "cache", f"temp_{os.getpid()}.jsonl")
@@ -84,7 +84,7 @@ async def run_diagnose_query(rag, question):
     return ctx, rec, total_ms
 
 
-async def evaluate_dataset(rag, eval_rows, gold, mode_name="step0"):
+async def evaluate_dataset(rag, eval_rows, gold, mode_name="step0", top_k=60):
     print(f"\n========================================================")
     print(f" ĐANG CHẠY ĐÁNH GIÁ OFFLINE: {mode_name.upper()}")
     print(f" Tập câu hỏi: {len(eval_rows)} câu dev có Evidence")
@@ -97,7 +97,7 @@ async def evaluate_dataset(rag, eval_rows, gold, mode_name="step0"):
         q = r["Question"]
         q_type = r.get("Type", "Single")
         
-        ctx, rec, ms = await run_diagnose_query(rag, q)
+        ctx, rec, ms = await run_diagnose_query(rag, q, top_k)
         
         rec["question"] = q
         rec["type"] = q_type
@@ -211,11 +211,16 @@ async def main():
                         help="Carry accumulated path scores into final chunk ranking (opt-in repair)")
     parser.add_argument("--fusion", choices=["graph", "rrf", "rrf_bm25"], default="graph")
     parser.add_argument("--limit", type=int, default=0, help="0 = all evidence-bearing dev questions")
+    parser.add_argument("--offset", type=int, default=0, help="Skip this many evidence-bearing dev questions")
+    parser.add_argument("--top-k", type=int, default=60)
+    parser.add_argument("--answer-type-fix", choices=["0", "1"], default="1")
     parser.add_argument("--output-dir", type=str, default="",
                         help="Separate directory for reports; score-flow defaults to logs/path_score_flow")
     args = parser.parse_args()
-    if args.limit < 0:
-        parser.error("--limit must be nonnegative")
+    if args.limit < 0 or args.offset < 0:
+        parser.error("--limit and --offset must be nonnegative")
+    if args.top_k < 2:
+        parser.error("--top-k must be at least 2")
     if args.output_dir:
         OUT_DIR = os.path.abspath(args.output_dir)
     elif args.arm:
@@ -225,7 +230,7 @@ async def main():
     os.makedirs(os.path.join(OUT_DIR, "cache"), exist_ok=True)
     
     # Thiết lập env cơ bản
-    os.environ["MINIRAG_ANSWER_TYPE_FIX"] = "1"
+    os.environ["MINIRAG_ANSWER_TYPE_FIX"] = args.answer_type_fix
     os.environ["MINIRAG_PATH2CHUNK_FIX"] = "0"
     os.environ["MINIRAG_PATH_SCORE_FLOW"] = "1" if args.score_flow else "0"
     os.environ["MINIRAG_CHUNK_FUSION"] = "" if args.fusion == "graph" else args.fusion
@@ -249,6 +254,7 @@ async def main():
     if args.arm:
         from c_ablation import environment
         os.environ.update(environment(args.arm, args.fusion))
+        os.environ["MINIRAG_ANSWER_TYPE_FIX"] = args.answer_type_fix
         args.mode = args.arm
         args.score_flow = os.environ["MINIRAG_PATH_SCORE_FLOW"] == "1"
 
@@ -256,6 +262,7 @@ async def main():
     rows = dev_rows()
     golds = gold_map()
     eval_rows = [r for r in rows if r["Question"] in golds]
+    eval_rows = eval_rows[args.offset:]
     if args.limit:
         eval_rows = eval_rows[:args.limit]
     
@@ -263,7 +270,7 @@ async def main():
     print(f"Đang khởi tạo MiniRAG từ: {args.workingdir}")
     # MiniRAG writes its runtime log inside working_dir. Run on a temporary copy
     # so even logging/storage callbacks cannot alter the source index.
-    with tempfile.TemporaryDirectory(prefix="minirag-path-offline-") as temp_index:
+    with tempfile.TemporaryDirectory(prefix="minirag-path-offline-", ignore_cleanup_errors=True) as temp_index:
         for entry in os.scandir(args.workingdir):
             if entry.is_file() and entry.name.endswith((".json", ".graphml")):
                 shutil.copy2(entry.path, temp_index)
@@ -273,7 +280,7 @@ async def main():
             embedmodel="local"
         )
         rag = build_rag(rag_args)
-        records = await evaluate_dataset(rag, eval_rows, golds, mode_name=args.mode)
+        records = await evaluate_dataset(rag, eval_rows, golds, mode_name=args.mode, top_k=args.top_k)
     metrics = analyze_records(records, golds, eval_rows)
     metrics.update({"path_score_flow": args.score_flow, "fusion": args.fusion,
                     "mode": args.mode, "arm": args.arm, "sources_budget": 4000,

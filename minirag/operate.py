@@ -1,4 +1,5 @@
 import asyncio
+import builtins
 import hashlib
 import json
 import os
@@ -1127,16 +1128,25 @@ async def naive_query(
 
 
 async def path2chunk(
-    scored_edged_reasoning_path, knowledge_graph_inst, pairs_append, query, max_chunks=5
+    scored_edged_reasoning_path, knowledge_graph_inst, pairs_append, query, max_chunks=5,
+    diag=None,
 ):
     # Opt-in repair: accumulate all paths AND carry their scores to kwd2chunk.
     # Kept separate from PATH2CHUNK_FIX so historical experiments remain reproducible.
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
+    # Graph repair phase 2 (reproduce/graph_repair/PHASE2_REGISTRATION.md), both off by default.
+    # FLOW_SPEC=idf: a node/edge owning df chunks adds 1/df per chunk instead of 1.
+    # FLOW_NORM=max: PathChunkScores divided by the seed's best chunk score.
+    flow_spec = os.environ.get("MINIRAG_FLOW_SPEC", "") == "idf"
+    flow_norm = os.environ.get("MINIRAG_FLOW_NORM", "") == "max"
     already_node = {}
     for k, v in scored_edged_reasoning_path.items():
         node_chunk_id = None
+        if diag is not None:
+            seed_diag = diag["seeds"][k]
 
         for pathtuple, scorelist in v["Path"].items():
+            weights = []  # parallel to text_units, only filled when flow_spec
             if pathtuple in pairs_append:
                 use_edge = pairs_append[pathtuple]
                 edge_datas = []
@@ -1147,6 +1157,8 @@ async def path2chunk(
                     split_string_by_multi_markers(dp["source_id"], [GRAPH_FIELD_SEP])
                     for dp in edge_datas  # chunk ID
                 ][0]
+                if flow_spec:
+                    weights = [1.0 / max(1, len(text_units))] * len(text_units)
 
             else:
                 use_edge = []
@@ -1160,6 +1172,8 @@ async def path2chunk(
                     dp["source_id"], [GRAPH_FIELD_SEP]
                 )
                 text_units = text_units + text_units_node
+                if flow_spec:
+                    weights += [1.0 / max(1, len(text_units_node))] * len(text_units_node)
 
             node_datas = await asyncio.gather(
                 *[knowledge_graph_inst.get_node(ents) for ents in pathtuple[1:]]
@@ -1181,6 +1195,12 @@ async def path2chunk(
                                 should_consider_idx = calculate_similarity(
                                     descriptionlist_node, query, k=max_ids
                                 )
+                                if diag is not None:
+                                    diag["levenshtein_calls"] += 1
+                                    for i, cid in enumerate(text_units_node):
+                                        if i not in should_consider_idx:
+                                            removed = diag["levenshtein_removed"]
+                                            removed[cid] = removed.get(cid, 0) + 1
                                 text_units_node = [
                                     text_units_node[i] for i in should_consider_idx
                                 ]
@@ -1189,8 +1209,16 @@ async def path2chunk(
                         text_units_node = already_node[descriptionlist_node[0]]
                     if text_units_node is not None:
                         text_units = text_units + text_units_node
+                        if flow_spec:
+                            df = len(split_string_by_multi_markers(dp["source_id"], [GRAPH_FIELD_SEP]))
+                            weights += [1.0 / max(1, df)] * len(text_units_node)
 
-            count_dict = Counter(text_units)
+            if flow_spec:
+                count_dict = Counter()
+                for cid, w in zip(text_units, weights):
+                    count_dict[cid] += w
+            else:
+                count_dict = Counter(text_units)
             total_score = scorelist[0] + scorelist[1] + 1
             for key, value in count_dict.items():
                 count_dict[key] = value * total_score
@@ -1206,6 +1234,8 @@ async def path2chunk(
                     dp["source_id"], [GRAPH_FIELD_SEP]
                 )
                 count_dict = Counter(text_units_node)
+                if flow_spec and text_units_node:
+                    count_dict = Counter({c: n / len(text_units_node) for c, n in count_dict.items()})
 
             for id in count_dict.most_common(max_chunks):
                 v["Path"].append(id[0])
@@ -1226,6 +1256,14 @@ async def path2chunk(
             # An isolated seed uses its source occurrence counts as fallback scores.
             chunk_scores = node_chunk_id if node_chunk_id is not None else count_dict
             v["PathChunkScores"] = {cid: float(chunk_scores[cid]) for cid in v["Path"]}
+            if flow_norm and v["PathChunkScores"]:
+                top = max(v["PathChunkScores"].values())
+                if top > 0:
+                    v["PathChunkScores"] = {cid: s / top for cid, s in v["PathChunkScores"].items()}
+        if diag is not None:
+            seed_diag["selected"] = list(v["Path"])
+            seed_diag["all_path_counter"] = dict(node_chunk_id or {})
+            seed_diag["last_path_counter"] = dict(count_dict)
     return scored_edged_reasoning_path
 
 
@@ -1307,7 +1345,7 @@ async def _keyword_llm(use_model_func, kw_prompt):
     return cache[key]
 
 
-def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
+def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None):
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
     final_chunk = Counter()
     final_chunk_id = []
@@ -1325,13 +1363,22 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
             else:
                 score = d["Score"]
             path = d["Path"]
+            seed_name = diag["seed_names"].get(builtins.id(d)) if diag is not None else None
+            boost_active = False
 
             for id in path:
                 if id == path[0] and id in chunks_ids:
                     score = score * 10
+                    boost_active = True
                 # Keep upstream seed/keyword/vector boosts fixed; change only
                 # whether the path-derived chunk weight survives into ranking.
                 contribution = score * d["PathChunkScores"][id] if score_flow else score
+                if diag is not None:
+                    diag["contributions"].setdefault(id, []).append({
+                        "keyword": key, "seed": seed_name, "score": d["Score"],
+                        "x2": bool(is_first), "x10": boost_active,
+                        "contribution": contribution,
+                    })
                 if id in id_scores:
                     id_scores[id] += contribution
                 else:
@@ -1369,6 +1416,12 @@ async def _build_mini_query_context(
             and os.environ.get("MINIRAG_CHUNK_FUSION", "") in ("vector", "vector_bm25")):
         raise ValueError("MINIRAG_PATH_SCORE_FLOW requires graph Sources; vector/vector_bm25 discard graph ranking")
     _t0 = time.perf_counter()
+    _diag_path = os.environ.get("MINIRAG_DIAG_LOG", "").strip()
+    _diag = ({"query": originalquery, "keywords": list(ent_from_query),
+              "type_keywords": list(type_keywords), "seeds": {},
+              "levenshtein_calls": 0, "levenshtein_removed": {},
+              "contributions": {}, "seed_names": {}}
+             if _diag_path else None)
     imp_ents = []
     nodes_from_query_list = []
     ent_from_query_dict = {}
@@ -1379,6 +1432,10 @@ async def _build_mini_query_context(
 
         nodes_from_query_list.append(results_node)
         ent_from_query_dict[ent] = [e["entity_name"] for e in results_node]
+        if _diag is not None:
+            _diag.setdefault("matches", {})[ent] = [
+                {"name": e["entity_name"], "score": e["distance"], "rank": i + 1}
+                for i, e in enumerate(results_node)]
 
     candidate_reasoning_path = {}
 
@@ -1415,6 +1472,18 @@ async def _build_mini_query_context(
         if len(entry["Path"]) >= 1
     }
     candidate_reasoning_path = {**long_path_entries, **top_short_path_dict}
+    if _diag is not None:
+        for name, entry in {**long_path_entries, **short_path_entries}.items():
+            node = await knowledge_graph_inst.get_node(name)
+            _diag["seeds"][name] = {
+                "name": name, "score": entry["Score"],
+                "matches": [dict(m, keyword=kw) for kw, ms in _diag["matches"].items()
+                            for m in ms if m["name"] == name],
+                "short_path_removed": name not in candidate_reasoning_path,
+                "degree": await knowledge_graph_inst.node_degree(name),
+                "df": len(split_string_by_multi_markers(node["source_id"], [GRAPH_FIELD_SEP])) if node else 0,
+                "path_count": len(entry["Path"]),
+            }
     
     # TV1 Hook: Cắt tỉa đường đi (P1)
     _path_prune = os.environ.get("MINIRAG_PATH_PRUNE", "").strip()
@@ -1429,6 +1498,8 @@ async def _build_mini_query_context(
     )  # entity_type, description,...
 
     maybe_answer_list = [n["entity_name"] for n in node_datas_from_type]
+    if _diag is not None:
+        _diag["maybe_answer_count"] = len(maybe_answer_list)
     imp_ents = imp_ents + maybe_answer_list
     
     # TV1 Hook: Chấm điểm đường đi có trọng số (P2)
@@ -1456,12 +1527,51 @@ async def _build_mini_query_context(
     scored_edged_reasoning_path, pairs_append = edge_vote_path(
         scored_reasoning_path, goodedge
     )
+    if _diag is not None:
+        import random
+        _diag["path_a_positive"] = sum(
+            scores[0] > 0 for v in scored_edged_reasoning_path.values()
+            for scores in v["Path"].values())
+        _diag["path_total"] = sum(len(v["Path"]) for v in scored_edged_reasoning_path.values())
+        _diag["reachable_nodes"] = []
+        _diag["reachable_edges"] = []
+        all_nodes = set(scored_edged_reasoning_path)
+        all_nodes.update(n for v in scored_edged_reasoning_path.values()
+                         for path in v["Path"] for n in path)
+        for name in all_nodes:
+            node = await knowledge_graph_inst.get_node(name)
+            if node:
+                _diag["reachable_nodes"].extend(
+                    split_string_by_multi_markers(node["source_id"], [GRAPH_FIELD_SEP]))
+        all_edges = {tuple(sorted((a, b))) for v in scored_edged_reasoning_path.values()
+                     for path in v["Path"] for a, b in zip(path, path[1:])}
+        for a, b in all_edges:
+            edge = await knowledge_graph_inst.get_edge(a, b)
+            if edge:
+                _diag["reachable_edges"].extend(
+                    split_string_by_multi_markers(edge["source_id"], [GRAPH_FIELD_SEP]))
+        _diag["reachable_nodes"] = sorted(set(_diag["reachable_nodes"]))
+        _diag["reachable_edges"] = sorted(set(_diag["reachable_edges"]))
+        mode = os.environ.get("MINIRAG_DIAG_PATH_SCORE", "").strip()
+        if mode in ("zero", "shuffle"):
+            rng = random.Random(13)
+            for v in scored_edged_reasoning_path.values():
+                paths = v["Path"]
+                if mode == "zero":
+                    for key in paths:
+                        paths[key] = [0, 0]
+                else:
+                    values = list(paths.values())
+                    rng.shuffle(values)
+                    for key, value in zip(paths, values):
+                        paths[key] = value
     scored_edged_reasoning_path = await path2chunk(
         scored_edged_reasoning_path,
         knowledge_graph_inst,
         pairs_append,
         originalquery,
         max_chunks=3,
+        diag=_diag,
     )
 
     entites_section_list = []
@@ -1495,12 +1605,14 @@ async def _build_mini_query_context(
     entites_section_list.insert(0, ["entity", "score", "description"])
     entities_context = list_of_list_to_csv(entites_section_list)
 
+    if _diag is not None:
+        _diag["seed_names"] = {builtins.id(v): k for k, v in scored_edged_reasoning_path.items()}
     scorednode2chunk(ent_from_query_dict, scored_edged_reasoning_path)
 
     results = await chunks_vdb.query(originalquery, top_k=int(query_param.top_k / 2))
     chunks_ids = [r["id"] for r in results]
     final_chunk_id = kwd2chunk(
-        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2)
+        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2), diag=_diag
     )
     # MINIRAG_CHUNK_FUSION=rrf: kwd2chunk chỉ xếp hạng chunk NẰM TRÊN đường đi đồ thị;
     # chunks_ids (vector thuần trên câu hỏi gốc) chỉ được cộng điểm thưởng x10 nếu
@@ -1522,6 +1634,10 @@ async def _build_mini_query_context(
     # chunk đáp án giữ sau A1 66,7% -> 75,8% (B1) / 86,0% (B2), cùng ngân sách token.
     fusion = os.environ.get("MINIRAG_CHUNK_FUSION", "")
     graph_chunk_ids = list(final_chunk_id)
+    if _diag is not None:
+        _diag["vector_ids"] = list(chunks_ids)
+        _diag["graph_ids"] = graph_chunk_ids
+        _diag["top_k"] = query_param.top_k
     bm25_ids, bm25_ms = None, None
     if fusion in ("rrf_bm25", "vector_bm25"):
         _tb = time.perf_counter()
@@ -1539,9 +1655,19 @@ async def _build_mini_query_context(
         raise ValueError(f"MINIRAG_CHUNK_FUSION không hợp lệ: {fusion!r}")
 
     if not len(results_node):
+        if _diag is not None:
+            _diag["chunk_ids"] = []
+            _diag["seed_names"] = {}
+            with open(_diag_path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(_diag, ensure_ascii=False, default=lambda x: x.item() if hasattr(x, "item") else str(x)) + "\n")
         return None
 
     if not len(results_edge):
+        if _diag is not None:
+            _diag["chunk_ids"] = []
+            _diag["seed_names"] = {}
+            with open(_diag_path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(_diag, ensure_ascii=False, default=lambda x: x.item() if hasattr(x, "item") else str(x)) + "\n")
         return None
 
     use_text_units = await asyncio.gather(
@@ -1595,6 +1721,11 @@ async def _build_mini_query_context(
             max_token_size=int(budget) if budget
             else query_param.max_token_for_text_unit,
         )
+    if _diag is not None:
+        _diag["chunk_ids"] = kept_ids[:len(text_units_section_list)]
+        _diag["seed_names"] = {}
+        with open(_diag_path, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(_diag, ensure_ascii=False, default=lambda x: x.item() if hasattr(x, "item") else str(x)) + "\n")
 
     _ctx_log = os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()
     if _ctx_log:

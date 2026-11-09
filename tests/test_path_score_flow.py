@@ -48,6 +48,7 @@ class PathScoreFlowTest(unittest.IsolatedAsyncioTestCase):
             "MINIRAG_PATH_SCORE": "", "MINIRAG_PATH_PRUNE": "",
             "MINIRAG_CHUNK_FUSION": "", "MINIRAG_CHUNK_CUT": "",
             "MINIRAG_LEEF": "", "MINIRAG_RERANK": "", "MINIRAG_CONTEXT_LOG": "",
+            "MINIRAG_DIAG_LOG": "", "MINIRAG_DIAG_PATH_SCORE": "",
             "MINIRAG_TRUNCATE_SOURCES": "1", "MINIRAG_MAX_TOKEN_TEXT_UNIT": "30",
         })
         self.env.start()
@@ -133,6 +134,15 @@ class PathScoreFlowTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(p0, p2)
         self.assertIn("alpha", p0)
         self.assertNotIn("beta", p0)
+
+    async def test_diagnostic_disabled_writes_nothing_and_keeps_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "diagnostic.jsonl"
+            os.environ["MINIRAG_DIAG_LOG"] = ""
+            first = await self.context()
+            second = await self.context()
+            self.assertEqual(first, second)
+            self.assertFalse(path.exists())
 
     async def test_graph_discarding_fusion_is_rejected_before_retrieval(self):
         os.environ["MINIRAG_PATH_SCORE_FLOW"] = "1"

@@ -1,0 +1,257 @@
+{
+ "n": 180,
+ "full": 75,
+ "L3_questions": 31,
+ "L2_questions": 6,
+ "layers": {
+  "OK": 96,
+  "L1/L0": 72,
+  "L3": 33,
+  "L2": 6
+ },
+ "hub5_degree": 7,
+ "Q1": {
+  "slack_median": 456,
+  "slack_min_max": [
+   12,
+   1169
+  ],
+  "overflow_chunk_tok_median": 1037,
+  "L3_q_gold_fits_slack_any": 8,
+  "L3_q_gold_fits_slack_all": 8,
+  "L3_q_total": 31,
+  "full_slack_median": 302,
+  "all_slack_median": 308.0,
+  "L3_gold_tok_median": 670,
+  "L3_gold_tok_p90": 1200,
+  "n_order_median": 30.0,
+  "n_kept_median": 6.0
+ },
+ "Q2": {
+  "n_L3_gold": 33,
+  "rank_median": 12,
+  "n_above_median": 11,
+  "tok_above_median": 6038,
+  "max_above_median": 1200,
+  "long_above_median": 5,
+  "dom_kw_share_n_median": 0.6,
+  "dom_kw_share_tok_median": 0.59,
+  "hub_share_tok_median": 0.37,
+  "same_dom_kw_as_gold_median": 4,
+  "fits_if_drop_longest": 8,
+  "has_long_above(>=600)": 32,
+  "same_kw_as_gold_ge1": 30
+ },
+ "Q3": {
+  "n_cases": 39,
+  "gold_kw_min_chunks_in_sources_median": 3,
+  "cases_gold_has_no_kw": 0,
+  "cases_any_gold_kw_has_0_in_sources": 5,
+  "cases_gold_kw_has_ge5_in_sources": 14,
+  "kw_zero_in_sources_all": "43/498",
+  "kw_zero_in_sources_L": "10/109",
+  "kw_zero_in_sources_full": "15/202",
+  "q_with_zero_kw_L": 8,
+  "q_with_zero_kw_full": 14
+ },
+ "Q4": {
+  "full(75)": {
+   "n": 75,
+   "n_kw": 3,
+   "n_kept": 7,
+   "slack": 302,
+   "max_tok_order": 1200,
+   "med_tok_order": 510.5,
+   "top_kw_share": 0.67,
+   "zero_kw_frac": 0.0,
+   "n_distinct_dom_kw_kept": 2,
+   "n_seeds_total": 131
+  },
+  "L3|L2": {
+   "n": 37,
+   "n_kw": 3,
+   "n_kept": 5,
+   "slack": 434,
+   "max_tok_order": 1200,
+   "med_tok_order": 599.5,
+   "top_kw_share": 0.65,
+   "zero_kw_frac": 0.0,
+   "n_distinct_dom_kw_kept": 2,
+   "n_seeds_total": 164
+  },
+  "not_full_other": {
+   "n": 68,
+   "n_kw": 3.0,
+   "n_kept": 6.5,
+   "slack": 288.5,
+   "max_tok_order": 1200.0,
+   "med_tok_order": 471.5,
+   "top_kw_share": 0.71,
+   "zero_kw_frac": 0.0,
+   "n_distinct_dom_kw_kept": 2.0,
+   "n_seeds_total": 150.5
+  }
+ },
+ "SIM": [
+  {
+   "name": "S0 C0 (tái dựng)",
+   "full_q": 75,
+   "gold_kept": "96/207",
+   "q_up": 0,
+   "q_down": 0,
+   "tok_median": 3692.0,
+   "jaccard_vs_C0_median": 1.0,
+   "note": ""
+  },
+  {
+   "name": "S1 first-fit (sửa bước cắt, = finding sửa baseline)",
+   "full_q": 77,
+   "gold_kept": "99/207",
+   "q_up": 2,
+   "q_down": 0,
+   "tok_median": 3944.5,
+   "jaccard_vs_C0_median": 0.83,
+   "note": ""
+  },
+  {
+   "name": "S2 phủ từ khoá, cắt tiền tố",
+   "full_q": 75,
+   "gold_kept": "96/207",
+   "q_up": 3,
+   "q_down": 3,
+   "tok_median": 3656.0,
+   "jaccard_vs_C0_median": 1.0,
+   "note": ""
+  },
+  {
+   "name": "S3 phủ từ khoá + first-fit",
+   "full_q": 76,
+   "gold_kept": "98/207",
+   "q_up": 4,
+   "q_down": 3,
+   "tok_median": 3944.0,
+   "jaccard_vs_C0_median": 0.82,
+   "note": ""
+  },
+  {
+   "name": "S4 mật độ điểm/token, cắt tiền tố",
+   "full_q": 76,
+   "gold_kept": "100/207",
+   "q_up": 7,
+   "q_down": 6,
+   "tok_median": 3731.5,
+   "jaccard_vs_C0_median": 0.5,
+   "note": ""
+  },
+  {
+   "name": "S5 mật độ điểm/token + first-fit",
+   "full_q": 76,
+   "gold_kept": "100/207",
+   "q_up": 7,
+   "q_down": 6,
+   "tok_median": 3907.5,
+   "jaccard_vs_C0_median": 0.46,
+   "note": ""
+  },
+  {
+   "name": "S6 phủ từ khoá (chunk mật độ cao nhất mỗi từ khoá) + phần còn lại mật độ, cắt tiền tố",
+   "full_q": 77,
+   "gold_kept": "101/207",
+   "q_up": 8,
+   "q_down": 6,
+   "tok_median": 3735.0,
+   "jaccard_vs_C0_median": 0.5,
+   "note": ""
+  },
+  {
+   "name": "S7 như S6 + first-fit",
+   "full_q": 77,
+   "gold_kept": "101/207",
+   "q_up": 8,
+   "q_down": 6,
+   "tok_median": 3907.0,
+   "jaccard_vs_C0_median": 0.45,
+   "note": ""
+  },
+  {
+   "name": "S8 phủ từ khoá trên TOÀN BỘ ứng viên (không cắt top-30), tiền tố",
+   "full_q": 75,
+   "gold_kept": "96/207",
+   "q_up": 3,
+   "q_down": 3,
+   "tok_median": 3657.5,
+   "jaccard_vs_C0_median": 1.0,
+   "note": "khám phá: đổi trần 30"
+  },
+  {
+   "name": "S9 điểm chunk = Σ từ khoá max thực thể, top-30, tiền tố",
+   "full_q": 75,
+   "gold_kept": "96/207",
+   "q_up": 5,
+   "q_down": 5,
+   "tok_median": 3712.0,
+   "jaccard_vs_C0_median": 0.75,
+   "note": ""
+  },
+  {
+   "name": "S10 như S9 rồi xếp lại theo mật độ",
+   "full_q": 73,
+   "gold_kept": "97/207",
+   "q_up": 8,
+   "q_down": 10,
+   "tok_median": 3732.5,
+   "jaccard_vs_C0_median": 0.45,
+   "note": ""
+  },
+  {
+   "name": "S11 xếp theo số từ khoá khác nhau cùng trỏ tới chunk, rồi điểm",
+   "full_q": 48,
+   "gold_kept": "60/207",
+   "q_up": 5,
+   "q_down": 32,
+   "tok_median": 3579.5,
+   "jaccard_vs_C0_median": 0.39,
+   "note": ""
+  },
+  {
+   "name": "S12 điểm/sqrt(token), tiền tố",
+   "full_q": 77,
+   "gold_kept": "101/207",
+   "q_up": 6,
+   "q_down": 4,
+   "tok_median": 3685.5,
+   "jaccard_vs_C0_median": 0.67,
+   "note": ""
+  },
+  {
+   "name": "S13 xen kẽ theo thực thể xuất phát chủ đạo, tiền tố",
+   "full_q": 63,
+   "gold_kept": "83/207",
+   "q_up": 2,
+   "q_down": 14,
+   "tok_median": 3614.5,
+   "jaccard_vs_C0_median": 0.57,
+   "note": ""
+  },
+  {
+   "name": "S14 xen kẽ theo từ khoá chủ đạo, tiền tố",
+   "full_q": 63,
+   "gold_kept": "80/207",
+   "q_up": 3,
+   "q_down": 15,
+   "tok_median": 3622.0,
+   "jaccard_vs_C0_median": 0.6,
+   "note": ""
+  }
+ ],
+ "ORACLE": {
+  "spearman_tok_vs_score_in_top30_median": -0.18,
+  "chunk_tok_median_corpus": 274.0,
+  "gold_tok_median_all": 448,
+  "gold_tok_median_kept(OK)": 311.0,
+  "gold_tok_median_L3": 670,
+  "oracle_top30_full_questions": 104,
+  "oracle_cand_full_questions": 109,
+  "q_gold_in_top30_but_gold_sum_over_budget": 0
+ }
+}

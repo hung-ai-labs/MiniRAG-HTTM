@@ -1,0 +1,83 @@
+{
+  "regression_c0_reg": 180,
+  "C0 (frozen)": {
+    "full": 75,
+    "single": 69,
+    "multi": 6,
+    "micro": 46.38,
+    "up": 0,
+    "down": 0,
+    "p": 1.0,
+    "median_sources_tok": 3692.0,
+    "median_chunks": 6.0,
+    "questions_with_changed_set": 0,
+    "gold_chunks_kept": 96
+  },
+  "P-FF  (đối chứng)": {
+    "full": 77,
+    "single": 71,
+    "multi": 6,
+    "micro": 47.83,
+    "up": 2,
+    "down": 0,
+    "p": 0.5,
+    "median_sources_tok": 3944.5,
+    "median_chunks": 7.5,
+    "questions_with_changed_set": 131,
+    "gold_chunks_kept": 99
+  },
+  "P-D1": {
+    "full": 76,
+    "single": 68,
+    "multi": 8,
+    "micro": 48.31,
+    "up": 7,
+    "down": 6,
+    "p": 1.0,
+    "median_sources_tok": 3731.5,
+    "median_chunks": 10.0,
+    "questions_with_changed_set": 173,
+    "gold_chunks_kept": 100
+  },
+  "P-D05": {
+    "full": 77,
+    "single": 69,
+    "multi": 8,
+    "micro": 48.79,
+    "up": 6,
+    "down": 4,
+    "p": 0.75390625,
+    "median_sources_tok": 3685.5,
+    "median_chunks": 9.0,
+    "questions_with_changed_set": 150,
+    "gold_chunks_kept": 101
+  },
+  "P-D05F": {
+    "full": 78,
+    "single": 70,
+    "multi": 8,
+    "micro": 49.76,
+    "up": 7,
+    "down": 4,
+    "p": 0.548828125,
+    "median_sources_tok": 3922.0,
+    "median_chunks": 9.5,
+    "questions_with_changed_set": 166,
+    "gold_chunks_kept": 103
+  },
+  "P-D1 vs P-FF": {
+    "up": 5,
+    "down": 6,
+    "p": 1.0
+  },
+  "P-D05 vs P-FF": {
+    "up": 4,
+    "down": 4,
+    "p": 1.0
+  },
+  "P-D05F vs P-FF": {
+    "up": 5,
+    "down": 4,
+    "p": 1.0
+  }
+}

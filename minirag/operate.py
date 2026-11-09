@@ -1345,7 +1345,45 @@ async def _keyword_llm(use_model_func, kw_prompt):
     return cache[key]
 
 
-def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None):
+_PACK_ALPHAS = {"1": 1.0, "0.5": 0.5}
+
+
+def _pack_alpha():
+    """MINIRAG_PACK_ALPHA: rỗng = tắt. Chỉ nhận hai giá trị đã đăng ký trước (REGISTRATION.md)."""
+    raw = os.environ.get("MINIRAG_PACK_ALPHA", "").strip()
+    if not raw:
+        return None
+    if raw not in _PACK_ALPHAS:
+        raise ValueError(f"MINIRAG_PACK_ALPHA không hợp lệ: {raw!r} (chỉ nhận '1' hoặc '0.5')")
+    return _PACK_ALPHAS[raw]
+
+
+def _pack_fill():
+    raw = os.environ.get("MINIRAG_PACK_FILL", "").strip()
+    if raw not in ("", "firstfit"):
+        raise ValueError(f"MINIRAG_PACK_FILL không hợp lệ: {raw!r} (chỉ nhận 'firstfit')")
+    return raw == "firstfit"
+
+
+def pack_reorder(ids, scores, tokens, alpha):
+    """Xếp lại ids giảm dần theo điểm / token**alpha. Ổn định: hoà giữ thứ tự cũ.
+
+    Chỉ dùng điểm đồ thị của kwd2chunk và độ dài chunk -- không dùng nội dung, vector hay đáp án.
+    """
+    return sorted(ids, key=lambda c: -scores[c] / (max(1, tokens[c]) ** alpha))
+
+
+def first_fit_indices(token_sizes, max_token_size):
+    """Chỉ số các chunk được giữ khi duyệt hết danh sách, bỏ chunk làm tràn và lấy tiếp chunk còn vừa."""
+    used, keep = 0, []
+    for i, t in enumerate(token_sizes):
+        if used + t <= max_token_size:
+            used += t
+            keep.append(i)
+    return keep
+
+
+def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None, score_out=None):
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
     final_chunk = Counter()
     final_chunk_id = []
@@ -1396,6 +1434,8 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None):
         ranked = ranked[: _knee_keep([sc for _, sc in ranked])]
     for i in ranked:
         final_chunk_id.append(i[0])
+        if score_out is not None:
+            score_out[i[0]] = i[1]
     return final_chunk_id
 
 
@@ -1611,8 +1651,11 @@ async def _build_mini_query_context(
 
     results = await chunks_vdb.query(originalquery, top_k=int(query_param.top_k / 2))
     chunks_ids = [r["id"] for r in results]
+    _pack_a, _pack_ff = _pack_alpha(), _pack_fill()
+    _pack_scores = {} if _pack_a is not None else None
     final_chunk_id = kwd2chunk(
-        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2), diag=_diag
+        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2), diag=_diag,
+        score_out=_pack_scores,
     )
     # MINIRAG_CHUNK_FUSION=rrf: kwd2chunk chỉ xếp hạng chunk NẰM TRÊN đường đi đồ thị;
     # chunks_ids (vector thuần trên câu hỏi gốc) chỉ được cộng điểm thưởng x10 nếu
@@ -1681,6 +1724,16 @@ async def _build_mini_query_context(
             text_units_section_list.append([i, t["content"]])
             kept_ids.append(final_chunk_id[i])
 
+    # MINIRAG_PACK_ALPHA (Người 2, REGISTRATION.md): xếp lại đúng 30 chunk đồ thị theo điểm / token**alpha trước A1.
+    # TẮT MẶC ĐỊNH. Chỉ dùng điểm của kwd2chunk và độ dài chunk; không vector/BM25/nội dung. Hỏng thì NÉM LỖI.
+    if _pack_a is not None:
+        if fusion:
+            raise ValueError("MINIRAG_PACK_ALPHA chỉ chạy khi MINIRAG_CHUNK_FUSION rỗng (đồ thị thuần)")
+        _ptok = {c: len(encode_string_by_tiktoken(row[1])) for c, row in zip(kept_ids, text_units_section_list)}
+        _ptxt = {c: row[1] for c, row in zip(kept_ids, text_units_section_list)}
+        kept_ids = pack_reorder(kept_ids, _pack_scores, _ptok, _pack_a)
+        text_units_section_list = [[i, _ptxt[c]] for i, c in enumerate(kept_ids)]
+
     # CHẾ ĐỘ THÍ NGHIỆM — xếp lại bằng cross-encoder. TẮT MẶC ĐỊNH (MINIRAG_RERANK rỗng => không chạy gì).
     # Bật: MINIRAG_RERANK=ce1. Chỉ đổi THỨ TỰ đúng tập ứng viên trên; A1 bên dưới, BM25, vector, RRF, ngân sách
     # token và prompt đều không đổi. Đăng ký trước: reproduce/rerank/preregistration/CE1_cross_encoder_pretrained.md.
@@ -1715,12 +1768,19 @@ async def _build_mini_query_context(
     # overrides the budget so the sweep needs no code edit.
     if os.environ.get("MINIRAG_TRUNCATE_SOURCES", "1") != "0":
         budget = os.environ.get("MINIRAG_MAX_TOKEN_TEXT_UNIT", "").strip()
-        text_units_section_list = truncate_list_by_token_size(
-            text_units_section_list,
-            key=lambda x: x[1],
-            max_token_size=int(budget) if budget
-            else query_param.max_token_for_text_unit,
-        )
+        _budget = int(budget) if budget else query_param.max_token_for_text_unit
+        if _pack_ff:
+            # MINIRAG_PACK_FILL=firstfit: bỏ chunk làm tràn rồi lấy tiếp chunk còn vừa (mặc định dừng ở chunk tràn đầu).
+            _keep = first_fit_indices(
+                [len(encode_string_by_tiktoken(x[1])) for x in text_units_section_list], _budget)
+            text_units_section_list = [text_units_section_list[i] for i in _keep]
+            kept_ids = [kept_ids[i] for i in _keep]
+        else:
+            text_units_section_list = truncate_list_by_token_size(
+                text_units_section_list,
+                key=lambda x: x[1],
+                max_token_size=_budget,
+            )
     if _diag is not None:
         _diag["chunk_ids"] = kept_ids[:len(text_units_section_list)]
         _diag["seed_names"] = {}

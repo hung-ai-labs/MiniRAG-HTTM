@@ -1,0 +1,11 @@
+{
+  "exact_replay_questions": 200,
+  "gold_pairs": 207,
+  "retained": 126,
+  "missing_pool": 38,
+  "dense_rescues_missing_pool": 22,
+  "neither": 16,
+  "lost_cap": 35,
+  "graph_only": 11,
+  "lost_top30": 8
+}

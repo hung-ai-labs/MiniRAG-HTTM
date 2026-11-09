@@ -95,3 +95,23 @@ Những tài sản lớn này không nằm trong commit; một checkout mới ph
 bộ artifacts có hash tương ứng từ nhóm trước khi chạy replay. Chạy QA qua
 `c_profiles.py` không phụ thuộc hai bộ replay này. Bảng kết quả và giới hạn:
 `P0_RELATION_LIFT_FINDINGS.md`; mô tả thay đổi: `ALGORITHM_CHANGES.md`.
+
+## Audit provenance và QA bổ sung
+
+- `NEXT_GRAPH_IMPROVEMENT_RESEARCH_20261109.md`: findings và hướng nghiên cứu có điều kiện.
+- `SOURCE_PROVENANCE_IMPLEMENTATION.md`: audit và capture nguồn trước merge cho lần index mới.
+- `P0_QA_PROTOCOL.md`, `run_p0_qa.py`, `verify_p0_qa.py`: generation/judge và xác minh checkpoint.
+- `results/20261109/qa/RESULTS_PARTIAL.md`: QA chưa hoàn tất; 600 đáp án,
+  1.492/1.800 phán quyết, thiếu 308 vì hết quota ngày. Không phải ba lượt judge đầy đủ.
+- `results/20261109/source_provenance/`: inventory nguồn và hash study.
+- `results/20261109/funnel/`: phễu C1 đã replay khớp 200/200.
+
+Các report là artifact lịch sử từ workspace thí nghiệm, không phải lượt đo mới
+trên checkout phát hành. Full answers/judgments/context, index và parser cache
+không được đính kèm. Để resume cần lấy đúng checkpoint và tài sản có hash tương
+ứng từ nhóm; không tạo checkpoint mới rồi gộp nhãn với study cũ. Source hashes
+trong manifest của study kiểm soát resume; một checkout khác có thể bị từ chối
+nếu các nguồn snapshot không trùng, dù mục đích thuật toán tương đương.
+
+`source_witnesses.py` chỉ ghi provenance khi được bật trong driver index riêng;
+không sửa C0/C1/C3 và chưa có scorer W(p) hoặc mức tăng QA của witness.

@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-11-09T16:30:55.596356+00:00",
+  "complete": false,
+  "answers": 600,
+  "judgments": 1492,
+  "missing_judgments": 308,
+  "completed_passes": [
+    1,
+    2
+  ],
+  "pass3_matched_questions": 97,
+  "source_hashes_match": true,
+  "index_hashes_match": true,
+  "paired_p_values_independently_checked_with": "scipy.stats.binomtest",
+  "configuration_gain_confirmed": false
+}

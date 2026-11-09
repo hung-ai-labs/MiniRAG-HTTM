@@ -1,0 +1,6 @@
+{
+  "state": "daily_quota_exhausted",
+  "error_type": "DailyQuotaExhausted",
+  "answers": 600,
+  "judgments": 1492
+}

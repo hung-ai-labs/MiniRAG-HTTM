@@ -1,0 +1,15 @@
+{
+  "method": "production kwd2chunk with restore(C1), profile_env(C1); original dtype/order; frozen inputs only",
+  "new_retrieval_runs": 0,
+  "api_calls": 0,
+  "counterfactuals_recomputed": false,
+  "inputs_sha256": {
+    "logs/path_calibration/20261109_dev200/inputs.jsonl": "375b9788dce6dcda0b85e3352380839393ec46fc5c7c40c74e68b49a8adf438d",
+    "logs/path_affinity/20261109_dev200/replay.jsonl": "464899e993974a97c07fd23ef124783239da45e1a82a56f5fdc45d14e661a838",
+    "logs/diag_path2chunk.jsonl": "9297353c23ded561459bf80c4272d80073bb5324adec4e2294a0332f335c47a2",
+    "LiHua-World-qwen-modal/kv_store_text_chunks.json": "a1f7878010a874c7a2773902d26f20a5b0c2f701512cd591445ff149a36db6d6",
+    "minirag/operate.py": "6cafa7db3f504554ab72b37b176479d74932f32dd373f7a0128d3b3851f40ae8",
+    "reproduce/path/c_profiles.py": "825a84c5be9a2a36851cb669cd9d67e47631efdb5e7c161ee64bcac4ac4b7aa9",
+    "reproduce/path/benchmark_c.py": "ca4833ee87f4565acb41f6c8f4ae953281e2bbc85b8717b43c3b108fbe63679c"
+  }
+}

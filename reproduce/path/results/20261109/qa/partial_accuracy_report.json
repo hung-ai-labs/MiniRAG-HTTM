@@ -1,0 +1,126 @@
+{
+  "status": "partial",
+  "planned_questions": 200,
+  "answers": 600,
+  "judgments": 1492,
+  "generation_rounds": 1,
+  "judge_repeats": 3,
+  "passes": {
+    "1": {
+      "paired_questions": 200,
+      "rates": {
+        "C0": {
+          "accurate": 57.0,
+          "error": 22.0,
+          "neither": 21.0
+        },
+        "C1": {
+          "accurate": 63.5,
+          "error": 23.0,
+          "neither": 13.5
+        },
+        "C3": {
+          "accurate": 67.5,
+          "error": 20.0,
+          "neither": 12.5
+        }
+      },
+      "paired": {
+        "C0": {
+          "n": 200,
+          "up": 41,
+          "down": 20,
+          "net": 21,
+          "p_exact": 0.009853448195259264,
+          "p_holm": 0.01970689639051853
+        },
+        "C1": {
+          "n": 200,
+          "up": 10,
+          "down": 2,
+          "net": 8,
+          "p_exact": 0.03857421875,
+          "p_holm": 0.03857421875
+        }
+      }
+    },
+    "2": {
+      "paired_questions": 200,
+      "rates": {
+        "C0": {
+          "accurate": 58.5,
+          "error": 21.5,
+          "neither": 20.0
+        },
+        "C1": {
+          "accurate": 63.0,
+          "error": 25.0,
+          "neither": 12.0
+        },
+        "C3": {
+          "accurate": 64.5,
+          "error": 22.0,
+          "neither": 13.5
+        }
+      },
+      "paired": {
+        "C0": {
+          "n": 200,
+          "up": 38,
+          "down": 26,
+          "net": 12,
+          "p_exact": 0.16864291143970336,
+          "p_holm": 0.3372858228794067
+        },
+        "C1": {
+          "n": 200,
+          "up": 9,
+          "down": 6,
+          "net": 3,
+          "p_exact": 0.60723876953125,
+          "p_holm": 0.60723876953125
+        }
+      }
+    },
+    "3": {
+      "paired_questions": 97,
+      "rates": {
+        "C0": {
+          "accurate": 59.79381443298969,
+          "error": 18.556701030927837,
+          "neither": 21.649484536082475
+        },
+        "C1": {
+          "accurate": 61.855670103092784,
+          "error": 28.8659793814433,
+          "neither": 9.278350515463918
+        },
+        "C3": {
+          "accurate": 68.04123711340206,
+          "error": 20.61855670103093,
+          "neither": 11.34020618556701
+        }
+      },
+      "paired": {
+        "C0": {
+          "n": 97,
+          "up": 18,
+          "down": 10,
+          "net": 8,
+          "p_exact": 0.1849333420395851,
+          "p_holm": 0.21875
+        },
+        "C1": {
+          "n": 97,
+          "up": 8,
+          "down": 2,
+          "net": 6,
+          "p_exact": 0.109375,
+          "p_holm": 0.21875
+        }
+      }
+    }
+  },
+  "configuration_gain_confirmed": false,
+  "new_retrieval_runs": 0
+}

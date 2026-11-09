@@ -1,0 +1,31 @@
+{
+  "original_cases": 27,
+  "original_questions": 26,
+  "controls": 6,
+  "categories": {
+    "neither": 16,
+    "graph_only": 11
+  },
+  "inventory": {
+    "nodes": 1556,
+    "nodes_multiple_sources": 314,
+    "nodes_multiple_sources_and_descriptions": 313,
+    "nodes_equal_multiple_counts_not_proven_alignment": 204,
+    "nodes_missing_source_chunks": 19,
+    "nodes_explicit_witness_field": 0,
+    "edges": 1509,
+    "edges_multiple_sources": 167,
+    "edges_multiple_sources_and_descriptions": 167,
+    "edges_equal_multiple_counts_not_proven_alignment": 117,
+    "edges_missing_source_chunks": 9,
+    "edges_explicit_witness_field": 0
+  },
+  "llm_cache_entries": 0,
+  "checkpoint_is_only_ids": true,
+  "exact_merged_alignment_reconstructible": false,
+  "reason": "No paired raw extraction cache in the inspected index; cardinality equality is not alignment evidence",
+  "compatibility_W_implemented": false,
+  "annotations_reviewed": 0,
+  "new_retrieval_runs": 0,
+  "api_calls": 0
+}

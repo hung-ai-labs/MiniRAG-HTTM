@@ -1,0 +1,60 @@
+{
+ "ans": {
+  "n": 180,
+  "n_keywords_med": 3.0,
+  "n_seeds_med": 150.5,
+  "n_candidates_med": 109.5,
+  "top1_score_med": 20.2,
+  "top30_sum_score_med": 130.79,
+  "C0_chunks_med": 6.0,
+  "C0_sources_tok_med": 3692.0,
+  "score_share_kept_C0_med": 0.57,
+  "p_ff": {
+   "questions_changed": "131/180",
+   "jaccard_vs_C0_med": 0.83,
+   "chunks_added_med_per_q": 1.0,
+   "sources_tok_delta_med": 236.5,
+   "added_chunk_graph_rank_med": 13,
+   "added_chunk_score_over_top1_med": 0.12,
+   "n_added_total": 239
+  },
+  "p_d05f": {
+   "questions_changed": "166/180",
+   "jaccard_vs_C0_med": 0.6,
+   "chunks_added_med_per_q": 3.0,
+   "sources_tok_delta_med": 190.0,
+   "added_chunk_graph_rank_med": 15.0,
+   "added_chunk_score_over_top1_med": 0.12,
+   "n_added_total": 694
+  }
+ },
+ "null": {
+  "n": 20,
+  "n_keywords_med": 3.0,
+  "n_seeds_med": 175.0,
+  "n_candidates_med": 128.0,
+  "top1_score_med": 26.03,
+  "top30_sum_score_med": 143.79,
+  "C0_chunks_med": 7.0,
+  "C0_sources_tok_med": 3539.0,
+  "score_share_kept_C0_med": 0.59,
+  "p_ff": {
+   "questions_changed": "16/20",
+   "jaccard_vs_C0_med": 0.8,
+   "chunks_added_med_per_q": 2.0,
+   "sources_tok_delta_med": 385.5,
+   "added_chunk_graph_rank_med": 11.0,
+   "added_chunk_score_over_top1_med": 0.17,
+   "n_added_total": 34
+  },
+  "p_d05f": {
+   "questions_changed": "20/20",
+   "jaccard_vs_C0_med": 0.6,
+   "chunks_added_med_per_q": 4.0,
+   "sources_tok_delta_med": 398.5,
+   "added_chunk_graph_rank_med": 14.0,
+   "added_chunk_score_over_top1_med": 0.14,
+   "n_added_total": 94
+  }
+ }
+}

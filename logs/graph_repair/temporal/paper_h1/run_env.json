@@ -1,0 +1,17 @@
+{
+  "arm": "C0",
+  "top_k": 60,
+  "extra": [
+    "MINIRAG_PAPER_MODE=1",
+    "MINIRAG_TEMPORAL=1",
+    "MINIRAG_TEMPORAL_H=1"
+  ],
+  "index": "E:\\Project\\MiniRAG\\LiHua-World-qwen-modal",
+  "minirag": {
+    "MINIRAG_KW_CACHE_ONLY": "1",
+    "MINIRAG_ANSWER_TYPE_FIX": "1",
+    "MINIRAG_PAPER_MODE": "1",
+    "MINIRAG_TEMPORAL": "1",
+    "MINIRAG_TEMPORAL_H": "1"
+  }
+}

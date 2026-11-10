@@ -1134,6 +1134,7 @@ async def path2chunk(
     # Opt-in repair: accumulate all paths AND carry their scores to kwd2chunk.
     # Kept separate from PATH2CHUNK_FIX so historical experiments remain reproducible.
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
+    paper_select = os.environ.get("MINIRAG_PATH_SELECT", "") == "paper"
     # Graph repair phase 2 (reproduce/graph_repair/PHASE2_REGISTRATION.md), both off by default.
     # FLOW_SPEC=idf: a node/edge owning df chunks adds 1/df per chunk instead of 1.
     # FLOW_NORM=max: PathChunkScores divided by the seed's best chunk score.
@@ -1219,7 +1220,8 @@ async def path2chunk(
                     count_dict[cid] += w
             else:
                 count_dict = Counter(text_units)
-            total_score = scorelist[0] + scorelist[1] + 1
+            total_score = (v["PathPaperScores"][pathtuple] if paper_select
+                           else scorelist[0] + scorelist[1] + 1)
             for key, value in count_dict.items():
                 count_dict[key] = value * total_score
             if node_chunk_id is None:
@@ -1246,7 +1248,7 @@ async def path2chunk(
             # trong vòng lặp, thứ tự do đồ thị trả về. Bản đúng nằm sẵn trong comment
             # bên dưới. MINIRAG_PATH2CHUNK_FIX=1 bật bản sửa; mặc định giữ upstream.
             picked = (node_chunk_id
-                      if score_flow or os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") == "1"
+                      if paper_select or score_flow or os.environ.get("MINIRAG_PATH2CHUNK_FIX", "0") == "1"
                       else count_dict)
             for id in picked.most_common(max_chunks):
                 v["Path"].append(id[0])
@@ -1345,7 +1347,7 @@ async def _keyword_llm(use_model_func, kw_prompt):
     return cache[key]
 
 
-def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None):
+def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None, scores_out=None):
     score_flow = os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
     final_chunk = Counter()
     final_chunk_id = []
@@ -1389,6 +1391,8 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, diag=None):
             total_id_scores.update(scores)
         final_chunk = final_chunk + total_id_scores  # .most_common(3)
 
+    if scores_out is not None:
+        scores_out.update(final_chunk)
     ranked = final_chunk.most_common(chunk_nums)
     # MINIRAG_CHUNK_CUT=knee: giữ tới vách điểm thay vì cả chunk_nums chunk. A1 (cắt
     # theo token) vẫn áp phía sau như trần an toàn cho cửa sổ model.
@@ -1412,6 +1416,15 @@ async def _build_mini_query_context(
     embedder,
     query_param: QueryParam,
 ):
+    if os.environ.get("MINIRAG_PAPER_MODE", "0") == "1":
+        from .cpaper import build_context
+        return await build_context(
+            ent_from_query, type_keywords, originalquery, knowledge_graph_inst,
+            entity_name_vdb, relationships_vdb, chunks_vdb, text_chunks_db,
+            embedder, query_param,
+        )
+    from .temporal import active as temporal_active
+    _temporal_anchors, _temporal_by_time = temporal_active(originalquery, text_chunks_db)
     if (os.environ.get("MINIRAG_PATH_SCORE_FLOW", "0") == "1"
             and os.environ.get("MINIRAG_CHUNK_FUSION", "") in ("vector", "vector_bm25")):
         raise ValueError("MINIRAG_PATH_SCORE_FLOW requires graph Sources; vector/vector_bm25 discard graph ranking")
@@ -1425,6 +1438,8 @@ async def _build_mini_query_context(
     imp_ents = []
     nodes_from_query_list = []
     ent_from_query_dict = {}
+    if _temporal_anchors and not ent_from_query:
+        results_node = []
 
     for ent in ent_from_query:
         ent_from_query_dict[ent] = []
@@ -1524,9 +1539,22 @@ async def _build_mini_query_context(
             goodedge.append(item)
         else:
             badedge.append(item)
-    scored_edged_reasoning_path, pairs_append = edge_vote_path(
-        scored_reasoning_path, goodedge
-    )
+    if os.environ.get("MINIRAG_EDGE_SCORE", "") == "paper":
+        # Paper Eq. (2) in place of vector-ranked edges with weight 1 (reproduce/graph_repair/EQ2_REGISTRATION.md).
+        from minirag.paper_edge_score import edge_vote_path_paper
+        scored_edged_reasoning_path, pairs_append = edge_vote_path_paper(
+            scored_reasoning_path, knowledge_graph_inst._graph, imp_ents, len(goodedge),
+            code_edges=[(e["src_id"], e["tgt_id"]) for e in goodedge], query=originalquery,
+        )
+    else:
+        scored_edged_reasoning_path, pairs_append = edge_vote_path(
+            scored_reasoning_path, goodedge
+        )
+    if os.environ.get("MINIRAG_PATH_SELECT", "") == "paper":
+        from minirag.paper_path_score import select_paper_paths
+        scored_edged_reasoning_path, pairs_append = select_paper_paths(
+            scored_edged_reasoning_path, pairs_append, query=originalquery,
+        )
     if _diag is not None:
         import random
         _diag["path_a_positive"] = sum(
@@ -1607,13 +1635,27 @@ async def _build_mini_query_context(
 
     if _diag is not None:
         _diag["seed_names"] = {builtins.id(v): k for k, v in scored_edged_reasoning_path.items()}
+    _temporal_pairs = ([(keyword, name, scored_edged_reasoning_path[name]["Score"])
+                        for keyword, names in ent_from_query_dict.items() for name in names
+                        if name in scored_edged_reasoning_path] if _temporal_anchors else None)
     scorednode2chunk(ent_from_query_dict, scored_edged_reasoning_path)
 
     results = await chunks_vdb.query(originalquery, top_k=int(query_param.top_k / 2))
     chunks_ids = [r["id"] for r in results]
+    _temporal_scores = Counter() if _temporal_anchors else None
     final_chunk_id = kwd2chunk(
-        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2), diag=_diag
+        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2), diag=_diag,
+        scores_out=_temporal_scores,
     )
+    if _temporal_anchors:
+        from .temporal import entity_h, rank_temporal
+        _h = entity_h(knowledge_graph_inst._graph, _temporal_pairs)
+        final_chunk_id, _ = rank_temporal(
+            _temporal_scores, _temporal_by_time, _temporal_anchors, _h, chunks_ids,
+            expand=os.environ.get('MINIRAG_TEMPORAL_EXPAND', '1') == '1',
+            h_one=os.environ.get('MINIRAG_TEMPORAL_H', '0') == '1',
+            limit=int(query_param.top_k / 2),
+        )
     # MINIRAG_CHUNK_FUSION=rrf: kwd2chunk chỉ xếp hạng chunk NẰM TRÊN đường đi đồ thị;
     # chunks_ids (vector thuần trên câu hỏi gốc) chỉ được cộng điểm thưởng x10 nếu
     # trùng đầu một đường, nên chunk vector tìm được mà không nằm trên đường nào thì
@@ -1654,7 +1696,7 @@ async def _build_mini_query_context(
     elif fusion:
         raise ValueError(f"MINIRAG_CHUNK_FUSION không hợp lệ: {fusion!r}")
 
-    if not len(results_node):
+    if not len(results_node) and not (_temporal_anchors and final_chunk_id):
         if _diag is not None:
             _diag["chunk_ids"] = []
             _diag["seed_names"] = {}
@@ -1662,7 +1704,7 @@ async def _build_mini_query_context(
                 fh.write(json.dumps(_diag, ensure_ascii=False, default=lambda x: x.item() if hasattr(x, "item") else str(x)) + "\n")
         return None
 
-    if not len(results_edge):
+    if not len(results_edge) and not (_temporal_anchors and final_chunk_id):
         if _diag is not None:
             _diag["chunk_ids"] = []
             _diag["seed_names"] = {}

@@ -23,6 +23,7 @@ chỉ khẳng định *code công bố không hiện thực mô tả trong bài*
 | 7 | tr. 37126, Step 2 Similarity Computation: độ tương đồng câu hỏi ↔ **chunk ghép mô tả cạnh**, rồi xếp hạng | Không có. Gần nhất: `operate.py:1171-1173` so Levenshtein theo token giữa mô tả entity và câu hỏi, chỉ để **lọc** khi node có > 5 chunk | Bước xếp hạng chính của bài báo không tồn tại |
 | 8 | Bảng A3/A4, tr. 37134: k = số hop **và** số đường top-k (4/10/50); n = độ dài đường (2/4/8) | Số hop đóng cứng 2 (`operate.py:1291`); `top_k` chỉ đổi số seed (`:1271`), số cạnh (`:1321`), số chunk vector và chunk ra (`:1375`); không có tham số n | Không dựng lại được A3/A4 từ code công bố |
 | 9 | Phụ lục B, tr. 37136: top-k 5 tài liệu, giới hạn 6.000 token | `base.py:25` `top_k = 60`; `max_token_for_text_unit = 4000` (`base.py:29`) khai báo nhưng mini-mode không dùng ⇒ Sources **không bị cắt** (trung vị 22.839 token, max 33.412 — `measure_sources_cap.py`, dev 200) | Ngân sách context khác hoàn toàn; có câu vượt cửa sổ 32k của Qwen2.5-3B |
+| 10 | Cạnh liên quan câu hỏi trên một đường đi phải được tính theo từng cạnh khi lấy chứng cứ | `operate.py:1138-1141` (upstream `e204d23`) tạo danh sách `source_id` từ mọi cạnh trong `pairs_append[path]` rồi lấy `[0]` — chỉ cạnh đầu đóng góp chunk; trung vị 98 cạnh liên quan nằm trên đường mỗi câu dev | Lỗi mã công bố; bản sửa `MINIRAG_EDGE_ALL=1` là finding tái tạo baseline, không phải đóng góp khoa học. Đăng ký và kiểm định riêng ở `cooc/REGISTRATION.md` |
 
 ## Thứ thực sự quyết định chunk nào vào context (code công bố)
 

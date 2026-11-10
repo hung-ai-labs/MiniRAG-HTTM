@@ -1,0 +1,15 @@
+c0_off: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+C0 switch-off regression: 180/180
+c0_full: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+C0 Full vs -V_t: 75->91/180; b=16, c=0, p=3.0517578e-05; non-temporal context 154/154
+c0_h1: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+c0_noexpand: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+paper_full: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+paper_h1: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+paper_noexpand: 180 records, arm=C0, norm=None, spec=None, top_k=60, diag=False
+C0 Full vs -V_t: 75->91/180; b=16, c=0, p=3.0517578e-05; non-temporal context 154/154
+C0 Full vs -interaction: 86->91/180; b=5, c=0, p=0.0625; non-temporal context 154/154
+C0 Full vs -candidate expansion: 78->91/180; b=13, c=0, p=0.00024414062; non-temporal context 154/154
+C-paper Full vs -V_t: 55->59/180; b=4, c=0, p=0.125; non-temporal context 154/154
+C-paper Full vs -interaction: 59->59/180; b=0, c=0, p=1; non-temporal context 154/154
+C-paper Full vs -candidate expansion: 55->59/180; b=4, c=0, p=0.125; non-temporal context 154/154

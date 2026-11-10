@@ -1,0 +1,24 @@
+{
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "vllm_version": "0.11.0",
+  "gpu": "A10G",
+  "dtype": "bfloat16",
+  "max_model_len": 32768,
+  "sampling": {
+    "source": "vLLM --generation-config auto (default) applies the model's generation_config.json as request defaults",
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.05,
+    "max_tokens": 1024,
+    "seed": "MINIRAG_SLM_SEED per run (dev 101; test 101/202/303)"
+  },
+  "provenance": {
+    "model_revision": "Hugging Face main has not changed since 2024-09-25, before the Modal deployment (reproduce/modal_slm.py, 2026-09-10, which pins no revision), so the cached weights are this commit. Inferred, not read from the server.",
+    "vllm_version": "pinned in reproduce/modal_slm.py; slm_smoke.py reads GET /version to confirm",
+    "dtype": "modal_slm.py passes no --dtype, so vLLM uses torch_dtype from config.json at this revision",
+    "sampling": "values from generation_config.json at this revision (same bytes as main); server-side application not observable from the client",
+    "checked_at": "2026-10-26"
+  }
+}

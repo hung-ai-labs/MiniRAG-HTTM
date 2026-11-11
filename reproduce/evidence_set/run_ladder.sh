@@ -18,7 +18,7 @@ if [ "$SLM" = phi ]; then
     echo "== index (Phi-3.5-mini on Modal builds its own graph)"
     env GEMINI_API_BASE="$(cat ~/.config/minirag/phi_url)/v1" GEMINI_API_KEY_ONLY="$(cat ~/.config/minirag/slm_key)" \
         MINIRAG_MAX_TOKENS=1024 GEMINI_RPM=100000 GEMINI_TPM=100000000 \
-        $PY reproduce/Step_0_index.py --workingdir ./LiHua-World-phi-modal --evidence --model minirag-slm
+        $PY reproduce/Step_0_index.py --workingdir ./LiHua-World-phi-modal --model minirag-slm   # all 442 documents, same as LiHua-World-qwen-modal
     date > LiHua-World-phi-modal/INDEX_DONE
   fi
   # the scorer is trained on this SLM's own dev200 pools

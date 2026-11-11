@@ -1,0 +1,104 @@
+{
+  "all_100_frozen_contexts_and_original_index_baseline_unchanged": true,
+  "confirmed_truncated_invalid_judge_attempts": 1,
+  "exact_context_prediction_judgment_links": 100,
+  "exact_whole_pair_counts_checked": 50,
+  "failed_labels_fabricated": 0,
+  "global_cost_peak_usd": 0.5422098719999989,
+  "global_requests": 665,
+  "independent_binomial_McNemar_checks": 2,
+  "new_generation_requests": 100,
+  "no_Gemini_outputs_pooled": true,
+  "old_generation_requests_reused": 0,
+  "own_cost_peak_usd": 0.165506304,
+  "paired_transitions": [
+    {
+      "baseline": "accurate",
+      "count": 35,
+      "recomp": "accurate"
+    },
+    {
+      "baseline": "accurate",
+      "count": 3,
+      "recomp": "error"
+    },
+    {
+      "baseline": "error",
+      "count": 5,
+      "recomp": "accurate"
+    },
+    {
+      "baseline": "error",
+      "count": 2,
+      "recomp": "error"
+    },
+    {
+      "baseline": "neither",
+      "count": 3,
+      "recomp": "accurate"
+    },
+    {
+      "baseline": "neither",
+      "count": 2,
+      "recomp": "neither"
+    }
+  ],
+  "same_provider_resolved_model_for_all_receipts": true,
+  "status": "INDEPENDENT_CHECKS_PASS",
+  "successful_outputs_finish_stop": true,
+  "type_breakdown": {
+    "Multi": {
+      "BASELINE": {
+        "counts": {
+          "accurate": 4,
+          "error": 1
+        },
+        "n": 5
+      },
+      "RECOMP_NEIGHBORS": {
+        "counts": {
+          "accurate": 4,
+          "error": 1
+        },
+        "n": 5
+      }
+    },
+    "Null": {
+      "BASELINE": {
+        "counts": {
+          "accurate": 2,
+          "error": 1,
+          "neither": 2
+        },
+        "n": 5
+      },
+      "RECOMP_NEIGHBORS": {
+        "counts": {
+          "accurate": 3,
+          "error": 1,
+          "neither": 1
+        },
+        "n": 5
+      }
+    },
+    "Single": {
+      "BASELINE": {
+        "counts": {
+          "accurate": 32,
+          "error": 5,
+          "neither": 3
+        },
+        "n": 40
+      },
+      "RECOMP_NEIGHBORS": {
+        "counts": {
+          "accurate": 36,
+          "error": 3,
+          "neither": 1
+        },
+        "n": 40
+      }
+    }
+  },
+  "valid_judgments": 100
+}

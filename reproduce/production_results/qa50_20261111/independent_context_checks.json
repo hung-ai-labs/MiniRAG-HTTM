@@ -1,0 +1,11 @@
+{
+  "additional_contexts_from_same_frozen_pool": 20,
+  "context_hash_checks": 100,
+  "contexts": 100,
+  "index_baseline_unchanged": true,
+  "old_offline40_contexts_reused_for_both_arms": 80,
+  "questions": 50,
+  "same_question_and_gold_pairs": 50,
+  "source_content_token_checks": 100,
+  "unchanged_Entities_context_checks": 50
+}

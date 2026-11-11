@@ -1,0 +1,10 @@
+{
+  "budget_counters_and_all_previous_raw_receipts_preserved": true,
+  "invalid_outputs_never_mapped_to_neither": true,
+  "model_prompt_max_tokens_sampling_changed": false,
+  "new_transport_sha256": "a977ee5517d40b8c378e844e1fece2c7ec6819d043c0ff05b6cf47b6d05b3002",
+  "offline_transport_tests_passed": 9,
+  "old_transport_sha256": "dbcd85cab959605ba6b26f84ec33127551e73fd5cff00f53dde17b3993053634",
+  "only_change": "At most3 attempts of same judge body, only when previous response fully received and usage accounted; no retry of ambiguous network failures",
+  "reason": "One received judge response finished length after16 tokens without a valid label at matched38/50"
+}

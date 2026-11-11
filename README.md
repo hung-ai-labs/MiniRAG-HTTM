@@ -171,3 +171,7 @@ You may refer to related work that serves as foundations for our framework and c
 ```
 
 **Thank you for your interest in our work!**
+
+## Project production pipeline (2026-11-11)
+
+[Pipeline, setup and provisional QA50 results](docs/PRODUCTION_TEMPORAL_RRF_RECOMP.md): C0 + source-time + RRF + source-preserving utterance/adjacent-context selection. Enable explicitly with `python -m minirag.production`; the launcher defaults to production, while historical library/baseline settings stay unchanged.

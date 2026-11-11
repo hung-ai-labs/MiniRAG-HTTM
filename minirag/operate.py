@@ -1299,7 +1299,7 @@ async def _keyword_llm(use_model_func, kw_prompt):
     return cache[key]
 
 
-def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
+def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums, *, scores_out=None):
     final_chunk = Counter()
     final_chunk_id = []
     for key, list_of_dicts in ent_from_query_dict.items():
@@ -1326,6 +1326,8 @@ def kwd2chunk(ent_from_query_dict, chunks_ids, chunk_nums):
             total_id_scores.update(scores)
         final_chunk = final_chunk + total_id_scores  # .most_common(3)
 
+    if scores_out is not None:
+        scores_out.update(final_chunk)
     ranked = final_chunk.most_common(chunk_nums)
     # MINIRAG_CHUNK_CUT=knee: giữ tới vách điểm thay vì cả chunk_nums chunk. A1 (cắt
     # theo token) vẫn áp phía sau như trần an toàn cho cửa sổ model.
@@ -1349,6 +1351,30 @@ async def _build_mini_query_context(
     embedder,
     query_param: QueryParam,
 ):
+    _temporal_enabled = os.environ.get("MINIRAG_TEMPORAL", "0") == "1"
+    _temporal_rrf = os.environ.get("MINIRAG_TEMPORAL_RRF", "").strip()
+    _extractive_mode = os.environ.get("MINIRAG_EXTRACTIVE_CONTEXT", "").strip()
+    _extractive_trace = None
+    if _extractive_mode:
+        from .extractive_context import MODES
+        if _extractive_mode not in MODES or _temporal_rrf != "1":
+            raise ValueError("Extractive context requires explicit C0 + source-time + RRF")
+    if _temporal_rrf:
+        from .temporal_rrf import validate_profile
+        validate_profile(os.environ, query_param.top_k,
+            int(os.environ.get("MINIRAG_MAX_TOKEN_TEXT_UNIT", "").strip()
+                or query_param.max_token_for_text_unit))
+    _time_anchors, _time_by_date = (), None
+    _time_selected = {}
+    _c0_graph_ids = None
+    if _temporal_enabled:
+        if any(os.environ.get(n, "").strip() for n in (
+                "MINIRAG_PATH_SCORE", "MINIRAG_PATH_PRUNE", "MINIRAG_CHUNK_CUT",
+                "MINIRAG_RERANK")) or (os.environ.get("MINIRAG_CHUNK_FUSION", "").strip()
+                                      and not _temporal_rrf):
+            raise ValueError("Source-time requires unchanged C0 graph/path flows")
+        from .temporal import active
+        _time_anchors, _time_by_date = active(originalquery, text_chunks_db)
     _t0 = time.perf_counter()
     imp_ents = []
     nodes_from_query_list = []
@@ -1476,13 +1502,27 @@ async def _build_mini_query_context(
     entites_section_list.insert(0, ["entity", "score", "description"])
     entities_context = list_of_list_to_csv(entites_section_list)
 
+    _time_pairs = ([(keyword, name, scored_edged_reasoning_path[name]["Score"])
+                    for keyword, names in ent_from_query_dict.items() for name in names
+                    if name in scored_edged_reasoning_path] if _time_anchors else [])
     scorednode2chunk(ent_from_query_dict, scored_edged_reasoning_path)
 
     results = await chunks_vdb.query(originalquery, top_k=int(query_param.top_k / 2))
     chunks_ids = [r["id"] for r in results]
+    _time_scores = Counter() if _time_anchors else None
     final_chunk_id = kwd2chunk(
-        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2)
+        ent_from_query_dict, chunks_ids, chunk_nums=int(query_param.top_k / 2),
+        **({"scores_out": _time_scores} if _time_anchors else {}),
     )
+    if _time_anchors:
+        from .temporal import entity_h, rank_temporal
+        _c0_graph_ids = list(final_chunk_id)
+        _time_h = entity_h(knowledge_graph_inst._graph, _time_pairs)
+        final_chunk_id, _time_selected = rank_temporal(
+            _time_scores, _time_by_date, _time_anchors, _time_h, chunks_ids,
+            expand=os.environ.get("MINIRAG_TEMPORAL_EXPAND", "1") == "1",
+            h_one=os.environ.get("MINIRAG_TEMPORAL_H", "0") == "1",
+            limit=int(query_param.top_k / 2))
     # MINIRAG_CHUNK_FUSION=rrf: kwd2chunk chỉ xếp hạng chunk NẰM TRÊN đường đi đồ thị;
     # chunks_ids (vector thuần trên câu hỏi gốc) chỉ được cộng điểm thưởng x10 nếu
     # trùng đầu một đường, nên chunk vector tìm được mà không nằm trên đường nào thì
@@ -1519,10 +1559,10 @@ async def _build_mini_query_context(
     elif fusion:
         raise ValueError(f"MINIRAG_CHUNK_FUSION không hợp lệ: {fusion!r}")
 
-    if not len(results_node):
+    if not len(results_node) and not (_time_anchors and final_chunk_id):
         return None
 
-    if not len(results_edge):
+    if not len(results_edge) and not (_time_anchors and final_chunk_id):
         return None
 
     use_text_units = await asyncio.gather(
@@ -1568,6 +1608,25 @@ async def _build_mini_query_context(
     # the tail drops the lowest-scoring chunks. MINIRAG_TRUNCATE_SOURCES=0
     # restores upstream's behaviour for measurement; MINIRAG_MAX_TOKEN_TEXT_UNIT
     # overrides the budget so the sweep needs no code edit.
+    _budget_trace = None
+    if (os.environ.get("MINIRAG_CHUNK_BUDGET_TRACE", "") == "1"
+            and os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()):
+        from .temporal_rrf import budget_trace
+        _budget_trace = budget_trace(final_chunk_id, kept_ids,
+            {cid: row[1] for cid, row in zip(kept_ids, text_units_section_list)},
+            graph_chunk_ids, chunks_ids,
+            _c0_graph_ids if _c0_graph_ids is not None else graph_chunk_ids,
+            [c for ids in _time_selected.values() for c in ids],
+            int(os.environ.get("MINIRAG_MAX_TOKEN_TEXT_UNIT", "").strip()
+                or query_param.max_token_for_text_unit))
+    if _extractive_mode:
+        from .extractive_context import runtime_select
+        _texts = {cid: row[1] for cid, row in zip(kept_ids, text_units_section_list)}
+        _extractive_trace = runtime_select(originalquery, list(kept_ids), _texts,
+                                          text_chunks_db, _extractive_mode)
+        _labels = {cid: i for i, cid in enumerate(final_chunk_id)}
+        kept_ids = list(_extractive_trace["chunk_ids"])
+        text_units_section_list = [[_labels[c], _extractive_trace["texts"][c]] for c in kept_ids]
     if os.environ.get("MINIRAG_TRUNCATE_SOURCES", "1") != "0":
         budget = os.environ.get("MINIRAG_MAX_TOKEN_TEXT_UNIT", "").strip()
         text_units_section_list = truncate_list_by_token_size(
@@ -1576,6 +1635,9 @@ async def _build_mini_query_context(
             max_token_size=int(budget) if budget
             else query_param.max_token_for_text_unit,
         )
+
+    if _extractive_trace is not None and len(text_units_section_list) != len(kept_ids):
+        raise AssertionError("A1 clipped an extractive dependency bundle")
 
     _ctx_log = os.environ.get("MINIRAG_CONTEXT_LOG", "").strip()
     if _ctx_log:
@@ -1587,6 +1649,19 @@ async def _build_mini_query_context(
                                for x in text_units_section_list),
             "entities_tok": len(encode_string_by_tiktoken(entities_context)),
         }
+
+        if _temporal_enabled:
+            _rec["source_time"] = {"anchors": list(_time_anchors),
+                "selected_by_anchor": _time_selected,
+                "C0_graph_ids": _c0_graph_ids if _c0_graph_ids is not None else graph_chunk_ids,
+                "time_role": "source/document time; not event time",
+                "fusion_enabled": bool(_temporal_rrf)}
+        if _budget_trace is not None:
+            _budget_trace["actual_kept_ids"] = list(kept_ids)
+            _budget_trace["actual_kept_tokens"] = _rec["sources_tok"]
+            _rec["chunk_budget"] = _budget_trace
+        if _extractive_trace is not None:
+            _rec["extractive_context"] = _extractive_trace
 
     text_units_section_list.insert(0, ["id", "content"])
     text_units_context = list_of_list_to_csv(text_units_section_list)

@@ -1,0 +1,5 @@
+# Install alongside requirements.txt and requirements-gemini.txt.
+# Local RECOMP inference only; no hosted encoder API.
+torch>=2.6,<3
+transformers>=4.40,<6
+huggingface-hub>=0.23,<2

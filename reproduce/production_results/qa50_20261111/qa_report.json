@@ -1,0 +1,105 @@
+{
+  "answers": 100,
+  "cohorts": {
+    "extra10": {
+      "n": 10,
+      "paired": {
+        "accurate": {
+          "became_label": 2,
+          "ceased_label": 1,
+          "net_label": 1,
+          "p_exact": 1.0,
+          "p_holm_two_endpoints": 1.0
+        },
+        "error": {
+          "became_label": 1,
+          "ceased_label": 1,
+          "net_label": 0,
+          "p_exact": 1.0,
+          "p_holm_two_endpoints": 1.0
+        }
+      }
+    },
+    "offline40_seen": {
+      "n": 40,
+      "paired": {
+        "accurate": {
+          "became_label": 6,
+          "ceased_label": 2,
+          "net_label": 4,
+          "p_exact": 0.2890625,
+          "p_holm_two_endpoints": 0.578125
+        },
+        "error": {
+          "became_label": 2,
+          "ceased_label": 4,
+          "net_label": -2,
+          "p_exact": 0.6875,
+          "p_holm_two_endpoints": 0.6875
+        }
+      }
+    }
+  },
+  "configuration_gain_confirmed": false,
+  "error": null,
+  "generation_rounds": 1,
+  "generator": "deepseek-flash",
+  "global_deepseek_ledger": {
+    "cost_peak_estimate_usd": 0.5422098719999989,
+    "input_tokens": 1559816,
+    "output_tokens": 86317,
+    "requests": 665
+  },
+  "human_evidence_span_metric_not_measured": true,
+  "judge": "deepseek-flash",
+  "judge_passes": 1,
+  "judgments": 100,
+  "matched_questions": 50,
+  "new_api_receipts": 201,
+  "original_index_baseline_unchanged": true,
+  "own_conservative_peak_cost_usd": 0.165506304,
+  "paired": {
+    "accurate": {
+      "became_label": 8,
+      "ceased_label": 3,
+      "net_label": 5,
+      "p_exact": 0.2265625,
+      "p_holm_two_endpoints": 0.453125
+    },
+    "error": {
+      "became_label": 3,
+      "ceased_label": 5,
+      "net_label": -2,
+      "p_exact": 0.7265625,
+      "p_holm_two_endpoints": 0.7265625
+    }
+  },
+  "planned_questions": 50,
+  "provider": "deepseek",
+  "rates": {
+    "BASELINE": {
+      "ACC": 76.0,
+      "ERR": 14.0,
+      "counts": {
+        "accurate": 38,
+        "error": 7,
+        "neither": 5
+      },
+      "n": 50,
+      "neither": 10.0
+    },
+    "RECOMP_NEIGHBORS": {
+      "ACC": 86.0,
+      "ERR": 10.0,
+      "counts": {
+        "accurate": 43,
+        "error": 5,
+        "neither": 2
+      },
+      "n": 50,
+      "neither": 4.0
+    }
+  },
+  "scope": "Exploratory paired QA50, one generation/judge pass; no established final benchmark gain",
+  "status": "COMPLETE"
+}

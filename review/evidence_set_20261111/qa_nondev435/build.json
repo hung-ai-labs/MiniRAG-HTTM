@@ -1,0 +1,18 @@
+{
+  "api_calls": 0,
+  "beta_tau_from_dev": [
+    2.0,
+    0.0
+  ],
+  "builder_sha256": "f06219f62f7553c9e60c230d062f6edd96bc074a3eb46fc20322a9c368fb6e7a",
+  "contexts_sha256": "b5f0b01c39c97763b996f41fce5ce9b7038531e004f98544f13e41a079d068fb",
+  "labelled": 385,
+  "model_sha256": "96893f946c3f1bea8288f3ac2b092f278a70a4d938d030924fdc03f89da79dc9",
+  "offline_full_evidence": {
+    "BASELINE": 196,
+    "CE0F_RERANK": 238,
+    "CE0F_SET": 241
+  },
+  "pool": "native@45",
+  "questions": 435
+}

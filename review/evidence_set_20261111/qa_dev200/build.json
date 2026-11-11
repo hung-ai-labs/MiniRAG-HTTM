@@ -1,0 +1,22 @@
+{
+  "api_calls": 0,
+  "arms": [
+    "BASELINE",
+    "CE0F_SET",
+    "CE0F_RERANK"
+  ],
+  "builder_sha256": "7e1f89ad7aa86a474b648020bcf9fae75d1a6ecc969f8fc0f780d3460159a79b",
+  "contexts_sha256": "b840fef95f2f0155f122874eb0b95817a4e50bb6cbcc5796bb7c368e772839dd",
+  "full_evidence": {
+    "BASELINE": 88,
+    "CE0F_RERANK": 110,
+    "CE0F_SET": 109
+  },
+  "identical_to_baseline": {
+    "BASELINE": 200,
+    "CE0F_RERANK": 2,
+    "CE0F_SET": 0
+  },
+  "questions": 200,
+  "selections_sha256": "c3d24fb98cec4d693727932459e9414494e21b67cdc119f144e55aa6bdcf0988"
+}

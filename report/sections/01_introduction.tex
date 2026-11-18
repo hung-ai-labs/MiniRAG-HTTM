@@ -1,0 +1,26 @@
+\section{Giới thiệu}\label{sec:intro}
+
+Sinh tăng cường truy xuất (RAG) cho phép mô hình ngôn ngữ trả lời dựa trên tài liệu bên ngoài thay vì chỉ dựa vào tham số~\cite{lewis2020rag}.
+Khi triển khai trên thiết bị hoặc với ngân sách hạn chế, người ta muốn dùng mô hình ngôn ngữ nhỏ (SLM) vài tỉ tham số.
+Mô hình nhỏ hiểu câu hỏi và tổng hợp ngữ cảnh kém hơn, nên chất lượng truy xuất càng quan trọng.
+MiniRAG~\cite{fan2025minirag} đề xuất một hệ RAG dựa trên đồ thị thiết kế riêng cho SLM: thay vì dựa vào khả năng ngữ nghĩa của mô hình, nó xếp hạng đoạn văn bằng đường đi trên một đồ thị thực thể.
+
+Chúng tôi tái lập MiniRAG với Qwen2.5-3B trên bộ dữ liệu LiHua-World của bài gốc và thấy bước xếp hạng đoạn bằng đồ thị là nơi mất nhiều bằng chứng nhất.
+Trên 180 câu có nhãn bằng chứng, \retVecTopThirty\% đoạn chứa đáp án nằm trong 30 đoạn gần nhất theo vectơ, nhưng chỉ \retChunkBase\% đoạn đáp án vào được ngữ cảnh của MiniRAG.
+Lý do: đoạn không nằm trên đường đi đồ thị nào thì không bao giờ được xét, dù truy xuất vectơ đã tìm ra nó.
+
+Từ quan sát này, chúng tôi đặt câu hỏi: \emph{với mô hình nhỏ, xếp hạng đoạn bằng đồ thị có đóng góp gì so với các tín hiệu truy xuất đơn giản?}
+Chúng tôi giữ nguyên mọi thành phần khác của MiniRAG và chỉ thay hàm xếp hạng đoạn bằng năm tổ hợp của ba tín hiệu (đồ thị, vectơ, BM25) trộn bằng RRF.
+Ba giả thuyết được đăng ký trước, kiểm định trên \nHeld{} câu chưa dùng để chọn cấu hình, mỗi biến thể ba lượt sinh.
+
+Khi đã có vectơ và BM25, bỏ đồ thị khỏi xếp hạng tăng accuracy thêm \diffHC{} điểm [KTC 95\%: \ciLoHC; \ciHiHC], đạt mọi tiêu chí đã đăng ký, với điều kiện đã khai báo một lệch đăng ký ở cổng thời gian.
+So với MiniRAG tái lập, cấu hình RRF(vectơ, BM25) cao hơn \diffXC{} điểm [\ciLoXC; \ciHiXC] (phân tích khám phá, MiniRAG một lượt sinh).
+Đổi lại, nhóm câu không có đáp án có xu hướng giảm \diffXCNull{} điểm, chưa xác nhận trên \nHeldNull{} câu.
+
+Các đóng góp của bài:
+\begin{itemize}
+  \item \textbf{Chỉ ra} nút thắt truy xuất của MiniRAG với SLM: bước xếp hạng đoạn theo đường đi loại phần lớn bằng chứng mà truy xuất vectơ đã tìm ra (\cref{sec:diagnosis}).
+  \item \textbf{Đánh giá có kiểm soát và đăng ký trước} năm hàm xếp hạng đoạn khác nhau đúng một thành phần. Kết quả: thêm xếp hạng bằng đồ thị vào RRF(vectơ, BM25) làm giảm độ chính xác, và không có cấu hình nào trên bộ dữ liệu này mà đồ thị làm tăng độ chính xác (\cref{sec:main-results,sec:ablation}).
+  \item \textbf{Phân tích đánh đổi} ở nhóm câu không có đáp án, loại trừ nhãn sai và rubric giám khảo khỏi các nguyên nhân chính (\cref{sec:null}).
+  \item \textbf{Công bố} hai sửa lỗi cần thiết để MiniRAG chạy được với SLM, kèm mã, log và script sinh mọi con số trong bài (\cref{sec:fixes}, \cref{app:repro}).
+\end{itemize}

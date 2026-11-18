@@ -1,0 +1,35 @@
+\section{Hạn chế và mối đe doạ tính hợp lệ}\label{sec:limitations}
+
+\paragraph{Tính hợp lệ nội tại.}
+\begin{itemize}
+  \item \textbf{Giám khảo LLM.} Mọi số accuracy đến từ một giám khảo (\texttt{gemini-flash-lite-latest}), một lượt chấm cho mỗi lượt sinh.
+  Rubric gốc khớp với một người chấm ở \humanAgreeOrig{} câu Null, và \judgeLenient{} câu được chấm đúng khi rà tay vẫn chứa chi tiết mâu thuẫn với ngữ cảnh.
+  Vì vậy accuracy có thể cao hơn độ trung thành thực tế. Nếu độ dễ dãi này khác nhau giữa các cấu hình, nó có thể làm lệch các hiệu số theo hướng chưa biết.
+  Kiểm tra với người mới làm trên nhóm Null, và chỉ một người chấm.
+  \item \textbf{Mốc MiniRAG chỉ có một lượt sinh.} Các phép so với MiniRAG (X1--X3) không có trong đăng ký trước, và phía MiniRAG không có lượt lặp.
+  Với hiệu số lớn gấp \ratioXCT{} lần ngưỡng nhiễu sinh $T$, chúng tôi cho rằng hướng của kết luận đứng vững. Độ lớn chính xác thì cần thêm lượt sinh để xác nhận.
+  \item \textbf{Lệch đăng ký.} RRF(vectơ, BM25) vào vòng xác nhận sau khi cách đo cổng thời gian được sửa, và việc sửa diễn ra sau khi nó trượt cổng (\cref{sec:main-results}).
+  H2 trượt cổng an toàn của nhóm Null và được giữ ở mức biên.
+  \item \textbf{Tập dev được nhìn nhiều lần.} Toàn bộ chẩn đoán, sàng lọc và chọn biến thể làm trên dev; \cref{tab:retrieval} là dự báo trên tập đó.
+  Tập ngoài dev chỉ dùng cho vòng xác nhận, nhưng ba lượt RRF(đồ thị, vectơ) và một lượt vectơ thuần trên tập này đã được xem trước khi đăng ký BM25.
+  \item \textbf{Nhiều cấu hình đã thử.} Chúng tôi đã thử 23 cấu hình hoặc hướng (\cref{app:tried}). Hiệu chỉnh Holm chỉ áp trong từng họ phép so, không áp trên toàn dự án.
+\end{itemize}
+
+\paragraph{Tính hợp lệ ngoại tại.}
+\begin{itemize}
+  \item \textbf{Một bộ dữ liệu, một ngôn ngữ.} Mọi kết luận chỉ đúng cho LiHua-World, một kho hội thoại tiếng Anh tổng hợp do chính nhóm tác giả MiniRAG xây dựng.
+  Câu hỏi thường chứa tên riêng xuất hiện nguyên văn, điều kiện rất thuận lợi cho BM25.
+  Chúng tôi đã chuẩn bị 2WikiMultiHopQA và MultiHop-RAG nhưng chưa chạy \todo{chạy hoặc giữ nguyên câu này}.
+  \item \textbf{Một mô hình sinh, một đồ thị.} Kết quả xác nhận chỉ dùng Qwen2.5-3B, với đồ thị do chính mô hình này dựng (\graphNodes{} nút, \graphIsolated\% nút cô lập).
+  Một đồ thị dày hơn, ví dụ do mô hình lớn hơn dựng, có thể cho đường đi tốt hơn.
+  \item \textbf{Nhóm nhỏ.} Multi (\nHeldMulti{} câu) và Null (\nHeldNull{} câu) quá nhỏ để kết luận riêng.
+\end{itemize}
+
+\paragraph{Tái lập.}
+\begin{itemize}
+  \item \textbf{Khác bài gốc.} Chúng tôi dùng giám khảo khác (Gemini thay cho GPT), đồ thị dựng lại sau khi sửa lỗi lập chỉ mục $O(N^2)$, ngân sách ngữ cảnh 4.000 token và bản sửa khớp loại đáp án.
+  Vì vậy số của bài gốc chỉ là tham chiếu.
+  \item \textbf{Đồ thị thưa hơn bản gốc.} Mã gốc vô tình trích xuất lặp nhiều lần nên gom thêm thực thể; bản sửa của chúng tôi bỏ việc lặp này.
+  Điều này có thể làm MiniRAG tái lập yếu hơn bản gốc chạy đúng như công bố. Chúng tôi chưa đo được ảnh hưởng.
+  \item \textbf{Nguồn ngẫu nhiên.} Lấy mẫu khi sinh (đã lặp ba lượt), giám khảo (một lượt chấm cho mỗi lượt sinh), và lập chỉ mục bằng LLM (một lần dựng, không lặp).
+\end{itemize}

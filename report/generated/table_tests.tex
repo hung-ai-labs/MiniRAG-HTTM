@@ -1,0 +1,17 @@
+% SINH TỰ ĐỘNG — make_numbers.py
+\begin{tabular}{llrcccl}
+\toprule
+& Phép so & $\Delta$acc & KTC 95\% & $p_{\text{Holm}}$ & Lên / xuống từng cặp lượt & Null net \\
+\midrule
+\multicolumn{7}{l}{\textit{Đăng ký trước (Holm trên 3 phép so)}} \\
+H1 & RRF(đồ thị, vectơ, BM25) vs RRF(đồ thị, vectơ) & +6{,}51 & [+3{,}45; +9{,}58] & \ensuremath{8{,}0\cdot 10^{-5}} & 58/38 · 55/25 · 59/24 & \textminus{}0{,}33 \\
+H2 & RRF(vectơ, BM25) vs vectơ thuần & +8{,}12 & [+4{,}75; +11{,}49] & \ensuremath{6{,}0\cdot 10^{-5}} & 65/32 · 61/36 · 69/21 & \textminus{}3{,}33 \\
+H3 & RRF(vectơ, BM25) vs RRF(đồ thị, vectơ, BM25) & +6{,}59 & [+3{,}22; +10{,}11] & \ensuremath{1{,}7\cdot 10^{-4}} & 63/38 · 60/34 · 64/29 & \textminus{}2{,}00 \\
+\midrule
+\multicolumn{7}{l}{\textit{Khám phá, không đăng ký trước (Holm trên 4 phép so); MiniRAG chỉ có 1 lượt sinh}} \\
+X1 & RRF(đồ thị, vectơ) vs MiniRAG & +11{,}42 & [+7{,}13; +15{,}71] & \ensuremath{\le 4\cdot 10^{-5}} & 86/26 & \textminus{}3{,}00 \\
+X2 & Vectơ thuần vs MiniRAG & +16{,}40 & [+11{,}80; +21{,}07] & \ensuremath{\le 4\cdot 10^{-5}} & 108/36 & \textminus{}1{,}00 \\
+X3 & RRF(vectơ, BM25) vs MiniRAG & +24{,}52 & [+19{,}69; +29{,}35] & \ensuremath{\le 4\cdot 10^{-5}} & 131/26 & \textminus{}5{,}00 \\
+X4 & Vectơ thuần vs RRF(đồ thị, vectơ) & +4{,}98 & [+1{,}84; +8{,}28] & 0{,}003 & 53/41 · 60/29 · 55/33 & +1{,}00 \\
+\bottomrule
+\end{tabular}

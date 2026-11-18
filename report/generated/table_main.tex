@@ -1,0 +1,15 @@
+% SINH TỰ ĐỘNG — make_numbers.py
+\begin{tabular}{lcccccccc}
+\toprule
+Cách xếp hạng đoạn & Lượt sinh & acc $\uparrow$ & err $\downarrow$ & neither & $\frac{\text{acc}}{\text{acc+err}}$ & Single & Multi & Null \\
+ & & & & & & (347) & (43) & (45) \\
+\midrule
+MiniRAG (tái lập) & 1 & 49{,}43 & 28{,}51 & 22{,}07 & 63{,}42 & 49{,}86 & 23{,}26 & 71{,}11 \\
+RRF(đồ thị, vectơ) & 3 & 60{,}92 $\pm$ 2{,}18 & 24{,}37 & 14{,}71 & 71{,}43 & 64{,}27 & 31{,}78 & 62{,}96 \\
+Vectơ thuần & 3 & 65{,}82 $\pm$ 0{,}48 & 24{,}06 & 10{,}11 & 73{,}23 & 69{,}93 & 33{,}33 & 65{,}19 \\
+RRF(đồ thị, vectơ, BM25) & 3 & 67{,}36 $\pm$ 1{,}22 & 22{,}76 & 9{,}89 & 74{,}74 & 71{,}57 & 38{,}76 & 62{,}22 \\
+RRF(vectơ, BM25) & 3 & 73{,}95 $\pm$ 2{,}21 & 19{,}54 & 6{,}51 & 79{,}10 & 80{,}79 & 35{,}66 & 57{,}78 \\
+\midrule
+\textit{Bài gốc, Qwen2.5-3B (tham chiếu)} & -- & \textit{48{,}75} & \textit{26{,}02} & \textit{25{,}23} & \textit{65{,}20} & & & \\
+\bottomrule
+\end{tabular}

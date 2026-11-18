@@ -1,0 +1,9 @@
+\section{Kết luận}\label{sec:conclusion}
+Chúng tôi tái lập MiniRAG với một mô hình 3B và đo riêng đóng góp của bước xếp hạng đoạn bằng đồ thị.
+Trên LiHua-World, bước này là nơi bằng chứng bị bỏ rơi nhiều nhất. Thay nó bằng trộn RRF giữa vectơ và BM25, giữ nguyên mọi thành phần khác, tăng accuracy \diffXC{} điểm trong phân tích khám phá; còn thêm đồ thị trở lại vào phép trộn thì làm giảm \diffHC{} điểm theo phép thử đã đăng ký trước.
+Cái giá là nhóm câu không có đáp án, nơi mọi cấu hình đưa thêm bằng chứng vào ngữ cảnh đều có xu hướng kém đi.
+Điều người đọc nên rút ra là: với đồ thị do một mô hình nhỏ tự dựng, cần so một hệ GraphRAG với đối chứng truy xuất lai đơn giản trước khi gán công cho cấu trúc đồ thị.
+Ba hướng tiếp theo gắn trực tiếp với các hạn chế đã nêu.
+Thứ nhất, lặp lượt sinh cho MiniRAG và kiểm định lại trên 2WikiMultiHopQA và MultiHop-RAG, nơi câu hỏi đa bước nhiều hơn.
+Thứ hai, chọn nội dung trong ngân sách (cắt đoạn dài theo lượt lời) thay cho quy tắc dừng ở đoạn đầu tiên làm tràn ngân sách.
+Thứ ba, xử lý nhóm câu không có đáp án bằng một tiêu chí hiệu chuẩn với người chấm, thay vì các cổng từ chối đã thất bại.

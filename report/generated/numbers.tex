@@ -1,0 +1,242 @@
+% SINH TỰ ĐỘNG bởi report/scripts/make_numbers.py — không sửa tay.
+\newcommand{\accBase}{49{,}43}
+\newcommand{\errBase}{28{,}51}
+\newcommand{\neiBase}{22{,}07}
+\newcommand{\precBase}{63{,}42}
+\newcommand{\sdBase}{--}
+\newcommand{\accBaseSingle}{49{,}86}
+\newcommand{\accBaseMulti}{23{,}26}
+\newcommand{\accBaseNull}{71{,}11}
+\newcommand{\accGV}{60{,}92}
+\newcommand{\errGV}{24{,}37}
+\newcommand{\neiGV}{14{,}71}
+\newcommand{\precGV}{71{,}43}
+\newcommand{\sdGV}{2{,}18}
+\newcommand{\accGVSingle}{64{,}27}
+\newcommand{\accGVMulti}{31{,}78}
+\newcommand{\accGVNull}{62{,}96}
+\newcommand{\accV}{65{,}82}
+\newcommand{\errV}{24{,}06}
+\newcommand{\neiV}{10{,}11}
+\newcommand{\precV}{73{,}23}
+\newcommand{\sdV}{0{,}48}
+\newcommand{\accVSingle}{69{,}93}
+\newcommand{\accVMulti}{33{,}33}
+\newcommand{\accVNull}{65{,}19}
+\newcommand{\accGVK}{67{,}36}
+\newcommand{\errGVK}{22{,}76}
+\newcommand{\neiGVK}{9{,}89}
+\newcommand{\precGVK}{74{,}74}
+\newcommand{\sdGVK}{1{,}22}
+\newcommand{\accGVKSingle}{71{,}57}
+\newcommand{\accGVKMulti}{38{,}76}
+\newcommand{\accGVKNull}{62{,}22}
+\newcommand{\accVK}{73{,}95}
+\newcommand{\errVK}{19{,}54}
+\newcommand{\neiVK}{6{,}51}
+\newcommand{\precVK}{79{,}10}
+\newcommand{\sdVK}{2{,}21}
+\newcommand{\accVKSingle}{80{,}79}
+\newcommand{\accVKMulti}{35{,}66}
+\newcommand{\accVKNull}{57{,}78}
+\newcommand{\nHeld}{435}
+\newcommand{\nHeldSingle}{347}
+\newcommand{\nHeldMulti}{43}
+\newcommand{\nHeldNull}{45}
+\newcommand{\diffHA}{+6{,}51}
+\newcommand{\ciLoHA}{+3{,}45}
+\newcommand{\ciHiHA}{+9{,}58}
+\newcommand{\pHolmHA}{\ensuremath{8{,}0\cdot 10^{-5}}}
+\newcommand{\pairsHA}{58/38 · 55/25 · 59/24}
+\newcommand{\nullNetHA}{\textminus{}0{,}33}
+\newcommand{\diffHASingle}{+7{,}30}
+\newcommand{\ciLoHASingle}{+3{,}94}
+\newcommand{\ciHiHASingle}{+10{,}67}
+\newcommand{\pHASingle}{\ensuremath{4{,}0\cdot 10^{-5}}}
+\newcommand{\diffHAMulti}{+7{,}75}
+\newcommand{\ciLoHAMulti}{\textminus{}2{,}33}
+\newcommand{\ciHiHAMulti}{+17{,}83}
+\newcommand{\pHAMulti}{0{,}191}
+\newcommand{\diffHANull}{\textminus{}0{,}74}
+\newcommand{\ciLoHANull}{\textminus{}10{,}37}
+\newcommand{\ciHiHANull}{+8{,}89}
+\newcommand{\pHANull}{1{,}000}
+\newcommand{\dErrHA}{\textminus{}1{,}61}
+\newcommand{\diffHB}{+8{,}12}
+\newcommand{\ciLoHB}{+4{,}75}
+\newcommand{\ciHiHB}{+11{,}49}
+\newcommand{\pHolmHB}{\ensuremath{6{,}0\cdot 10^{-5}}}
+\newcommand{\pairsHB}{65/32 · 61/36 · 69/21}
+\newcommand{\nullNetHB}{\textminus{}3{,}33}
+\newcommand{\diffHBSingle}{+10{,}85}
+\newcommand{\ciLoHBSingle}{+7{,}30}
+\newcommand{\ciHiHBSingle}{+14{,}51}
+\newcommand{\pHBSingle}{\ensuremath{\le 10^{-5}}}
+\newcommand{\diffHBMulti}{+2{,}33}
+\newcommand{\ciLoHBMulti}{\textminus{}9{,}30}
+\newcommand{\ciHiHBMulti}{+13{,}95}
+\newcommand{\pHBMulti}{0{,}798}
+\newcommand{\diffHBNull}{\textminus{}7{,}41}
+\newcommand{\ciLoHBNull}{\textminus{}18{,}52}
+\newcommand{\ciHiHBNull}{+2{,}96}
+\newcommand{\pHBNull}{0{,}232}
+\newcommand{\dErrHB}{\textminus{}4{,}52}
+\newcommand{\diffHC}{+6{,}59}
+\newcommand{\ciLoHC}{+3{,}22}
+\newcommand{\ciHiHC}{+10{,}11}
+\newcommand{\pHolmHC}{\ensuremath{1{,}7\cdot 10^{-4}}}
+\newcommand{\pairsHC}{63/38 · 60/34 · 64/29}
+\newcommand{\nullNetHC}{\textminus{}2{,}00}
+\newcommand{\diffHCSingle}{+9{,}22}
+\newcommand{\ciLoHCSingle}{+5{,}28}
+\newcommand{\ciHiHCSingle}{+13{,}16}
+\newcommand{\pHCSingle}{\ensuremath{2{,}0\cdot 10^{-5}}}
+\newcommand{\diffHCMulti}{\textminus{}3{,}10}
+\newcommand{\ciLoHCMulti}{\textminus{}13{,}18}
+\newcommand{\ciHiHCMulti}{+7{,}75}
+\newcommand{\pHCMulti}{0{,}665}
+\newcommand{\diffHCNull}{\textminus{}4{,}44}
+\newcommand{\ciLoHCNull}{\textminus{}14{,}07}
+\newcommand{\ciHiHCNull}{+5{,}19}
+\newcommand{\pHCNull}{0{,}456}
+\newcommand{\dErrHC}{\textminus{}3{,}22}
+\newcommand{\diffXA}{+11{,}42}
+\newcommand{\ciLoXA}{+7{,}13}
+\newcommand{\ciHiXA}{+15{,}71}
+\newcommand{\pHolmXA}{\ensuremath{\le 4\cdot 10^{-5}}}
+\newcommand{\pairsXA}{86/26}
+\newcommand{\nullNetXA}{\textminus{}3{,}00}
+\newcommand{\diffXASingle}{+14{,}41}
+\newcommand{\ciLoXASingle}{+9{,}80}
+\newcommand{\ciHiXASingle}{+19{,}12}
+\newcommand{\pXASingle}{\ensuremath{\le 10^{-5}}}
+\newcommand{\diffXAMulti}{+7{,}75}
+\newcommand{\ciLoXAMulti}{\textminus{}6{,}20}
+\newcommand{\ciHiXAMulti}{+22{,}48}
+\newcommand{\pXAMulti}{0{,}353}
+\newcommand{\diffXANull}{\textminus{}8{,}15}
+\newcommand{\ciLoXANull}{\textminus{}20{,}00}
+\newcommand{\ciHiXANull}{+3{,}70}
+\newcommand{\pXANull}{0{,}241}
+\newcommand{\dErrXA}{\textminus{}4{,}14}
+\newcommand{\diffXB}{+16{,}40}
+\newcommand{\ciLoXB}{+11{,}80}
+\newcommand{\ciHiXB}{+21{,}07}
+\newcommand{\pHolmXB}{\ensuremath{\le 4\cdot 10^{-5}}}
+\newcommand{\pairsXB}{108/36}
+\newcommand{\nullNetXB}{\textminus{}1{,}00}
+\newcommand{\diffXBSingle}{+20{,}08}
+\newcommand{\ciLoXBSingle}{+14{,}79}
+\newcommand{\ciHiXBSingle}{+25{,}55}
+\newcommand{\pXBSingle}{\ensuremath{\le 10^{-5}}}
+\newcommand{\diffXBMulti}{+10{,}08}
+\newcommand{\ciLoXBMulti}{\textminus{}2{,}33}
+\newcommand{\ciHiXBMulti}{+22{,}48}
+\newcommand{\pXBMulti}{0{,}164}
+\newcommand{\diffXBNull}{\textminus{}5{,}93}
+\newcommand{\ciLoXBNull}{\textminus{}18{,}52}
+\newcommand{\ciHiXBNull}{+6{,}67}
+\newcommand{\pXBNull}{0{,}433}
+\newcommand{\dErrXB}{\textminus{}4{,}44}
+\newcommand{\diffXC}{+24{,}52}
+\newcommand{\ciLoXC}{+19{,}69}
+\newcommand{\ciHiXC}{+29{,}35}
+\newcommand{\pHolmXC}{\ensuremath{\le 4\cdot 10^{-5}}}
+\newcommand{\pairsXC}{131/26}
+\newcommand{\nullNetXC}{\textminus{}5{,}00}
+\newcommand{\diffXCSingle}{+30{,}93}
+\newcommand{\ciLoXCSingle}{+25{,}46}
+\newcommand{\ciHiXCSingle}{+36{,}31}
+\newcommand{\pXCSingle}{\ensuremath{\le 10^{-5}}}
+\newcommand{\diffXCMulti}{+12{,}40}
+\newcommand{\ciLoXCMulti}{0{,}00}
+\newcommand{\ciHiXCMulti}{+25{,}58}
+\newcommand{\pXCMulti}{0{,}089}
+\newcommand{\diffXCNull}{\textminus{}13{,}33}
+\newcommand{\ciLoXCNull}{\textminus{}25{,}93}
+\newcommand{\ciHiXCNull}{\textminus{}0{,}74}
+\newcommand{\pXCNull}{0{,}054}
+\newcommand{\dErrXC}{\textminus{}8{,}97}
+\newcommand{\diffXD}{+4{,}98}
+\newcommand{\ciLoXD}{+1{,}84}
+\newcommand{\ciHiXD}{+8{,}28}
+\newcommand{\pHolmXD}{0{,}003}
+\newcommand{\pairsXD}{53/41 · 60/29 · 55/33}
+\newcommand{\nullNetXD}{+1{,}00}
+\newcommand{\diffXDSingle}{+5{,}67}
+\newcommand{\ciLoXDSingle}{+2{,}02}
+\newcommand{\ciHiXDSingle}{+9{,}32}
+\newcommand{\pXDSingle}{0{,}003}
+\newcommand{\diffXDMulti}{+2{,}33}
+\newcommand{\ciLoXDMulti}{\textminus{}9{,}30}
+\newcommand{\ciHiXDMulti}{+13{,}18}
+\newcommand{\pXDMulti}{0{,}791}
+\newcommand{\diffXDNull}{+2{,}22}
+\newcommand{\ciLoXDNull}{\textminus{}6{,}67}
+\newcommand{\ciHiXDNull}{+11{,}11}
+\newcommand{\pXDNull}{0{,}749}
+\newcommand{\dErrXD}{\textminus{}0{,}31}
+\newcommand{\classHA}{ROBUST POSITIVE}
+\newcommand{\classHB}{BORDERLINE}
+\newcommand{\classHC}{ROBUST POSITIVE}
+\newcommand{\tokVK}{3866}
+\newcommand{\sdJudgeBase}{0{,}23}
+\newcommand{\sdGenGV}{2{,}18}
+\newcommand{\Tthr}{4{,}18}
+\newcommand{\retChunkBase}{47{,}3}
+\newcommand{\retFullBase}{43{,}3}
+\newcommand{\retChunkV}{71{,}5}
+\newcommand{\retFullV}{67{,}8}
+\newcommand{\retChunkGV}{66{,}7}
+\newcommand{\retFullGV}{62{,}8}
+\newcommand{\retChunkGVK}{75{,}8}
+\newcommand{\retFullGVK}{72{,}8}
+\newcommand{\retChunkVK}{86{,}0}
+\newcommand{\retFullVK}{83{,}9}
+\newcommand{\retVecTopThirty}{87{,}0}
+\newcommand{\retGraphTopThirty}{61{,}8}
+\newcommand{\retCandVK}{98{,}1}
+\newcommand{\cutFailVK}{25}
+\newcommand{\failVK}{29}
+\newcommand{\retFullVKMulti}{71{,}4}
+\newcommand{\unionGV}{93{,}7}
+\newcommand{\nullOrigBase}{71{,}1 / 15{,}6 / 13{,}3}
+\newcommand{\nullClarBase}{86{,}7 / 13{,}3 / 0{,}0}
+\newcommand{\nullOrigGV}{63{,}0 / 24{,}4 / 12{,}6}
+\newcommand{\nullClarGV}{74{,}8 / 25{,}2 / 0{,}0}
+\newcommand{\nullOrigV}{65{,}2 / 27{,}4 / 7{,}4}
+\newcommand{\nullClarV}{74{,}1 / 25{,}9 / 0{,}0}
+\newcommand{\nullOrigGVK}{62{,}2 / 25{,}2 / 12{,}6}
+\newcommand{\nullClarGVK}{73{,}3 / 26{,}7 / 0{,}0}
+\newcommand{\nullOrigVK}{57{,}8 / 23{,}0 / 19{,}3}
+\newcommand{\nullClarVK}{74{,}1 / 25{,}9 / 0{,}0}
+\newcommand{\humanAgreeClar}{38/40}
+\newcommand{\humanAgreeOrig}{15/40}
+\newcommand{\accPaper}{48{,}75}
+\newcommand{\errPaper}{26{,}02}
+\newcommand{\neiPaper}{25{,}23}
+\newcommand{\precPaper}{65{,}20}
+\newcommand{\callsBefore}{68.000}
+\newcommand{\callsAfter}{653}
+\newcommand{\ctxNoCapMed}{22.839}
+\newcommand{\ctxNoCapMax}{33.412}
+\newcommand{\ctxCapMed}{3.743}
+\newcommand{\atypeNodesFixed}{49}
+\newcommand{\atypeQwen}{44 lên / 40 xuống, p = 0{,}744}
+\newcommand{\atypeGemini}{24 lên / 29 xuống, p = 0{,}583}
+\newcommand{\graphNodes}{1.556}
+\newcommand{\graphEdges}{1.509}
+\newcommand{\graphIsolated}{46}
+\newcommand{\bmMs}{1}
+\newcommand{\judgeLenient}{13/40}
+\newcommand{\timeGateFail}{+61{,}7}
+\newcommand{\vecVsGVpre}{80 lên / 61 xuống, \ensuremath{p = 0{,}13}}
+\newcommand{\budgetTwoK}{80 lên / 75 xuống, \ensuremath{p = 0{,}748}}
+\newcommand{\ptsPerNull}{2{,}2}
+\newcommand{\ratioXCT}{5{,}9}
+\newcommand{\longAnsCut}{16}
+\newcommand{\refusalAcc}{175/175}
+\newcommand{\nullPremise}{19/32}
+\newcommand{\premiseAUC}{0{,}85}
+\newcommand{\humanNeither}{22/24}
+\newcommand{\flipRate}{21}

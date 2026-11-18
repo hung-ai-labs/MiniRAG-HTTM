@@ -1,0 +1,242 @@
+macro,giá trị,nguồn,commit nguồn,ghi chú
+accBase,"49{,}43",logs/qwen637_fix_judged.csv,5314e1c,"1 lượt sinh × chấm run 1, 435 câu ngoài dev"
+errBase,"28{,}51",logs/qwen637_fix_judged.csv,5314e1c,
+neiBase,"22{,}07",logs/qwen637_fix_judged.csv,5314e1c,
+precBase,"63{,}42",logs/qwen637_fix_judged.csv,5314e1c,acc/(acc+err)
+sdBase,--,logs/qwen637_fix_judged.csv,5314e1c,sd giữa các lượt sinh
+accBaseSingle,"49{,}86",logs/qwen637_fix_judged.csv,5314e1c,
+accBaseMulti,"23{,}26",logs/qwen637_fix_judged.csv,5314e1c,
+accBaseNull,"71{,}11",logs/qwen637_fix_judged.csv,5314e1c,
+accGV,"60{,}92",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,"3 lượt sinh × chấm run 1, 435 câu ngoài dev"
+errGV,"24{,}37",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,
+neiGV,"14{,}71",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,
+precGV,"71{,}43",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,acc/(acc+err)
+sdGV,"2{,}18",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,sd giữa các lượt sinh
+accGVSingle,"64{,}27",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,
+accGVMulti,"31{,}78",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,
+accGVNull,"62{,}96",logs/qwen637_v3_judged.csv; logs/qwen637_v3_r2_judged.csv; logs/qwen637_v3_r3_judged.csv,chưa commit,
+accV,"65{,}82",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,"3 lượt sinh × chấm run 1, 435 câu ngoài dev"
+errV,"24{,}06",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,
+neiV,"10{,}11",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,
+precV,"73{,}23",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,acc/(acc+err)
+sdV,"0{,}48",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,sd giữa các lượt sinh
+accVSingle,"69{,}93",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,
+accVMulti,"33{,}33",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,
+accVNull,"65{,}19",logs/qwen637_vec_judged.csv; logs/stage_d/vec_s202_judged.csv; logs/stage_d/vec_s303_judged.csv,chưa commit,
+accGVK,"67{,}36",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,"3 lượt sinh × chấm run 1, 435 câu ngoài dev"
+errGVK,"22{,}76",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,
+neiGVK,"9{,}89",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,
+precGVK,"74{,}74",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,acc/(acc+err)
+sdGVK,"1{,}22",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,sd giữa các lượt sinh
+accGVKSingle,"71{,}57",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,
+accGVKMulti,"38{,}76",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,
+accGVKNull,"62{,}22",logs/stage_d/b1_s101_judged.csv; logs/stage_d/b1_s202_judged.csv; logs/stage_d/b1_s303_judged.csv,chưa commit,
+accVK,"73{,}95",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,"3 lượt sinh × chấm run 1, 435 câu ngoài dev"
+errVK,"19{,}54",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,
+neiVK,"6{,}51",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,
+precVK,"79{,}10",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,acc/(acc+err)
+sdVK,"2{,}21",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,sd giữa các lượt sinh
+accVKSingle,"80{,}79",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,
+accVKMulti,"35{,}66",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,
+accVKNull,"57{,}78",logs/stage_d/b2_s101_judged.csv; logs/stage_d/b2_s202_judged.csv; logs/stage_d/b2_s303_judged.csv,chưa commit,
+nHeld,435,reproduce/stage_d/nondev435.csv,2426263,
+nHeldSingle,347,reproduce/stage_d/nondev435.csv,2426263,
+nHeldMulti,43,reproduce/stage_d/nondev435.csv,2426263,
+nHeldNull,45,reproduce/stage_d/nondev435.csv,2426263,
+diffHA,"+6{,}51",logs (nhánh B1 vs V3),e4387b2,"điểm %, trung bình theo câu"
+ciLoHA,"+3{,}45",logs (nhánh B1 vs V3),e4387b2,KTC 95% bootstrap
+ciHiHA,"+9{,}58",logs (nhánh B1 vs V3),e4387b2,
+pHolmHA,"\ensuremath{8{,}0\cdot 10^{-5}}",logs (nhánh B1 vs V3),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsHA,58/38 · 55/25 · 59/24,logs (nhánh B1 vs V3),e4387b2,lên/xuống từng cặp lượt
+nullNetHA,"\textminus{}0{,}33",logs (nhánh B1 vs V3),e4387b2,Null net trung bình (câu)
+diffHASingle,"+7{,}30",logs (nhánh B1 vs V3),e4387b2,n=347
+ciLoHASingle,"+3{,}94",logs (nhánh B1 vs V3),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHASingle,"+10{,}67",logs (nhánh B1 vs V3),e4387b2,
+pHASingle,"\ensuremath{4{,}0\cdot 10^{-5}}",logs (nhánh B1 vs V3),e4387b2,không hiệu chỉnh
+diffHAMulti,"+7{,}75",logs (nhánh B1 vs V3),e4387b2,n=43
+ciLoHAMulti,"\textminus{}2{,}33",logs (nhánh B1 vs V3),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHAMulti,"+17{,}83",logs (nhánh B1 vs V3),e4387b2,
+pHAMulti,"0{,}191",logs (nhánh B1 vs V3),e4387b2,không hiệu chỉnh
+diffHANull,"\textminus{}0{,}74",logs (nhánh B1 vs V3),e4387b2,n=45
+ciLoHANull,"\textminus{}10{,}37",logs (nhánh B1 vs V3),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHANull,"+8{,}89",logs (nhánh B1 vs V3),e4387b2,
+pHANull,"1{,}000",logs (nhánh B1 vs V3),e4387b2,không hiệu chỉnh
+dErrHA,"\textminus{}1{,}61",logs (nhánh B1 vs V3),e4387b2,
+diffHB,"+8{,}12",logs (nhánh B2 vs VEC),e4387b2,"điểm %, trung bình theo câu"
+ciLoHB,"+4{,}75",logs (nhánh B2 vs VEC),e4387b2,KTC 95% bootstrap
+ciHiHB,"+11{,}49",logs (nhánh B2 vs VEC),e4387b2,
+pHolmHB,"\ensuremath{6{,}0\cdot 10^{-5}}",logs (nhánh B2 vs VEC),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsHB,65/32 · 61/36 · 69/21,logs (nhánh B2 vs VEC),e4387b2,lên/xuống từng cặp lượt
+nullNetHB,"\textminus{}3{,}33",logs (nhánh B2 vs VEC),e4387b2,Null net trung bình (câu)
+diffHBSingle,"+10{,}85",logs (nhánh B2 vs VEC),e4387b2,n=347
+ciLoHBSingle,"+7{,}30",logs (nhánh B2 vs VEC),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHBSingle,"+14{,}51",logs (nhánh B2 vs VEC),e4387b2,
+pHBSingle,\ensuremath{\le 10^{-5}},logs (nhánh B2 vs VEC),e4387b2,không hiệu chỉnh
+diffHBMulti,"+2{,}33",logs (nhánh B2 vs VEC),e4387b2,n=43
+ciLoHBMulti,"\textminus{}9{,}30",logs (nhánh B2 vs VEC),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHBMulti,"+13{,}95",logs (nhánh B2 vs VEC),e4387b2,
+pHBMulti,"0{,}798",logs (nhánh B2 vs VEC),e4387b2,không hiệu chỉnh
+diffHBNull,"\textminus{}7{,}41",logs (nhánh B2 vs VEC),e4387b2,n=45
+ciLoHBNull,"\textminus{}18{,}52",logs (nhánh B2 vs VEC),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHBNull,"+2{,}96",logs (nhánh B2 vs VEC),e4387b2,
+pHBNull,"0{,}232",logs (nhánh B2 vs VEC),e4387b2,không hiệu chỉnh
+dErrHB,"\textminus{}4{,}52",logs (nhánh B2 vs VEC),e4387b2,
+diffHC,"+6{,}59",logs (nhánh B2 vs B1),e4387b2,"điểm %, trung bình theo câu"
+ciLoHC,"+3{,}22",logs (nhánh B2 vs B1),e4387b2,KTC 95% bootstrap
+ciHiHC,"+10{,}11",logs (nhánh B2 vs B1),e4387b2,
+pHolmHC,"\ensuremath{1{,}7\cdot 10^{-4}}",logs (nhánh B2 vs B1),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsHC,63/38 · 60/34 · 64/29,logs (nhánh B2 vs B1),e4387b2,lên/xuống từng cặp lượt
+nullNetHC,"\textminus{}2{,}00",logs (nhánh B2 vs B1),e4387b2,Null net trung bình (câu)
+diffHCSingle,"+9{,}22",logs (nhánh B2 vs B1),e4387b2,n=347
+ciLoHCSingle,"+5{,}28",logs (nhánh B2 vs B1),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHCSingle,"+13{,}16",logs (nhánh B2 vs B1),e4387b2,
+pHCSingle,"\ensuremath{2{,}0\cdot 10^{-5}}",logs (nhánh B2 vs B1),e4387b2,không hiệu chỉnh
+diffHCMulti,"\textminus{}3{,}10",logs (nhánh B2 vs B1),e4387b2,n=43
+ciLoHCMulti,"\textminus{}13{,}18",logs (nhánh B2 vs B1),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHCMulti,"+7{,}75",logs (nhánh B2 vs B1),e4387b2,
+pHCMulti,"0{,}665",logs (nhánh B2 vs B1),e4387b2,không hiệu chỉnh
+diffHCNull,"\textminus{}4{,}44",logs (nhánh B2 vs B1),e4387b2,n=45
+ciLoHCNull,"\textminus{}14{,}07",logs (nhánh B2 vs B1),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiHCNull,"+5{,}19",logs (nhánh B2 vs B1),e4387b2,
+pHCNull,"0{,}456",logs (nhánh B2 vs B1),e4387b2,không hiệu chỉnh
+dErrHC,"\textminus{}3{,}22",logs (nhánh B2 vs B1),e4387b2,
+diffXA,"+11{,}42",logs (nhánh V3 vs BASE),e4387b2,"điểm %, trung bình theo câu"
+ciLoXA,"+7{,}13",logs (nhánh V3 vs BASE),e4387b2,KTC 95% bootstrap
+ciHiXA,"+15{,}71",logs (nhánh V3 vs BASE),e4387b2,
+pHolmXA,\ensuremath{\le 4\cdot 10^{-5}},logs (nhánh V3 vs BASE),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsXA,86/26,logs (nhánh V3 vs BASE),e4387b2,lên/xuống từng cặp lượt
+nullNetXA,"\textminus{}3{,}00",logs (nhánh V3 vs BASE),e4387b2,Null net trung bình (câu)
+diffXASingle,"+14{,}41",logs (nhánh V3 vs BASE),e4387b2,n=347
+ciLoXASingle,"+9{,}80",logs (nhánh V3 vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXASingle,"+19{,}12",logs (nhánh V3 vs BASE),e4387b2,
+pXASingle,\ensuremath{\le 10^{-5}},logs (nhánh V3 vs BASE),e4387b2,không hiệu chỉnh
+diffXAMulti,"+7{,}75",logs (nhánh V3 vs BASE),e4387b2,n=43
+ciLoXAMulti,"\textminus{}6{,}20",logs (nhánh V3 vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXAMulti,"+22{,}48",logs (nhánh V3 vs BASE),e4387b2,
+pXAMulti,"0{,}353",logs (nhánh V3 vs BASE),e4387b2,không hiệu chỉnh
+diffXANull,"\textminus{}8{,}15",logs (nhánh V3 vs BASE),e4387b2,n=45
+ciLoXANull,"\textminus{}20{,}00",logs (nhánh V3 vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXANull,"+3{,}70",logs (nhánh V3 vs BASE),e4387b2,
+pXANull,"0{,}241",logs (nhánh V3 vs BASE),e4387b2,không hiệu chỉnh
+dErrXA,"\textminus{}4{,}14",logs (nhánh V3 vs BASE),e4387b2,
+diffXB,"+16{,}40",logs (nhánh VEC vs BASE),e4387b2,"điểm %, trung bình theo câu"
+ciLoXB,"+11{,}80",logs (nhánh VEC vs BASE),e4387b2,KTC 95% bootstrap
+ciHiXB,"+21{,}07",logs (nhánh VEC vs BASE),e4387b2,
+pHolmXB,\ensuremath{\le 4\cdot 10^{-5}},logs (nhánh VEC vs BASE),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsXB,108/36,logs (nhánh VEC vs BASE),e4387b2,lên/xuống từng cặp lượt
+nullNetXB,"\textminus{}1{,}00",logs (nhánh VEC vs BASE),e4387b2,Null net trung bình (câu)
+diffXBSingle,"+20{,}08",logs (nhánh VEC vs BASE),e4387b2,n=347
+ciLoXBSingle,"+14{,}79",logs (nhánh VEC vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXBSingle,"+25{,}55",logs (nhánh VEC vs BASE),e4387b2,
+pXBSingle,\ensuremath{\le 10^{-5}},logs (nhánh VEC vs BASE),e4387b2,không hiệu chỉnh
+diffXBMulti,"+10{,}08",logs (nhánh VEC vs BASE),e4387b2,n=43
+ciLoXBMulti,"\textminus{}2{,}33",logs (nhánh VEC vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXBMulti,"+22{,}48",logs (nhánh VEC vs BASE),e4387b2,
+pXBMulti,"0{,}164",logs (nhánh VEC vs BASE),e4387b2,không hiệu chỉnh
+diffXBNull,"\textminus{}5{,}93",logs (nhánh VEC vs BASE),e4387b2,n=45
+ciLoXBNull,"\textminus{}18{,}52",logs (nhánh VEC vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXBNull,"+6{,}67",logs (nhánh VEC vs BASE),e4387b2,
+pXBNull,"0{,}433",logs (nhánh VEC vs BASE),e4387b2,không hiệu chỉnh
+dErrXB,"\textminus{}4{,}44",logs (nhánh VEC vs BASE),e4387b2,
+diffXC,"+24{,}52",logs (nhánh B2 vs BASE),e4387b2,"điểm %, trung bình theo câu"
+ciLoXC,"+19{,}69",logs (nhánh B2 vs BASE),e4387b2,KTC 95% bootstrap
+ciHiXC,"+29{,}35",logs (nhánh B2 vs BASE),e4387b2,
+pHolmXC,\ensuremath{\le 4\cdot 10^{-5}},logs (nhánh B2 vs BASE),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsXC,131/26,logs (nhánh B2 vs BASE),e4387b2,lên/xuống từng cặp lượt
+nullNetXC,"\textminus{}5{,}00",logs (nhánh B2 vs BASE),e4387b2,Null net trung bình (câu)
+diffXCSingle,"+30{,}93",logs (nhánh B2 vs BASE),e4387b2,n=347
+ciLoXCSingle,"+25{,}46",logs (nhánh B2 vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXCSingle,"+36{,}31",logs (nhánh B2 vs BASE),e4387b2,
+pXCSingle,\ensuremath{\le 10^{-5}},logs (nhánh B2 vs BASE),e4387b2,không hiệu chỉnh
+diffXCMulti,"+12{,}40",logs (nhánh B2 vs BASE),e4387b2,n=43
+ciLoXCMulti,"0{,}00",logs (nhánh B2 vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXCMulti,"+25{,}58",logs (nhánh B2 vs BASE),e4387b2,
+pXCMulti,"0{,}089",logs (nhánh B2 vs BASE),e4387b2,không hiệu chỉnh
+diffXCNull,"\textminus{}13{,}33",logs (nhánh B2 vs BASE),e4387b2,n=45
+ciLoXCNull,"\textminus{}25{,}93",logs (nhánh B2 vs BASE),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXCNull,"\textminus{}0{,}74",logs (nhánh B2 vs BASE),e4387b2,
+pXCNull,"0{,}054",logs (nhánh B2 vs BASE),e4387b2,không hiệu chỉnh
+dErrXC,"\textminus{}8{,}97",logs (nhánh B2 vs BASE),e4387b2,
+diffXD,"+4{,}98",logs (nhánh VEC vs V3),e4387b2,"điểm %, trung bình theo câu"
+ciLoXD,"+1{,}84",logs (nhánh VEC vs V3),e4387b2,KTC 95% bootstrap
+ciHiXD,"+8{,}28",logs (nhánh VEC vs V3),e4387b2,
+pHolmXD,"0{,}003",logs (nhánh VEC vs V3),e4387b2,"hoán vị đổi dấu, Holm trong họ"
+pairsXD,53/41 · 60/29 · 55/33,logs (nhánh VEC vs V3),e4387b2,lên/xuống từng cặp lượt
+nullNetXD,"+1{,}00",logs (nhánh VEC vs V3),e4387b2,Null net trung bình (câu)
+diffXDSingle,"+5{,}67",logs (nhánh VEC vs V3),e4387b2,n=347
+ciLoXDSingle,"+2{,}02",logs (nhánh VEC vs V3),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXDSingle,"+9{,}32",logs (nhánh VEC vs V3),e4387b2,
+pXDSingle,"0{,}003",logs (nhánh VEC vs V3),e4387b2,không hiệu chỉnh
+diffXDMulti,"+2{,}33",logs (nhánh VEC vs V3),e4387b2,n=43
+ciLoXDMulti,"\textminus{}9{,}30",logs (nhánh VEC vs V3),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXDMulti,"+13{,}18",logs (nhánh VEC vs V3),e4387b2,
+pXDMulti,"0{,}791",logs (nhánh VEC vs V3),e4387b2,không hiệu chỉnh
+diffXDNull,"+2{,}22",logs (nhánh VEC vs V3),e4387b2,n=45
+ciLoXDNull,"\textminus{}6{,}67",logs (nhánh VEC vs V3),e4387b2,KTC 95% bootstrap theo nhóm
+ciHiXDNull,"+11{,}11",logs (nhánh VEC vs V3),e4387b2,
+pXDNull,"0{,}749",logs (nhánh VEC vs V3),e4387b2,không hiệu chỉnh
+dErrXD,"\textminus{}0{,}31",logs (nhánh VEC vs V3),e4387b2,
+classHA,ROBUST POSITIVE,logs/stage_d/stage_d_report.json,d7c5b34,
+classHB,BORDERLINE,logs/stage_d/stage_d_report.json,d7c5b34,
+classHC,ROBUST POSITIVE,logs/stage_d/stage_d_report.json,d7c5b34,
+tokVK,3866,logs/stage_d/stage_d_report.json,d7c5b34,"trung vị token Sources+Entities, TB 3 lượt"
+sdJudgeBase,"0{,}23",logs/qwen637_fix_judged.csv,5314e1c,"sd acc giữa 3 lượt chấm, 1 lượt sinh"
+sdGenGV,"2{,}18",logs/qwen637_v3*_judged.csv,5314e1c,sd acc giữa 3 lượt sinh
+Tthr,"4{,}18",reproduce/stage_d/analyze_stage_d.py,2426263,ngưỡng T đăng ký trước
+retChunkBase,"47{,}3",logs/simulate_fusion.txt,b424919,"chunk đáp án còn sau A1@4000, 207 chunk"
+retFullBase,"43{,}3",logs/simulate_fusion.txt,b424919,"câu đủ mọi chunk đáp án sau A1, 180 câu"
+retChunkV,"71{,}5",logs/simulate_fusion.txt,b424919,"chunk đáp án còn sau A1@4000, 207 chunk"
+retFullV,"67{,}8",logs/simulate_fusion.txt,b424919,"câu đủ mọi chunk đáp án sau A1, 180 câu"
+retChunkGV,"66{,}7",logs/simulate_fusion.txt,b424919,"chunk đáp án còn sau A1@4000, 207 chunk"
+retFullGV,"62{,}8",logs/simulate_fusion.txt,b424919,"câu đủ mọi chunk đáp án sau A1, 180 câu"
+retChunkGVK,"75{,}8",logs/probe_bm25_fusion.txt,e545977,"chunk đáp án còn sau A1@4000, 207 chunk"
+retFullGVK,"72{,}8",logs/probe_bm25_fusion.txt,e545977,"câu đủ mọi chunk đáp án sau A1, 180 câu"
+retChunkVK,"86{,}0",logs/probe_bm25_fusion.txt,e545977,"chunk đáp án còn sau A1@4000, 207 chunk"
+retFullVK,"83{,}9",logs/probe_bm25_fusion.txt,e545977,"câu đủ mọi chunk đáp án sau A1, 180 câu"
+retVecTopThirty,"87{,}0",logs/diag_path2chunk_report.txt,5715700,"chunk đáp án trong top-30 vectơ, trước cắt"
+retGraphTopThirty,"61{,}8",logs/diag_path2chunk_report.txt,5715700,chunk đáp án trong 30 chunk đồ thị
+retCandVK,"98{,}1",logs/retrieval_audit/diagnose.txt,bf44b3e,"chunk đáp án trong ứng viên RRF(V,K)"
+cutFailVK,25,logs/retrieval_audit/diagnose.txt,bf44b3e,"câu thiếu đáp án do A1 cắt, trên 29"
+failVK,29,logs/retrieval_audit/diagnose.txt,bf44b3e,
+retFullVKMulti,"71{,}4",logs/retrieval_audit/diagnose.txt,bf44b3e,
+unionGV,"93{,}7",ROADMAP.md,bf44b3e,top-30 đồ thị ∪ top-30 vectơ chứa chunk đáp án
+nullOrigBase,"71{,}1 / 15{,}6 / 13{,}3",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric gốc"
+nullClarBase,"86{,}7 / 13{,}3 / 0{,}0",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric làm rõ"
+nullOrigGV,"63{,}0 / 24{,}4 / 12{,}6",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric gốc"
+nullClarGV,"74{,}8 / 25{,}2 / 0{,}0",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric làm rõ"
+nullOrigV,"65{,}2 / 27{,}4 / 7{,}4",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric gốc"
+nullClarV,"74{,}1 / 25{,}9 / 0{,}0",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric làm rõ"
+nullOrigGVK,"62{,}2 / 25{,}2 / 12{,}6",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric gốc"
+nullClarGVK,"73{,}3 / 26{,}7 / 0{,}0",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric làm rõ"
+nullOrigVK,"57{,}8 / 23{,}0 / 19{,}3",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric gốc"
+nullClarVK,"74{,}1 / 25{,}9 / 0{,}0",logs/null_audit/d6_clarified/baseline_ket_qua.txt,242b00f,"3 lượt chấm, rubric làm rõ"
+humanAgreeClar,38/40,docs/KET_QUA_HIEN_TAI.md,242b00f,rubric làm rõ khớp một người chấm
+humanAgreeOrig,15/40,docs/KET_QUA_HIEN_TAI.md,242b00f,
+accPaper,"48{,}75","CLAUDE.md (bảng của bài MiniRAG, Qwen2.5-3B)",bf44b3e,"tham chiếu, khác giám khảo"
+errPaper,"26{,}02","CLAUDE.md (bảng của bài MiniRAG, Qwen2.5-3B)",bf44b3e,"tham chiếu, khác giám khảo"
+neiPaper,"25{,}23","CLAUDE.md (bảng của bài MiniRAG, Qwen2.5-3B)",bf44b3e,"tham chiếu, khác giám khảo"
+precPaper,"65{,}20","CLAUDE.md (bảng của bài MiniRAG, Qwen2.5-3B)",bf44b3e,"tham chiếu, khác giám khảo"
+callsBefore,68.000,CLAUDE.md,bf44b3e,"ước lượng lời gọi LLM trước khi vá O(N^2), 267 tài liệu"
+callsAfter,653,CLAUDE.md,bf44b3e,
+ctxNoCapMed,22.839,CLAUDE.md,bf44b3e,"measure_sources_cap.py, dev 200"
+ctxNoCapMax,33.412,CLAUDE.md,bf44b3e,
+ctxCapMed,3.743,CLAUDE.md,bf44b3e,
+atypeNodesFixed,49,CLAUDE.md,bf44b3e,
+atypeQwen,"44 lên / 40 xuống, p = 0{,}744",CLAUDE.md,bf44b3e,"McNemar, 635 câu, Qwen"
+atypeGemini,"24 lên / 29 xuống, p = 0{,}583",CLAUDE.md,bf44b3e,"McNemar, 635 câu, Gemini"
+graphNodes,1.556,docs/CAI_TIEN_VA_BENCHMARK.md,b83f216,
+graphEdges,1.509,docs/CAI_TIEN_VA_BENCHMARK.md,b83f216,
+graphIsolated,46,docs/CAI_TIEN_VA_BENCHMARK.md,b83f216,% node cô lập
+bmMs,1,docs/KET_QUA_HIEN_TAI.md,242b00f,"ms/câu, đo xen kẽ tầng B"
+judgeLenient,13/40,docs/CAI_TIEN_VA_BENCHMARK.md,b83f216,câu accurate vẫn mâu thuẫn Sources
+timeGateFail,"+61{,}7",docs/KET_QUA_HIEN_TAI.md,242b00f,"cổng thời gian canary gốc, ms"
+vecVsGVpre,"80 lên / 61 xuống, \ensuremath{p = 0{,}13}",docs/KET_QUA_HIEN_TAI.md,242b00f,"đăng ký trước, 1 lượt sinh, 635 câu"
+budgetTwoK,"80 lên / 75 xuống, \ensuremath{p = 0{,}748}",docs/KET_QUA_HIEN_TAI.md,242b00f,"RRF(G,V)@2000 vs MiniRAG, 635 câu"
+ptsPerNull,"2{,}2",reproduce/stage_d/nondev435.csv,2426263,1 câu Null = ? điểm
+ratioXCT,"5{,}9",tính từ X3 và T,chưa commit,
+longAnsCut,16,logs/retrieval_audit/BASELINE_B2.md,bf44b3e,"trong 25 câu bị cắt, chunk đáp án dài 1.200 token"
+refusalAcc,175/175,logs/null_audit/d6_clarified/full_ket_qua.txt,4bf0238,
+nullPremise,19/32,docs/CAI_TIEN_VA_BENCHMARK.md,b83f216,câu Null bị error do ghép sự thật gần giống
+premiseAUC,"0{,}85",docs/CAI_TIEN_VA_BENCHMARK.md,b83f216,
+humanNeither,22/24,docs/KET_QUA_HIEN_TAI.md,242b00f,một người chấm 40 câu Null
+flipRate,21,CLAUDE.md,bf44b3e,% câu đổi phán quyết giữa hai lượt sinh cùng cấu hình

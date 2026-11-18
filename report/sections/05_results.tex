@@ -1,0 +1,80 @@
+\section{Kết quả}\label{sec:results}
+
+\subsection{Đoạn chứa đáp án rơi ở bước xếp hạng bằng đồ thị}\label{sec:diagnosis}
+Trong MiniRAG tái lập, bước xếp hạng đoạn theo đường đi đồ thị là nơi mất nhiều bằng chứng nhất.
+Chúng tôi đo điều này trực tiếp, không cần sinh hay chấm.
+Mỗi tin nhắn trong LiHua-World có mốc thời gian, và cột \emph{Evidence} của bộ câu hỏi ghi mốc của tin nhắn chứa đáp án, nên với mỗi câu ta biết chính xác đoạn nào chứa đáp án.
+Trên 180 câu dev có evidence (207 đoạn đáp án), \retVecTopThirty\% đoạn đáp án nằm trong 30 đoạn gần nhất theo vectơ, nhưng chỉ \retGraphTopThirty\% nằm trong 30 đoạn mà đồ thị xếp hạng.
+Sau khi cắt theo ngân sách, chỉ \retChunkBase\% đoạn đáp án thật sự vào ngữ cảnh (\cref{tab:retrieval}).
+Nguyên nhân là cơ chế ở \cref{sec:background}: đoạn không nằm trên đường đi nào thì không bao giờ được xét.
+Cột Evidence chỉ dùng để chấm truy xuất; không hệ thống nào đọc nó lúc chạy.
+
+\begin{table}[t]\centering
+\caption{Tỉ lệ đoạn chứa đáp án còn lại trong ngữ cảnh sau khi cắt ở $\budget=4000$ token. 180 câu dev có evidence, mô phỏng tất định trên xếp hạng đã lưu (không sinh, không chấm). Tập dev đã dùng để thiết kế các biến thể, nên bảng này là chẩn đoán, không phải kết quả xác nhận.}
+\label{tab:retrieval}
+\small
+\input{generated/table_retrieval.tex}
+\end{table}
+
+Mọi hàm xếp hạng không dựa riêng vào đồ thị đều giữ được nhiều đoạn đáp án hơn.
+Cấu hình bỏ hẳn đồ thị, RRF(vectơ, BM25), đưa tỉ lệ câu có đủ mọi đoạn đáp án từ \retFullBase\% lên \retFullVK\%.
+Đây là dự báo ở mức truy xuất trên tập đã dùng để thiết kế; câu hỏi là nó có chuyển thành câu trả lời đúng hơn trên tập ngoài dev hay không.
+
+\subsection{Kết quả chính trên \nHeld{} câu ngoài dev}\label{sec:main-results}
+
+\begin{table*}[t]\centering
+\caption{Kết quả hỏi đáp trên \nHeld{} câu ngoài dev của LiHua-World. Mô hình sinh Qwen2.5-3B, giám khảo \texttt{gemini-flash-lite-latest} (lượt chấm 1), ngân sách 4.000 token. acc/err/neither là trung bình qua các lượt sinh; $\pm$ là độ lệch chuẩn giữa các lượt sinh. Cột Single/Multi/Null là acc của từng nhóm, số trong ngoặc là số câu. Dòng in nghiêng lấy từ bài gốc với giám khảo và đồ thị khác: chỉ để tham chiếu, không so trực tiếp.}
+\label{tab:main}
+\small
+\resizebox{\linewidth}{!}{\input{generated/table_main.tex}}
+\end{table*}
+
+\begin{table*}[t]\centering
+\caption{Kiểm định ghép cặp trên \nHeld{} câu ngoài dev. $\Delta$acc là hiệu accuracy trung bình theo câu (điểm phần trăm); KTC 95\% bootstrap ghép cặp; $p$ từ hoán vị đổi dấu (100.000 lần, $p$ nhỏ nhất đo được là $10^{-5}$), hiệu chỉnh Holm trong từng họ. ``Lên/xuống'': số câu sai$\to$đúng / đúng$\to$sai của từng cặp lượt sinh. ``Null net'': số câu Null đổi trung bình mỗi cặp lượt (âm là kém đi).}
+\label{tab:tests}
+\footnotesize
+\resizebox{\linewidth}{!}{\input{generated/table_tests.tex}}
+\end{table*}
+
+\paragraph{Khi đã có vectơ và BM25, thêm xếp hạng bằng đồ thị làm giảm độ chính xác.}
+Bỏ đồ thị khỏi RRF(đồ thị, vectơ, BM25) tăng accuracy thêm \diffHC{} điểm [KTC 95\%: \ciLoHC; \ciHiHC], $p_{\text{Holm}} = \pHolmHC$ (H3, \cref{tab:tests}).
+Cả ba cặp lượt cùng chiều (\pairsHC) và phép so đạt mọi điều kiện đã đăng ký.
+Kèm một điều kiện: RRF(vectơ, BM25) vào vòng xác nhận sau một \emph{lệch đăng ký} đã khai báo. Ở vòng sàng lọc 100 câu, nó trượt cổng thời gian truy xuất (\timeGateFail~ms); nhóm sửa cách đo thời gian \emph{sau} khi thấy kết quả này (đo xen kẽ thay vì tuần tự), và theo cách đo mới nó đạt.
+Lệch đăng ký này chỉ liên quan tới cổng thời gian, không liên quan tới độ chính xác, giám khảo hay tập câu.
+
+\paragraph{Thêm BM25 vào RRF(đồ thị, vectơ) cải thiện độ chính xác.}
+H1 cho \diffHA{} điểm [\ciLoHA; \ciHiHA], $p_{\text{Holm}} = \pHolmHA$, ba cặp lượt cùng chiều (\pairsHA), và đạt mọi điều kiện đã đăng ký.
+Nhóm Null gần như không đổi (\diffHANull{} điểm, $n=\nHeldNull$).
+
+\paragraph{Thêm BM25 vào vectơ thuần cải thiện accuracy, với điều kiện trượt cổng an toàn của nhóm Null.}
+H2 cho \diffHB{} điểm [\ciLoHB; \ciHiHB], $p_{\text{Holm}} = \pHolmHB$, ba cặp lượt cùng chiều (\pairsHB).
+Tuy vậy nhóm Null mất trung bình \nullNetHB{} câu mỗi cặp lượt, vượt ngưỡng $-3$ câu đã đăng ký, nên H2 được phân loại \emph{biên} (\classHB) chứ không đạt.
+Riêng nhóm Null, hiệu là \diffHBNull{} điểm [\ciLoHBNull; \ciHiHBNull], $p = \pHBNull$.
+Chúng tôi không nới cổng này sau khi thấy kết quả.
+
+\paragraph{So với MiniRAG tái lập (phân tích khám phá).}
+Trên cùng chỉ mục, mô hình sinh, giám khảo và ngân sách, RRF(vectơ, BM25) cao hơn MiniRAG tái lập \diffXC{} điểm accuracy [\ciLoXC; \ciHiXC], $p_{\text{Holm}} \pHolmXC$ (\cref{tab:tests}, X3).
+Phép so này không nằm trong đăng ký trước, và MiniRAG chỉ có một lượt sinh.
+Tuy vậy hiệu số bằng \ratioXCT{} lần ngưỡng $T$, và từng lượt sinh của RRF(vectơ, BM25) đều cao hơn MiniRAG (\cref{tab:runs}).
+Mức tăng đi kèm err giảm (\dErrXC{} điểm) và acc/(acc+err) tăng từ \precBase{} lên \precVK{}: hệ thống không chỉ dám trả lời nhiều hơn mà còn trả lời đúng hơn khi đã trả lời.
+
+\subsection{Đồ thị không đóng góp vào xếp hạng đoạn}\label{sec:ablation}
+Kết quả loại bỏ thành phần cho thấy phần lớn mức tăng đến từ việc đưa vectơ vào xếp hạng, không phải từ việc trộn với đồ thị.
+Trong phân tích khám phá, vectơ thuần cao hơn MiniRAG \diffXB{} điểm [\ciLoXB; \ciHiXB] và cao hơn RRF(đồ thị, vectơ) \diffXD{} điểm [\ciLoXD; \ciHiXD], $p_{\text{Holm}} = \pHolmXD$ (X2, X4).
+Cần đọc X4 cùng với một phép thử trước đó đã đăng ký: so một lượt sinh vectơ thuần với lượt đầu của RRF(đồ thị, vectơ) trên 635 câu, McNemar cho \vecVsGVpre, tức \emph{không phân biệt được}.
+Phép so ba lượt ở đây có ý nghĩa, nhưng không được đăng ký trước. Chúng tôi chỉ kết luận chắc rằng việc trộn với đồ thị \emph{không} được chứng minh là tốt hơn vectơ thuần.
+Cùng với H3, chúng tôi không tìm thấy cấu hình nào trên bộ dữ liệu này mà xếp hạng đoạn bằng đồ thị làm tăng độ chính xác.
+
+\subsection{Theo loại câu hỏi: đánh đổi ở nhóm Null}\label{sec:by-type}
+Mức tăng tập trung ở câu Single và đi kèm xu hướng giảm ở nhóm Null.
+So với MiniRAG, RRF(vectơ, BM25) tăng Single \diffXCSingle{} điểm [\ciLoXCSingle; \ciHiXCSingle] ($n=\nHeldSingle$) và Multi \diffXCMulti{} điểm [\ciLoXCMulti; \ciHiXCMulti] ($n=\nHeldMulti$, $p=\pXCMulti$).
+Ngược lại, nhóm Null có xu hướng giảm \diffXCNull{} điểm [\ciLoXCNull; \ciHiXCNull] ($n=\nHeldNull$, $p=\pXCNull$), chưa xác nhận.
+Chiều giảm này lặp lại ở mọi cấu hình đưa thêm đoạn từ vectơ hoặc BM25 vào ngữ cảnh (\cref{tab:main}, cột Null).
+Với \nHeldNull{} câu, một câu tương đương \ptsPerNull{} điểm ở một lượt; chúng tôi không kết luận riêng cho nhóm này, nhưng coi nó là đánh đổi lớn nhất của bài và phân tích ở \cref{sec:null}.
+Nhóm Multi chỉ có \nHeldMulti{} câu; chúng tôi báo số nhưng không kết luận riêng.
+
+\subsection{Chi phí}\label{sec:efficiency}
+Không cấu hình nào thêm lời gọi mô hình hay cần lập chỉ mục lại; BM25 tốn khoảng \bmMs{}~ms mỗi câu.
+Ngân sách ngữ cảnh được giữ như nhau giữa các cấu hình (\cref{sec:method}).
+Chúng tôi không trình bày các cấu hình này như cải tiến hiệu năng.
+Khi hạ ngân sách RRF(đồ thị, vectơ) xuống 2.000 token, accuracy trên 635 câu về lại mức không phân biệt được với MiniRAG (\budgetTwoK; một lượt sinh). Lợi ích của các cấu hình trộn gắn với ngân sách 4.000 token.

@@ -1,0 +1,22 @@
+\section{Thảo luận}\label{sec:discussion}
+
+\paragraph{Đồ thị tri thức cần cho việc gì trong RAG với mô hình nhỏ?}
+Kết quả cho thấy, trên LiHua-World, giá trị của đồ thị trong MiniRAG không nằm ở bước xếp hạng đoạn.
+Chúng tôi không tìm thấy phép so nào mà xếp hạng bằng đường đi làm tăng độ chính xác, và khi đã có tín hiệu vectơ và từ vựng thì thêm nó vào làm giảm (H3).
+Điều này không bác bỏ toàn bộ thiết kế của MiniRAG: đồ thị vẫn dựng bảng thực thể và quyết định câu hỏi có ngữ cảnh hay không, và chúng tôi chưa loại bỏ thành phần đó.
+Kết luận đúng phạm vi là: \emph{với một đồ thị do mô hình 3B tự dựng}, các đường đi hai bước là một bộ lọc ứng viên quá chặt.
+
+\paragraph{Vì sao BM25 giúp nhiều trên bộ dữ liệu này.}
+Câu hỏi của LiHua-World thường nêu đích danh người, trò chơi, món ăn hay sự kiện có mặt nguyên văn trong hội thoại.
+Khớp từ vựng trên nguyên văn câu hỏi bắt được các tên riêng này mà không cần mô hình nhỏ trích xuất đúng thực thể, đúng bước dễ hỏng nhất khi dùng SLM.
+Cùng tính chất đó lý giải đánh đổi ở nhóm Null: câu hỏi về điều không xảy ra vẫn chứa tên thật, nên BM25 kéo về văn bản ``trông liên quan''.
+
+\paragraph{Khi nào nên và không nên dùng kết quả này.}
+Với kho hội thoại cá nhân, câu hỏi chứa tên riêng và mô hình sinh nhỏ, kết quả của chúng tôi ủng hộ việc thử truy xuất lai vectơ--BM25 trước khi đầu tư dựng đồ thị.
+Với ứng dụng mà trả lời sai câu không có đáp án đắt hơn bỏ sót câu có đáp án, cấu hình này chưa nên dùng nguyên trạng.
+Trên những bộ câu hỏi đa bước thật sự, chúng tôi chưa có bằng chứng (\cref{sec:limitations}).
+
+\paragraph{Liên hệ với công trình liên quan.}
+Việc truy xuất lai giữa tín hiệu từ vựng và tín hiệu vectơ tốt hơn từng tín hiệu riêng lẻ là phát hiện đã quen thuộc trong truy hồi thông tin~\cite{cormack2009rrf}.
+Điểm bài này bổ sung là: trong một hệ GraphRAG thiết kế cho mô hình nhỏ, bước xếp hạng dựa trên đồ thị đứng sau cả đối chứng vectơ thuần, và được đo trên cùng điều kiện với đăng ký trước.
+\todo{Đối chiếu với các nghiên cứu so sánh GraphRAG và RAG vectơ gần đây; cần tra cứu và xác minh trước khi viết.}

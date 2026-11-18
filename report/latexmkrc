@@ -1,0 +1,6 @@
+# latexmk: XeLaTeX + BibTeX, xuất ra report/build/
+$pdf_mode = 5;            # 5 = xelatex
+$bibtex_use = 2;          # chạy bibtex khi cần, dọn .bbl khi clean
+$out_dir = 'build';
+$aux_dir = 'build';
+$xelatex = 'xelatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S';

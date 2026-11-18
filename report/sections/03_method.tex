@@ -1,0 +1,71 @@
+\section{Thiết lập tái lập và các biến thể xếp hạng đoạn}\label{sec:method}
+
+\subsection{Kiến thức nền: MiniRAG}\label{sec:background}
+MiniRAG~\cite{fan2025minirag} dựng một chỉ mục dị thể gồm hai loại nút: đoạn văn bản (chunk) và thực thể có tên do mô hình ngôn ngữ trích xuất từ đoạn.
+Lúc truy vấn, hệ thống phân tích câu hỏi thành từ khoá và loại đáp án dự kiến, tìm các thực thể khởi đầu, sinh các đường đi hai bước trên đồ thị, rồi xếp hạng đoạn theo điểm của các đường đi chạm tới đoạn đó.
+Các đoạn được nối vào ngữ cảnh theo thứ tự xếp hạng, cùng với một bảng thực thể, trước khi mô hình nhỏ sinh câu trả lời.
+Điểm mấu chốt cho bài này là: một đoạn chỉ có thể vào ngữ cảnh nếu nó nằm trên ít nhất một đường đi.
+Đoạn mà truy xuất vectơ tìm được nhưng không đường đi nào chạm tới thì không bao giờ được xét.
+
+\subsection{Phát biểu bài toán}
+Cho kho tài liệu $\corpus$ đã chia thành tập đoạn, đồ thị $\graph$ dựng từ $\corpus$, và câu hỏi $\query$.
+Bộ truy xuất trả về một danh sách đoạn có thứ tự; danh sách này được cắt theo ngân sách $\budget$ token rồi đưa vào mô hình sinh.
+Chúng tôi giữ nguyên mọi thành phần khác của MiniRAG (chỉ mục, đồ thị, bảng thực thể, prompt sinh, mô hình sinh, giám khảo) và \emph{chỉ thay hàm xếp hạng đoạn}.
+Như vậy mọi chênh lệch giữa các cấu hình đều quy về đúng một biến.
+
+\subsection{Hai sửa đổi bắt buộc để chạy được với mô hình nhỏ}\label{sec:fixes}
+Chúng tôi sửa hai lỗi ở mã gốc trước khi đo. Cả hai được coi là \emph{sửa baseline}, không phải đóng góp.
+\begin{itemize}
+  \item \textbf{Lập chỉ mục lặp $O(N^2)$.} Hàm chèn tài liệu dựng lại tập đoạn từ mọi tài liệu đã xử lý, nên chèn $N$ tài liệu tuần tự sẽ trích xuất lại toàn bộ kho $N$ lần.
+  Chúng tôi lưu vết các đoạn đã trích xuất, đưa số lời gọi mô hình từ khoảng \callsBefore{} xuống \callsAfter{} cho 267 tài liệu.
+  Tác dụng phụ là đồ thị thưa hơn bản gốc (\cref{sec:limitations}).
+  \item \textbf{Ngân sách ngữ cảnh.} Mã gốc không giới hạn số token của phần đoạn: trên 200 câu dev, ngữ cảnh có trung vị \ctxNoCapMed{} token và tối đa \ctxNoCapMax{} token, vượt cửa sổ 32k của Qwen2.5-3B ở một số câu.
+  Chúng tôi cắt phần đoạn ở $\budget = 4000$ token (trung vị còn \ctxCapMed{} token). Mọi cấu hình trong bài dùng cùng ngân sách này.
+\end{itemize}
+Ngoài ra, cơ chế khớp loại đáp án của MiniRAG không khớp được nút nào vì so sánh phân biệt hoa thường; sau khi sửa, nó khớp \atypeNodesFixed{} nút.
+Sửa lỗi này không làm điểm thay đổi phân biệt được (Qwen: \atypeQwen{}; Gemini: \atypeGemini{}; McNemar, 635 câu).
+Chúng tôi giữ bản sửa trong mọi cấu hình vì nó sửa một lỗi thật.
+
+\subsection{Các hàm xếp hạng đoạn được so sánh}\label{sec:variants}
+Gọi $L_G$ là danh sách đoạn MiniRAG xếp theo đường đi đồ thị, $L_V$ là 30 đoạn gần nhất với câu hỏi theo cosine của vectơ nhúng, và $L_K$ là 30 đoạn có điểm BM25 dương cao nhất với nguyên văn câu hỏi.
+Chúng tôi so năm hàm xếp hạng; hai cấu hình liền nhau trong dãy khác nhau đúng một thành phần (\cref{tab:variants}).
+
+\begin{table}[t]\centering
+\caption{Năm hàm xếp hạng đoạn. Mọi cấu hình dùng chung chỉ mục, đồ thị, bảng thực thể, prompt, mô hình sinh, giám khảo và ngân sách $\budget=4000$ token.}
+\label{tab:variants}
+\small
+\begin{tabular}{llp{0.42\linewidth}}
+\toprule
+Cấu hình & Danh sách đoạn trước khi cắt & Khác cấu hình nào đúng một biến \\
+\midrule
+MiniRAG (tái lập) & $L_G$ & --- \\
+RRF(đồ thị, vectơ) & $\mathrm{RRF}(L_G, L_V)$ & MiniRAG: thêm $L_V$ \\
+Vectơ thuần & $L_V$ & RRF(đồ thị, vectơ): bỏ $L_G$ \\
+RRF(đồ thị, vectơ, BM25) & $\mathrm{RRF}(L_G, L_V, L_K)$ & RRF(đồ thị, vectơ): thêm $L_K$ \\
+RRF(vectơ, BM25) & $\mathrm{RRF}(L_V, L_K)$ & Vectơ thuần: thêm $L_K$; RRF(đồ thị, vectơ, BM25): bỏ $L_G$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Trộn xếp hạng nghịch đảo.}
+Với các danh sách $L_1,\dots,L_m$, điểm của đoạn $\chunk$ là
+\begin{equation}\label{eq:rrf}
+  \mathrm{RRF}(\chunk) = \sum_{i=1}^{m} \frac{\mathbf{1}[\chunk \in L_i]}{k + \rank_{L_i}(\chunk)},
+\end{equation}
+trong đó $\rank_{L_i}(\chunk)$ là thứ hạng (bắt đầu từ 1) của $\chunk$ trong $L_i$ và $k=60$ là giá trị mặc định của Cormack và cộng sự~\cite{cormack2009rrf}.
+Chúng tôi không tinh chỉnh $k$. Hoà điểm giữ thứ tự xuất hiện; đoạn trùng chỉ tính một lần.
+
+\paragraph{BM25.}
+Chúng tôi dùng Okapi BM25~\cite{robertson2009bm25} với $k_1 = 1{,}2$ và $b = 0{,}75$, idf $= \ln\bigl(1 + (N - n + 0{,}5)/(n + 0{,}5)\bigr)$, tách từ theo \texttt{[a-z0-9]+} trên chữ thường và bỏ từ dừng phía câu hỏi.
+Truy vấn là nguyên văn câu hỏi, không dùng đầu ra bộ phân tích từ khoá. Chỉ mục BM25 dựng một lần trong bộ nhớ trên toàn bộ đoạn của chỉ mục, không ghi vào chỉ mục đã đóng băng.
+Mọi tham số được chốt trong đăng ký trước, trước khi viết mã và trước khi có bất kỳ đầu ra nào.
+
+\paragraph{Cắt theo ngân sách.}
+Danh sách sau trộn được duyệt theo thứ tự; đoạn được thêm vào cho tới đoạn đầu tiên làm tổng vượt $\budget$ thì dừng.
+Đồ thị vẫn chạy trong mọi cấu hình: nó dựng bảng thực thể và quyết định câu hỏi có ngữ cảnh hay không.
+Ở hai cấu hình không có $L_G$, đồ thị \emph{không} tham gia xếp hạng đoạn.
+
+\subsection{Chi phí}
+BM25 thêm khoảng \bmMs{}~ms mỗi câu trên CPU; RRF là phép sắp xếp trên tối đa 90 phần tử.
+Không cấu hình nào thêm lời gọi mô hình ngôn ngữ, và không cấu hình nào cần lập chỉ mục lại.
+Trung vị token ngữ cảnh của RRF(vectơ, BM25) qua ba lượt là \tokVK{}, nằm trong biên $\pm 5\%$ quanh 3.870 token đã đăng ký trước.

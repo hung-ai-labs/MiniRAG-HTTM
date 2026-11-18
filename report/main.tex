@@ -1,0 +1,91 @@
+% =====================================================================
+%  Bài báo / báo cáo nghiên cứu — MiniRAG-HTTM
+%  Biên dịch: latexmk (XeLaTeX)  →  report/build/main.pdf
+%  Mọi con số trong bài lấy từ generated/numbers.tex (do script sinh),
+%  KHÔNG gõ tay số liệu vào các file sections/*.tex.
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Phông chữ tiếng Việt (XeLaTeX) ----------
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Consolas}
+% polyglossia được nạp SAU cleveref (xem dưới): nạp trước thì cleveref
+% tìm \extrasvietnamese kiểu babel và báo "Undefined control sequence".
+
+% ---------- Trang ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{microtype}
+
+% ---------- Toán, bảng, hình ----------
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={,}, group-separator={.}, detect-all}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% ---------- Liên kết ----------
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+% cleveref chưa có tiếng Việt → khai báo tay
+\crefname{section}{Mục}{Mục}         \Crefname{section}{Mục}{Mục}
+\crefname{subsection}{Mục}{Mục}      \Crefname{subsection}{Mục}{Mục}
+\crefname{appendix}{Phụ lục}{Phụ lục} \Crefname{appendix}{Phụ lục}{Phụ lục}
+\crefname{table}{Bảng}{Bảng}         \Crefname{table}{Bảng}{Bảng}
+\crefname{figure}{Hình}{Hình}        \Crefname{figure}{Hình}{Hình}
+\crefname{equation}{}{}              \Crefname{equation}{Phương trình}{Phương trình}
+\crefname{algorithm}{Thuật toán}{Thuật toán} \Crefname{algorithm}{Thuật toán}{Thuật toán}
+\crefname{ALC@unique}{dòng}{dòng}
+
+% ---------- Ngôn ngữ (phải sau cleveref) ----------
+\usepackage{polyglossia}
+\setdefaultlanguage{vietnamese}
+
+% ---------- Ghi chú khi soạn ----------
+% \todo{...} hiện chữ đỏ trong PDF; xoá hết trước khi nộp.
+\newcommand{\todo}[1]{\textcolor{red}{[CẦN BỔ SUNG: #1]}}
+
+% ---------- Số liệu & ký hiệu ----------
+\input{generated/numbers.tex}
+\input{notation.tex}
+
+% ---------- Thông tin bài ----------
+\title{Xếp hạng đoạn văn bằng đồ thị có cần cho MiniRAG với mô hình ngôn ngữ nhỏ?\\[0.3em]
+\large Tái lập và phân tích có đăng ký trước trên LiHua-World}
+\author{%
+  \todo{Thành viên 1}\\ \todo{Đơn vị}
+  \and
+  \todo{Thành viên 2}\\ \todo{Đơn vị}
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\input{sections/00_abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_method}
+\input{sections/04_experimental_setup}
+\input{sections/05_results}
+\input{sections/06_analysis}
+\input{sections/07_discussion}
+\input{sections/08_limitations}
+\input{sections/09_conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

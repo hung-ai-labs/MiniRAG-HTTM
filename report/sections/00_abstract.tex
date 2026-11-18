@@ -1,0 +1,10 @@
+\begin{abstract}
+Hệ RAG dựa trên đồ thị như MiniRAG được thiết kế để mô hình ngôn ngữ nhỏ trả lời câu hỏi trên kho tài liệu riêng, bằng cách xếp hạng đoạn văn theo đường đi trên đồ thị thực thể.
+Khi tái lập MiniRAG với Qwen2.5-3B trên LiHua-World, chúng tôi thấy chính bước xếp hạng này bỏ rơi bằng chứng: \retVecTopThirty\% đoạn chứa đáp án nằm trong 30 đoạn gần nhất theo vectơ, nhưng chỉ \retChunkBase\% vào được ngữ cảnh.
+Chúng tôi giữ nguyên mọi thành phần khác và chỉ thay hàm xếp hạng đoạn bằng năm tổ hợp của ba tín hiệu (đồ thị, vectơ, BM25) trộn bằng reciprocal rank fusion (RRF), với ba giả thuyết đăng ký trước, kiểm định trên \nHeld{} câu ngoài tập phát triển, ba lượt sinh mỗi biến thể.
+Khi đã có vectơ và BM25, bỏ đồ thị khỏi xếp hạng tăng accuracy thêm \diffHC{} điểm (KTC 95\%: \ciLoHC; \ciHiHC), với điều kiện đã khai báo một lệch đăng ký ở cổng thời gian.
+So với MiniRAG tái lập, RRF(vectơ, BM25) cao hơn \diffXC{} điểm (\ciLoXC; \ciHiXC; phân tích khám phá); đổi lại, nhóm câu không có đáp án có xu hướng giảm \diffXCNull{} điểm, chưa xác nhận.
+Trên bộ dữ liệu này, chúng tôi không tìm thấy cấu hình nào mà xếp hạng đoạn bằng đồ thị làm tăng độ chính xác. Kết quả cho thấy cần so hệ GraphRAG cho mô hình nhỏ với đối chứng truy xuất lai đơn giản trước khi gán công cho cấu trúc đồ thị.
+\end{abstract}
+
+\noindent\textbf{Từ khoá:} sinh tăng cường truy xuất, GraphRAG, mô hình ngôn ngữ nhỏ, truy xuất lai, BM25, tái lập.

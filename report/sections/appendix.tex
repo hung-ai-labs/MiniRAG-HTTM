@@ -1,0 +1,117 @@
+\section{Prompt sinh và prompt chấm}\label{app:prompts}
+
+\paragraph{Prompt sinh} (\texttt{minirag/prompt.py}, khoá \texttt{rag\_response}; \texttt{response\_type} = ``Multiple Paragraphs'').
+\begin{small}
+\begin{verbatim}
+---Role---
+You are a helpful assistant responding to questions about data in the
+tables provided.
+
+---Goal---
+Generate a response of the target length and format that responds to the
+user's question, summarizing all information in the input data tables
+appropriate for the response length and format, and incorporating any
+relevant general knowledge.
+If you don't know the answer, just say so. Do not make anything up.
+Do not include information where the supporting evidence for it is not
+provided.
+
+---Target response length and format---
+{response_type}
+
+---Data tables---
+{context_data}
+
+Add sections and commentary to the response as appropriate for the length
+and format. Style the response in markdown.
+\end{verbatim}
+\end{small}
+
+\paragraph{Prompt chấm} (\texttt{reproduce/Step\_2\_evaluate.py}, \texttt{JUDGE\_PROMPT}).
+\begin{small}
+\begin{verbatim}
+You are grading a question-answering system.
+
+Question: {question}
+Gold answer: {gold}
+System answer: {pred}
+
+Reply with exactly one word:
+- "accurate" if the system answer conveys the gold answer. Wording may differ;
+  a more specific but consistent answer still counts (gold "bottle", answer
+  "water bottle" -> accurate).
+- "error" if the system answer asserts something that contradicts the gold
+  answer, without acknowledging any uncertainty.
+- "neither" if the system answer says it does not know, refuses to answer, or
+  is off-topic.
+\end{verbatim}
+\end{small}
+\todo{Ghi mã băm SHA-256 của hai prompt.}
+
+\section{Kết quả từng lượt sinh}\label{app:runs}
+\begin{table}[h]\centering
+\caption{Accuracy từng lượt sinh trên \nHeld{} câu ngoài dev (lượt chấm 1).}
+\label{tab:runs}
+\small
+\input{generated/table_runs.tex}
+\end{table}
+
+\section{Các cấu hình và hướng đã thử}\label{app:tried}
+Danh sách lấy từ tài liệu của nhóm (\texttt{docs/KET\_QUA\_HIEN\_TAI.md}, \texttt{docs/CAI\_TIEN\_VA\_BENCHMARK.md}, \texttt{ROADMAP.md}).
+Chỉ năm hàm xếp hạng ở \cref{tab:variants} đi tới vòng xác nhận trên tập ngoài dev.
+\begin{enumerate}\small
+  \item Sửa khớp loại đáp án (hoa/thường) --- giữ, không đổi điểm.
+  \item Sửa cách cộng điểm đường đi khi chọn đoạn --- không đổi điểm.
+  \item Cắt danh sách đoạn tại ``vách'' điểm --- làm giảm accuracy.
+  \item RRF(đồ thị, vectơ) ở ngân sách 4.000 token.
+  \item RRF(đồ thị, vectơ) ở ngân sách 2.000 token --- mất lợi ích.
+  \item Vectơ thuần.
+  \item RRF(đồ thị, vectơ, BM25).
+  \item RRF(vectơ, BM25).
+  \item Hợp nhất thực thể trùng tên --- trượt cổng.
+  \item[10--15.] Sáu hướng sửa nhóm Null kiểu kiểm chứng/từ chối --- phủ định \todo{kiểm lại số hướng: tài liệu ghi ``5 hướng'' nhưng liệt kê A3, V5a--V5e}.
+  \setcounter{enumi}{15}
+  \item Xếp hạng lại tất định (9 tín hiệu bề mặt, offline) --- phủ định.
+  \item Cửa sổ trong đoạn dài ($W=400$) --- trượt cổng.
+  \item Cứu đoạn bị tràn ngân sách --- độ phủ thấp.
+  \item Cross-encoder xếp lại toàn bộ --- trượt cổng chi phí.
+  \item Cross-encoder qua ONNX Runtime --- chậm hơn.
+  \item Cross-encoder xếp lại 25 ứng viên đầu --- trượt cổng chi phí.
+  \item Cắt tỉa đường đi đồ thị (hiệu năng) --- không đổi điểm.
+  \item Bộ chọn lượt lời trong ngân sách --- thử nghiệm 50 câu, giám khảo khác, chưa xác nhận.
+\end{enumerate}
+
+\section{Bảng chuyển mã nội bộ}\label{app:codes}
+\begin{table}[h]\centering\small
+\begin{tabular}{ll}
+\toprule
+Mã trong repo & Tên trong bài \\
+\midrule
+\texttt{qwen637\_fix} (baseline) & MiniRAG (tái lập) \\
+V3, \texttt{MINIRAG\_CHUNK\_FUSION=rrf} & RRF(đồ thị, vectơ) \\
+VEC, \texttt{=vector} & Vectơ thuần \\
+B1, \texttt{=rrf\_bm25} & RRF(đồ thị, vectơ, BM25) \\
+B2, \texttt{=vector\_bm25} & RRF(vectơ, BM25) \\
+A1@4000 & ngân sách $\budget = 4000$ token \\
+Tầng D & vòng xác nhận trên tập ngoài dev \\
+E3 / E4 / E5 & cổng err / nhóm câu / token \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Tái lập}\label{app:repro}
+Mọi số trong bài sinh từ \texttt{report/scripts/make\_numbers.py}, đọc trực tiếp file phán quyết trong \texttt{logs/}.
+Script tự dừng nếu kết quả tính lại khác báo cáo vòng xác nhận đã công bố, hoặc nếu một hằng số trích từ báo cáo văn bản không có mặt nguyên văn trong file nguồn.
+Sổ bằng chứng do script sinh nằm ở \texttt{report/generated/evidence.csv}, mỗi dòng gồm macro, giá trị, file nguồn và commit.
+\begin{small}
+\begin{verbatim}
+.venv/Scripts/python.exe report/scripts/make_numbers.py   # sinh số và bảng
+cd report && latexmk main.tex                              # biên dịch bài
+\end{verbatim}
+\end{small}
+
+\section{Phân công}\label{app:roles}
+\todo{Phân công thành viên}
+
+\section{Tuyên bố sử dụng công cụ AI}\label{app:ai}
+\todo{Nêu rõ phần nào dùng trợ lý AI (ví dụ: dựng khung LaTeX, soạn nháp văn bản, viết script sinh số) và phần nào nhóm tự làm, theo yêu cầu của nơi nhận.}

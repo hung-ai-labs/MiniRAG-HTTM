@@ -1,0 +1,45 @@
+\section{Thiết lập tái lập}\label{sec:setup}
+
+Mục này mô tả các điều kiện dùng chung cho mọi phép đo trong bài.
+Từ đây trở đi, mọi cấu hình chỉ khác nhau ở hàm xếp hạng đoạn (\cref{sec:design}).
+
+\subsection{Dữ liệu}
+LiHua-World~\cite{fan2025minirag} gồm 442 tài liệu hội thoại tiếng Anh của một người dùng giả định. Mỗi tài liệu mang mốc thời gian.
+Bộ câu hỏi có 637 dòng (635 câu phân biệt) thuộc ba loại: \emph{Single} (một bước), \emph{Multi} (nhiều bước) và \emph{Null} (đáp án đúng là ``không đủ thông tin'').
+Cột \emph{Evidence} ghi mốc thời gian của các tin nhắn chứa đáp án, nhờ đó ta xác định được chính xác đoạn nào chứa bằng chứng.
+Chúng tôi chỉ dùng cột này để chấm truy xuất; không hệ thống nào đọc nó lúc chạy.
+
+Chúng tôi tách 200 câu làm \emph{tập dev}, phân tầng theo loại với seed cố định.
+Mọi chẩn đoán, sàng lọc và lựa chọn cấu hình đều làm trên tập dev.
+Còn lại \nHeld{} câu (\nHeldSingle{} Single, \nHeldMulti{} Multi, \nHeldNull{} Null) tạo thành \emph{tập ngoài dev}, chỉ dùng cho vòng xác nhận.
+
+\subsection{Hệ thống}
+Mô hình \texttt{Qwen/Qwen2.5-3B-Instruct}~\cite{qwen2025qwen25} làm mọi việc cần mô hình ngôn ngữ: trích xuất thực thể khi lập chỉ mục, phân tích câu hỏi và sinh câu trả lời.
+Mô hình được phục vụ bằng vLLM 0.11.0 với cửa sổ 32.768 token; nhiệt độ lấy mẫu không đặt trong yêu cầu nên dùng giá trị mặc định của máy chủ \todo{xác nhận nhiệt độ thực tế}.
+Vectơ nhúng là \texttt{all-MiniLM-L6-v2}~\cite{reimers2019sbert,wang2020minilm} (384 chiều), giống bài gốc.
+Đoạn văn bản dài tối đa 1.200 token. Đồ thị do chính Qwen2.5-3B dựng có \graphNodes{} nút và \graphEdges{} cạnh, trong đó \graphIsolated\% nút không có cạnh nào.
+Tham số truy vấn là \texttt{top\_k} = 60 và ngân sách $\budget = 4000$ token cho phần đoạn văn bản.
+Mọi cấu hình dùng cùng một chỉ mục đã đóng băng.
+
+\subsection{Hai lỗi phải sửa để chạy với mô hình nhỏ}\label{sec:fixes}
+Mã gốc có hai lỗi khiến nó không chạy được với SLM trong ngân sách hợp lý.
+Chúng tôi coi việc sửa là \emph{điều kiện để tái lập}, không phải đóng góp, và áp dụng như nhau cho mọi cấu hình.
+\begin{itemize}
+  \item \textbf{Lập chỉ mục lặp $O(N^2)$.} Hàm chèn tài liệu dựng lại tập đoạn từ mọi tài liệu đã xử lý, nên chèn $N$ tài liệu tuần tự sẽ trích xuất lại toàn bộ kho $N$ lần.
+  Lưu vết các đoạn đã trích xuất đưa số lời gọi mô hình từ khoảng \callsBefore{} xuống \callsAfter{} cho 267 tài liệu.
+  \item \textbf{Ngân sách ngữ cảnh không giới hạn.} Trên 200 câu dev, phần đoạn của ngữ cảnh có trung vị \ctxNoCapMed{} token và tối đa \ctxNoCapMax{} token, vượt cửa sổ của Qwen2.5-3B ở một số câu.
+  Chúng tôi cắt phần đoạn ở $\budget = 4000$ token, đưa trung vị xuống \ctxCapMed{} token.
+\end{itemize}
+Cơ chế khớp loại đáp án của MiniRAG cũng không khớp được nút nào vì so sánh phân biệt hoa thường; sau khi sửa, nó khớp \atypeNodesFixed{} nút.
+Bản sửa này không làm accuracy thay đổi phân biệt được (Qwen: \atypeQwen{}; Gemini: \atypeGemini{}; McNemar, 635 câu), nhưng chúng tôi vẫn giữ nó vì nó sửa một lỗi thật.
+
+\subsection{Đánh giá}\label{sec:eval}
+Giám khảo \texttt{gemini-flash-lite-latest} gán cho mỗi câu trả lời một trong ba nhãn, theo giao thức của bài gốc: \emph{accurate} (truyền đạt đúng đáp án vàng), \emph{error} (khẳng định điều mâu thuẫn với đáp án vàng mà không rào đón) và \emph{neither} (từ chối, không biết hoặc lạc đề).
+Prompt đầy đủ ở \cref{app:prompts}.
+Chúng tôi báo tỉ lệ của cả ba nhãn và tỉ số acc/(acc+err); tỉ số này tách hiệu ứng ``dám trả lời nhiều hơn'' khỏi hiệu ứng ``trả lời đúng hơn''.
+Với câu Null, lời từ chối là câu trả lời đúng.
+
+Nhiễu giữa các lượt sinh lớn hơn nhiều so với nhiễu giám khảo.
+Trên MiniRAG tái lập, độ lệch chuẩn accuracy giữa ba lượt chấm của cùng một lượt sinh là \sdJudgeBase{} điểm; giữa ba lượt sinh của RRF(đồ thị, vectơ) là \sdGenGV{} điểm.
+Vì vậy mỗi biến thể được sinh ba lượt, mỗi lượt chấm một lần; một câu được tính là đúng khi phiếu \emph{accurate} chiếm đa số tuyệt đối có trọng số.
+Riêng MiniRAG tái lập chỉ có \emph{một} lượt sinh, và hệ quả của điều này được nêu ở mỗi phép so liên quan.

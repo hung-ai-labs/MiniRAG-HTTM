@@ -179,7 +179,7 @@ dErrXD,"\textminus{}0{,}31",logs (nhánh VEC vs V3),e4387b2,
 classHA,ROBUST POSITIVE,logs/stage_d/stage_d_report.json,d7c5b34,
 classHB,BORDERLINE,logs/stage_d/stage_d_report.json,d7c5b34,
 classHC,ROBUST POSITIVE,logs/stage_d/stage_d_report.json,d7c5b34,
-tokVK,3866,logs/stage_d/stage_d_report.json,d7c5b34,"trung vị token Sources+Entities, TB 3 lượt"
+tokVK,3.866,logs/stage_d/stage_d_report.json,d7c5b34,"trung vị token Sources+Entities, TB 3 lượt"
 sdJudgeBase,"0{,}23",logs/qwen637_fix_judged.csv,5314e1c,"sd acc giữa 3 lượt chấm, 1 lượt sinh"
 sdGenGV,"2{,}18",logs/qwen637_v3*_judged.csv,5314e1c,sd acc giữa 3 lượt sinh
 Tthr,"4{,}18",reproduce/stage_d/analyze_stage_d.py,2426263,ngưỡng T đăng ký trước

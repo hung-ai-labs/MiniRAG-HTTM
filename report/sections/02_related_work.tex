@@ -1,25 +1,30 @@
-\section{Công trình liên quan}\label{sec:related}
-% Mỗi trích dẫn dưới đây phải được xác minh (ACL Anthology / arXiv / DBLP) trước khi nộp.
+\section{Kiến thức nền và công trình liên quan}\label{sec:related}
+% Mỗi trích dẫn phải được xác minh (ACL Anthology / arXiv / DBLP) trước khi nộp.
 
-\subsection{RAG với truy xuất vectơ}
-Sinh tăng cường truy xuất (RAG) ghép một bộ truy xuất với mô hình sinh để trả lời dựa trên kho tài liệu bên ngoài~\cite{lewis2020rag}.
-Bộ truy xuất phổ biến nhất là truy xuất vectơ, mã hoá câu hỏi và đoạn văn vào cùng một không gian nhúng~\cite{karpukhin2020dpr,reimers2019sbert}.
-Cách này đơn giản và không cần mô hình ngôn ngữ lúc lập chỉ mục, nhưng xếp hạng theo độ giống ngữ nghĩa nên có thể bỏ sót đoạn chứa tên riêng hiếm.
-Bài này dùng truy xuất vectơ vừa làm đối chứng đơn giản nhất, vừa làm một thành phần của các cấu hình trộn.
+\subsection{MiniRAG}\label{sec:background}
+MiniRAG~\cite{fan2025minirag} xây một chỉ mục dị thể gồm hai loại nút: đoạn văn bản và thực thể có tên.
+Lúc lập chỉ mục, mô hình ngôn ngữ trích xuất thực thể và quan hệ từ từng đoạn, rồi nối mỗi thực thể với những đoạn chứa nó.
+Lúc truy vấn, mô hình phân tích câu hỏi thành từ khoá và loại đáp án dự kiến; hệ thống tìm các thực thể khởi đầu, sinh các đường đi hai bước trên đồ thị và chấm điểm từng đường.
+Mỗi đoạn được xếp hạng theo điểm của đường đi chạm tới nó, tạo thành danh sách $L_G$.
+Danh sách này được cắt theo ngân sách token và ghép với một bảng thực thể thành ngữ cảnh cho mô hình sinh.
+Đối với bài này, chi tiết quan trọng nhất là $L_G$ chỉ chứa những đoạn nằm trên ít nhất một đường đi.
+Kết quả truy xuất vectơ chỉ được dùng để cộng điểm cho các đoạn đã có mặt trong $L_G$.
 
 \subsection{RAG dựa trên đồ thị}
-Các hệ GraphRAG dựng đồ thị thực thể từ kho tài liệu bằng mô hình ngôn ngữ, rồi dùng cấu trúc đồ thị để truy xuất.
-GraphRAG của Edge và cộng sự~\cite{edge2024graphrag} tóm tắt theo cộng đồng thực thể cho câu hỏi tổng quát; LightRAG~\cite{guo2024lightrag} truy xuất hai mức trên thực thể và quan hệ.
-MiniRAG~\cite{fan2025minirag} điều chỉnh hướng này cho mô hình nhỏ: chỉ mục dị thể gồm đoạn và thực thể, truy xuất bằng đường đi trên đồ thị thay vì dựa vào khả năng hiểu ngữ nghĩa của mô hình.
+Các hệ GraphRAG dùng mô hình ngôn ngữ để dựng đồ thị thực thể từ kho tài liệu, rồi khai thác cấu trúc đồ thị khi truy xuất.
+GraphRAG của Edge và cộng sự~\cite{edge2024graphrag} tóm tắt theo cộng đồng thực thể để trả lời câu hỏi mang tính tổng quát; LightRAG~\cite{guo2024lightrag} truy xuất đồng thời ở mức thực thể và mức quan hệ.
+MiniRAG đơn giản hoá hướng này để chạy được với mô hình nhỏ.
 Bài gốc đánh giá MiniRAG trên LiHua-World, một bộ dữ liệu do chính nhóm tác giả xây dựng, với nhiều SLM \todo{tóm tắt đúng kết luận của bài gốc sau khi đọc lại bản chính thức}.
-Chúng tôi tái lập MiniRAG và cô lập riêng bước xếp hạng đoạn bằng đồ thị để đo đóng góp của nó.
+Các công trình này đánh giá cả hệ thống như một khối; chúng tôi cô lập riêng bước xếp hạng đoạn để đo đóng góp của đồ thị ở đúng bước đó.
 
 \subsection{Truy xuất lai và trộn xếp hạng}
-BM25~\cite{robertson2009bm25} là mô hình xếp hạng từ vựng kinh điển, vẫn là đối chứng mạnh trong truy hồi thông tin.
-Trộn xếp hạng nghịch đảo (RRF)~\cite{cormack2009rrf} kết hợp nhiều danh sách chỉ bằng thứ hạng, không cần hiệu chuẩn điểm, và thường tốt hơn từng danh sách thành phần.
-Truy xuất lai vectơ--BM25 trộn bằng RRF đã là cấu hình phổ biến \todo{trích một công trình đánh giá truy xuất lai đã xác minh}.
-Chúng tôi không đề xuất cách trộn mới. Chúng tôi dùng chính các thành phần chuẩn này, với tham số mặc định không tinh chỉnh, để kiểm tra đồ thị có thêm giá trị vào xếp hạng hay không.
+Truy xuất vectơ mã hoá câu hỏi và đoạn văn vào cùng một không gian nhúng~\cite{karpukhin2020dpr,reimers2019sbert}; nó bắt được tương đồng ngữ nghĩa nhưng có thể bỏ sót tên riêng hiếm.
+BM25~\cite{robertson2009bm25} xếp hạng theo khớp từ vựng và đến nay vẫn là một đối chứng mạnh.
+RRF~\cite{cormack2009rrf} trộn nhiều danh sách chỉ dựa vào thứ hạng, không cần hiệu chuẩn điểm giữa các bộ truy xuất, và thường tốt hơn từng danh sách thành phần.
+Truy xuất lai vectơ--BM25 trộn bằng RRF là cấu hình quen thuộc \todo{trích một công trình đánh giá truy xuất lai đã xác minh}.
+Chúng tôi không đề xuất cách trộn mới. Các thành phần chuẩn này, với tham số mặc định không tinh chỉnh, đóng vai trò công cụ đo: chúng cho phép hỏi đồ thị có thêm giá trị vào xếp hạng hay không.
 
 \subsection{Đánh giá bằng giám khảo LLM}
-Dùng mô hình ngôn ngữ làm giám khảo là cách đánh giá câu trả lời mở phổ biến, nhưng có thiên lệch và cần kiểm với người~\cite{zheng2023judge}.
-Bài gốc MiniRAG dùng giám khảo LLM với ba nhãn; chúng tôi giữ giao thức đó, đổi mô hình giám khảo, và báo độ nhạy theo rubric cùng mức khớp với người chấm.
+Dùng mô hình ngôn ngữ làm giám khảo là cách phổ biến để chấm câu trả lời mở, nhưng giám khảo có thiên lệch riêng và cần được kiểm với người~\cite{zheng2023judge}.
+Bài gốc MiniRAG chấm bằng giám khảo LLM với ba nhãn.
+Chúng tôi giữ giao thức ba nhãn, thay mô hình giám khảo, và báo kèm độ nhạy theo rubric cùng mức khớp với người chấm.

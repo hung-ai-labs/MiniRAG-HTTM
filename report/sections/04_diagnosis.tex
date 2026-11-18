@@ -1,0 +1,32 @@
+\section{Chẩn đoán: bằng chứng bị loại ở đâu}\label{sec:diagnosis}
+
+Để trả lời RQ1, chúng tôi lần theo từng đoạn chứa đáp án qua các bước truy xuất của MiniRAG tái lập.
+Phép đo không cần sinh câu trả lời hay giám khảo: với mỗi câu, cột \emph{Evidence} cho biết đoạn nào chứa đáp án, và ta chỉ cần kiểm đoạn đó còn có mặt sau mỗi bước hay không.
+Chúng tôi dùng 180 câu dev có nhãn bằng chứng, tổng cộng 207 đoạn đáp án; 20 câu Null không có bằng chứng nên bị loại.
+
+\paragraph{Bước tìm ứng viên không phải là nút thắt.}
+Chỉ riêng truy xuất vectơ trên nguyên văn câu hỏi đã đưa \retVecTopThirty\% đoạn đáp án vào 30 đoạn đầu.
+Hợp 30 đoạn đầu của đồ thị với 30 đoạn đầu của vectơ chứa \unionGV\% đoạn đáp án.
+Vậy gần như mọi bằng chứng đều đã được \emph{tìm thấy} bởi ít nhất một tín hiệu.
+
+\paragraph{Bằng chứng bị loại ở bước xếp hạng bằng đồ thị.}
+Trong 30 đoạn đầu mà đồ thị xếp hạng chỉ còn \retGraphTopThirty\% đoạn đáp án, và sau khi cắt theo ngân sách 4.000 token chỉ còn \retChunkBase\% thực sự vào ngữ cảnh.
+Nguyên nhân nằm ở cơ chế đã mô tả ở \cref{sec:background}: một đoạn mà vectơ tìm được nhưng không đường đi nào chạm tới thì không được xét, nên nó không có cơ hội vào ngữ cảnh.
+Nói cách khác, phần lớn bằng chứng đã nằm trong tầm tay hệ thống nhưng bị loại vì thứ tự trong ngân sách.
+Chúng tôi cũng sửa thử một lỗi nhỏ trong cách cộng điểm đường đi; bản sửa không cải thiện điều này, nên nút thắt nằm ở chính cơ chế chứ không ở lỗi cài đặt.
+
+\paragraph{Từ chẩn đoán đến giả thuyết.}
+Nếu nút thắt là thứ tự trong ngân sách, thì một hàm xếp hạng cho các tín hiệu khác quyền đưa đoạn lên đầu sẽ giữ lại được nhiều bằng chứng hơn.
+Chúng tôi mô phỏng điều này offline trên chính các xếp hạng đã lưu, với cùng quy tắc cắt (\cref{tab:retrieval}).
+Mọi hàm xếp hạng không chỉ dựa vào đồ thị đều giữ nhiều đoạn đáp án hơn MiniRAG, và cấu hình bỏ hẳn đồ thị --- RRF(vectơ, BM25) --- giữ nhiều nhất: tỉ lệ câu có đủ mọi đoạn đáp án tăng từ \retFullBase\% lên \retFullVK\%.
+
+\begin{table}[t]\centering
+\caption{Đoạn chứa đáp án còn lại trong ngữ cảnh sau khi cắt ở $\budget=4000$ token, mô phỏng tất định trên xếp hạng đã lưu (180 câu dev có nhãn bằng chứng; không sinh, không chấm). Tập dev đã được dùng để thiết kế các biến thể, nên bảng này là dự báo dùng để đặt giả thuyết, không phải kết quả xác nhận.}
+\label{tab:retrieval}
+\small
+\input{generated/table_retrieval.tex}
+\end{table}
+
+Bảng này là dự báo ở mức truy xuất, trên tập đã dùng để thiết kế.
+Nó chưa cho biết giữ thêm bằng chứng có chuyển thành câu trả lời đúng hơn hay không, vì mô hình nhỏ có thể không khai thác được ngữ cảnh dài hơn hoặc nhiễu hơn.
+\Cref{sec:design} biến dự báo này thành các giả thuyết có thể bác bỏ, rồi kiểm chúng trên tập ngoài dev.

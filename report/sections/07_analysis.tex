@@ -1,0 +1,54 @@
+\section{Phân tích}\label{sec:analysis}
+
+\subsection{Phần bằng chứng còn thiếu nằm ở bước cắt theo ngân sách}\label{sec:residual}
+Sau khi bỏ đồ thị khỏi xếp hạng, gần như mọi đoạn đáp án đã có mặt trong danh sách ứng viên; phần còn thiếu chủ yếu bị bước cắt loại ra.
+Với RRF(vectơ, BM25) trên 180 câu dev có evidence, \retCandVK\% đoạn đáp án có trong danh sách ứng viên trước khi cắt.
+Trong \failVK{} câu còn thiếu đoạn đáp án sau khi cắt, có \cutFailVK{} câu mà đoạn đáp án đã nằm trong ứng viên nhưng bị cắt.
+Ở \longAnsCut{} trong số \cutFailVK{} câu đó, chính đoạn đáp án dài 1.200 token, tức đúng giới hạn độ dài đoạn lúc lập chỉ mục.
+
+Nguyên nhân là quy tắc cắt dừng ở đoạn đầu tiên làm tràn ngân sách: vài đoạn hội thoại dài đứng trước có thể chiếm gần hết 4.000 token.
+Điều này cũng giải thích vì sao lợi ích phụ thuộc vào ngân sách.
+Khi hạ ngân sách của RRF(đồ thị, vectơ) xuống 2.000 token, accuracy trên 635 câu về mức không phân biệt được với MiniRAG (\budgetTwoK; một lượt sinh).
+Các cấu hình trộn vì vậy không phải là cải tiến hiệu năng: chúng cần đủ ngân sách để chứa số bằng chứng mà chúng tìm thêm được.
+Bước tiếp theo hợp lý là chọn nội dung trong ngân sách, ví dụ cắt đoạn dài theo lượt lời, thay vì tìm thêm ứng viên.
+
+\subsection{Nhóm câu không có đáp án}\label{sec:null}
+Mức giảm ở nhóm Null không giải thích được bằng nhãn sai hay cách chấm. Nó gắn với việc ngữ cảnh chứa nhiều ``sự thật gần giống'' hơn.
+Chúng tôi kiểm lần lượt ba nguyên nhân.
+
+\paragraph{Nhãn.}
+Rà nhãn của 65 câu Null cho thấy một câu có đáp án rõ ràng trong kho và hai câu đáng tranh luận.
+Loại các câu này chỉ thu hẹp chênh lệch một phần nhỏ \todo{đưa con số chính xác vào script từ \texttt{logs/null\_audit/}}.
+
+\paragraph{Rubric của giám khảo.}
+Một thành viên chấm tay 40 câu Null. Rubric gốc khớp với người ở \humanAgreeOrig{} câu, vì nhiều câu trả lời ``pha trộn'' --- nói không có thông tin rồi vẫn suy đoán --- bị chấm \emph{neither}.
+Chúng tôi viết một rubric làm rõ cho trường hợp đáp án vàng là ``không đủ thông tin''; rubric này khớp với người ở \humanAgreeClar{} câu.
+Chấm lại toàn bộ nhóm Null bằng rubric mới, với ba lượt chấm, cho kết quả ở \cref{tab:null}.
+Theo rubric làm rõ, các cấu hình không chỉ dựa vào đồ thị gần như không còn cách nhau, nhưng tất cả vẫn có acc thấp hơn và err cao hơn MiniRAG.
+Lời từ chối thuần không bao giờ bị chấm sai (\refusalAcc{} phiếu \emph{accurate}).
+Vậy khoảng cách giữa các cấu hình trộn phần lớn nằm ở rubric, còn khoảng cách với MiniRAG là thật.
+
+\begin{table}[t]\centering
+\caption{Nhóm Null (45 câu ngoài dev) dưới hai rubric giám khảo, trung bình ba lượt chấm và các lượt sinh. Rubric làm rõ là phân tích độ nhạy, hiệu chuẩn trên nhãn của một người; số chính thức là cột rubric gốc. Rubric làm rõ gần như không dùng nhãn \emph{neither}, nên chỉ nên so acc và err giữa hai cột.}
+\label{tab:null}
+\small
+\input{generated/table_null.tex}
+\end{table}
+
+\paragraph{Cơ chế.}
+Khi truy xuất tốt hơn, ngữ cảnh chứa nhiều đoạn đúng chủ đề nhưng sai thời điểm hoặc sai sự kiện, và mô hình nhỏ ghép chúng thành một câu trả lời tự tin nhưng sai tiền đề.
+Theo phân loại của nhóm, \nullPremise{} câu Null bị chấm \emph{error} thuộc dạng này.
+Một tín hiệu ``độ phủ tiền đề'' phân biệt khá tốt câu Null với câu có đáp án (AUC \premiseAUC), nhưng dùng nó làm cổng từ chối thì không cứu thêm được câu nào ở bất kỳ ngưỡng nào.
+Lý do là các câu Null có độ phủ thấp thì mô hình vốn đã tự từ chối đúng; những câu nó trả lời sai lại chính là những câu có độ phủ cao.
+Các hướng sửa khác theo kiểu kiểm chứng hoặc từ chối cũng đều cho kết quả phủ định (\cref{app:tried}).
+
+\subsection{Độ vững của kết quả}\label{sec:robust}
+Ba nguồn bất định có thể làm lệch kết luận: lấy mẫu khi sinh, giám khảo, và cách chọn cấu hình.
+Lấy mẫu khi sinh là nguồn lớn nhất: khoảng \flipRate\% câu đổi phán quyết giữa hai lượt sinh của cùng một cấu hình, và độ lệch chuẩn accuracy giữa các lượt (\sdGenGV{} điểm) gấp nhiều lần độ lệch chuẩn giữa các lượt chấm (\sdJudgeBase{} điểm).
+Đó là lý do mọi kết luận xác nhận đều dựa trên ba lượt sinh, và ngưỡng $T$ được đặt theo nhiễu sinh chứ không theo nhiễu giám khảo.
+Giám khảo thì có xu hướng dễ dãi: khi rà tay, \judgeLenient{} câu được chấm \emph{accurate} vẫn chứa ngày, thứ tự hoặc người nói mâu thuẫn với ngữ cảnh.
+Sai lệch này tác động lên mọi cấu hình, nhưng chúng tôi chưa đo được nó có tác động như nhau hay không.
+Về cách chọn cấu hình, tập ngoài dev chưa từng được dùng để chọn biến thể, và mọi phép so được báo kèm số câu lên/xuống của từng cặp lượt để người đọc tự kiểm tính nhất quán (\cref{tab:tests}).
+
+\subsection{Ví dụ định tính}
+\todo{Chọn 1 câu thành công và 1 câu thất bại bằng quy tắc cố định (ví dụ: câu đầu tiên theo thứ tự trong \texttt{nondev435.csv} thuộc mỗi loại); trình bày câu hỏi, đáp án, đoạn lấy được (rút gọn) và câu trả lời của MiniRAG và RRF(vectơ, BM25). Các ví dụ trong \texttt{docs/CAI\_TIEN\_VA\_BENCHMARK.md} thuộc tập dev và đã được chọn tay, không dùng làm ví dụ đại diện.}

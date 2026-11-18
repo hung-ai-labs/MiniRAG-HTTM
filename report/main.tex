@@ -31,6 +31,9 @@
 \sisetup{output-decimal-marker={,}, group-separator={.}, detect-all}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage[inline]{enumitem}
 
 % ---------- Liên kết ----------
 \usepackage[hidelinks]{hyperref}
@@ -64,6 +67,8 @@
   \todo{Thành viên 1}\\ \todo{Đơn vị}
   \and
   \todo{Thành viên 2}\\ \todo{Đơn vị}
+  \and
+  \todo{Thành viên 3}\\ \todo{Đơn vị}
 }
 \date{\today}
 
@@ -74,13 +79,14 @@
 
 \input{sections/01_introduction}
 \input{sections/02_related_work}
-\input{sections/03_method}
-\input{sections/04_experimental_setup}
-\input{sections/05_results}
-\input{sections/06_analysis}
-\input{sections/07_discussion}
-\input{sections/08_limitations}
-\input{sections/09_conclusion}
+\input{sections/03_setup}        % Thiết lập tái lập
+\input{sections/04_diagnosis}     % RQ1
+\input{sections/05_design}        % thí nghiệm có kiểm soát
+\input{sections/06_results}       % RQ2, RQ3
+\input{sections/07_analysis}
+\input{sections/08_discussion}
+\input{sections/09_limitations}
+\input{sections/10_conclusion}
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

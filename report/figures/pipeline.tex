@@ -1,0 +1,31 @@
+% Hình 1 — quy trình truy vấn, khối được thay viền đậm. Vẽ bằng TikZ, không chép hình bài gốc.
+\begin{tikzpicture}[
+  font=\small,
+  node distance=4mm and 6mm,
+  box/.style={draw=black!45, fill=black!6, rounded corners=2pt, align=center, minimum height=8mm, inner sep=3pt},
+  sig/.style={draw=black!45, fill=white, rounded corners=2pt, align=center, minimum height=7mm, minimum width=27mm, inner sep=3pt},
+  key/.style={draw=black, very thick, fill=white, rounded corners=2pt, align=center, minimum height=26mm, inner sep=4pt},
+  arr/.style={-{Stealth[length=2mm]}, black!70}
+]
+  \node[box] (q) {Câu hỏi $\query$};
+  \node[sig, right=of q] (v) {Vectơ nhúng\\$L_V$ (top-30)};
+  \node[sig, above=of v] (g) {Đường đi đồ thị\\$L_G$};
+  \node[sig, below=of v] (k) {BM25 trên\\nguyên văn: $L_K$};
+  \node[key, right=of v] (r) {Hàm xếp hạng\\đoạn\\[2pt]\footnotesize RRF trên tập con\\\footnotesize của $\{L_G, L_V, L_K\}$};
+  \node[box, right=of r] (c) {Cắt theo\\ngân sách\\$\budget = 4000$};
+  \node[box, right=of c] (s) {SLM\\Qwen2.5-3B};
+  \node[box, above=of s] (e) {Bảng thực thể\\(từ đồ thị)};
+  \node[box, below=of s] (a) {Câu trả lời};
+
+  \draw[arr] (q) -- (v);
+  \draw[arr] (q) |- (g);
+  \draw[arr] (q) |- (k);
+  \draw[arr] (g) -- (r);
+  \draw[arr] (v) -- (r);
+  \draw[arr] (k) -- (r);
+  \draw[arr] (r) -- (c);
+  \draw[arr] (c) -- (s);
+  \draw[arr] (e) -- (s);
+  \draw[arr] (s) -- (a);
+  \draw[arr, dashed] (g.north) |- ++(0,4mm) -| (e.north);
+\end{tikzpicture}

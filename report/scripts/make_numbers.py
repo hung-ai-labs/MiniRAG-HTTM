@@ -205,7 +205,7 @@ for h, _, _ in PRE:
 
 # token context trung vị (E5), từ báo cáo tầng D
 toks = rep["comparisons"]["H2"]["tokens_median"]
-put("tokVK", num(st.mean(toks), 0), "logs/stage_d/stage_d_report.json", "trung vị token Sources+Entities, TB 3 lượt")
+put("tokVK", f"{round(st.mean(toks)):,}".replace(",", "."), "logs/stage_d/stage_d_report.json", "trung vị token Sources+Entities, TB 3 lượt")
 
 # ---------------------------------------------------------------- nhiễu
 base_judge = []

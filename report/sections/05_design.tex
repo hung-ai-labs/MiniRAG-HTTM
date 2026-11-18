@@ -1,0 +1,93 @@
+\section{Thiết kế thí nghiệm có kiểm soát}\label{sec:design}
+
+\subsection{Năm hàm xếp hạng đoạn}\label{sec:variants}
+Gọi $L_G$ là danh sách đoạn do MiniRAG xếp theo đường đi đồ thị, $L_V$ là 30 đoạn gần câu hỏi nhất theo cosine của vectơ nhúng, và $L_K$ là 30 đoạn có điểm BM25 dương cao nhất với nguyên văn câu hỏi.
+Chúng tôi so năm hàm xếp hạng dựng từ ba danh sách này (\cref{tab:variants}).
+Chúng được sắp sao cho mỗi câu hỏi nghiên cứu ứng với một cặp cấu hình chỉ khác nhau đúng một thành phần.
+\Cref{fig:pipeline} cho thấy vị trí của thành phần được thay trong quy trình.
+
+\begin{figure}[t]\centering
+\input{figures/pipeline.tex}
+\caption{Quy trình truy vấn của MiniRAG và thành phần được thay trong bài. Mọi khối xám giữ nguyên giữa các cấu hình; chỉ hàm xếp hạng đoạn (khối viền đậm) thay đổi, và nó nhận một tập con của ba danh sách $L_G$, $L_V$, $L_K$. Đồ thị vẫn dựng bảng thực thể trong mọi cấu hình.}
+\label{fig:pipeline}
+\end{figure}
+
+\begin{table}[t]\centering
+\caption{Năm hàm xếp hạng đoạn. Mọi cấu hình dùng chung chỉ mục, đồ thị, bảng thực thể, prompt, mô hình sinh, giám khảo và ngân sách $\budget=4000$ token.}
+\label{tab:variants}
+\small
+\begin{tabular}{llp{0.42\linewidth}}
+\toprule
+Cấu hình & Danh sách trước khi cắt & Khác cấu hình nào đúng một thành phần \\
+\midrule
+MiniRAG (tái lập) & $L_G$ & --- \\
+RRF(đồ thị, vectơ) & $\mathrm{RRF}(L_G, L_V)$ & MiniRAG: thêm $L_V$ \\
+Vectơ thuần & $L_V$ & RRF(đồ thị, vectơ): bỏ $L_G$ \\
+RRF(đồ thị, vectơ, BM25) & $\mathrm{RRF}(L_G, L_V, L_K)$ & RRF(đồ thị, vectơ): thêm $L_K$ \\
+RRF(vectơ, BM25) & $\mathrm{RRF}(L_V, L_K)$ & Vectơ thuần: thêm $L_K$; RRF(đồ thị, vectơ, BM25): bỏ $L_G$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Trộn xếp hạng.}
+Với các danh sách $L_1,\dots,L_m$, điểm RRF của đoạn $\chunk$ là
+\begin{equation}\label{eq:rrf}
+  \mathrm{RRF}(\chunk) = \sum_{i=1}^{m} \frac{\mathbf{1}[\chunk \in L_i]}{k + \rank_{L_i}(\chunk)},
+\end{equation}
+trong đó $\rank_{L_i}(\chunk)$ là thứ hạng (bắt đầu từ 1) của $\chunk$ trong $L_i$, và $k=60$ là giá trị mặc định của Cormack và cộng sự~\cite{cormack2009rrf}.
+Chúng tôi không tinh chỉnh $k$. Hoà điểm giữ thứ tự xuất hiện, và đoạn trùng chỉ được tính một lần.
+
+\paragraph{BM25.}
+Chúng tôi dùng Okapi BM25~\cite{robertson2009bm25} với $k_1 = 1{,}2$, $b = 0{,}75$ và
+\begin{equation}\label{eq:idf}
+  \mathrm{idf}(t) = \ln\Bigl(1 + \frac{N - n_t + 0{,}5}{n_t + 0{,}5}\Bigr),
+\end{equation}
+trong đó $N$ là số đoạn trong chỉ mục và $n_t$ là số đoạn chứa từ $t$.
+Văn bản được đưa về chữ thường và tách theo \texttt{[a-z0-9]+}; từ dừng chỉ bị bỏ ở phía câu hỏi.
+Truy vấn là nguyên văn câu hỏi, không qua bộ phân tích từ khoá của mô hình. Chỉ mục BM25 được dựng một lần trong bộ nhớ và không ghi vào chỉ mục đã đóng băng.
+
+\paragraph{Cắt theo ngân sách.}
+Danh sách sau khi trộn được duyệt theo thứ tự, và đoạn được thêm vào cho tới đoạn đầu tiên làm tổng vượt $\budget$.
+Ở các cấu hình không có $L_G$, đồ thị vẫn chạy để dựng bảng thực thể và quyết định câu hỏi có ngữ cảnh hay không, nhưng không tham gia xếp hạng đoạn.
+
+\paragraph{Chi phí.}
+BM25 thêm khoảng \bmMs{}~ms mỗi câu trên CPU, còn RRF chỉ là một phép sắp xếp trên tối đa 90 phần tử.
+Không cấu hình nào thêm lời gọi mô hình ngôn ngữ hay cần lập chỉ mục lại, và ngân sách ngữ cảnh được giữ như nhau: trung vị token ngữ cảnh của RRF(vectơ, BM25) là \tokVK{}, nằm trong biên $\pm 5\%$ quanh mức 3.870 token của RRF(đồ thị, vectơ).
+
+\subsection{Giả thuyết đăng ký trước}\label{sec:prereg}
+Ba giả thuyết sau được ghi vào kho mã trước khi viết mã BM25 và trước khi có bất kỳ đầu ra nào, kèm tiêu chí và quy tắc đọc kết quả:
+\begin{itemize}
+  \item[\textbf{H1}] RRF(đồ thị, vectơ, BM25) đúng hơn RRF(đồ thị, vectơ): thêm BM25 khi có đồ thị (RQ2).
+  \item[\textbf{H2}] RRF(vectơ, BM25) đúng hơn vectơ thuần: thêm BM25 khi không có đồ thị (RQ2).
+  \item[\textbf{H3}] RRF(vectơ, BM25) đúng hơn RRF(đồ thị, vectơ, BM25): bỏ đồ thị khi đã có vectơ và BM25 (RQ3).
+\end{itemize}
+Một giả thuyết chỉ được coi là \emph{đạt} khi thoả đồng thời sáu điều kiện:
+\begin{enumerate*}[label=(\roman*)]
+  \item hiệu accuracy trung bình $\ge T = \Tthr$ điểm, tức hai lần độ lệch chuẩn giữa các lượt sinh;
+  \item cả ba cặp lượt sinh cùng chiều dương;
+  \item $p_{\text{Holm}} < 0{,}05$;
+  \item err không tăng quá 1 điểm;
+  \item không nhóm câu hỏi nào giảm có ý nghĩa, và nhóm Null không mất trung bình quá 3 câu mỗi cặp lượt;
+  \item token ngữ cảnh nằm trong $\pm 5\%$ của 3.870.
+\end{enumerate*}
+Giả thuyết có hiệu dương nhưng trượt ít nhất một điều kiện được xếp loại \emph{biên}.
+
+\paragraph{Lệch đăng ký.}
+Chúng tôi khai báo một lệch đăng ký liên quan tới RRF(vectơ, BM25).
+Ở vòng sàng lọc 100 câu trên tập dev, cấu hình này trượt cổng thời gian truy xuất (\timeGateFail~ms so với mốc).
+Sau khi thấy kết quả đó, nhóm thay cách đo từ tuần tự sang xen kẽ, vì cách đo tuần tự chủ yếu ghi nhận nhiễu của máy; theo cách đo mới, cấu hình đạt.
+Thay đổi này áp dụng đối xứng cho cả hai cấu hình có BM25 và không động tới accuracy, giám khảo hay tập câu hỏi.
+Tuy vậy, vì nó được viết sau khi thấy kết quả, mọi kết luận liên quan tới RRF(vectơ, BM25) đều mang điều kiện này.
+
+\subsection{Phép so khám phá}\label{sec:exploratory}
+Bốn phép so sau \emph{không} nằm trong đăng ký trước; chúng tôi báo chúng như phân tích khám phá, hiệu chỉnh Holm riêng trên bốn phép so:
+X1 RRF(đồ thị, vectơ) với MiniRAG; X2 vectơ thuần với MiniRAG; X3 RRF(vectơ, BM25) với MiniRAG; X4 vectơ thuần với RRF(đồ thị, vectơ).
+Ba phép so đầu đặt các biến thể cạnh hệ thống gốc; phép so cuối bổ sung cho H3 ở câu hỏi RQ3.
+Trong toàn dự án chúng tôi đã thử 23 cấu hình hoặc hướng (\cref{app:tried}); chỉ năm hàm xếp hạng ở \cref{tab:variants} được đưa tới vòng xác nhận.
+
+\subsection{Kiểm định thống kê}\label{sec:stats}
+Đơn vị phân tích là câu hỏi.
+Với mỗi câu, chúng tôi lấy tỉ lệ lượt sinh trả lời đúng của từng cấu hình, rồi kiểm hiệu trung bình giữa hai cấu hình bằng hoán vị đổi dấu ghép cặp (100.000 hoán vị, seed 20260914, hai phía).
+Khoảng tin cậy 95\% là bootstrap ghép cặp theo câu với 10.000 lần lấy mẫu lại.
+Ba giả thuyết đăng ký trước được hiệu chỉnh Holm~\cite{holm1979} trên ba phép so.
+Với từng cặp lượt sinh, chúng tôi báo thêm số câu chuyển từ sai sang đúng và từ đúng sang sai.

@@ -1,0 +1,54 @@
+\section{Kết quả}\label{sec:results}
+
+\Cref{tab:main} báo accuracy, err, neither và accuracy theo loại câu của năm cấu hình trên tập ngoài dev; \cref{tab:tests} báo các phép kiểm định.
+Chúng tôi đọc hai bảng theo thứ tự câu hỏi nghiên cứu.
+
+\begin{table*}[t]\centering
+\caption{Kết quả hỏi đáp trên \nHeld{} câu ngoài dev của LiHua-World (Qwen2.5-3B; giám khảo \texttt{gemini-flash-lite-latest}, lượt chấm 1; $\budget = 4000$ token). acc, err, neither là trung bình qua các lượt sinh; $\pm$ là độ lệch chuẩn giữa các lượt sinh. Cột Single/Multi/Null là acc của từng nhóm, số trong ngoặc là số câu. Dòng in nghiêng lấy từ bài gốc, với giám khảo và đồ thị khác, chỉ dùng để tham chiếu.}
+\label{tab:main}
+\small
+\resizebox{\linewidth}{!}{\input{generated/table_main.tex}}
+\end{table*}
+
+\begin{table*}[t]\centering
+\caption{Kiểm định ghép cặp trên \nHeld{} câu ngoài dev. $\Delta$acc là hiệu accuracy trung bình theo câu (điểm phần trăm), kèm KTC 95\% bootstrap ghép cặp. $p$ từ hoán vị đổi dấu (100.000 lần; $p$ nhỏ nhất đo được là $10^{-5}$), hiệu chỉnh Holm trong từng họ. ``Lên/xuống'' là số câu sai$\to$đúng / đúng$\to$sai của từng cặp lượt sinh. ``Null net'' là số câu Null thay đổi trung bình mỗi cặp lượt (âm là kém đi).}
+\label{tab:tests}
+\footnotesize
+\resizebox{\linewidth}{!}{\input{generated/table_tests.tex}}
+\end{table*}
+
+\subsection{RQ2: thêm tín hiệu vectơ và từ vựng làm câu trả lời đúng hơn}\label{sec:rq2}
+Mỗi lần thêm một tín hiệu vào bước xếp hạng, accuracy đều tăng.
+Đưa vectơ vào bên cạnh đồ thị làm RRF(đồ thị, vectơ) cao hơn MiniRAG \diffXA{} điểm [\ciLoXA; \ciHiXA] (X1).
+Thêm BM25 vào cấu hình đó tăng tiếp \diffHA{} điểm [\ciLoHA; \ciHiHA], $p_{\text{Holm}} = \pHolmHA$, với cả ba cặp lượt cùng chiều (H1).
+H1 đạt mọi điều kiện đã đăng ký, và nhóm Null gần như không đổi (\diffHANull{} điểm).
+
+Ở nhánh không có đồ thị, thêm BM25 vào vectơ thuần tăng \diffHB{} điểm [\ciLoHB; \ciHiHB], $p_{\text{Holm}} = \pHolmHB$, cũng với ba cặp lượt cùng chiều (H2).
+Tuy vậy, nhóm Null mất trung bình \nullNetHB{} câu mỗi cặp lượt, vượt ngưỡng $-3$ câu đã đăng ký, nên H2 chỉ được xếp loại \emph{biên}.
+Chúng tôi không nới ngưỡng này sau khi thấy kết quả.
+Chúng tôi kết luận BM25 cải thiện accuracy so với vectơ thuần, với điều kiện cấu hình đó trượt cổng an toàn của nhóm Null.
+
+Cộng dồn lại, cấu hình RRF(vectơ, BM25) cao hơn MiniRAG tái lập \diffXC{} điểm [\ciLoXC; \ciHiXC], $p_{\text{Holm}} \pHolmXC$ (X3).
+Đây là phân tích khám phá, và phía MiniRAG chỉ có một lượt sinh.
+Dù vậy, hiệu số bằng \ratioXCT{} lần ngưỡng nhiễu $T$, và từng lượt sinh của RRF(vectơ, BM25) đều cao hơn MiniRAG (\cref{tab:runs}).
+Mức tăng không chỉ do hệ thống dám trả lời nhiều hơn: err giảm \dErrXC{} điểm và acc/(acc+err) tăng từ \precBase{} lên \precVK{}, tức hệ thống cũng đúng hơn trong những câu nó chọn trả lời.
+
+\subsection{RQ3: đồ thị không đóng góp vào xếp hạng đoạn}\label{sec:rq3}
+Khi đã có vectơ và BM25, đưa đồ thị trở lại vào phép trộn làm accuracy giảm.
+Bỏ $L_G$ khỏi RRF(đồ thị, vectơ, BM25) tăng accuracy \diffHC{} điểm [\ciLoHC; \ciHiHC], $p_{\text{Holm}} = \pHolmHC$, với ba cặp lượt cùng chiều (\pairsHC) (H3).
+H3 đạt mọi điều kiện đã đăng ký, kèm lệch đăng ký đã khai báo ở \cref{sec:prereg}.
+
+Phép so giữa vectơ thuần và RRF(đồ thị, vectơ) cho cùng một hướng.
+Trong phân tích khám phá ba lượt sinh với ba lượt sinh, vectơ thuần cao hơn \diffXD{} điểm [\ciLoXD; \ciHiXD], $p_{\text{Holm}} = \pHolmXD$ (X4).
+Trước đó, một phép thử đã đăng ký trước chỉ dùng một lượt sinh mỗi bên trên 635 câu cho \vecVsGVpre{}, tức không phân biệt được.
+Vì phép so có ý nghĩa không được đăng ký trước, chúng tôi chỉ rút ra kết luận thận trọng hơn: việc trộn với đồ thị không được chứng minh là tốt hơn vectơ thuần.
+Gộp H3 và X4 lại, chúng tôi không tìm thấy cấu hình nào trên bộ dữ liệu này mà đưa xếp hạng bằng đồ thị vào làm tăng độ chính xác.
+
+\subsection{Theo loại câu hỏi}\label{sec:by-type}
+Mức tăng tập trung ở câu Single, đi kèm xu hướng giảm ở nhóm Null.
+So với MiniRAG, RRF(vectơ, BM25) tăng Single \diffXCSingle{} điểm [\ciLoXCSingle; \ciHiXCSingle] ($n=\nHeldSingle$) và Multi \diffXCMulti{} điểm [\ciLoXCMulti; \ciHiXCMulti] ($n=\nHeldMulti$, $p=\pXCMulti$).
+Ngược lại, nhóm Null có xu hướng giảm \diffXCNull{} điểm [\ciLoXCNull; \ciHiXCNull] ($n=\nHeldNull$, $p=\pXCNull$), chưa xác nhận.
+Chiều giảm này lặp lại ở mọi cấu hình đưa thêm đoạn từ vectơ hoặc BM25 vào ngữ cảnh (cột Null của \cref{tab:main}).
+Với \nHeldNull{} câu, một câu tương đương \ptsPerNull{} điểm ở một lượt, nên chúng tôi không kết luận riêng cho nhóm này.
+Nhóm Multi cũng quá nhỏ (\nHeldMulti{} câu) để kết luận riêng.
+\Cref{sec:null} phân tích nguyên nhân của mức giảm ở nhóm Null.

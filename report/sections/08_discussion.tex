@@ -1,0 +1,23 @@
+\section{Thảo luận}\label{sec:discussion}
+
+\paragraph{Đồ thị đóng vai trò gì trong RAG cho mô hình nhỏ?}
+Trên LiHua-World, giá trị của đồ thị trong MiniRAG không nằm ở bước xếp hạng đoạn.
+Ở bước này, đường đi hai bước hoạt động như một bộ lọc ứng viên quá chặt: nó loại những đoạn mà tín hiệu khác đã tìm ra, và khi được trộn cùng các tín hiệu đó, nó kéo thứ tự trong ngân sách đi xuống.
+Kết quả này không bác bỏ toàn bộ thiết kế của MiniRAG.
+Đồ thị vẫn dựng bảng thực thể và quyết định câu hỏi có ngữ cảnh hay không, và chúng tôi chưa loại bỏ thành phần đó.
+Phạm vi đúng của kết luận là: \emph{với một đồ thị do chính mô hình 3B dựng}, xếp hạng đoạn theo đường đi không đóng góp vào độ chính xác.
+
+\paragraph{Vì sao BM25 có ích trên bộ dữ liệu này.}
+Câu hỏi của LiHua-World thường nêu đích danh người, trò chơi, món ăn hay sự kiện xuất hiện nguyên văn trong hội thoại.
+Khớp từ vựng trên nguyên văn câu hỏi bắt được các tên riêng này mà không cần mô hình nhỏ trích xuất đúng thực thể --- đúng bước dễ hỏng nhất khi dùng SLM.
+Cùng tính chất đó lý giải đánh đổi ở nhóm Null: câu hỏi về điều không xảy ra vẫn chứa tên thật, nên BM25 kéo về văn bản ``trông liên quan'', và mô hình nhỏ ghép văn bản đó thành câu trả lời.
+
+\paragraph{Hệ quả cho người xây dựng hệ thống.}
+Với kho hội thoại cá nhân, câu hỏi chứa tên riêng và mô hình sinh nhỏ, kết quả của chúng tôi ủng hộ việc thử truy xuất lai vectơ--BM25 trước khi đầu tư dựng đồ thị: nó không cần lời gọi mô hình khi lập chỉ mục và chỉ tốn khoảng một mili-giây mỗi câu.
+Ngược lại, ở ứng dụng mà trả lời sai một câu không có đáp án đắt hơn bỏ sót một câu có đáp án, cấu hình này chưa nên dùng nguyên trạng.
+
+\paragraph{Hệ quả cho việc đánh giá GraphRAG.}
+Việc truy xuất lai tốt hơn từng tín hiệu riêng lẻ là điều đã quen thuộc trong truy hồi thông tin~\cite{cormack2009rrf}.
+Điều bài này bổ sung là một quan sát về phương pháp đánh giá: một hệ GraphRAG có thể được báo cáo là vượt các đối chứng, trong khi bước dùng đồ thị lại đứng sau cả một đối chứng vectơ thuần đặt trong cùng điều kiện.
+Chúng tôi cho rằng các đánh giá GraphRAG nên luôn kèm đối chứng truy xuất lai, chạy trên cùng chỉ mục và cùng ngân sách ngữ cảnh.
+\todo{Đối chiếu với các nghiên cứu so sánh GraphRAG và RAG vectơ gần đây; cần tra cứu và xác minh trước khi viết.}
